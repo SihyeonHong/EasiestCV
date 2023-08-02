@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;200;300;400;500;600&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap");
+
+.custom-body {
+  width: 48vw;
+  min-width: 240px;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+body > * {
+  font-family: "Noto Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
+}
+
+.title {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.nav {
+  padding: 8px;
+  background-color: black;
+}
+
+.nav > * {
+  text-align: center;
+  font-size: larger;
+}
+
+.nav-link {
+  margin-left: 20px;
+  margin-right: 20px;
+  color: white !important;
+}
+
+.body-init > * {
+  margin-top: 30px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.form-id {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-id-child2 {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.unconfirmed {
+  border-color: red !important;
+}
+
+.tabBody {
+  background-color: #f2f2f2;
+  max-width: 640px;
+  padding: 30px;
+  text-align: left;
+}
+
+.profileImage {
+  max-width: 480px;
+  max-height: 1280px;
+}
+
+.options-column,
+.actions-column {
+  width: fit-content;
+}
+
+.contents-column {
+  width: auto;
+}
