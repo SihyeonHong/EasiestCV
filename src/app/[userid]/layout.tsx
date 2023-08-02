@@ -1,7 +1,14 @@
+import ToInitBtn from "./ToInitBtn";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return { children };
+  return (
+    <div>
+      <ToInitBtn />
+      {children}
+    </div>
+  );
 }
