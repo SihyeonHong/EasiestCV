@@ -2,16 +2,18 @@
 
 import { Nav, Container, Row } from "react-bootstrap";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import NonAdminHome from "./NonAdminHome";
-import NonAdminTab from "./NonAdminTab";
+import { useState, useEffect, useRef } from "react";
+import AdminHome from "./AdminHome";
+import AdminTab from "./AdminTab";
 
 export default function NonAdminPage({
   userinfo,
 }: {
   userinfo: { userid: string; intro: string; img: string; pdf: string };
 }) {
-  const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([]);
+  const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([
+    { tid: 1, tname: "Tab1" },
+  ]);
   const [activeKey, setActiceKey] = useState<number>(0);
 
   const getTabs = async () => {
@@ -20,9 +22,9 @@ export default function NonAdminPage({
     setTabs(res.data);
   };
 
-  useEffect(() => {
-    getTabs();
-  }, []);
+  //   useEffect(() => {
+  //     getTabs();
+  //   }, []);
 
   return (
     <div>
@@ -58,16 +60,24 @@ export default function NonAdminPage({
                   </Nav.Link>
                 </Nav.Item>
               ))}
+            <Nav.Item style={{ color: "white" }}>
+              PDF{"  "}
+              <input
+                type="file"
+                accept="application/pdf"
+                style={{ color: "white" }}
+              />
+            </Nav.Item>
             <Nav.Item>
-              <Nav.Link disabled>PDF</Nav.Link>
+              <Nav.Link>탭 관리</Nav.Link>
             </Nav.Item>
           </Nav>
         </Row>
         <Row className="page-body">
           {activeKey === 0 ? (
-            <NonAdminHome img={userinfo.img} intro={userinfo.intro} />
+            <AdminHome userid={userinfo.userid} intro={userinfo.intro} />
           ) : (
-            <NonAdminTab tid={activeKey} />
+            <AdminTab userid={userinfo.userid} tid={activeKey} />
           )}
         </Row>
       </Container>

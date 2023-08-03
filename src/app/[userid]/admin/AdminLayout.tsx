@@ -1,13 +1,11 @@
 "use client";
 
-import { Nav, Button, Container, Row, Col } from "react-bootstrap";
+import { ButtonGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import axios from "axios";
-import NonAdminPage from "./NonAdminPage";
-import NoUserPage from "./NoUserPage";
+import AdminPage from "./AdminPage";
 
-export default function NonAdminLayout({ userid }: { userid: string }) {
+export default function AdminLayout({ userid }: { userid: string }) {
   const [userinfo, setUserInfo] = useState({
     userid: "",
     intro: "",
@@ -35,16 +33,17 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
     <Container>
       <Row style={{ textAlign: "right" }}>
         <Col>
-          <Link href="/">
-            <Button variant="dark">Log In | Sign Up</Button>
-          </Link>
+          <ButtonGroup>
+            <Button variant="dark">저장하고 로그아웃</Button>
+            <Button variant="light">회원정보수정</Button>
+          </ButtonGroup>
         </Col>
       </Row>
       <Row>
         <h1 className="title">{userid.toUpperCase()}</h1>
       </Row>
       <Row>
-        {isUserExist ? <NonAdminPage userinfo={userinfo} /> : <NoUserPage />}
+        <AdminPage userinfo={userinfo} />
       </Row>
     </Container>
   );

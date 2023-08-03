@@ -13,6 +13,23 @@ export default function LoginForm() {
       password: password,
     };
     console.log(data);
+    axios
+      .post("/api/post/login", data)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          alert("로그인 성공");
+          sessionStorage.setItem("userid", res.data.userid);
+          sessionStorage.setItem("token", res.data.token);
+          window.location.href = `/${res.data.userid}/admin`;
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.log(err);
+      });
   };
   return (
     <Form className="body-init">

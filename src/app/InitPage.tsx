@@ -10,11 +10,11 @@ export default function InitPage() {
   const handleLoginOpen = () => setShowLogin(true);
   const handleSignupOpen = () => setShowLogin(false);
 
-  const getTest = async () => {
-    axios.get("/api/test").then((res) => {
-      console.log(res.data);
-    });
-  };
+  //   const getTest = async () => {
+  //     axios.get("/api/test").then((res) => {
+  //       console.log(res.data);
+  //     });
+  //   };
 
   return (
     <Container>
@@ -36,9 +36,9 @@ export default function InitPage() {
         </Nav.Item>
       </Nav>
       <Row>{showLogin ? <LoginForm /> : <RegisterForm />}</Row>
-      <Row>
+      {/* <Row>
         <button onClick={() => getTest()}>test</button>
-      </Row>
+      </Row> */}
     </Container>
   );
 }
