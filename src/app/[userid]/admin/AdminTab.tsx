@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { Container, Table, Button } from "react-bootstrap";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../redux/store";
 
-export default function AdminTab({
-  userid,
-  tid,
-}: {
-  userid: string;
-  tid: number;
-}) {
+export default function AdminTab({ tid }: { tid: number }) {
+  //   const userid = useSelector((state: RootState) => state.userinfo.userid);
   const [tables, setTables] = useState<
     {
       key: number;

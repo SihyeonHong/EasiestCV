@@ -1,16 +1,20 @@
 "use client";
 
-import { Nav, Button, Container, Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../../redux/store";
+import { setUserInfo } from "../../../redux/store";
 
-export default function AdminHome({
-  userid,
-  intro,
-}: {
-  userid: string;
-  intro: string;
-}) {
-  const [introduction, setIntroduction] = useState<string>(intro);
+export default function AdminHome() {
+  const dispatch = useDispatch();
+  const userinfo = useSelector((state: RootState) => state.userinfo); // {userid, username, intro, img, pdf}
+
+  const handleIntro = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = e.target.value;
+    // 여기서 inputValue를 사용하여 원하는 작업을 수행하면 됩니다.
+    dispatch(setUserInfo({ ...userinfo, intro: inputValue }));
+  };
 
   return (
     <Container className="page-body">
@@ -22,8 +26,8 @@ export default function AdminHome({
         <Col>
           <textarea
             className="intro-textarea"
-            value={introduction}
-            onChange={(e) => setIntroduction(e.target.value)}
+            value={userinfo.intro}
+            onChange={handleIntro}
             placeholder="자기소개를 입력하세요. 오른쪽 아래 모서리를 당기면 입력 상자를 아래로 늘릴 수 있습니다. "
           />
         </Col>

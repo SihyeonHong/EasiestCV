@@ -2,31 +2,54 @@
 
 import { ButtonGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../../redux/store";
+import { setUserInfo, setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
 
 export default function AdminLayout({ userid }: { userid: string }) {
-  const [userinfo, setUserInfo] = useState({
-    userid: "",
-    intro: "",
-    img: "",
-    pdf: "",
-  });
   const [isUserExist, setIsUserExist] = useState(false);
-  const [activeKey, setActiceKey] = useState("home");
-  const [tabs, setTabs] = useState(["Tab1"]);
+  const redux = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
+  //   console.log("redux", redux);
+
   const getUserInfo = async () => {
     const res = await axios.get(`/api/get/userinfo?userid=${userid}`);
-    console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
+    // console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
 
     if (res.data.length > 0) {
-      setUserInfo(res.data[0]);
       setIsUserExist(true);
+      dispatch(setUserInfo(res.data[0])); // save into redux
     }
+  };
+  const getTabs = async () => {
+    const res = await axios.get(`/api/get/tabs?userid=${userid}`);
+    // console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
+
+    if (res.data.length > 0) {
+      dispatch(setTabs(res.data)); // save into redux
+    }
+  };
+
+  const handleLogout = async () => {
+    // update redux into db
+    const res = await axios.put("/api/put/logout", redux);
+    // console.log(res.data);
+
+    // delete session
+    sessionStorage.removeItem("userid");
+    sessionStorage.removeItem("token");
+    window.location.href = `/${userid}`;
+  };
+
+  const handleTest = () => {
+    console.log(redux);
   };
 
   useEffect(() => {
     getUserInfo();
+    getTabs();
   }, []);
 
   return (
@@ -34,8 +57,12 @@ export default function AdminLayout({ userid }: { userid: string }) {
       <Row style={{ textAlign: "right" }}>
         <Col>
           <ButtonGroup>
-            <Button variant="dark">저장하고 로그아웃</Button>
-            <Button variant="light">회원정보수정</Button>
+            <Button variant="dark" onClick={handleLogout}>
+              저장하고 로그아웃
+            </Button>
+            <Button variant="light" onClick={handleTest}>
+              회원정보수정
+            </Button>
           </ButtonGroup>
         </Col>
       </Row>
@@ -43,7 +70,7 @@ export default function AdminLayout({ userid }: { userid: string }) {
         <h1 className="title">{userid.toUpperCase()}</h1>
       </Row>
       <Row>
-        <AdminPage userinfo={userinfo} />
+        <AdminPage />
       </Row>
     </Container>
   );

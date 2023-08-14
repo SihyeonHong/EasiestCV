@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Container, Row, Nav } from "react-bootstrap";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import axios from "axios";
+// import axios from "axios";
 
 export default function InitPage() {
   const [showLogin, setShowLogin] = useState(true);

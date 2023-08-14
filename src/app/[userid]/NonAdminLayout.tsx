@@ -36,7 +36,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
       <Row style={{ textAlign: "right" }}>
         <Col>
           <Link href="/">
-            <Button variant="dark">Log In | Sign Up</Button>
+            <Button variant="dark">나도 이런 웹사이트 만들기</Button>
           </Link>
         </Col>
       </Row>

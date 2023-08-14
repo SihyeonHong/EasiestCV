@@ -13,10 +13,7 @@ export default function NonAdminHome({
     <Row>
       <Col>
         {/* <img src={img} alt="profile" /> */}
-        <img
-          className="profile-img"
-          src={"/blank-profile-picture-973460_1920.png"}
-        />
+        <img className="profile-img" src={"/icon.png"} />
       </Col>
       <Col>
         <p>{intro}</p>

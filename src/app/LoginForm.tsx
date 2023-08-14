@@ -12,11 +12,11 @@ export default function LoginForm() {
       userid: userid,
       password: password,
     };
-    console.log(data);
+    // console.log(data);
     axios
       .post("/api/post/login", data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           alert("로그인 성공");
           sessionStorage.setItem("userid", res.data.userid);

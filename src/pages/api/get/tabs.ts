@@ -7,13 +7,13 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
+      console.log(req.query);
       let userId = req.query.userid;
       const result = await query(
         "SELECT * FROM `easiest-cv`.tabs WHERE userid = ?",
         [userId]
       );
-
-      console.log("server result: ", result);
+      console.log("getTabs result: ", result);
       res.json(result);
     } catch (e: any) {
       console.log("server error: ", e);

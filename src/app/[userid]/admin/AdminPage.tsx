@@ -1,30 +1,21 @@
 "use client";
 
-import { Nav, Container, Row } from "react-bootstrap";
-import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../../redux/store";
 import AdminHome from "./AdminHome";
 import AdminTab from "./AdminTab";
 
-export default function NonAdminPage({
-  userinfo,
-}: {
-  userinfo: { userid: string; intro: string; img: string; pdf: string };
-}) {
-  const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([
-    { tid: 1, tname: "Tab1" },
-  ]);
+export default function AdminPage() {
+  const userid = useSelector((state: RootState) => state.userinfo.userid);
+  const tabs = useSelector((state: RootState) => state.tabs);
+
   const [activeKey, setActiceKey] = useState<number>(0);
+  const [show, setShow] = useState(false);
 
-  const getTabs = async () => {
-    const res = await axios.get(`/api/get/tabs?userid=${userinfo.userid}`);
-    console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
-    setTabs(res.data);
-  };
-
-  //   useEffect(() => {
-  //     getTabs();
-  //   }, []);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
@@ -69,16 +60,50 @@ export default function NonAdminPage({
               />
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link>탭 관리</Nav.Link>
+              <Nav.Link onClick={handleShow}>탭 관리</Nav.Link>
+              <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>탭 관리</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  I will not close if you click outside me. Don not even try to
+                  press escape key.
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Index</th>
+                        <th>Tab Name</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tabs.map((tab, idx) => (
+                        <tr key={idx}>
+                          <td>{tab.tid}</td>
+                          <td>{tab.tname}</td>
+                          <td>삭제</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <Button variant="primary">Understood</Button>
+                </Modal.Footer>
+              </Modal>
             </Nav.Item>
           </Nav>
         </Row>
         <Row className="page-body">
-          {activeKey === 0 ? (
-            <AdminHome userid={userinfo.userid} intro={userinfo.intro} />
-          ) : (
-            <AdminTab userid={userinfo.userid} tid={activeKey} />
-          )}
+          {activeKey === 0 ? <AdminHome /> : <AdminTab tid={activeKey} />}
         </Row>
       </Container>
     </div>
