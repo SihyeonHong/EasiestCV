@@ -42,6 +42,29 @@ const tabs = createSlice({
 
 export const { setTabs } = tabs.actions;
 
+const initContents: TabContent[] = [
+  {
+    userid: "initialID",
+    tid: 0,
+    cid: 0,
+    type: "title",
+    ccontent: "initTitle",
+    corder: 0,
+  },
+];
+
+const contents = createSlice({
+  name: "contents",
+  initialState: initContents,
+  reducers: {
+    setContents: (state, action: PayloadAction<TabContent[]>) => {
+      return action.payload;
+    },
+  },
+});
+
+export const { setContents } = contents.actions;
+
 export const store = configureStore({
   reducer: {
     userinfo: userinfo.reducer, // AdminLayout.tsx
@@ -60,3 +83,11 @@ export type Userinfo = {
   pdf?: string;
 };
 export type Tab = { tid: number; tname: string; userid: string };
+export type TabContent = {
+  userid: string;
+  tid: number;
+  cid: number;
+  type: string;
+  ccontent: string;
+  corder: number;
+};

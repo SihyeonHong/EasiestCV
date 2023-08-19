@@ -71,13 +71,13 @@ body > * {
   max-height: 1280px;
 }
 
-.options-column,
-.actions-column {
+.options-column {
   width: fit-content;
 }
 
 .contents-column {
   width: auto;
+  text-align: left;
 }
 
 .intro-textarea {

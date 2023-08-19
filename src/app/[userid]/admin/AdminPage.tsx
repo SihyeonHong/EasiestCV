@@ -103,7 +103,11 @@ export default function AdminPage() {
           </Nav>
         </Row>
         <Row className="page-body">
-          {activeKey === 0 ? <AdminHome /> : <AdminTab tid={activeKey} />}
+          {activeKey === 0 ? (
+            <AdminHome />
+          ) : (
+            <AdminTab userid={userid} tid={activeKey} />
+          )}
         </Row>
       </Container>
     </div>

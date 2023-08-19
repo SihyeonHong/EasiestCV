@@ -67,7 +67,7 @@ export default function NonAdminPage({
           {activeKey === 0 ? (
             <NonAdminHome img={userinfo.img} intro={userinfo.intro} />
           ) : (
-            <NonAdminTab tid={activeKey} />
+            <NonAdminTab userid={userinfo.userid} tid={activeKey} />
           )}
         </Row>
       </Container>
