@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "PUT") {
-    console.log("put_tabs: ", req.body);
+    // console.log("put_tabs: ", req.body);
     const body: Tab[] = [...req.body];
 
     try {
@@ -35,8 +35,12 @@ export default async function handler(
       // 삭제된 탭 제거
       await Promise.all(
         deletedTids.map(async (tid: number) => {
-          return query(
+          await query(
             "DELETE FROM `easiest-cv`.tabs WHERE userid = ? and tid = ?",
+            [body[0].userid, tid]
+          );
+          return query(
+            "DELETE FROM `easiest-cv`.contents WHERE userid = ? and tid = ?",
             [body[0].userid, tid]
           );
         })

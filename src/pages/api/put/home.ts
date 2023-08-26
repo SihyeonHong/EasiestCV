@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "PUT") {
-    console.log(req.body); // redux
+    // console.log(req.body); // redux
     // let { userinfo } = req.body;
     // console.log(userinfo); // { userid: 'testid', intro: 'Hello! 추가', img: null, pdf: null }
     let { userid, username, intro, img, pdf } = req.body;

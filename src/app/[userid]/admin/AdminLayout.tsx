@@ -54,7 +54,7 @@ export default function AdminLayout({ userid }: { userid: string }) {
         <Col>
           <ButtonGroup>
             <Button variant="dark" onClick={handleLogout}>
-              저장하고 로그아웃
+              로그아웃
             </Button>
             <Button variant="light" onClick={handleTest}>
               회원정보수정

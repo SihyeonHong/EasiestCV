@@ -22,9 +22,12 @@ export default function AdminPage() {
     setTabstate(tabs);
     setShow(false);
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setTabstate(tabs);
+    setShow(true);
+  };
 
-  const [newTabName, setNewTabName] = useState<string>("");
+  const [newTabName, setNewTabName] = useState<string>("New Tab");
 
   const addTab = () => {
     setTabstate([
@@ -71,6 +74,12 @@ export default function AdminPage() {
     //switch the position
     _tabstate.splice(dragOverItem.current, 0, draggedItemContent);
 
+    // update torder based on the current index
+    _tabstate = _tabstate.map((item, index) => ({
+      ...item,
+      torder: index,
+    }));
+
     //reset the position ref
     dragItem.current = null;
     dragOverItem.current = null;
@@ -89,7 +98,7 @@ export default function AdminPage() {
     // TODO: save tabstate to redux
     dispatch({ type: "tabs/setTabs", payload: tabstate });
     const res = axios
-      .put("/api/put/tabs", tabs)
+      .put("/api/put/tabs", tabstate)
       .then((res) => {
         console.log(res);
       })

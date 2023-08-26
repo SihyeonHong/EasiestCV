@@ -25,7 +25,7 @@ export default function AdminTab({
 
   useEffect(() => {
     getContents();
-  }, []);
+  }, [tid]);
 
   const handleSaveBtn = () => {
     let _contents = [...contents];

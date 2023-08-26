@@ -8,14 +8,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    console.log(req.body);
+    // console.log(req.body);
     let { userid, password } = req.body;
     try {
       const result = await query(
         "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
         [userid]
       );
-      console.log("server result: ", result);
+      //   console.log("server result: ", result);
 
       if (
         result.length > 0 &&

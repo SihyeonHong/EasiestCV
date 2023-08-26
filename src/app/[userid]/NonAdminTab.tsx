@@ -12,6 +12,7 @@ export default function NonAdminHome({
   userid: string;
   tid: number | string;
 }) {
+  console.log(tid);
   const [contents, setContents] = useState<TabContent[]>([]);
 
   const getContents = async () => {
@@ -24,13 +25,13 @@ export default function NonAdminHome({
 
   useEffect(() => {
     getContents();
-  }, []);
+  }, [tid]);
 
   return (
     <div>
       <Col>
-        {contents.length > 0 &&
-          contents.map((content) => {
+        {contents &&
+          contents.map((content: TabContent) => {
             return content.type === "title" ? (
               <h1>{content.ccontent}</h1>
             ) : (

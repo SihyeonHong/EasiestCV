@@ -13,7 +13,7 @@ export default async function handler(
         [userId]
       );
 
-      console.log("server result: ", result);
+      //   console.log("server result: ", result);
       res.json(result);
     } catch (e: any) {
       console.log("server error: ", e);
