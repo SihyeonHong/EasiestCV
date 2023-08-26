@@ -1,12 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Button,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import axios from "axios";
 // import { useSelector } from "react-redux";
 // import { RootState } from "../../../redux/store";
@@ -20,22 +13,6 @@ export default function AdminTab({
   tid: number;
 }) {
   //   const userid = useSelector((state: RootState) => state.userinfo.userid);
-  const [tables, setTables] = useState<
-    {
-      key: number;
-      index: number;
-      type: string;
-      contents: string;
-    }[]
-  >([
-    {
-      key: Math.random(),
-      index: 1,
-      type: "title",
-      contents: "lorem ipsum dolor sit amet",
-    },
-  ]);
-
   const [contents, setContents] = useState<TabContent[]>([]);
 
   const getContents = async () => {
@@ -96,7 +73,7 @@ export default function AdminTab({
       {
         userid,
         tid,
-        cid: Math.random(),
+        cid: Math.random() * 10000000,
         type: "title",
         ccontent: "",
         corder: contents.length,
@@ -105,16 +82,14 @@ export default function AdminTab({
   };
 
   const deleteColumn = (cid: number) => {
-    setContents(contents.filter((content) => content.cid !== cid));
-  };
-
-  const deleteTable = (key: number) => {
-    const newTable = tables.filter((table) => table.key !== key);
-    const reindex = newTable.map((table, index) => ({
-      ...table,
-      index: index + 1,
+    const confirm = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirm) return;
+    const newContents = contents.filter((content) => content.cid !== cid);
+    const reindex = newContents.map((content, index) => ({
+      ...content,
+      corder: index,
     }));
-    setTables(reindex);
+    setContents(reindex);
   };
 
   //save reference for dragItem and dragOverItem
@@ -142,8 +117,9 @@ export default function AdminTab({
 
   return (
     <Container className="tabBody">
-      <Row style={{ textAlign: "right" }}>
-        <Col style={{ marginBottom: "2vh" }}>
+      <Row>
+        <Col>위아래로 드래그하면 문단의 순서를 바꿀 수 있습니다.</Col>
+        <Col style={{ textAlign: "right", marginBottom: "2vh" }}>
           <Button
             variant="dark"
             onClick={handleSaveBtn}

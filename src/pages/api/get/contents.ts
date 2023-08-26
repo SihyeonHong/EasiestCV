@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../../util/database";
+import { TabContent } from "@/redux/store";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,6 +16,9 @@ export default async function handler(
         [userId, tid]
       );
       console.log("getContents result: ", result);
+      const sortedRes = result.sort(
+        (a: TabContent, b: TabContent) => a.corder - b.corder
+      );
       res.json(result);
     } catch (e: any) {
       console.log("server error: ", e);

@@ -1,5 +1,3 @@
-"use client";
-
 import { Row, Col } from "react-bootstrap";
 
 export default function NonAdminHome({
@@ -12,8 +10,7 @@ export default function NonAdminHome({
   return (
     <Row>
       <Col>
-        {/* <img src={img} alt="profile" /> */}
-        <img className="profile-img" src={"/icon.png"} />
+        <img className="profile-img" src={img} />
       </Col>
       <Col>
         <p>{intro}</p>

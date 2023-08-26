@@ -32,11 +32,7 @@ export default function AdminLayout({ userid }: { userid: string }) {
     }
   };
 
-  const handleLogout = async () => {
-    // update redux into db
-    const res = await axios.put("/api/put/logout", redux);
-    // console.log(res.data);
-
+  const handleLogout = () => {
     // delete session
     sessionStorage.removeItem("userid");
     sessionStorage.removeItem("token");

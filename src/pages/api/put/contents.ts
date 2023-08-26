@@ -10,24 +10,16 @@ export default async function handler(
     console.log("put contents body ", req.body);
     const body: TabContent[] = [...req.body];
 
-    // try update DB
     try {
-      // const result = await query(
-      //   "UPDATE `easiest-cv`.contents SET corder = ?, type = ?, ccontent = ? WHERE userid = ? and tid = ?",
-      //   []
-      // );
-      // console.log("result", result);
-      // tab도 업데이트
       // 데이터베이스의 현재 contents 가져오기
       const currentContents = await query(
         "SELECT cid FROM `easiest-cv`.contents WHERE userid = ? AND tid = ?",
         [body[0]?.userid, body[0]?.tid]
-      );
-
+      ); // [   { cid: 1 },   { cid: 2 },   { cid: 3 } ]
       const currentCids = currentContents.map(
         (content: TabContent) => content.cid
-      );
-      const receivedCids = body.map((content) => content.cid);
+      ); // [1,2,3]
+      const receivedCids = body.map((content) => content.cid); // [1,2,3]
 
       // 새로 추가된 컬럼 찾기
       const newCids = receivedCids.filter((cid) => !currentCids.includes(cid));

@@ -1,21 +1,103 @@
 "use client";
 
+import axios from "axios";
 import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
+import { Tab } from "../../../redux/store";
 import AdminHome from "./AdminHome";
 import AdminTab from "./AdminTab";
 
 export default function AdminPage() {
   const userid = useSelector((state: RootState) => state.userinfo.userid);
   const tabs = useSelector((state: RootState) => state.tabs);
+  const dispatch = useDispatch<AppDispatch>();
+  const [tabstate, setTabstate] = useState<Tab[]>(tabs);
 
   const [activeKey, setActiceKey] = useState<number>(0);
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setTabstate(tabs);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+
+  const [newTabName, setNewTabName] = useState<string>("");
+
+  const addTab = () => {
+    setTabstate([
+      ...tabstate,
+      {
+        userid,
+        tid: Math.random() * 1000000,
+        tname: newTabName,
+        torder: tabstate.length,
+      },
+    ]);
+  };
+  const deleteTab = (tid: number) => {
+    const confirm = window.confirm(
+      "정말 삭제하시겠습니까? 탭 속 내용도 함께 삭제됩니다."
+    );
+    if (!confirm) return;
+    const newTabstate = tabstate.filter((tab) => tab.tid !== tid);
+    const reindex = newTabstate.map((tab, index) => ({
+      ...tab,
+      torder: index,
+    }));
+    setTabstate(reindex);
+  };
+  const updateTab = (tid: number, newTabName: string) => {
+    setTabstate(
+      tabstate.map((tab) =>
+        tab.tid === tid ? { ...tab, tname: newTabName } : tab
+      )
+    );
+  };
+  //save reference for dragItem and dragOverItem
+  const dragItem = useRef<any>(null); // 내가 드래그중인 아이템
+  const dragOverItem = useRef<any>(null); // 내가 드래그하고 있는 아이템이 들어갈 위치
+
+  //const handle drag sorting
+  const handleSort = () => {
+    //duplicate items
+    let _tabstate = [...tabstate];
+
+    //remove and save the dragged item content
+    const draggedItemContent = _tabstate.splice(dragItem.current, 1)[0];
+
+    //switch the position
+    _tabstate.splice(dragOverItem.current, 0, draggedItemContent);
+
+    //reset the position ref
+    dragItem.current = null;
+    dragOverItem.current = null;
+
+    //update the actual array
+    setTabstate(_tabstate);
+  };
+
+  const renameTab = (tid: number) => {
+    const newTabName = window.prompt("새 탭 이름을 입력하세요.");
+    if (!newTabName) return;
+    updateTab(tid, newTabName);
+  };
+
+  const saveTab = () => {
+    // TODO: save tabstate to redux
+    dispatch({ type: "tabs/setTabs", payload: tabstate });
+    const res = axios
+      .put("/api/put/tabs", tabs)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleClose();
+  };
 
   return (
     <div>
@@ -71,8 +153,7 @@ export default function AdminPage() {
                   <Modal.Title>탭 관리</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  I will not close if you click outside me. Don not even try to
-                  press escape key.
+                  위아래로 드래그하면 탭의 순서를 바꿀 수 있습니다.
                   <Table striped bordered hover>
                     <thead>
                       <tr>
@@ -82,21 +163,56 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tabs.map((tab, idx) => (
-                        <tr key={idx}>
-                          <td>{tab.tid}</td>
+                      {tabstate.map((tab, idx) => (
+                        <tr
+                          key={idx}
+                          draggable
+                          onDragStart={(e) => {
+                            dragItem.current = idx;
+                          }}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            dragOverItem.current = idx;
+                          }}
+                          onDragEnd={handleSort}
+                        >
+                          <td>{tab.torder + 1}</td>
                           <td>{tab.tname}</td>
-                          <td>삭제</td>
+                          <td>
+                            <Button
+                              variant="dark"
+                              onClick={() => renameTab(tab.tid)}
+                            >
+                              RENAME
+                            </Button>
+                            <Button
+                              variant="light"
+                              onClick={() => deleteTab(tab.tid)}
+                            >
+                              DELETE
+                            </Button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </Table>
+                  <input
+                    type="text"
+                    placeholder="New Tab Name"
+                    value={newTabName}
+                    onChange={(e) => setNewTabName(e.target.value)}
+                  />
+                  <Button variant="dark" onClick={addTab}>
+                    New Tab
+                  </Button>
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Close
+                  <Button variant="light" onClick={handleClose}>
+                    초기화
                   </Button>
-                  <Button variant="primary">Understood</Button>
+                  <Button variant="dark" onClick={saveTab}>
+                    이대로 저장하기
+                  </Button>
                 </Modal.Footer>
               </Modal>
             </Nav.Item>

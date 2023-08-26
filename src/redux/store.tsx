@@ -24,9 +24,10 @@ export const { setUserInfo } = userinfo.actions;
 
 const initTabs: Tab[] = [
   {
-    tid: 0,
+    tid: Math.random() * 100000,
     tname: "initTab",
     userid: "initialID",
+    torder: 0,
   },
 ];
 
@@ -82,7 +83,12 @@ export type Userinfo = {
   img?: string;
   pdf?: string;
 };
-export type Tab = { tid: number; tname: string; userid: string };
+export type Tab = {
+  tid: number;
+  tname: string;
+  userid: string;
+  torder: number;
+};
 export type TabContent = {
   userid: string;
   tid: number;

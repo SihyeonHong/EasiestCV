@@ -7,10 +7,9 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     console.log(req.body); // redux
-    let { userinfo, tabs } = req.body;
+    // let { userinfo } = req.body;
     // console.log(userinfo); // { userid: 'testid', intro: 'Hello! 추가', img: null, pdf: null }
-    // console.log(tabs); // [ { userid: 'testid', tid: 1, tname: 'Tab1' } ]
-    let { userid, username, intro, img, pdf } = userinfo;
+    let { userid, username, intro, img, pdf } = req.body;
 
     // try update DB
     try {
@@ -19,8 +18,7 @@ export default async function handler(
         "UPDATE `easiest-cv`.userinfo SET intro = ?, img = ?, pdf = ? WHERE userid = ?",
         [intro, img, pdf, userid]
       );
-      console.log("result", result);
-      // tab도 업데이트
+      console.log("put home: ", result);
       res.status(200).json("ok");
     } catch (e: any) {
       console.log("server error", e);
