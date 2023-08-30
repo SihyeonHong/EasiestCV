@@ -42,3 +42,14 @@ export const downloadFile = async (filename: string) => {
       .on("end", () => resolve(Buffer.concat(chunks)));
   });
 };
+
+export const deleteFile = async (filename: string) => {
+  try {
+    const file = bucket.file(filename);
+    await file.delete();
+    console.log(`File ${filename} deleted successfully.`);
+  } catch (error) {
+    console.error(`Failed to delete file ${filename}.`, error);
+    throw error;
+  }
+};

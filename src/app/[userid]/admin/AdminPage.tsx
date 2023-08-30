@@ -8,16 +8,23 @@ import { RootState, AppDispatch } from "../../../redux/store";
 import { Tab } from "../../../redux/store";
 import AdminHome from "./AdminHome";
 import AdminTab from "./AdminTab";
+import { setUserInfo } from "../../../redux/store";
 
 export default function AdminPage() {
+  // from Redux store
+  const userinfo = useSelector((state: RootState) => state.userinfo);
   const userid = useSelector((state: RootState) => state.userinfo.userid);
   const tabs = useSelector((state: RootState) => state.tabs);
   const dispatch = useDispatch<AppDispatch>();
-  const [tabstate, setTabstate] = useState<Tab[]>(tabs);
 
+  // from local state
+  const [tabstate, setTabstate] = useState<Tab[]>(tabs);
   const [activeKey, setActiceKey] = useState<number>(0);
   const [show, setShow] = useState(false);
+  const [newTabName, setNewTabName] = useState<string>("New Tab");
+  const [selectedPDF, setSelectedPDF] = useState<File | null>(null);
 
+  // button handlers
   const handleClose = () => {
     setTabstate(tabs);
     setShow(false);
@@ -26,9 +33,6 @@ export default function AdminPage() {
     setTabstate(tabs);
     setShow(true);
   };
-
-  const [newTabName, setNewTabName] = useState<string>("New Tab");
-
   const addTab = () => {
     setTabstate([
       ...tabstate,
@@ -59,6 +63,7 @@ export default function AdminPage() {
       )
     );
   };
+
   //save reference for dragItem and dragOverItem
   const dragItem = useRef<any>(null); // 내가 드래그중인 아이템
   const dragOverItem = useRef<any>(null); // 내가 드래그하고 있는 아이템이 들어갈 위치
@@ -108,6 +113,30 @@ export default function AdminPage() {
     handleClose();
   };
 
+  const handlePDFUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedPDF(e.target.files[0]);
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      formData.append("userid", userinfo.userid);
+      const res = axios
+        .post("/api/post/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          alert("PDF 파일이 업로드되었습니다.");
+          if (res.data.pdfUrl) {
+            dispatch(setUserInfo({ ...userinfo, pdf: res.data.pdfUrl }));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <div>
       <Container>
@@ -142,13 +171,15 @@ export default function AdminPage() {
                   </Nav.Link>
                 </Nav.Item>
               ))}
-            <Nav.Item style={{ color: "white" }}>
-              PDF{"  "}
-              <input
-                type="file"
-                accept="application/pdf"
-                style={{ color: "white" }}
-              />
+            <Nav.Item>
+              <div className="nav-pdf">
+                PDF{"  "}
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handlePDFUpload}
+                />
+              </div>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link onClick={handleShow}>탭 관리</Nav.Link>

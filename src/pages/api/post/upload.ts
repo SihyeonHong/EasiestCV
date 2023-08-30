@@ -1,10 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../../util/database";
 import multer from "multer";
-import { uploadFile } from "@/util/gcs";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState, AppDispatch } from "../../../redux/store";
-// import { setUserInfo } from "../../../redux/store";
+import { deleteFile, uploadFile } from "@/util/gcs";
 
 // Disable Next.js's built-in body parser to allow multer to handle the form data
 export const config = {
@@ -12,39 +9,117 @@ export const config = {
     bodyParser: false,
   },
 };
-
-const upload = multer({ storage: multer.memoryStorage() }).single("image");
+const fileFilter = (req: any, file: any, cb: any) => {
+  // 허용되는 mime types
+  const allowedTypes = [
+    "image/jpg",
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "application/pdf",
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true); // 파일을 허용
+  } else {
+    cb(null, false); // 파일을 거부
+    cb(
+      new Error(
+        "Invalid file type. Only JPG, JPEG, PNG, GIF and PDF are allowed."
+      )
+    );
+  }
+};
+const upload = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: fileFilter,
+}).single("file");
 
 export default function handler(req: any, res: any) {
   if (req.method === "POST") {
     upload(req, res, async (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Image upload failed." });
+      if (err instanceof multer.MulterError) {
+        console.error("Multer error:", err);
+        return res.status(500).json({ error: "Multer error." });
+      } else if (err) {
+        console.error("Unknown error:", err);
+        return res.status(500).json({ error: "Unknown error during upload." });
       }
+      let url = "https://storage.googleapis.com/easiest-cv/";
 
-      // Access the image file here
-      const imageFile = req.file;
+      console.log(req.file);
 
-      //   console.log(imageFile);
-      // Upload the image to GCS
+      // Upload the file to GCS
       try {
-        const uniqueFilename = `${Date.now()}-${imageFile.originalname}`; // To ensure filename is unique
-        await uploadFile(uniqueFilename, imageFile.buffer, "image");
+        let uniqueFilename = `${Date.now()}-${req.file.originalname}`;
+        url = url + uniqueFilename;
 
-        // Construct the public URL for the uploaded image
-        const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
+        if (req.file.mimetype === "application/pdf") {
+          // delete old file
+          const result = await query(
+            "SELECT pdf FROM `easiest-cv`.userinfo WHERE userid = ?",
+            [req.body.userid]
+          );
+          console.log("result", result);
+          if (result.pdf) {
+            await deleteFile(result.pdf);
+          }
 
-        // save this url to DB
-        // const dispatch = useDispatch();
-        // const userinfo = useSelector((state: RootState) => state.userinfo);
-        // dispatch(setUserInfo({ ...userinfo, img: imageUrl }));
-        const result = await query(
-          "UPDATE `easiest-cv`.userinfo SET img = ? WHERE userid = ?",
-          [imageUrl, "testid"]
-        );
-        console.log("upload img: ", result);
-        res.status(200).json({ imageUrl: imageUrl });
-        return;
+          // upload new file
+          await uploadFile(uniqueFilename, req.file.buffer, "pdf");
+          const result2 = await query(
+            "UPDATE `easiest-cv`.userinfo SET pdf = ? WHERE userid = ?",
+            [url, req.body.userid]
+          );
+          console.log("result2", result2);
+          res.status(200).json({ pdfUrl: url });
+          return;
+        } else {
+          // image
+
+          try {
+            await uploadFile(uniqueFilename, req.file.buffer, "image");
+          } catch (error) {
+            console.error("Failed to upload image to GCS:", error);
+            return res
+              .status(500)
+              .json({ error: "Failed to upload image to GCS." });
+          }
+
+          let prevImageUrl;
+          try {
+            const result = await query(
+              "SELECT img FROM `easiest-cv`.userinfo WHERE userid = ?",
+              [req.body.userid]
+            );
+            prevImageUrl = result?.img;
+          } catch (error) {
+            console.error("Failed to fetch previous image URL:", error);
+            return res
+              .status(500)
+              .json({ error: "Failed to fetch previous image URL." });
+          }
+
+          if (prevImageUrl) {
+            try {
+              await deleteFile(prevImageUrl);
+            } catch (error) {
+              console.error("Failed to delete previous image from GCS:", error);
+            }
+          }
+
+          try {
+            await query(
+              "UPDATE `easiest-cv`.userinfo SET img = ? WHERE userid = ?",
+              [url, req.body.userid]
+            );
+          } catch (error) {
+            console.error("Failed to update image URL in database:", error);
+            return res
+              .status(500)
+              .json({ error: "Failed to update image URL in database." });
+          }
+          res.status(200).json({ imageUrl: url });
+        }
       } catch (gcsError) {
         console.error("Failed to upload image to GCS:", gcsError);
         res.status(500).json({ error: "Failed to upload image to GCS." });

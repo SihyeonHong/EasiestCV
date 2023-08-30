@@ -85,3 +85,18 @@ body > * {
   height: 48vh;
   resize: vertical;
 }
+
+.tab-textarea {
+  width: 100%;
+}
+
+.nav-pdf {
+  /* --bs-nav-link-padding-x: 1rem;
+  --bs-nav-link-padding-y: 0.5rem; */
+  padding: 0.3rem 1rem 0.5rem 1rem;
+  color: white;
+}
+
+.change-pw-hidden {
+  display: none;
+}

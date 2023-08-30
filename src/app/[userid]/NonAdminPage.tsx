@@ -20,6 +20,14 @@ export default function NonAdminPage({
     setTabs(res.data);
   };
 
+  const handlePDF = async () => {
+    if (userinfo.pdf) {
+      window.open(userinfo.pdf, "_blank");
+    } else {
+      alert("PDF 파일이 없습니다.");
+    }
+  };
+
   useEffect(() => {
     getTabs();
   }, []);
@@ -59,7 +67,7 @@ export default function NonAdminPage({
                 </Nav.Item>
               ))}
             <Nav.Item>
-              <Nav.Link disabled>PDF</Nav.Link>
+              <Nav.Link onClick={handlePDF}>PDF</Nav.Link>
             </Nav.Item>
           </Nav>
         </Row>

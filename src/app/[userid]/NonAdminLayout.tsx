@@ -2,12 +2,16 @@
 
 import { Nav, Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "./NoUserPage";
+import { get } from "http";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
+  const redux = useSelector((state: RootState) => state);
   const [userinfo, setUserInfo] = useState({
     userid: "",
     intro: "",
@@ -17,6 +21,15 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   const [isUserExist, setIsUserExist] = useState(false);
   const [activeKey, setActiceKey] = useState("home");
   const [tabs, setTabs] = useState(["Tab1"]);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+
+  const getUser = async () => {
+    const res = await axios.get(`/api/get/user?userid=${userid}`);
+    // console.log(res.data);
+    setUsername(res.data[0].username);
+    setEmail(res.data[0].email);
+  };
   const getUserInfo = async () => {
     const res = await axios.get(`/api/get/userinfo?userid=${userid}`);
     console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
@@ -28,6 +41,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   };
 
   useEffect(() => {
+    getUser();
     getUserInfo();
   }, []);
 
@@ -41,7 +55,9 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
         </Col>
       </Row>
       <Row>
-        <h1 className="title">{userid.toUpperCase()}</h1>
+        <h1 className="title">
+          {username ? username.toUpperCase() : userid.toUpperCase()}
+        </h1>
       </Row>
       <Row>
         {isUserExist ? <NonAdminPage userinfo={userinfo} /> : <NoUserPage />}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Container, Row, Nav } from "react-bootstrap";
+import { Container, Row, Nav, Button, Form } from "react-bootstrap";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 // import axios from "axios";
@@ -9,12 +9,6 @@ export default function InitPage() {
   const [showLogin, setShowLogin] = useState(true);
   const handleLoginOpen = () => setShowLogin(true);
   const handleSignupOpen = () => setShowLogin(false);
-
-  //   const getTest = async () => {
-  //     axios.get("/api/test").then((res) => {
-  //       console.log(res.data);
-  //     });
-  //   };
 
   return (
     <Container>
@@ -36,9 +30,6 @@ export default function InitPage() {
         </Nav.Item>
       </Nav>
       <Row>{showLogin ? <LoginForm /> : <RegisterForm />}</Row>
-      {/* <Row>
-        <button onClick={() => getTest()}>test</button>
-      </Row> */}
     </Container>
   );
 }

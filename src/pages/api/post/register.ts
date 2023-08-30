@@ -28,8 +28,8 @@ export default async function handler(
       );
       //   console.log("result2", result2);
       const result3 = await query(
-        "INSERT INTO `easiest-cv`.tabs (userid, tid, tname) VALUES (?,?,?)",
-        [userid, 1, "Tab1"]
+        "INSERT INTO `easiest-cv`.tabs (userid, tid, tname, torder) VALUES (?,?,?)",
+        [userid, 1, "Tab1", 0]
       );
       //   console.log("result3", result3);
       res.status(200).json("ok");

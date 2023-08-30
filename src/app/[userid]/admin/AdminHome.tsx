@@ -30,32 +30,30 @@ export default function AdminHome() {
       });
   };
 
-  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedImg(e.target.files[0]);
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      formData.append("userid", userinfo.userid);
+      const res = axios
+        .post("/api/post/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          alert("이미지가 업로드되었습니다.");
+          // console.log(res.data.imageURL);
+          if (res.data.imageURL) {
+            dispatch(setUserInfo({ ...userinfo, img: res.data.imageURL }));
+          }
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  };
-
-  const handleImgUpload = async () => {
-    if (!selectedImg) return;
-    const formData = new FormData();
-    formData.append("image", selectedImg);
-    const res = await axios
-      .post("/api/post/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        alert("이미지가 업로드되었습니다.");
-        // console.log(res.data.imageURL);
-        if (res.data.imageURL) {
-          dispatch(setUserInfo({ ...userinfo, img: res.data.imageURL }));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return (
@@ -63,10 +61,7 @@ export default function AdminHome() {
       <Row>
         <Col style={{ textAlign: "right" }}>
           <h5>프로필 사진 첨부</h5>
-          <input type="file" accept="image/*" onChange={handleImgChange} />
-          <Button variant="dark" onClick={handleImgUpload}>
-            UPLOAD IMAGE
-          </Button>
+          <input type="file" accept="image/*" onChange={handleImgUpload} />
         </Col>
         <Col style={{ textAlign: "right" }}>
           <Button variant="dark" onClick={handleSaveBtn}>
@@ -76,10 +71,7 @@ export default function AdminHome() {
       </Row>
       <Row>
         <Col>
-          <img
-            src={`https://storage.googleapis.com/easiest-cv/${userinfo.img}`}
-            style={{ width: "100%" }}
-          />
+          <img className="profile-img" src={userinfo.img} />
         </Col>
         <Col>
           <textarea

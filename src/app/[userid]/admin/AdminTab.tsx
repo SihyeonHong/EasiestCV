@@ -161,6 +161,7 @@ export default function AdminTab({
                 </td>
                 <td className="contents-column">
                   <textarea
+                    className="tab-textarea"
                     placeholder="오른쪽 아래 모서리를 당기면 칸이 늘어납니다."
                     value={content.ccontent}
                     onChange={(e) => {
