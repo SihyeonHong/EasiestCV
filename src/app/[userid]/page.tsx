@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import NonAdminLayout from "./NonAdminLayout";
 
-export default function Page({ params }: { params: { userid: string } }) {
+export default function Page() {
   const pathname = usePathname();
   let userid = "";
   if (pathname) {
