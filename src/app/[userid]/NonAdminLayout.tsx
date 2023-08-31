@@ -27,8 +27,10 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   const getUser = async () => {
     const res = await axios.get(`/api/get/user?userid=${userid}`);
     // console.log(res.data);
-    setUsername(res.data[0].username);
-    setEmail(res.data[0].email);
+    if (res.data.length > 0) {
+      setUsername(res.data[0].username);
+      setEmail(res.data[0].email);
+    }
   };
   const getUserInfo = async () => {
     const res = await axios.get(`/api/get/userinfo?userid=${userid}`);

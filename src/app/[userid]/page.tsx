@@ -1,15 +1,13 @@
-import { GetServerSidePropsContext } from "next";
+"use client";
+
+import { usePathname } from "next/navigation";
 import NonAdminLayout from "./NonAdminLayout";
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: {
-      // params will contain the pid parameter
-      params: context.params ? context.params : { userid: "No User" },
-    },
-  };
-}
-
 export default function Page({ params }: { params: { userid: string } }) {
-  return <NonAdminLayout userid={params.userid} />;
+  const pathname = usePathname();
+  let userid = "";
+  if (pathname) {
+    userid = pathname.split("/")[1];
+  }
+  return <NonAdminLayout userid={userid} />;
 }
