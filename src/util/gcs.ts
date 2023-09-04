@@ -2,7 +2,9 @@ import { Storage } from "@google-cloud/storage";
 
 const storage = new Storage({
   //   keyFilename: "easiest-cv-5889be812d3a.json",
-  credentials: JSON.parse(process.env.GCS_CREDENTIALS),
+  credentials: JSON.parse(
+    process.env.GCS_CREDENTIALS ? process.env.GCS_CREDENTIALS : ""
+  ),
   projectId: "easiest-cv",
 });
 
