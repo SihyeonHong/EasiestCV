@@ -80,16 +80,6 @@ body > * {
   text-align: left;
 }
 
-.intro-textarea {
-  width: 100%;
-  height: 48vh;
-  resize: vertical;
-}
-
-.tab-textarea {
-  width: 100%;
-}
-
 .nav-pdf {
   /* --bs-nav-link-padding-x: 1rem;
   --bs-nav-link-padding-y: 0.5rem; */

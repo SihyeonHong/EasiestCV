@@ -14,6 +14,7 @@ export default function AdminTab({
 }) {
   //   const userid = useSelector((state: RootState) => state.userinfo.userid);
   const [contents, setContents] = useState<TabContent[]>([]);
+  const textarea = useRef<HTMLTextAreaElement>(null);
 
   const getContents = async () => {
     const res = await axios.get(
@@ -60,6 +61,11 @@ export default function AdminTab({
   };
 
   const handleContents = (e: any, cid: number) => {
+    if (textarea.current) {
+      textarea.current.style.height = "auto"; // height 초기화
+      textarea.current.style.height = textarea.current.scrollHeight + "px";
+    }
+
     setContents(
       contents.map((content) =>
         content.cid === cid ? { ...content, ccontent: e.target.value } : content
@@ -161,7 +167,8 @@ export default function AdminTab({
                 </td>
                 <td className="contents-column">
                   <textarea
-                    className="tab-textarea"
+                    ref={textarea}
+                    style={{ width: "100%" }}
                     placeholder="오른쪽 아래 모서리를 당기면 칸이 늘어납니다."
                     value={content.ccontent}
                     onChange={(e) => {

@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
 import { setUserInfo } from "../../../redux/store";
@@ -12,8 +12,14 @@ export default function AdminHome() {
   const userinfo = useSelector((state: RootState) => state.userinfo); // {userid, username, intro, img, pdf}
 
   const [selectedImg, setSelectedImg] = useState<File | null>(null);
+  const textarea = useRef<HTMLTextAreaElement>(null);
 
   const handleIntro = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (textarea.current) {
+      textarea.current.style.height = "auto"; // height 초기화
+      textarea.current.style.height = textarea.current.scrollHeight + "px";
+    }
+
     const inputValue = e.target.value;
     dispatch(setUserInfo({ ...userinfo, intro: inputValue }));
   };
@@ -75,7 +81,8 @@ export default function AdminHome() {
         </Col>
         <Col>
           <textarea
-            className="intro-textarea"
+            style={{ width: "100%" }}
+            ref={textarea}
             value={userinfo.intro}
             onChange={handleIntro}
             placeholder="자기소개를 입력하세요. 오른쪽 아래 모서리를 당기면 입력 상자를 아래로 늘릴 수 있습니다. "

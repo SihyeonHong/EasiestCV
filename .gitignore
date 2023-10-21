@@ -34,3 +34,6 @@ easiest-cv-5889be812d3a.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# aws
+aws.pem
