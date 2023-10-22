@@ -1,5 +1,6 @@
 "use client";
 
+// import styled from "styled-components";
 import { Nav, Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -8,7 +9,6 @@ import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "./NoUserPage";
-import { get } from "http";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const redux = useSelector((state: RootState) => state);
@@ -34,7 +34,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   };
   const getUserInfo = async () => {
     const res = await axios.get(`/api/get/userinfo?userid=${userid}`);
-    console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
+    // console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
 
     if (res.data.length > 0) {
       setUserInfo(res.data[0]);
@@ -48,7 +48,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   }, []);
 
   return (
-    <Container>
+    <Container style={{ padding: "0px" }}>
       <Row style={{ textAlign: "right" }}>
         <Col>
           <Link href="/">
