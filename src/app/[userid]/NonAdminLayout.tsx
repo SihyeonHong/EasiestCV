@@ -9,6 +9,7 @@ import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "./NoUserPage";
+import LoadingPage from "./LoadingPage";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const redux = useSelector((state: RootState) => state);
@@ -18,6 +19,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
     img: "",
     pdf: "",
   });
+  const [loading, setLoading] = useState(true);
   const [isUserExist, setIsUserExist] = useState(false);
   const [activeKey, setActiceKey] = useState("home");
   const [tabs, setTabs] = useState(["Tab1"]);
@@ -40,6 +42,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
       setUserInfo(res.data[0]);
       setIsUserExist(true);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -62,7 +65,13 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
         </h1>
       </Row>
       <Row>
-        {isUserExist ? <NonAdminPage userinfo={userinfo} /> : <NoUserPage />}
+        {loading ? (
+          <LoadingPage />
+        ) : isUserExist ? (
+          <NonAdminPage userinfo={userinfo} />
+        ) : (
+          <NoUserPage />
+        )}
       </Row>
     </Container>
   );
