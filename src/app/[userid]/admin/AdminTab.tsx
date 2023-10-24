@@ -1,3 +1,4 @@
+import React, { createRef } from "react";
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import axios from "axios";
@@ -14,19 +15,35 @@ export default function AdminTab({
 }) {
   //   const userid = useSelector((state: RootState) => state.userinfo.userid);
   const [contents, setContents] = useState<TabContent[]>([]);
-  const textarea = useRef<HTMLTextAreaElement>(null);
+  const textareaRefs = useRef<React.RefObject<HTMLTextAreaElement>[]>([]);
 
+  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
   const getContents = async () => {
     const res = await axios.get(
       `/api/get/contents?userid=${userid}&tid=${tid}`
     );
     // console.log(res.data); // [{userid: 'testid', tid: 1, cid: 1, type: 'title', ccontent: 'Title1'}, ] or []
     setContents(res.data);
+    textareaRefs.current = res.data.map(() =>
+      React.createRef<HTMLTextAreaElement>()
+    );
   };
-
   useEffect(() => {
     getContents();
   }, [tid]);
+  useEffect(() => {
+    if (
+      contents.length > 0 &&
+      textareaRefs.current.length === contents.length
+    ) {
+      textareaRefs.current.forEach((ref) => adjustTextareaHeight(ref.current));
+    }
+  }, [contents]);
 
   const handleSaveBtn = () => {
     let _contents = [...contents];
@@ -37,7 +54,7 @@ export default function AdminTab({
     }));
     _contents.sort((a: TabContent, b: TabContent) => a.corder - b.corder); // corder 순으로 정렬
     setContents(_contents);
-    console.log(_contents);
+    // console.log(_contents);
 
     // update into db
     axios
@@ -47,6 +64,7 @@ export default function AdminTab({
         alert("저장되었습니다.");
       })
       .catch((err) => {
+        alert(err);
         console.log(err);
       });
   };
@@ -60,10 +78,15 @@ export default function AdminTab({
     );
   };
 
-  const handleContents = (e: any, cid: number) => {
-    if (textarea.current) {
-      textarea.current.style.height = "auto"; // height 초기화
-      textarea.current.style.height = textarea.current.scrollHeight + "px";
+  const handleContents = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    cid: number,
+    index: number
+  ) => {
+    const currentTextarea = textareaRefs.current[index]?.current;
+    if (currentTextarea) {
+      currentTextarea.style.height = "auto"; // height 초기화
+      currentTextarea.style.height = currentTextarea.scrollHeight + "px";
     }
 
     setContents(
@@ -167,12 +190,12 @@ export default function AdminTab({
                 </td>
                 <td className="contents-column">
                   <textarea
-                    ref={textarea}
-                    style={{ width: "100%" }}
+                    ref={textareaRefs.current[index]}
+                    className="textarea"
                     placeholder="오른쪽 아래 모서리를 당기면 칸이 늘어납니다."
                     value={content.ccontent}
                     onChange={(e) => {
-                      handleContents(e, content.cid);
+                      handleContents(e, content.cid, index);
                     }}
                   />
                 </td>

@@ -11,8 +11,7 @@
 }
 
 body > * {
-  font-family: "Noto Sans", sans-serif;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Noto Sans", "Open Sans", sans-serif;
   word-wrap: break-word;
 }
 
@@ -62,7 +61,7 @@ body > * {
 .page-body {
   width: auto;
   background-color: #f2f2f2;
-  padding: 30px;
+  padding: 30px 1vw;
   text-align: left;
 }
 
@@ -90,4 +89,18 @@ body > * {
 
 .change-pw-hidden {
   display: none;
+}
+.textarea {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
+.pre {
+  font-family: "Noto Sans", sans-serif;
+  white-space: pre-wrap; /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -pre-wrap; /* Opera <7 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
 }

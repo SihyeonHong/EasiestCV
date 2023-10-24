@@ -35,7 +35,7 @@ export default function NonAdminHome({
             return content.type === "title" ? (
               <h1>{content.ccontent}</h1>
             ) : (
-              <p>{content.ccontent}</p>
+              <pre className="pre">{content.ccontent}</pre>
             );
           })}
       </Col>

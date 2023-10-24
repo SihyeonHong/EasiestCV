@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
 import { setUserInfo } from "../../../redux/store";
@@ -62,6 +62,13 @@ export default function AdminHome() {
     }
   };
 
+  useEffect(() => {
+    if (textarea.current) {
+      textarea.current.style.height = "auto";
+      textarea.current.style.height = `${textarea.current.scrollHeight}px`;
+    }
+  }, [userinfo]);
+
   return (
     <Container className="page-body">
       <Row>
@@ -81,7 +88,7 @@ export default function AdminHome() {
         </Col>
         <Col>
           <textarea
-            style={{ width: "100%" }}
+            className="textarea"
             ref={textarea}
             value={userinfo.intro}
             onChange={handleIntro}
