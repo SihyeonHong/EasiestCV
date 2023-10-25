@@ -8,6 +8,7 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  background-color: whitesmoke;
 }
 
 body > * {
@@ -24,6 +25,7 @@ body > * {
 .nav {
   padding: 8px;
   background-color: black;
+  border-radius: 5px;
 }
 
 .nav > * {
@@ -60,9 +62,10 @@ body > * {
 
 .page-body {
   width: auto;
-  background-color: #f2f2f2;
+  background-color: white;
   padding: 30px 1vw;
   text-align: left;
+  border-radius: 5px;
 }
 
 .profile-img {
