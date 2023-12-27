@@ -26,6 +26,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env*.development.local
 easiest-cv-5889be812d3a.json
 
 # vercel
@@ -37,3 +38,4 @@ next-env.d.ts
 
 # aws
 aws.pem
+.vercel

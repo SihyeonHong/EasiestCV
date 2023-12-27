@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Container, Row, Nav, Button, Form } from "react-bootstrap";
+import { Container, Row, Nav } from "react-bootstrap";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-// import axios from "axios";
 
 export default function InitPage() {
   const [showLogin, setShowLogin] = useState(true);

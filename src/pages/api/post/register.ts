@@ -13,25 +13,19 @@ export default async function handler(
     const hash = await bcrypt.hash(password, 10);
     password = hash;
 
-    // insert into DB
+    // insert into DB `easiest-cv`.
     try {
       const result = await query(
-        "INSERT INTO `easiest-cv`.users (userid, username, email, password) VALUES (?, ?, ?, ?)",
+        "INSERT INTO users (userid, username, email, password) VALUES ($1, $2, $3, $4)",
         [userid, username, email, password]
       );
-      //   console.log("server result: ", result); // OkPacket OkPacket { affectedRows: 1, insertId: 0n, warningStatus: 0 }
-      //   result.insertId = result.insertId.toString(); // BigInt 값을 문자열로 변환
-
-      const result2 = await query(
-        "INSERT INTO `easiest-cv`.userinfo (userid) VALUES (?)",
-        [userid]
-      );
-      //   console.log("result2", result2);
+      const result2 = await query("INSERT INTO userinfo (userid) VALUES ($1)", [
+        userid,
+      ]);
       const result3 = await query(
-        "INSERT INTO `easiest-cv`.tabs (userid, tid, tname, torder) VALUES (?,?,?,?)",
-        [userid, Math.random() * 100000, "Tab1", 0]
+        "INSERT INTO tabs (userid, tname, torder) VALUES ($1, $2, $3)",
+        [userid, "Tab1", 0]
       );
-      //   console.log("result3", result3);
       res.status(200).json("ok");
     } catch (e: any) {
       console.log("server error", e);

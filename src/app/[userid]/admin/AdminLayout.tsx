@@ -15,8 +15,6 @@ import { RootState, AppDispatch } from "../../../redux/store";
 import { setUserInfo, setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
-import { get } from "http";
-import { current } from "@reduxjs/toolkit";
 
 export default function AdminLayout({ userid }: { userid: string }) {
   const [isUserExist, setIsUserExist] = useState(false);

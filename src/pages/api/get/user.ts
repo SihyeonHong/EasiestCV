@@ -12,8 +12,6 @@ export default async function handler(
         "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
         [userId]
       );
-
-      //   console.log("server result: ", result);
       res.json(result);
     } catch (e: any) {
       console.log("server error: ", e);
