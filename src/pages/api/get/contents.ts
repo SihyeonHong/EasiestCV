@@ -12,7 +12,7 @@ export default async function handler(
       const userId = req.query.userid;
       const tid = req.query.tid;
       const result = await query(
-        "SELECT * FROM `easiest-cv`.contents WHERE userid = ? AND tid = ?",
+        "SELECT * FROM contents WHERE userid = $1 AND tid = $2",
         [userId, tid]
       );
       //   console.log("getContents result: ", result);

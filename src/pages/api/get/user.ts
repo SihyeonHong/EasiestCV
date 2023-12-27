@@ -8,10 +8,9 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       let userId = req.query.userid;
-      const result = await query(
-        "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
-        [userId]
-      );
+      const result = await query("SELECT * FROM users WHERE userid = $1", [
+        userId,
+      ]);
       res.json(result);
     } catch (e: any) {
       console.log("server error: ", e);

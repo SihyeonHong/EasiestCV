@@ -56,18 +56,18 @@ export default function handler(req: any, res: any) {
         if (req.file.mimetype === "application/pdf") {
           // delete old file
           const result = await query(
-            "SELECT pdf FROM `easiest-cv`.userinfo WHERE userid = ?",
+            "SELECT pdf FROM userinfo WHERE userid = $1",
             [req.body.userid]
           );
           console.log("result", result);
-          if (result.pdf) {
-            await deleteFile(result.pdf);
+          if (result[0] && result[0].pdf) {
+            await deleteFile(result[0].pdf);
           }
 
           // upload new file
           await uploadFile(uniqueFilename, req.file.buffer, "pdf");
           const result2 = await query(
-            "UPDATE `easiest-cv`.userinfo SET pdf = ? WHERE userid = ?",
+            "UPDATE userinfo SET pdf = $1 WHERE userid = $2",
             [url, req.body.userid]
           );
           console.log("result2", result2);
@@ -88,10 +88,10 @@ export default function handler(req: any, res: any) {
           let prevImageUrl;
           try {
             const result = await query(
-              "SELECT img FROM `easiest-cv`.userinfo WHERE userid = ?",
+              "SELECT img FROM userinfo WHERE userid = $1",
               [req.body.userid]
             );
-            prevImageUrl = result?.img;
+            prevImageUrl = result[0]?.img;
           } catch (error) {
             console.error("Failed to fetch previous image URL:", error);
             return res
@@ -108,10 +108,10 @@ export default function handler(req: any, res: any) {
           }
 
           try {
-            await query(
-              "UPDATE `easiest-cv`.userinfo SET img = ? WHERE userid = ?",
-              [url, req.body.userid]
-            );
+            await query("UPDATE userinfo SET img = $1 WHERE userid = $2", [
+              url,
+              req.body.userid,
+            ]);
           } catch (error) {
             console.error("Failed to update image URL in database:", error);
             return res

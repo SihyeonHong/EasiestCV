@@ -38,10 +38,9 @@ export default async function handler(
     const randomStr = generateRandomPW();
 
     try {
-      const result = await query(
-        "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
-        [userid]
-      );
+      const result = await query("SELECT * FROM users WHERE userid = $1", [
+        userid,
+      ]);
       //   console.log("result", result);
       if (result.length > 0 && email === result[0].email) {
         // If there's a match of userid and email,
@@ -63,7 +62,7 @@ export default async function handler(
             const hash = await bcrypt.hash(randomStr, 10);
             // console.log("hash", hash);
             const result2 = await query(
-              "UPDATE `easiest-cv`.users SET password = ? WHERE userid = ?",
+              "UPDATE users SET password = $1 WHERE userid = $2",
               [hash, userid]
             );
             // console.log("result2", result2);

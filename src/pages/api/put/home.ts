@@ -15,7 +15,7 @@ export default async function handler(
     try {
       // `easiest-cv`.userinfo 테이블에서, userid가 userinfo.userid와 같은 column을 찾아서 업데이트
       const result = await query(
-        "UPDATE `easiest-cv`.userinfo SET intro = ?, img = ?, pdf = ? WHERE userid = ?",
+        "UPDATE userinfo SET intro = $1, img = $2, pdf = $3 WHERE userid = $4",
         [intro, img, pdf, userid]
       );
       console.log("put home: ", result);

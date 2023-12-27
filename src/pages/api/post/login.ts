@@ -11,10 +11,9 @@ export default async function handler(
     // console.log(req.body);
     let { userid, password } = req.body;
     try {
-      const result = await query(
-        "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
-        [userid]
-      );
+      const result = await query("SELECT * FROM users WHERE userid = $1", [
+        userid,
+      ]);
       //   console.log("server result: ", result);
 
       if (

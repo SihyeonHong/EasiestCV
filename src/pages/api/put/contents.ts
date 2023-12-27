@@ -7,13 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "PUT") {
-    console.log("put contents body ", req.body);
     const body: TabContent[] = [...req.body];
 
     try {
       // 데이터베이스의 현재 contents 가져오기
       const currentContents = await query(
-        "SELECT cid FROM `easiest-cv`.contents WHERE userid = ? AND tid = ?",
+        "SELECT cid FROM contents WHERE userid = $1 AND tid = $2",
         [body[0]?.userid, body[0]?.tid]
       ); // [   { cid: 1 },   { cid: 2 },   { cid: 3 } ]
       const currentCids = currentContents.map(
@@ -35,7 +34,7 @@ export default async function handler(
           .filter((content) => newCids.includes(content.cid))
           .map(async (content) => {
             return query(
-              "INSERT INTO `easiest-cv`.contents (cid, userid, tid, corder, type, ccontent) VALUES (?, ?, ?, ?, ?, ?)",
+              "INSERT INTO contents (cid, userid, tid, corder, type, ccontent) VALUES ($1, $2, $3, $4, $5, $6)",
               [
                 content.cid,
                 content.userid,
@@ -52,7 +51,7 @@ export default async function handler(
       await Promise.all(
         deletedCids.map(async (cid: number) => {
           return query(
-            "DELETE FROM `easiest-cv`.contents WHERE cid = ? AND userid = ? AND tid = ?",
+            "DELETE FROM contents WHERE cid = $1 AND userid = $2 AND tid = $3",
             [cid, body[0]?.userid, body[0]?.tid]
           );
         })
@@ -62,7 +61,7 @@ export default async function handler(
       await Promise.all(
         body.map(async (content) => {
           return query(
-            "UPDATE `easiest-cv`.contents SET corder = ?, type = ?, ccontent = ? WHERE userid = ? and tid = ? and cid = ?",
+            "UPDATE contents SET corder = $1, type = $2, ccontent = $3 WHERE userid = $4 and tid = $5 and cid = $6",
             [
               content.corder,
               content.type,

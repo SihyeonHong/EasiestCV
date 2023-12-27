@@ -12,7 +12,7 @@ export default async function handler(
     // try update DB
     try {
       const result = await query(
-        "UPDATE `easiest-cv`.users SET username = ?, email = ? WHERE userid = ?",
+        "UPDATE users SET username = $1, email = $2 WHERE userid = $3",
         [username, email, userid]
       );
       //   console.log("put user: ", result);

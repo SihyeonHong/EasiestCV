@@ -12,7 +12,7 @@ export default async function handler(
 
     try {
       const currentTabs = await query(
-        "SELECT tid FROM `easiest-cv`.tabs WHERE userid = ? ",
+        "SELECT tid FROM tabs WHERE userid = $1",
         [body[0].userid]
       );
 
@@ -35,14 +35,14 @@ export default async function handler(
       // 삭제된 탭 제거
       await Promise.all(
         deletedTids.map(async (tid: number) => {
-          await query(
-            "DELETE FROM `easiest-cv`.tabs WHERE userid = ? and tid = ?",
-            [body[0].userid, tid]
-          );
-          return query(
-            "DELETE FROM `easiest-cv`.contents WHERE userid = ? and tid = ?",
-            [body[0].userid, tid]
-          );
+          await query("DELETE FROM tabs WHERE userid = $1 and tid = $2", [
+            body[0].userid,
+            tid,
+          ]);
+          return query("DELETE FROM contents WHERE userid = $1 and tid = $2", [
+            body[0].userid,
+            tid,
+          ]);
         })
       );
 
@@ -52,7 +52,7 @@ export default async function handler(
           .filter((tab: Tab) => newTids.includes(tab.tid))
           .map(async (tab: Tab) => {
             return query(
-              "INSERT INTO `easiest-cv`.tabs (userid, tid, tname, torder) VALUES (?,?,?,?)",
+              "INSERT INTO tabs (userid, tid, tname, torder) VALUES ($1,$2,$3,$4)",
               [tab.userid, tab.tid, tab.tname, tab.torder]
             );
           })
@@ -62,7 +62,7 @@ export default async function handler(
       await Promise.all(
         body.map(async (tab: Tab) => {
           return query(
-            "UPDATE `easiest-cv`.tabs SET torder = ?, tname = ? WHERE userid = ? and tid = ?",
+            "UPDATE tabs SET torder = $1, tname = $2 WHERE userid = $3 and tid = $4",
             [tab.torder, tab.tname, tab.userid, tab.tid]
           );
         })

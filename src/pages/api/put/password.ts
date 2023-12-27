@@ -12,10 +12,9 @@ export default async function handler(
 
     // try update DB
     try {
-      const result = await query(
-        "SELECT * FROM `easiest-cv`.users WHERE userid = ?",
-        [userid]
-      );
+      const result = await query("SELECT * FROM users WHERE userid = $1", [
+        userid,
+      ]);
       //   console.log("result", result);
       if (
         result.length > 0 &&
@@ -25,7 +24,7 @@ export default async function handler(
         const hash = await bcrypt.hash(newPW, 10);
         // console.log("hash", hash);
         const result2 = await query(
-          "UPDATE `easiest-cv`.users SET username = ?, email = ?, password = ? WHERE userid = ?",
+          "UPDATE users SET username = $1, email = $2, password = $3 WHERE userid = $4",
           [username, email, hash, userid]
         );
         // console.log("result2", result2);
