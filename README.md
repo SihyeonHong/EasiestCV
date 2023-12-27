@@ -1,6 +1,6 @@
 # Easiest CV
 이 웹 사이트는 개인 CV 홈페이지가 필요하지만 공들여 만들기도, 관리하기도 귀찮은 분들을 위해 만들어졌습니다.   
-배포 주소: https://easiest-cv.vercel.app/hongsi
+배포 주소: https://easiest-cv.vercel.app/test
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
