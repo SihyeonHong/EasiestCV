@@ -52,8 +52,8 @@ export default async function handler(
           .filter((tab: Tab) => newTids.includes(tab.tid))
           .map(async (tab: Tab) => {
             return query(
-              "INSERT INTO tabs (userid, tid, tname, torder) VALUES ($1,$2,$3,$4)",
-              [tab.userid, tab.tid, tab.tname, tab.torder]
+              "INSERT INTO tabs (userid, tname, torder) VALUES ($1,$2,$3)",
+              [tab.userid, tab.tname, tab.torder]
             );
           })
       );

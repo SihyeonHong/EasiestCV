@@ -34,11 +34,10 @@ export default async function handler(
           .filter((content) => newCids.includes(content.cid))
           .map(async (content) => {
             return query(
-              "INSERT INTO contents (cid, userid, tid, corder, type, ccontent) VALUES ($1, $2, $3, $4, $5, $6)",
+              "INSERT INTO contents (cid, userid, corder, type, ccontent) VALUES ($1, $2, $3, $4, $5)",
               [
                 content.cid,
                 content.userid,
-                content.tid,
                 content.corder,
                 content.type,
                 content.ccontent,
