@@ -10,16 +10,16 @@ export default function NonAdminHome({
   tid,
 }: {
   userid: string;
-  tid: number | string;
+  tid: number;
 }) {
-  console.log(tid);
+  console.log("분명 여기서 2여야 하는데: ", tid);
   const [contents, setContents] = useState<TabContent[]>([]);
 
   const getContents = async () => {
     const res = await axios.get(
       `/api/get/contents?userid=${userid}&tid=${tid}`
     );
-    console.log(res.data); // [{userid: 'testid', tid: 1, cid: 1, type: 'title', ccontent: 'Title1'}, ] or []
+    // console.log(res.data); // [{userid: 'testid', tid: 1, cid: 1, type: 'title', ccontent: 'Title1'}, ] or []
     setContents(res.data);
   };
 

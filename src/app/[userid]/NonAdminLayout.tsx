@@ -1,7 +1,7 @@
 "use client";
 
 // import styled from "styled-components";
-import { Nav, Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";

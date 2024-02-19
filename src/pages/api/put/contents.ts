@@ -8,25 +8,30 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     const body: TabContent[] = [...req.body];
+    console.log(body);
 
     try {
       // 데이터베이스의 현재 contents 가져오기
       const currentContents = await query(
         "SELECT cid FROM contents WHERE userid = $1 AND tid = $2",
-        [body[0]?.userid, body[0]?.tid]
+        [body[0].userid, body[0].tid]
       ); // [   { cid: 1 },   { cid: 2 },   { cid: 3 } ]
+      console.log(currentContents);
       const currentCids = currentContents.map(
         (content: TabContent) => content.cid
       ); // [1,2,3]
       const receivedCids = body.map((content) => content.cid); // [1,2,3]
+      console.log(receivedCids);
 
       // 새로 추가된 컬럼 찾기
       const newCids = receivedCids.filter((cid) => !currentCids.includes(cid));
+      console.log(newCids);
 
       // 삭제된 컬럼 찾기
       const deletedCids = currentCids.filter(
         (cid: number) => !receivedCids.includes(cid)
       );
+      console.log(deletedCids);
 
       // 새로운 컬럼 추가
       await Promise.all(
@@ -34,13 +39,14 @@ export default async function handler(
           .filter((content) => newCids.includes(content.cid))
           .map(async (content) => {
             return query(
-              "INSERT INTO contents (cid, userid, corder, type, ccontent) VALUES ($1, $2, $3, $4, $5)",
+              "INSERT INTO contents (cid, userid, corder, type, ccontent, tid) VALUES ($1, $2, $3, $4, $5, $6)",
               [
                 content.cid,
                 content.userid,
                 content.corder,
                 content.type,
                 content.ccontent,
+                content.tid,
               ]
             );
           })
@@ -51,7 +57,7 @@ export default async function handler(
         deletedCids.map(async (cid: number) => {
           return query(
             "DELETE FROM contents WHERE cid = $1 AND userid = $2 AND tid = $3",
-            [cid, body[0]?.userid, body[0]?.tid]
+            [cid, body[0].userid, body[0].tid]
           );
         })
       );

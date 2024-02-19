@@ -102,7 +102,7 @@ export default function AdminTab({
       {
         userid,
         tid,
-        cid: Math.random() * 10000000,
+        cid: Math.floor(Math.random() * 10000000),
         type: "title",
         ccontent: "",
         corder: contents.length,
