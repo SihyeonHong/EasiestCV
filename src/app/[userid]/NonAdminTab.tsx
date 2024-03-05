@@ -12,7 +12,6 @@ export default function NonAdminHome({
   userid: string;
   tid: number;
 }) {
-  console.log("분명 여기서 2여야 하는데: ", tid);
   const [contents, setContents] = useState<TabContent[]>([]);
 
   const getContents = async () => {

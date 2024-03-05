@@ -5,38 +5,38 @@
   width: 60vw;
   min-width: 240px;
   max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   text-align: center;
   background-color: whitesmoke;
 }
 
-body > * {
+* {
   font-family: "Noto Sans", "Open Sans", sans-serif;
   word-wrap: break-word;
 }
 
 .title {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 50px auto;
   text-align: center;
+  cursor: pointer;
 }
 
 .nav {
   padding: 8px;
-  background-color: black;
+  /* background-color: #1a1a1a; */
   border-radius: 5px;
 }
 
 .nav > * {
   text-align: center;
   font-size: larger;
+  /* box-shadow: 0 1px 1px #d9d9d9; */
 }
 
 .nav-link {
   margin-left: 20px;
   margin-right: 20px;
-  color: white !important;
+  color: black !important;
 }
 
 .body-init > * {
@@ -57,16 +57,17 @@ body > * {
 }
 
 .unconfirmed {
-  border-color: red !important;
+  border: 2px solid red !important;
 }
 
 .page-body {
   width: auto;
   background-color: white;
-  padding: 30px 1vw;
+  padding: 3rem;
   text-align: left;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {
@@ -88,18 +89,20 @@ body > * {
   /* --bs-nav-link-padding-x: 1rem;
   --bs-nav-link-padding-y: 0.5rem; */
   padding: 0.3rem 1rem 0.5rem 1rem;
-  color: white;
+  color: black;
 }
 
 .change-pw-hidden {
   display: none;
 }
+
 .textarea {
   width: 100%;
   border: 1px solid black;
   border-radius: 5px;
   white-space: pre-wrap;
 }
+
 .pre {
   font-family: "Noto Sans", sans-serif;
   white-space: pre-wrap; /* CSS3 */
@@ -107,4 +110,10 @@ body > * {
   white-space: -pre-wrap; /* Opera <7 */
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* IE */
+}
+
+@media (max-width: 1024px) {
+  .custom-body {
+    width: 80vw;
+  }
 }

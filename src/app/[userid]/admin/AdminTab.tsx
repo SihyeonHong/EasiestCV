@@ -54,13 +54,11 @@ export default function AdminTab({
     }));
     _contents.sort((a: TabContent, b: TabContent) => a.corder - b.corder); // corder 순으로 정렬
     setContents(_contents);
-    // console.log(_contents);
 
     // update into db
     axios
       .put("/api/put/contents", _contents)
       .then((res) => {
-        // console.log(res.data);
         alert("저장되었습니다.");
       })
       .catch((err) => {
@@ -217,7 +215,6 @@ export default function AdminTab({
           <Button variant="dark" onClick={addColumn}>
             New Column
           </Button>
-          /
         </Col>
       </Row>
     </Container>
