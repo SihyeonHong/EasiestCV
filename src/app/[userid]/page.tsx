@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import NonAdminLayout from "./NonAdminLayout";
+import NonAdminLayout from "../../pages/components/non-admin/NonAdminLayout";
 
 export default function Page() {
   const pathname = usePathname();

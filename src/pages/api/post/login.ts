@@ -1,20 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { query } from "./../../../util/database";
+import { query } from "@/pages/util/database";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    // console.log(req.body);
     let { userid, password } = req.body;
     try {
       const result = await query("SELECT * FROM users WHERE userid = $1", [
         userid,
       ]);
-      //   console.log("server result: ", result);
 
       if (
         result.length > 0 &&

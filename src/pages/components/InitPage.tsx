@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Container, Row, Nav } from "react-bootstrap";
 import LoginForm from "./LoginForm";
@@ -11,7 +12,6 @@ export default function InitPage() {
 
   return (
     <Container>
-      {/* TODO h1 클릭하면 홈으로 이동 */}
       <h1 className="title">Easiest CV</h1>
       <Nav
         variant="underline"

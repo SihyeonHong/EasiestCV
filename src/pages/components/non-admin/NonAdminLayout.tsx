@@ -8,8 +8,8 @@ import { RootState } from "../../redux/store";
 import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
-import NoUserPage from "./NoUserPage";
-import LoadingPage from "./LoadingPage";
+import NoUserPage from "../NoUserPage";
+import LoadingPage from "../LoadingPage";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const redux = useSelector((state: RootState) => state);

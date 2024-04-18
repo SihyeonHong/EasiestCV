@@ -1,4 +1,3 @@
-"use client";
 import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Container, Row } from "react-bootstrap";

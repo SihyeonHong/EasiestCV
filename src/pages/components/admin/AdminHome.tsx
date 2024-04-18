@@ -4,8 +4,8 @@ import axios from "axios";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../../redux/store";
-import { setUserInfo } from "../../../redux/store";
+import { RootState, AppDispatch } from "../../redux/store";
+import { setUserInfo } from "../../redux/store";
 
 export default function AdminHome() {
   const dispatch = useDispatch<AppDispatch>();

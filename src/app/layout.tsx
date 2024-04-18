@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Providers } from "@/redux/provider"; // not "Provider"
+import { Providers } from "@/pages/redux/provider"; // not "Provider"
 
 const inter = Inter({ subsets: ["latin"] });
 

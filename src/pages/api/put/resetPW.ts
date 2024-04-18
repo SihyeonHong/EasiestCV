@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { query } from "../../../util/database";
+import { query } from "../../util/database";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
