@@ -1,7 +1,7 @@
 // import { NextApiRequest, NextApiResponse } from "next";
-import { query } from "@/pages/util/database";
+import { query } from "./../../../pages/util/database";
 import multer from "multer";
-import { deleteFile, uploadFile } from "@/pages/util/gcs";
+import { deleteFile, uploadFile } from "./../../../pages/util/gcs";
 
 // Disable Next.js's built-in body parser to allow multer to handle the form data
 export const config = {

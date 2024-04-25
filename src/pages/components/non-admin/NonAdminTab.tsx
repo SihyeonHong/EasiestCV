@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Col } from "react-bootstrap";
-import { TabContent } from "@/pages/redux/store";
+import { TabContent } from "./../../../pages/redux/store";
 
 export default function NonAdminHome({
   userid,

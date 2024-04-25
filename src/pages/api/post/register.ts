@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-import { query } from "@/pages/util/database";
+import { query } from "./../../../pages/util/database";
 
 export default async function handler(
   req: NextApiRequest,
