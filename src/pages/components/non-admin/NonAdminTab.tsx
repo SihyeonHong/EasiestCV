@@ -2,8 +2,6 @@
 
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Col } from "react-bootstrap";
-import { TabContent } from "./../../../pages/redux/store";
 
 export default function NonAdminHome({
   userid,
@@ -12,32 +10,22 @@ export default function NonAdminHome({
   userid: string;
   tid: number;
 }) {
-  const [contents, setContents] = useState<TabContent[]>([]);
+  const [contents, setContents] = useState();
 
-  const getContents = async () => {
+  const getPages = async () => {
     const res = await axios.get(
-      `/api/get/contents?userid=${userid}&tid=${tid}`
+      `/api/get/tabpages?userid=${userid}&tid=${tid}`
     );
-    // console.log(res.data); // [{userid: 'testid', tid: 1, cid: 1, type: 'title', ccontent: 'Title1'}, ] or []
     setContents(res.data);
   };
 
   useEffect(() => {
-    getContents();
+    getPages();
   }, [tid]);
 
   return (
-    <div>
-      <Col>
-        {contents &&
-          contents.map((content: TabContent) => {
-            return content.type === "title" ? (
-              <h1>{content.ccontent}</h1>
-            ) : (
-              <pre className="pre">{content.ccontent}</pre>
-            );
-          })}
-      </Col>
-    </div>
+    <>
+      {contents && <div dangerouslySetInnerHTML={{ __html: contents }}></div>}
+    </>
   );
 }

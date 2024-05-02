@@ -2,8 +2,6 @@ import React, { createRef } from "react";
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import axios from "axios";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../redux/store";
 import { TabContent } from "./../../../pages/redux/store";
 
 export default function AdminTab({
