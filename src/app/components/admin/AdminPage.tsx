@@ -4,11 +4,11 @@ import axios from "axios";
 import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../redux/store";
-import { Tab } from "../../redux/store";
+import { RootState, AppDispatch } from "../../../pages/redux/store";
+import { Tab } from "../../../pages/redux/store";
 import AdminHome from "./AdminHome";
 import AdminTab from "./AdminTab";
-import { setUserInfo } from "../../redux/store";
+import { setUserInfo } from "../../../pages/redux/store";
 import AdminEditor from "./AdminEditor";
 
 export default function AdminPage() {
