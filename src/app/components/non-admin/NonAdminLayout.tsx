@@ -4,7 +4,7 @@
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../pages/redux/store";
+import { RootState } from "../../../redux/store";
 import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";

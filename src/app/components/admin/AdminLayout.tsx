@@ -11,8 +11,8 @@ import {
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../../pages/redux/store";
-import { setUserInfo, setTabs } from "../../../pages/redux/store";
+import { RootState, AppDispatch } from "../../../redux/store";
+import { setUserInfo, setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
 
