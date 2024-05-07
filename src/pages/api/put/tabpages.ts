@@ -11,18 +11,18 @@ export default async function handler(
 
     try {
       const result1 = await query(
-        `SELECT page_id FROM tab_pages WHERE user_id = $1 and tab_id = $2`,
+        `SELECT contents FROM tabs WHERE userid = $1 and tid = $2`,
         [userid, tid]
       );
 
       if (result1.length) {
         const result2 = await query(
-          "UPDATE tab_pages SET contents = $1 WHERE user_id = $2 and tab_id = $3",
+          "UPDATE tabs SET contents = $1 WHERE userid = $2 and tid = $3",
           [contents, userid, tid]
         );
       } else {
         const result3 = await query(
-          "INSERT INTO tab_pages (user_id, tab_id, contents) VALUES ($1, $2, $3)",
+          "INSERT INTO tabs (userid, tid, contents) VALUES ($1, $2, $3)",
           [userid, tid, contents]
         );
       }

@@ -9,7 +9,7 @@ export default async function handler(
     const userId = req.query.userid;
     const tid = req.query.tid;
     const result = await query(
-      "SELECT * FROM tab_pages WHERE user_id = $1 AND tab_id = $2",
+      "SELECT contents FROM tabs WHERE userid = $1 AND tid = $2",
       [userId, tid]
     );
     res.json(result[0].contents);
