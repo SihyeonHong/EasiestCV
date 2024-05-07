@@ -14,7 +14,8 @@ export default async function handler(
         `SELECT page_id FROM tab_pages WHERE user_id = $1 and tab_id = $2`,
         [userid, tid]
       );
-      if (result1) {
+
+      if (result1.length) {
         const result2 = await query(
           "UPDATE tab_pages SET contents = $1 WHERE user_id = $2 and tab_id = $3",
           [contents, userid, tid]

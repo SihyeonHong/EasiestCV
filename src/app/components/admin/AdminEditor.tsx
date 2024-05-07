@@ -14,6 +14,7 @@ export default function AdminEditor({ userid, tid }: Props) {
   const [value, setValue] = useState("value");
 
   const getPages = async () => {
+    console.log(userid, tid);
     const res = await axios.get(
       `/api/get/tabpages?userid=${userid}&tid=${tid}`
     );

@@ -3,13 +3,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function NonAdminHome({
-  userid,
-  tid,
-}: {
+interface Props {
   userid: string;
   tid: number;
-}) {
+}
+
+export default function NonAdminHome({ userid, tid }: Props) {
   const [contents, setContents] = useState();
 
   const getPages = async () => {
