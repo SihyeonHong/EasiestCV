@@ -15,13 +15,10 @@ export default function LoginForm() {
       userid: userid,
       password: password,
     };
-    // console.log(data);
     axios
       .post("/api/post/login", data)
       .then((res) => {
-        // console.log(res);
         if (res.status === 200) {
-          alert("로그인 성공");
           sessionStorage.setItem("userid", res.data.userid);
           sessionStorage.setItem("token", res.data.token);
           window.location.href = `/${res.data.userid}/admin`;
@@ -40,11 +37,9 @@ export default function LoginForm() {
       userid: userid2,
       email: email,
     };
-    // console.log(data);
     axios
       .put("/api/put/resetPW", data)
       .then((res) => {
-        // console.log(res);
         if (res.status === 200) {
           alert("비밀번호 재설정 성공");
         } else {
