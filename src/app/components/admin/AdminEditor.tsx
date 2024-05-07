@@ -78,21 +78,34 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   return (
     <AdminTabEditorStyle>
-      <Button variant="dark" onClick={addColumn}>
-        Submit
+      <div>
+        <ReactQuill
+          style={{ height: "600px" }}
+          theme="snow"
+          modules={modules}
+          formats={formats}
+          value={value}
+          onChange={setValue}
+        />
+      </div>
+      <br />
+      <Button variant="dark" onClick={addColumn} className="save-btn">
+        SAVE
       </Button>
-      <ReactQuill
-        style={{ height: "600px" }}
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={value}
-        onChange={setValue}
-      />
     </AdminTabEditorStyle>
   );
 }
 
 const AdminTabEditorStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
   background-color: white;
+  padding: 20px;
+
+  .save-btn {
+    margin-top: 20px;
+  }
 `;

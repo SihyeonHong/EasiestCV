@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import NonAdminHome from "./NonAdminHome";
 import NonAdminTab from "./NonAdminTab";
+import Footer from "../Footer";
 
 export default function NonAdminPage({
   userinfo,
@@ -77,6 +78,9 @@ export default function NonAdminPage({
           ) : (
             <NonAdminTab userid={userinfo.userid} tid={activeKey} />
           )}
+        </Row>
+        <Row>
+          <Footer />
         </Row>
       </Container>
     </div>

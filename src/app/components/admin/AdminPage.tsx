@@ -10,6 +10,7 @@ import AdminHome from "./AdminHome";
 import AdminTab from "./AdminTab";
 import { setUserInfo } from "../../../redux/store";
 import AdminEditor from "./AdminEditor";
+import Footer from "../Footer";
 
 export default function AdminPage() {
   // from Redux store
@@ -265,6 +266,9 @@ export default function AdminPage() {
           ) : (
             <AdminEditor userid={userid} tid={activeKey} />
           )}
+        </Row>
+        <Row>
+          <Footer />
         </Row>
       </Container>
     </div>
