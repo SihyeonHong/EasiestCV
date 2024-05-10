@@ -2,13 +2,14 @@
 
 import axios from "axios";
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 
 interface Props {
   userid: string;
   tid: number;
 }
 
-export default function NonAdminHome({ userid, tid }: Props) {
+export default function NonAdminPage({ userid, tid }: Props) {
   const [contents, setContents] = useState();
 
   const getPages = async () => {
@@ -24,7 +25,21 @@ export default function NonAdminHome({ userid, tid }: Props) {
 
   return (
     <>
-      {contents && <div dangerouslySetInnerHTML={{ __html: contents }}></div>}
+      {contents && (
+        <NonAdminPageStyle
+          dangerouslySetInnerHTML={{ __html: contents }}
+        ></NonAdminPageStyle>
+      )}
     </>
   );
 }
+
+const NonAdminPageStyle = styled.div`
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+`;
