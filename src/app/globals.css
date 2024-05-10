@@ -110,4 +110,8 @@
   .custom-body {
     width: 80vw;
   }
+
+  .page-body {
+    padding: 1.5rem 0.8rem;
+  }
 }
