@@ -72,7 +72,7 @@ export default function NonAdminPage({
             </Nav.Item>
           </Nav>
         </Row>
-        <Row className="page-body">
+        <Row>
           {activeKey === 0 ? (
             <NonAdminHome img={userinfo.img} intro={userinfo.intro} />
           ) : (

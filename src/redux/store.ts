@@ -1,4 +1,6 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Userinfo } from "../models/userinfo.model";
+import { Tab } from "../models/tab.model";
 
 const initUserinfo: Userinfo = {
   userid: "initialID",
@@ -76,19 +78,7 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type Userinfo = {
-  userid: string;
-  username?: string;
-  intro?: string;
-  img?: string;
-  pdf?: string;
-};
-export type Tab = {
-  tid: number;
-  tname: string;
-  userid: string;
-  torder: number;
-};
+
 export type TabContent = {
   userid: string;
   tid: number;

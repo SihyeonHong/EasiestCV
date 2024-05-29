@@ -5,12 +5,11 @@ import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
-import { Tab } from "../../../redux/store";
 import AdminHome from "./AdminHome";
-import AdminTab from "./AdminTab";
 import { setUserInfo } from "../../../redux/store";
 import AdminEditor from "./AdminEditor";
 import Footer from "../Footer";
+import { Tab } from "../../../models/tab.model";
 
 export default function AdminPage() {
   // from Redux store
@@ -260,7 +259,7 @@ export default function AdminPage() {
             </Nav.Item>
           </Nav>
         </Row>
-        <Row className="page-body">
+        <Row>
           {activeKey === 0 ? (
             <AdminHome />
           ) : (

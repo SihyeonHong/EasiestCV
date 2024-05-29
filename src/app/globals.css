@@ -2,17 +2,6 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap");
 
-.custom-body {
-  width: 60vw;
-  min-width: 240px;
-  max-width: 1024px;
-  margin: 0 auto;
-  text-align: center;
-  background-image: url("/background.jpg");
-  background-size: cover;
-  background-position: center;
-}
-
 * {
   font-family: "Noto Serif", "Noto Sans", sans-serif;
   word-wrap: break-word;
@@ -61,16 +50,6 @@
 
 .unconfirmed {
   border: 2px solid red !important;
-}
-
-.page-body {
-  width: auto;
-  background-color: #f9f9f9;
-  padding: 3rem 2rem;
-  text-align: left;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {

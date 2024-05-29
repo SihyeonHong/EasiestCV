@@ -12,7 +12,6 @@ export default function InitPage() {
 
   return (
     <Container>
-      <h1 className="title">Easiest CV</h1>
       <Nav
         variant="underline"
         defaultActiveKey="login"

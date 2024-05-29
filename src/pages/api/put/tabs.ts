@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../../util/database";
-import { Tab } from "../../../redux/store";
+import { Tab } from "../../../models/tab.model";
 
 export default async function handler(
   req: NextApiRequest,

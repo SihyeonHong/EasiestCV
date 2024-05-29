@@ -70,7 +70,7 @@ export default function AdminHome() {
   }, [userinfo]);
 
   return (
-    <Container className="page-body">
+    <Container>
       <Row>
         <Col style={{ textAlign: "right" }}>
           <h5>프로필 사진 첨부</h5>
