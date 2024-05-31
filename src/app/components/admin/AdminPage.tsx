@@ -244,7 +244,7 @@ export default function AdminPage() {
                     onChange={(e) => setNewTabName(e.target.value)}
                   />
                   <Button variant="dark" onClick={addTab}>
-                    New Tab
+                    탭 추가
                   </Button>
                 </Modal.Body>
                 <Modal.Footer>
@@ -260,11 +260,7 @@ export default function AdminPage() {
           </Nav>
         </Row>
         <Row>
-          {activeKey === 0 ? (
-            <AdminHome />
-          ) : (
-            <AdminEditor userid={userid} tid={activeKey} />
-          )}
+          {activeKey === 0 ? <AdminHome /> : <AdminEditor tid={activeKey} />}
         </Row>
         <Row>
           <Footer />

@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 import NonAdminHome from "./NonAdminHome";
 import NonAdminTab from "./NonAdminTab";
 import Footer from "../Footer";
+import { Userinfo } from "../../../models/userinfo.model";
 
-export default function NonAdminPage({
-  userinfo,
-}: {
-  userinfo: { userid: string; intro: string; img: string; pdf: string };
-}) {
+interface Props {
+  userinfo: Userinfo;
+}
+
+export default function NonAdminPage({ userinfo }: Props) {
   const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([]);
   const [activeKey, setActiceKey] = useState<number>(0);
 
@@ -74,7 +75,7 @@ export default function NonAdminPage({
         </Row>
         <Row>
           {activeKey === 0 ? (
-            <NonAdminHome img={userinfo.img} intro={userinfo.intro} />
+            <NonAdminHome />
           ) : (
             <NonAdminTab userid={userinfo.userid} tid={activeKey} />
           )}

@@ -3,22 +3,25 @@
 // import styled from "styled-components";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../../redux/store";
+import { setUserInfo } from "../../../redux/store";
 import Link from "next/link";
 import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "../NoUserPage";
 import LoadingPage from "../LoadingPage";
+import { Userinfo } from "../../../models/userinfo.model";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
-  const redux = useSelector((state: RootState) => state);
-  const [userinfo, setUserInfo] = useState({
-    userid: "",
-    intro: "",
-    img: "",
-    pdf: "",
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const userinfo = useSelector((state: RootState) => state.userinfo);
+  //   const [userinfo, setUserInfo] = useState<Userinfo>({
+  //     userid: "",
+  //     intro: "",
+  //     img: "",
+  //     pdf: "",
+  //   });
   const [loading, setLoading] = useState(true);
   const [isUserExist, setIsUserExist] = useState(false);
   const [activeKey, setActiceKey] = useState("home");
@@ -39,7 +42,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
     // console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
 
     if (res.data.length > 0) {
-      setUserInfo(res.data[0]);
+      dispatch(setUserInfo(res.data[0]));
       setIsUserExist(true);
     }
     setLoading(false);

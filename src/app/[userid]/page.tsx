@@ -8,6 +8,8 @@ export default function Page() {
   let userid = "";
   if (pathname) {
     userid = pathname.split("/")[1];
+    // userid로 userinfo 가져와서 redux에 등록
   }
+
   return <NonAdminLayout userid={userid} />;
 }
