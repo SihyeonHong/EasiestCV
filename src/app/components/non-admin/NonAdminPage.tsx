@@ -18,7 +18,6 @@ export default function NonAdminPage({ userinfo }: Props) {
 
   const getTabs = async () => {
     const res = await axios.get(`/api/get/tabs?userid=${userinfo.userid}`);
-    console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
     setTabs(res.data);
   };
 
@@ -47,7 +46,6 @@ export default function NonAdminPage({ userinfo }: Props) {
               <Nav.Link
                 eventKey={0}
                 onClick={() => {
-                  //   navigate("/" + userid);
                   setActiceKey(0);
                 }}
               >
@@ -61,7 +59,6 @@ export default function NonAdminPage({ userinfo }: Props) {
                     eventKey={tab.tid}
                     onClick={() => {
                       setActiceKey(tab.tid);
-                      //   navigate(currentPath + "/" + tab);
                     }}
                   >
                     {tab.tname}

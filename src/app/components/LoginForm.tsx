@@ -10,7 +10,10 @@ export default function LoginForm() {
   const [userid2, setUserid2] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("로그인");
+
     const data = {
       userid: userid,
       password: password,
@@ -55,7 +58,7 @@ export default function LoginForm() {
   return (
     <Container>
       <Row>
-        <Form className="body-init">
+        <Form className="body-init" onSubmit={handleLogin}>
           <Form.Group controlId="formID">
             <Form.Label>ID</Form.Label>
             <Form.Control
@@ -74,12 +77,7 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Button
-            variant="dark"
-            type="button"
-            onClick={handleLogin}
-            style={{ marginRight: "1vw" }}
-          >
+          <Button variant="dark" type="submit" style={{ marginRight: "1vw" }}>
             Log In
           </Button>
           <Button variant="light" onClick={() => setShowForgot(!showForgot)}>

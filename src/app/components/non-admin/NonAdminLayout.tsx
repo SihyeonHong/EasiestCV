@@ -11,27 +11,17 @@ import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "../NoUserPage";
 import LoadingPage from "../LoadingPage";
-import { Userinfo } from "../../../models/userinfo.model";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const dispatch = useDispatch<AppDispatch>();
   const userinfo = useSelector((state: RootState) => state.userinfo);
-  //   const [userinfo, setUserInfo] = useState<Userinfo>({
-  //     userid: "",
-  //     intro: "",
-  //     img: "",
-  //     pdf: "",
-  //   });
   const [loading, setLoading] = useState(true);
   const [isUserExist, setIsUserExist] = useState(false);
-  const [activeKey, setActiceKey] = useState("home");
-  const [tabs, setTabs] = useState(["Tab1"]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
   const getUser = async () => {
     const res = await axios.get(`/api/get/user?userid=${userid}`);
-    // console.log(res.data);
     if (res.data.length > 0) {
       setUsername(res.data[0].username);
       setEmail(res.data[0].email);
@@ -39,7 +29,6 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   };
   const getUserInfo = async () => {
     const res = await axios.get(`/api/get/userinfo?userid=${userid}`);
-    // console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
 
     if (res.data.length > 0) {
       dispatch(setUserInfo(res.data[0]));
