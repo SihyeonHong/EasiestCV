@@ -1,17 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;200;300;400;500;600&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap");
 
 * {
-  font-family: "Noto Serif", "Noto Sans", sans-serif;
+  font-family: "Noto Serif KR", sans-serif;
   word-wrap: break-word;
-}
-
-.title {
-  margin: 50px auto;
-  text-align: center;
-  cursor: pointer;
-  color: #004d00;
 }
 
 .nav {
@@ -27,7 +19,7 @@
 .nav-link {
   margin-left: 20px;
   margin-right: 20px;
-  color: #004d00 !important;
+  color: black !important;
 }
 
 .body-init > * {
@@ -51,12 +43,6 @@
   border: 2px solid red !important;
 }
 
-.profile-img {
-  width: 20vw;
-  max-width: 480px;
-  max-height: 1280px;
-}
-
 .options-column {
   width: fit-content;
 }
@@ -75,21 +61,4 @@
 
 .change-pw-hidden {
   display: none;
-}
-
-.textarea {
-  width: 100%;
-  border: 1px solid black;
-  border-radius: 5px;
-  white-space: pre-wrap;
-}
-
-@media (max-width: 1024px) {
-  .custom-body {
-    width: 80vw;
-  }
-
-  .page-body {
-    padding: 1.5rem 0.8rem;
-  }
 }

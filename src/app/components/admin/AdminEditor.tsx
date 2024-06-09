@@ -51,7 +51,6 @@ export default function AdminEditor({ tid }: Props) {
     "italic",
     "underline",
     "strike",
-    "blockquote",
     "list",
     "bullet",
     "indent",
@@ -117,10 +116,13 @@ const AdminTabEditorStyle = styled.div`
   flex-direction: column;
   gap: 10px;
   justify-content: space-between;
-  background-color: white;
 
   button {
     width: fit-content;
     align-self: flex-end;
+  }
+
+  div {
+    background-color: white;
   }
 `;

@@ -1,9 +1,10 @@
 import InitPage from "./components/InitPage";
+import Title from "./components/Title";
 
 export default function page() {
   return (
     <>
-      <h1 className="title">Easiest CV</h1>
+      <Title title="Easiest CV"></Title>
       <InitPage />
     </>
   );

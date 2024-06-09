@@ -7,7 +7,6 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     const { userid, tid, contents } = req.body;
-    console.log(req.body);
 
     try {
       const result1 = await query(

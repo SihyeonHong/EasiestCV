@@ -27,11 +27,11 @@ const NonAdminHomeStyle = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    text-align: center;
 
     img {
+      width: 100%;
       margin-right: 0;
-      margin-bottom: 20px;
+      margin-bottom: 2rem;
     }
   }
 `;

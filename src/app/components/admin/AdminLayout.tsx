@@ -15,6 +15,7 @@ import { RootState, AppDispatch } from "../../../redux/store";
 import { setUserInfo, setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
+import Title from "../Title";
 
 export default function AdminLayout({ userid }: { userid: string }) {
   const [isUserExist, setIsUserExist] = useState(false);
@@ -219,9 +220,7 @@ export default function AdminLayout({ userid }: { userid: string }) {
         </Modal>
       </Row>
       <Row>
-        <h1 className="title">
-          {username ? username.toUpperCase() : userid.toUpperCase()}
-        </h1>
+        <Title title={username ? username : userid}></Title>
       </Row>
       <Row>
         <AdminPage />

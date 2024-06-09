@@ -10,6 +10,7 @@ import { setUserInfo } from "../../../redux/store";
 import AdminEditor from "./AdminEditor";
 import Footer from "../Footer";
 import { Tab } from "../../../models/tab.model";
+import Body from "../Body";
 
 export default function AdminPage() {
   // from Redux store
@@ -151,7 +152,6 @@ export default function AdminPage() {
               <Nav.Link
                 eventKey={0}
                 onClick={() => {
-                  //   navigate("/" + userid);
                   setActiceKey(0);
                 }}
               >
@@ -165,7 +165,6 @@ export default function AdminPage() {
                     eventKey={tab.tid}
                     onClick={() => {
                       setActiceKey(tab.tid);
-                      //   navigate(currentPath + "/" + tab);
                     }}
                   >
                     {tab.tname}
@@ -259,9 +258,9 @@ export default function AdminPage() {
             </Nav.Item>
           </Nav>
         </Row>
-        <Row>
+        <Body>
           {activeKey === 0 ? <AdminHome /> : <AdminEditor tid={activeKey} />}
-        </Row>
+        </Body>
         <Row>
           <Footer />
         </Row>

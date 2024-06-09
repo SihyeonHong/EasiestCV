@@ -1,6 +1,5 @@
 "use client";
 
-// import styled from "styled-components";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +10,7 @@ import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "../NoUserPage";
 import LoadingPage from "../LoadingPage";
+import Title from "../Title";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,11 +51,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
           </Link>
         </Col>
       </Row>
-      <Row>
-        <h1 className="title">
-          {username ? username.toUpperCase() : userid.toUpperCase()}
-        </h1>
-      </Row>
+      <Title title={username ? username : userid}></Title>
       <Row>
         {loading ? (
           <LoadingPage />

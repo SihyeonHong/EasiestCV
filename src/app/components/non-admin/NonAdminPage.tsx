@@ -7,6 +7,7 @@ import NonAdminHome from "./NonAdminHome";
 import NonAdminTab from "./NonAdminTab";
 import Footer from "../Footer";
 import { Userinfo } from "../../../models/userinfo.model";
+import Body from "../Body";
 
 interface Props {
   userinfo: Userinfo;
@@ -70,13 +71,13 @@ export default function NonAdminPage({ userinfo }: Props) {
             </Nav.Item>
           </Nav>
         </Row>
-        <Row>
+        <Body>
           {activeKey === 0 ? (
             <NonAdminHome />
           ) : (
             <NonAdminTab userid={userinfo.userid} tid={activeKey} />
           )}
-        </Row>
+        </Body>
         <Row>
           <Footer />
         </Row>
