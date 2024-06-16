@@ -76,7 +76,7 @@ export default function NonAdminPage({ userid }: Props) {
         </Row>
         <Body>
           {activeKey === 0 ? (
-            <NonAdminHome />
+            <NonAdminHome userid={userid} />
           ) : (
             <NonAdminTab userid={userid} tid={activeKey} />
           )}

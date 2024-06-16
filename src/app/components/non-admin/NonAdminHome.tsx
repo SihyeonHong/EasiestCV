@@ -1,9 +1,12 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
 import styled from "styled-components";
+import { useHome } from "../../../hooks/useHome";
 
-export default function NonAdminHome() {
-  const homeData = useSelector((state: RootState) => state.homeData);
+interface Props {
+  userid: string;
+}
+
+export default function NonAdminHome({ userid }: Props) {
+  const { homeData } = useHome(userid);
 
   return (
     <NonAdminHomeStyle>
