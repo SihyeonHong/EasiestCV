@@ -6,25 +6,28 @@ import { useState, useEffect } from "react";
 import NonAdminHome from "./NonAdminHome";
 import NonAdminTab from "./NonAdminTab";
 import Footer from "../Footer";
-import { Userinfo } from "../../../models/userinfo.model";
 import Body from "../Body";
+import { fetchHomeData } from "../../../api/home.api";
+import { useHome } from "../../../hooks/useHome";
 
 interface Props {
-  userinfo: Userinfo;
+  userid: string;
 }
 
-export default function NonAdminPage({ userinfo }: Props) {
+export default function NonAdminPage({ userid }: Props) {
+  const { homeData } = useHome(userid);
+
   const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([]);
   const [activeKey, setActiceKey] = useState<number>(0);
 
   const getTabs = async () => {
-    const res = await axios.get(`/api/get/tabs?userid=${userinfo.userid}`);
+    const res = await axios.get(`/api/get/tabs?userid=${userid}`);
     setTabs(res.data);
   };
 
   const handlePDF = async () => {
-    if (userinfo.pdf) {
-      window.open(userinfo.pdf, "_blank");
+    if (homeData.pdf) {
+      window.open(homeData.pdf, "_blank");
     } else {
       alert("PDF 파일이 없습니다.");
     }
@@ -75,7 +78,7 @@ export default function NonAdminPage({ userinfo }: Props) {
           {activeKey === 0 ? (
             <NonAdminHome />
           ) : (
-            <NonAdminTab userid={userinfo.userid} tid={activeKey} />
+            <NonAdminTab userid={userid} tid={activeKey} />
           )}
         </Body>
         <Row>

@@ -6,16 +6,18 @@ import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
 import AdminHome from "./AdminHome";
-import { setUserInfo } from "../../../redux/store";
 import AdminEditor from "./AdminEditor";
 import Footer from "../Footer";
 import { Tab } from "../../../models/tab.model";
 import Body from "../Body";
+import { useHome } from "../../../hooks/useHome";
 
-export default function AdminPage() {
+interface Props {
+  userid: string;
+}
+
+export default function AdminPage({ userid }: Props) {
   // from Redux store
-  const userinfo = useSelector((state: RootState) => state.userinfo);
-  const userid = useSelector((state: RootState) => state.userinfo.userid);
   const tabs = useSelector((state: RootState) => state.tabs);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -25,6 +27,8 @@ export default function AdminPage() {
   const [show, setShow] = useState(false);
   const [newTabName, setNewTabName] = useState<string>("New Tab");
   const [selectedPDF, setSelectedPDF] = useState<File | null>(null);
+
+  const { homeData, setHomeData } = useHome(userid);
 
   // button handlers
   const handleClose = () => {
@@ -120,7 +124,7 @@ export default function AdminPage() {
       setSelectedPDF(e.target.files[0]);
       const formData = new FormData();
       formData.append("file", e.target.files[0]);
-      formData.append("userid", userinfo.userid);
+      formData.append("userid", userid);
       const res = axios
         .post("/api/post/upload", formData, {
           headers: {
@@ -130,7 +134,7 @@ export default function AdminPage() {
         .then((res) => {
           alert("PDF 파일이 업로드되었습니다.");
           if (res.data.pdfUrl) {
-            dispatch(setUserInfo({ ...userinfo, pdf: res.data.pdfUrl }));
+            setHomeData({ ...homeData, pdf: res.data.pdfUrl });
           }
         })
         .catch((err) => {
@@ -259,7 +263,11 @@ export default function AdminPage() {
           </Nav>
         </Row>
         <Body>
-          {activeKey === 0 ? <AdminHome /> : <AdminEditor tid={activeKey} />}
+          {activeKey === 0 ? (
+            <AdminHome userid={userid} />
+          ) : (
+            <AdminEditor userid={userid} tid={activeKey} />
+          )}
         </Body>
         <Row>
           <Footer />

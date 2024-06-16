@@ -1,32 +1,29 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Userinfo } from "../models/userinfo.model";
 import { Tab } from "../models/tab.model";
+import { HomeData } from "../models/home.model";
 
-const initUserinfo: Userinfo = {
-  userid: "initialID",
-  username: "",
+const initHome: HomeData = {
+  userid: "",
   intro: "",
   img: "",
   pdf: "",
 };
 
-const userinfo = createSlice({
-  name: "userinfo",
-  initialState: initUserinfo,
+const homeData = createSlice({
+  name: "homeData",
+  initialState: initHome,
   reducers: {
-    setUserInfo: (state, action: PayloadAction<Userinfo>) => {
-      // Update state here
+    setHomeData: (state, action: PayloadAction<HomeData>) => {
       return action.payload;
     },
-    // ... other reducers can be defined here
   },
 });
 
-export const { setUserInfo } = userinfo.actions;
+export const { setHomeData } = homeData.actions;
 
 const initTabs: Tab[] = [
   {
-    tid: Math.random() * 100000,
+    tid: 1,
     tname: "initTab",
     userid: "initialID",
     torder: 0,
@@ -45,32 +42,9 @@ const tabs = createSlice({
 
 export const { setTabs } = tabs.actions;
 
-const initContents: TabContent[] = [
-  {
-    userid: "initialID",
-    tid: 0,
-    cid: 0,
-    type: "title",
-    ccontent: "initTitle",
-    corder: 0,
-  },
-];
-
-const contents = createSlice({
-  name: "contents",
-  initialState: initContents,
-  reducers: {
-    setContents: (state, action: PayloadAction<TabContent[]>) => {
-      return action.payload;
-    },
-  },
-});
-
-export const { setContents } = contents.actions;
-
 export const store = configureStore({
   reducer: {
-    userinfo: userinfo.reducer, // AdminLayout.tsx
+    homeData: homeData.reducer,
     tabs: tabs.reducer,
   },
   devTools: process.env.NODE_ENV !== "production", // 이건 무슨 뜻이야 왜 있는 거야
@@ -78,12 +52,3 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export type TabContent = {
-  userid: string;
-  tid: number;
-  cid: number;
-  type: string;
-  ccontent: string;
-  corder: number;
-};

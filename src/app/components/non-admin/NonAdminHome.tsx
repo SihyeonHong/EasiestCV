@@ -3,12 +3,12 @@ import { RootState } from "../../../redux/store";
 import styled from "styled-components";
 
 export default function NonAdminHome() {
-  const userinfo = useSelector((state: RootState) => state.userinfo);
+  const homeData = useSelector((state: RootState) => state.homeData);
 
   return (
     <NonAdminHomeStyle>
-      <img className="profile-img" src={userinfo.img} />
-      <IntroText dangerouslySetInnerHTML={{ __html: userinfo.intro ?? "" }} />
+      <img className="profile-img" src={homeData.img} />
+      <IntroText dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }} />
     </NonAdminHomeStyle>
   );
 }

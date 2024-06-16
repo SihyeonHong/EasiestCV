@@ -1,6 +1,5 @@
-export type Userinfo = {
+export type HomeData = {
   userid: string;
-  username?: string;
   intro?: string;
   img?: string;
   pdf?: string;

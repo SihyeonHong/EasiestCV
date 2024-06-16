@@ -11,17 +11,19 @@ import {
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../../redux/store";
-import { setUserInfo, setTabs } from "../../../redux/store";
+import { RootState, AppDispatch, setHomeData } from "../../../redux/store";
+import { setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
 import Title from "../Title";
 
-export default function AdminLayout({ userid }: { userid: string }) {
-  const [isUserExist, setIsUserExist] = useState(false);
-  const redux = useSelector((state: RootState) => state);
+interface Props {
+  userid: string;
+}
+
+export default function AdminLayout({ userid }: Props) {
   const dispatch = useDispatch<AppDispatch>();
-  //   console.log("redux", redux);
+  const [isUserExist, setIsUserExist] = useState(false);
 
   const [show, setShow] = useState(false);
   const [username, setUsername] = useState("");
@@ -38,15 +40,6 @@ export default function AdminLayout({ userid }: { userid: string }) {
     setEmail(res.data[0].email);
   };
 
-  const getUserInfo = async () => {
-    const res = await axios.get(`/api/get/userinfo?userid=${userid}`);
-    // console.log(res.data); // [ {img: null,  intro: "Hello!", pdf: null, userid: "testid"} ] or []
-
-    if (res.data.length > 0) {
-      setIsUserExist(true);
-      dispatch(setUserInfo(res.data[0])); // save into redux
-    }
-  };
   const getTabs = async () => {
     const res = await axios.get(`/api/get/tabs?userid=${userid}`);
     // console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
@@ -120,7 +113,6 @@ export default function AdminLayout({ userid }: { userid: string }) {
 
   useEffect(() => {
     getUser();
-    getUserInfo();
     getTabs();
   }, []);
 
@@ -223,7 +215,7 @@ export default function AdminLayout({ userid }: { userid: string }) {
         <Title title={username ? username : userid}></Title>
       </Row>
       <Row>
-        <AdminPage />
+        <AdminPage userid={userid} />
       </Row>
     </Container>
   );

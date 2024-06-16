@@ -4,31 +4,31 @@ import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { useHome } from "../../../hooks/useHome";
 
 interface Props {
+  userid: string;
   tid: number;
 }
 
-export default function AdminEditor({ tid }: Props) {
-  const [value, setValue] = useState("value");
-  const userinfo = useSelector((state: RootState) => state.userinfo);
-
-  const getContents = async () => {
-    if (tid === 0) {
-      setValue(userinfo.intro ?? "");
-    } else {
-      const res = await axios.get(
-        `/api/get/tabpages?userid=${userinfo.userid}&tid=${tid}`
-      );
-      setValue(res.data);
-    }
-  };
+export default function AdminEditor({ userid, tid }: Props) {
+  const { homeData } = useHome(userid);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
+    const getContents = async () => {
+      if (tid !== 0) {
+        const res = await axios.get(
+          `/api/get/tabpages?userid=${homeData.userid}&tid=${tid}`
+        );
+        setValue(res.data);
+      } else {
+        setValue(homeData.intro || "");
+      }
+    };
+
     getContents();
-  }, [tid]);
+  }, [tid, homeData.intro]);
 
   const modules = {
     toolbar: [
@@ -64,7 +64,7 @@ export default function AdminEditor({ tid }: Props) {
 
   const updateContents = async () => {
     if (tid === 0) {
-      const data = { ...userinfo, intro: value };
+      const data = { ...homeData, intro: value };
       const res = await axios
         .put("/api/put/home", data)
         .then((res) => {
@@ -75,7 +75,7 @@ export default function AdminEditor({ tid }: Props) {
         });
     } else {
       const data = {
-        userid: userinfo.userid,
+        userid: homeData.userid,
         tid: tid,
         contents: value,
       };
