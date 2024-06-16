@@ -7,7 +7,6 @@ import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "../NoUserPage";
 import LoadingPage from "../LoadingPage";
-import Title from "../Title";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
   const [loading, setLoading] = useState(true);
@@ -36,7 +35,9 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
           </Link>
         </Col>
       </Row>
-      <Title title={username ? username : userid}></Title>
+      <h1 className="title">
+        {username ? username.toUpperCase() : userid.toUpperCase()}
+      </h1>
       <Row>
         {loading ? (
           <LoadingPage />

@@ -6,7 +6,7 @@ export default function NoUserPage() {
   return (
     <Container className="tabBody">
       <Row style={{ textAlign: "center" }}>
-        <h1>No Such User</h1>
+        <h2>No Such User</h2>
       </Row>
     </Container>
   );

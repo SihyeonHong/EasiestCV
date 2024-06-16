@@ -10,12 +10,11 @@ import {
   Form,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch, setHomeData } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
 import { setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
-import Title from "../Title";
 
 interface Props {
   userid: string;
@@ -212,7 +211,9 @@ export default function AdminLayout({ userid }: Props) {
         </Modal>
       </Row>
       <Row>
-        <Title title={username ? username : userid}></Title>
+        <h1 className="title">
+          {username ? username.toUpperCase() : userid.toUpperCase()}
+        </h1>
       </Row>
       <Row>
         <AdminPage userid={userid} />

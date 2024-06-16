@@ -6,7 +6,7 @@ export default function NoUserPage() {
   return (
     <Container className="tabBody">
       <Row style={{ textAlign: "center" }}>
-        <h1>Loading...</h1>
+        <h2>Loading...</h2>
       </Row>
     </Container>
   );
