@@ -8,9 +8,11 @@ interface Props {
 export default function NonAdminHome({ userid }: Props) {
   const { homeData } = useHome(userid);
 
+  if (!homeData) return null;
+
   return (
     <NonAdminHomeStyle>
-      <img className="profile-img" src={homeData?.img} alt="profile-img" />
+      <img className="profile-img" src={homeData.img} alt="profile-img" />
       <IntroText dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }} />
     </NonAdminHomeStyle>
   );
