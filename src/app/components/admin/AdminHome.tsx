@@ -45,7 +45,7 @@ export default function AdminHome({ userid }: Props) {
         <Col>
           <h5>프로필 사진 첨부</h5>
           <input type="file" accept="image/*" onChange={handleImgUpload} />
-          <img className="profile-img" src={homeData.img} />
+          <img className="profile-img" src={homeData?.img} alt="profile-img" />
         </Col>
         <Col>
           <AdminEditor userid={userid} tid={0} />

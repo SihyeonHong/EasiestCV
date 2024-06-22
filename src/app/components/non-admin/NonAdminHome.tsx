@@ -10,7 +10,7 @@ export default function NonAdminHome({ userid }: Props) {
 
   return (
     <NonAdminHomeStyle>
-      <img className="profile-img" src={homeData.img} />
+      <img className="profile-img" src={homeData?.img} alt="profile-img" />
       <IntroText dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }} />
     </NonAdminHomeStyle>
   );
