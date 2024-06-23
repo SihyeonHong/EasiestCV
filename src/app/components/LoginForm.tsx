@@ -12,7 +12,6 @@ export default function LoginForm() {
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("로그인");
 
     const data = {
       userid: userid,

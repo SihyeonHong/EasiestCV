@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { HomeData } from "../models/home.model";
-import { fetchHomeData } from "../api/home.api";
+import { fetchHomeData, fetchHomeImg } from "../api/home.api";
 
 export const useHome = (userid: string) => {
   const [homeData, setHomeData] = useState<HomeData>({
@@ -13,5 +13,25 @@ export const useHome = (userid: string) => {
     fetchHomeData(userid).then((data) => setHomeData(data));
   }, [userid]);
 
-  return { homeData, setHomeData };
+  const uploadImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !e.target.files[0]) return;
+
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    formData.append("userid", userid);
+
+    // Check FormData contents
+    // const entries = Array.from(formData.entries());
+    // entries.forEach(([key, value]) => {
+    //   console.log(key, value);
+    // });
+
+    fetchHomeImg(formData).then((res) => {
+      console.log(res);
+      setHomeData({ ...homeData, img: res?.data.imageURL });
+      window.location.reload();
+    });
+  };
+
+  return { homeData, setHomeData, uploadImg };
 };
