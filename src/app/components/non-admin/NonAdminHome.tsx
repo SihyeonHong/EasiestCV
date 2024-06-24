@@ -25,7 +25,7 @@ const NonAdminHomeStyle = styled.div`
 
   img {
     flex: 1;
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     padding: 0 2rem;
   }

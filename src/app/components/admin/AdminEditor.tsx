@@ -114,7 +114,6 @@ const AdminTabEditorStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  justify-content: space-between;
 
   button {
     width: fit-content;
