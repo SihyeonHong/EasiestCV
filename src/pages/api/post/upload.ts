@@ -58,9 +58,8 @@ export default function handler(req: any, res: any) {
             "SELECT pdf FROM userinfo WHERE userid = $1",
             [req.body.userid]
           );
-          //   console.log("result", result);
           if (result[0] && result[0].pdf) {
-            await deleteFile(result[0].pdf);
+            await deleteFile(result[0].pdf.split("/").pop());
           }
 
           // upload new file
@@ -69,7 +68,6 @@ export default function handler(req: any, res: any) {
             "UPDATE userinfo SET pdf = $1 WHERE userid = $2",
             [url, req.body.userid]
           );
-          //   console.log("result2", result2);
           res.status(200).json({ pdfUrl: url });
           return;
         } else {
