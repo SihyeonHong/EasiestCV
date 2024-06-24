@@ -27,9 +27,7 @@ export const useHome = (userid: string) => {
     // });
 
     fetchHomeImg(formData).then((res) => {
-      console.log(res);
-      setHomeData({ ...homeData, img: res?.data.imageURL });
-      window.location.reload();
+      setHomeData({ ...homeData, img: res?.data.imageUrl });
     });
   };
 

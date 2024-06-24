@@ -10,7 +10,6 @@ export const config = {
   },
 };
 const fileFilter = (req: any, file: any, cb: any) => {
-  // 허용되는 mime types
   const allowedTypes = [
     "image/jpg",
     "image/jpeg",
@@ -46,7 +45,7 @@ export default function handler(req: any, res: any) {
       }
       let url = "https://storage.googleapis.com/easiest-cv/";
 
-      console.log(req.file);
+      //   console.log(req.file);
 
       // Upload the file to GCS
       try {
@@ -59,7 +58,7 @@ export default function handler(req: any, res: any) {
             "SELECT pdf FROM userinfo WHERE userid = $1",
             [req.body.userid]
           );
-          console.log("result", result);
+          //   console.log("result", result);
           if (result[0] && result[0].pdf) {
             await deleteFile(result[0].pdf);
           }
@@ -70,7 +69,7 @@ export default function handler(req: any, res: any) {
             "UPDATE userinfo SET pdf = $1 WHERE userid = $2",
             [url, req.body.userid]
           );
-          console.log("result2", result2);
+          //   console.log("result2", result2);
           res.status(200).json({ pdfUrl: url });
           return;
         } else {
@@ -101,7 +100,7 @@ export default function handler(req: any, res: any) {
 
           if (prevImageUrl) {
             try {
-              await deleteFile(prevImageUrl);
+              await deleteFile(prevImageUrl.split("/").pop());
             } catch (error) {
               console.error("Failed to delete previous image from GCS:", error);
             }
