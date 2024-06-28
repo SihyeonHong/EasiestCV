@@ -12,7 +12,7 @@ export default function NonAdminHome({ userid }: Props) {
 
   return (
     <NonAdminHomeStyle>
-      <img className="profile-img" src={homeData.img} alt="profile-img" />
+      <img src={homeData.img} alt="profile-img" />
       <IntroText dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }} />
     </NonAdminHomeStyle>
   );
@@ -35,6 +35,8 @@ const NonAdminHomeStyle = styled.div`
 
     img {
       width: 100%;
+      max-width: 100%;
+      padding: 0;
       margin-right: 0;
       margin-bottom: 2rem;
     }

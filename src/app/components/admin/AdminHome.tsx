@@ -13,7 +13,7 @@ export default function AdminHome({ userid }: Props) {
       <ImgContainer>
         <h5>프로필 사진 첨부</h5>
         <input type="file" accept="image/*" onChange={uploadImg} />
-        <img className="profile-img" src={homeData?.img} alt="profile-img" />
+        <img src={homeData?.img} alt="profile-img" />
       </ImgContainer>
       <AdminEditor userid={userid} tid={0} />
     </AdminHomeStyle>
@@ -31,7 +31,7 @@ const ImgContainer = styled.div`
   width: 50%;
 
   img {
-    object-fit: contain;
     width: 100%;
+    max-width: 100%;
   }
 `;
