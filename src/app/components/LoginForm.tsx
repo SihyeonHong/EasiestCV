@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Container, Row } from "react-bootstrap";
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginForm() {
   const [userid, setUserid] = useState("");
@@ -10,28 +11,15 @@ export default function LoginForm() {
   const [userid2, setUserid2] = useState("");
   const [email, setEmail] = useState("");
 
+  const { login } = useAuth();
+
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const data = {
       userid: userid,
       password: password,
     };
-    axios
-      .post("/api/post/login", data)
-      .then((res) => {
-        if (res.status === 200) {
-          sessionStorage.setItem("userid", res.data.userid);
-          sessionStorage.setItem("token", res.data.token);
-          window.location.href = `/${res.data.userid}/admin`;
-        } else {
-          alert(res.data.message);
-        }
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-        console.log(err);
-      });
+    login(data);
   };
 
   const handleReset = () => {
