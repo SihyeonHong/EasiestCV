@@ -7,7 +7,6 @@ import NonAdminHome from "./NonAdminHome";
 import NonAdminTab from "./NonAdminTab";
 import Footer from "../Footer";
 import Body from "../Body";
-import { fetchHomeData } from "../../../api/home.api";
 import { useHome } from "../../../hooks/useHome";
 
 interface Props {

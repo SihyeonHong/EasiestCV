@@ -1,10 +1,10 @@
 import axios from "axios";
-import { User } from "../models/user.model";
+import { LoginForm, User } from "../models/user.model";
 import { httpClient } from "./http";
 
-export const fetchLogin = async (user: User) => {
+export const fetchLogin = async (data: LoginForm) => {
   try {
-    const response = await httpClient.post(`/post/login`, user);
+    const response = await httpClient.post(`/post/login`, data);
     if (response.status === 200) {
       return response;
     } else {
@@ -23,9 +23,9 @@ export const fetchLogin = async (user: User) => {
   }
 };
 
-export const fetchResetPW = async (user: User) => {
+export const fetchResetPW = async (data: LoginForm) => {
   try {
-    const response = await httpClient.put(`/put/resetPW`, user);
+    const response = await httpClient.put(`/put/resetPW`, data);
     return response;
   } catch (error) {
     console.error(error);

@@ -1,44 +1,29 @@
 "use client";
 
-import { Button, Container, Row, Col } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
-import axios from "axios";
 import NonAdminPage from "./NonAdminPage";
 import NoUserPage from "../NoUserPage";
 import LoadingPage from "../LoadingPage";
+import styled from "styled-components";
+import { useUser } from "../../../hooks/useUser";
 
 export default function NonAdminLayout({ userid }: { userid: string }) {
-  const [loading, setLoading] = useState(true);
-  const [isUserExist, setIsUserExist] = useState(false);
-  const [username, setUsername] = useState("");
-
-  const getUser = async () => {
-    const res = await axios.get(`/api/get/user?userid=${userid}`);
-    if (res.data.length > 0) {
-      setUsername(res.data[0].username);
-      setIsUserExist(true);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { user, isUserExist, loading } = useUser(userid);
 
   return (
-    <Container style={{ padding: "0px" }}>
-      <Row style={{ textAlign: "right" }}>
-        <Col>
-          <Link href="/">
-            <Button variant="dark">Log In | Sign Up</Button>
-          </Link>
-        </Col>
-      </Row>
+    <NonAdminLayoutStyle>
+      <Header>
+        <Link href="/">
+          <Button variant="dark">Log In | Sign Up</Button>
+        </Link>
+      </Header>
       <h1 className="title">
-        {username ? username.toUpperCase() : userid.toUpperCase()}
+        {user && user.username
+          ? user.username.toUpperCase()
+          : userid.toUpperCase()}
       </h1>
-      <Row>
+      <div>
         {loading ? (
           <LoadingPage />
         ) : isUserExist ? (
@@ -46,7 +31,20 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
         ) : (
           <NoUserPage />
         )}
-      </Row>
-    </Container>
+      </div>
+    </NonAdminLayoutStyle>
   );
 }
+
+const NonAdminLayoutStyle = styled.div`
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
