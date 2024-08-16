@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Container, Row } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
+import { LoadingIcon } from "./LoadingIcon";
 
 export default function LoginForm() {
   const [userid, setUserid] = useState("");
@@ -11,10 +12,11 @@ export default function LoginForm() {
   const [userid2, setUserid2] = useState("");
   const [email, setEmail] = useState("");
 
-  const { login } = useAuth();
+  const { login, loading, setLoading } = useAuth();
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     const data = {
       userid: userid,
       password: password,
@@ -65,7 +67,7 @@ export default function LoginForm() {
             />
           </Form.Group>
           <Button variant="dark" type="submit" style={{ marginRight: "1vw" }}>
-            Log In
+            {loading ? <LoadingIcon /> : "Log In"}
           </Button>
           <Button variant="light" onClick={() => setShowForgot(!showForgot)}>
             I forgot my password:(
