@@ -8,12 +8,10 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      console.log(req.query);
-      let userId = req.query.userid;
+      const userId = req.query.userid;
       const result = await query("SELECT * FROM tabs WHERE userid = $1", [
         userId,
       ]);
-      //   console.log("getTabs result: ", result);
       res.json(result.sort((a: Tab, b: Tab) => a.torder - b.torder));
     } catch (e: any) {
       console.log("server error: ", e);

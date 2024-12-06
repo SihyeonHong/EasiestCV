@@ -75,17 +75,3 @@ export default async function handler(
     }
   }
 }
-
-/* put_tabs:  [
-      { userid: 'testid', 
-        tid: 1, 
-        tname: 'Tab1', 
-        torder: 0 
-      },
-      {
-        userid: 'testid',
-        tid: 982746.9207177691,
-        tname: 'tab2',
-        torder: 1
-      }
-    ]*/

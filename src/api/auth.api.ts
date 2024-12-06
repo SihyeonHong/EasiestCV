@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginForm, User } from "../models/user.model";
+import { LoginForm } from "../models/user.model";
 import { httpClient } from "./http";
 
 export const fetchLogin = async (data: LoginForm) => {

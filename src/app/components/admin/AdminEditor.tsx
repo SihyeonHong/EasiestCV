@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useHome } from "../../../hooks/useHome";
+import { useTabs } from "../../../hooks/useTabs";
 
 interface Props {
   userid: string;
@@ -14,20 +15,15 @@ interface Props {
 export default function AdminEditor({ userid, tid }: Props) {
   const { homeData } = useHome(userid);
   const [value, setValue] = useState("");
+  const { tabs } = useTabs(userid);
 
   useEffect(() => {
-    const getContents = async () => {
-      if (tid !== 0) {
-        const res = await axios.get(
-          `/api/get/tabpages?userid=${homeData.userid}&tid=${tid}`
-        );
-        setValue(res.data);
-      } else {
-        setValue(homeData.intro || "");
-      }
-    };
-
-    getContents();
+    if (tid === 0) {
+      setValue(homeData.intro || "");
+    } else {
+      const tab = tabs.find((t) => t.tid === tid);
+      setValue(tab?.contents || "");
+    }
   }, [tid, homeData.intro]);
 
   const modules = {

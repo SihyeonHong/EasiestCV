@@ -1,6 +1,7 @@
 export type Tab = {
+  userid: string;
   tid: number;
   tname: string;
-  userid: string;
   torder: number;
+  contents?: string;
 };
