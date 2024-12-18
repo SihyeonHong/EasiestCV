@@ -1,11 +1,13 @@
+import dynamic from "next/dynamic";
 import styled from "styled-components";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useHome } from "../../../hooks/useHome";
 import { useTabs } from "../../../hooks/useTabs";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 interface Props {
   userid: string;

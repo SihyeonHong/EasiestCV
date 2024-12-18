@@ -16,6 +16,9 @@ const fileFilter = (req: any, file: any, cb: any) => {
     "image/png",
     "image/gif",
     "application/pdf",
+    "image/webp",
+    "image/svg+xml",
+    "image/bmp",
   ];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true); // 파일을 허용
@@ -23,7 +26,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(null, false); // 파일을 거부
     cb(
       new Error(
-        "Invalid file type. Only JPG, JPEG, PNG, GIF and PDF are allowed."
+        "Invalid file type. Only JPG, JPEG, PNG, GIF, PDF, WebP, SVG, and BMP are allowed."
       )
     );
   }
@@ -44,8 +47,6 @@ export default function handler(req: any, res: any) {
         return res.status(500).json({ error: "Unknown error during upload." });
       }
       let url = "https://storage.googleapis.com/easiest-cv/";
-
-      //   console.log(req.file);
 
       // Upload the file to GCS
       try {
@@ -75,33 +76,34 @@ export default function handler(req: any, res: any) {
 
           try {
             await uploadFile(uniqueFilename, req.file.buffer, "image");
-          } catch (error) {
-            console.error("Failed to upload image to GCS:", error);
-            return res
-              .status(500)
-              .json({ error: "Failed to upload image to GCS." });
-          }
-
-          let prevImageUrl;
-          try {
+            let prevImageUrl;
             const result = await query(
               "SELECT img FROM userinfo WHERE userid = $1",
               [req.body.userid]
             );
             prevImageUrl = result[0]?.img;
+            if (prevImageUrl) {
+              try {
+                await deleteFile(prevImageUrl.split("/").pop());
+              } catch (error) {
+                console.error(
+                  "Failed to delete previous image from GCS:",
+                  error
+                );
+              }
+            }
+            // DB 업데이트를 기다린 후 응답을 보냅니다
+            await query("UPDATE userinfo SET img = $1 WHERE userid = $2", [
+              url,
+              req.body.userid,
+            ]);
+            // DB 업데이트가 완료된 후에 응답을 보냅니다
+            res.status(200).json({ imageUrl: url });
           } catch (error) {
-            console.error("Failed to fetch previous image URL:", error);
+            console.error("Failed to process image upload:", error);
             return res
               .status(500)
-              .json({ error: "Failed to fetch previous image URL." });
-          }
-
-          if (prevImageUrl) {
-            try {
-              await deleteFile(prevImageUrl.split("/").pop());
-            } catch (error) {
-              console.error("Failed to delete previous image from GCS:", error);
-            }
+              .json({ error: "Failed to upload image to GCS." });
           }
 
           try {

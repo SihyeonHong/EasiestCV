@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function RequireAuth({
@@ -9,10 +10,18 @@ export default function RequireAuth({
   url: string;
   children: any;
 }) {
-  const token = sessionStorage.getItem("token");
-  const userid = sessionStorage.getItem("userid");
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
-  if (!token || url !== userid) {
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const userid = sessionStorage.getItem("userid");
+
+    if (token && url === userid) {
+      setIsAuthorized(true);
+    }
+  }, [url]);
+
+  if (!isAuthorized) {
     return (
       <div>
         You cannot access this page without logging in.

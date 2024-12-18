@@ -26,9 +26,17 @@ export const useHome = (userid: string) => {
     //   console.log(key, value);
     // });
 
-    fetchHomeImg(formData).then((res) => {
-      setHomeData({ ...homeData, img: res?.data.imageUrl });
-    });
+    try {
+      const res = await fetchHomeImg(formData);
+      if (res?.data.imageUrl) {
+        // 이미지 업로드 후 전체 데이터를 다시 불러옵니다
+        const updatedData = await fetchHomeData(userid);
+        console.log(updatedData.img);
+        setHomeData(updatedData);
+      }
+    } catch (error) {
+      console.error("이미지 업로드 중 오류 발생:", error);
+    }
   };
 
   return { homeData, setHomeData, uploadImg };
