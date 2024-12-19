@@ -10,20 +10,16 @@ import {
   Form,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../redux/store";
-import { setTabs } from "../../../redux/store";
 import axios from "axios";
 import AdminPage from "./AdminPage";
+import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
   userid: string;
 }
 
 export default function AdminLayout({ userid }: Props) {
-  const dispatch = useDispatch<AppDispatch>();
-  const [isUserExist, setIsUserExist] = useState(false);
-
+  const { tabs, setTabs } = useTabs(userid);
   const [show, setShow] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +30,6 @@ export default function AdminLayout({ userid }: Props) {
 
   const getUser = async () => {
     const res = await axios.get(`/api/get/user?userid=${userid}`);
-    // console.log(res.data);
     setUsername(res.data[0].username);
     setEmail(res.data[0].email);
   };
@@ -44,7 +39,7 @@ export default function AdminLayout({ userid }: Props) {
     // console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
 
     if (res.data.length > 0) {
-      dispatch(setTabs(res.data)); // save into redux
+      setTabs(res.data);
     }
   };
 
