@@ -1,4 +1,5 @@
-import "./globals.css";
+import "@/app/globals.css";
+import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -20,7 +21,7 @@ export default function RootLayout({
         className={inter.className}
         style={{ backgroundColor: "rgb(250, 250, 247)" }}
       >
-        {children}
+        <TanstackQueryProvider>{children}</TanstackQueryProvider>
       </body>
     </html>
   );
