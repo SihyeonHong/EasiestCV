@@ -20,7 +20,8 @@ export default function NonAdminPage({ userid }: Props) {
   const [activeKey, setActiceKey] = useState<number>(0);
 
   const getTabs = async () => {
-    const res = await axios.get(`/api/get/tabs?userid=${userid}`);
+    // const res = await axios.get(`/api/get/tabs?userid=${userid}`);
+    const res = await axios.get(`/api/tabs?userid=${userid}`);
     setTabs(res.data);
   };
 

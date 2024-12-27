@@ -35,9 +35,9 @@ export default function AdminLayout({ userid }: Props) {
   };
 
   const getTabs = async () => {
-    const res = await axios.get(`/api/get/tabs?userid=${userid}`);
+    // const res = await axios.get(`/api/get/tabs?userid=${userid}`);
     // console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
-
+    const res = await axios.get(`/api/tabs?userid=${userid}`);
     if (res.data.length > 0) {
       setTabs(res.data);
     }
