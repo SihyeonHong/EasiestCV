@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AdminPage from "./AdminPage";
+import useAuth from "@/hooks/useAuth";
 
 interface Props {
   userid: string;
@@ -25,18 +26,12 @@ export default function AdminLayout({ userid }: Props) {
   const [currentPW, setCurrentPW] = useState("");
   const [newPW, setNewPW] = useState("");
   const [confirmPW, setConfirmPW] = useState("");
+  const { logout } = useAuth();
 
   const getUser = async () => {
     const res = await axios.get(`/api/get/user?userid=${userid}`);
     setUsername(res.data[0].username);
     setEmail(res.data[0].email);
-  };
-
-  const handleLogout = () => {
-    // delete session
-    sessionStorage.removeItem("userid");
-    sessionStorage.removeItem("token");
-    window.location.href = `/${userid}`;
   };
 
   const handleClose = () => setShow(false);
@@ -103,7 +98,7 @@ export default function AdminLayout({ userid }: Props) {
       <Row style={{ textAlign: "right" }}>
         <Col>
           <ButtonGroup>
-            <Button variant="dark" onClick={handleLogout}>
+            <Button variant="dark" onClick={() => logout()}>
               로그아웃
             </Button>
             <Button variant="light" onClick={handleOpen}>

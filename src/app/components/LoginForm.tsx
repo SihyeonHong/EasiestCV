@@ -12,11 +12,10 @@ export default function LoginForm() {
   const [userid2, setUserid2] = useState("");
   const [email, setEmail] = useState("");
 
-  const { login, loading, setLoading } = useAuth();
+  const { login, isLoggingIn } = useAuth();
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
     const data = {
       userid: userid,
       password: password,
@@ -67,7 +66,7 @@ export default function LoginForm() {
             />
           </Form.Group>
           <Button variant="dark" type="submit" style={{ marginRight: "1vw" }}>
-            {loading ? <LoadingIcon /> : "Log In"}
+            {isLoggingIn ? <LoadingIcon /> : "Log In"}
           </Button>
           <Button variant="light" onClick={() => setShowForgot(!showForgot)}>
             I forgot my password:(
