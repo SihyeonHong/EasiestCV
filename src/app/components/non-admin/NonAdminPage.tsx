@@ -8,6 +8,7 @@ import NonAdminTab from "./NonAdminTab";
 import Footer from "../Footer";
 import Body from "../Body";
 import { useHome } from "../../../hooks/useHome";
+import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
   userid: string;
@@ -15,14 +16,8 @@ interface Props {
 
 export default function NonAdminPage({ userid }: Props) {
   const { homeData } = useHome(userid);
-
-  const [tabs, setTabs] = useState<{ tid: number; tname: string }[]>([]);
+  const { tabs } = useTabs(userid);
   const [activeKey, setActiceKey] = useState<number>(0);
-
-  const getTabs = async () => {
-    const res = await axios.get(`/api/get/tabs?userid=${userid}`);
-    setTabs(res.data);
-  };
 
   const handlePDF = async () => {
     if (homeData.pdf) {
@@ -31,10 +26,6 @@ export default function NonAdminPage({ userid }: Props) {
       alert("PDF 파일이 없습니다.");
     }
   };
-
-  useEffect(() => {
-    getTabs();
-  }, []);
 
   return (
     <div>
