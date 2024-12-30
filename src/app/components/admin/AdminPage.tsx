@@ -2,20 +2,20 @@
 
 import axios from "axios";
 import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import AdminHome from "./AdminHome";
 import AdminEditor from "./AdminEditor";
 import Footer from "../Footer";
 import Body from "../Body";
-import { useHome } from "../../../hooks/useHome";
-import { useTabs } from "../../../hooks/useTabs";
+import { useHome } from "@/hooks/useHome";
+import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
   userid: string;
 }
 
 export default function AdminPage({ userid }: Props) {
-  const { tabs, setTabs, addTab, deleteTab, renameTab, saveTabs } =
+  const { tabs, setLocalTabs, addTab, deleteTab, renameTab, saveTabs } =
     useTabs(userid);
   const { homeData, setHomeData } = useHome(userid);
 
@@ -51,7 +51,7 @@ export default function AdminPage({ userid }: Props) {
     dragOverItem.current = null;
 
     //update the actual array
-    setTabs(_tabs);
+    setLocalTabs(_tabs);
   };
 
   const handleSave = () => {

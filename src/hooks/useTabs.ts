@@ -1,13 +1,32 @@
-import { useEffect, useState } from "react";
-import { fetchTabs, updateTabs } from "../api/tap.api";
-import { Tab } from "../models/tab.model";
+import { Tab } from "@/models/tab.model";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/constants/queryKeys";
+import { get, put } from "@/api/http";
+import { useState } from "react";
 
 export const useTabs = (userid: string) => {
-  const [tabs, setTabs] = useState<Tab[]>([]);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchTabs(userid).then((data) => setTabs(data));
-  }, []);
+  const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
+
+  const { data: serverTabs = [] } = useQuery<Tab[]>({
+    queryKey: queryKeys.tabs({ userid }),
+    queryFn: () => get<Tab[]>(`/tabs?userid=${userid}`),
+  });
+
+  const tabs = localTabs ?? serverTabs;
+
+  const { mutate: updateTabsMutation } = useMutation({
+    mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
+      setLocalTabs(null);
+    },
+    onError: (error) => {
+      alert("탭 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      console.error("탭 저장 오류:", error);
+    },
+  });
 
   const addTab = (newTabName: string) => {
     if (!newTabName || newTabName.trim() === "") {
@@ -22,7 +41,7 @@ export const useTabs = (userid: string) => {
       torder: tabs.length,
     };
 
-    setTabs([...tabs, newTab]);
+    setLocalTabs([...tabs, newTab]);
   };
 
   const deleteTab = (tid: number) => {
@@ -36,21 +55,30 @@ export const useTabs = (userid: string) => {
       ...tab,
       torder: index,
     }));
-    setTabs(reindexed);
+
+    setLocalTabs(reindexed);
   };
 
   const renameTab = (tid: number) => {
     const newTabName = window.prompt("새 탭 이름을 입력하세요.");
     if (!newTabName) return;
-    setTabs(
+    setLocalTabs(
       tabs.map((tab) => (tab.tid === tid ? { ...tab, tname: newTabName } : tab))
     );
   };
 
   const saveTabs = () => {
-    updateTabs(tabs);
-    fetchTabs(userid).then((data) => setTabs(data));
+    if (localTabs) {
+      updateTabsMutation(localTabs);
+    }
   };
 
-  return { tabs, setTabs, addTab, deleteTab, renameTab, saveTabs };
+  return {
+    tabs,
+    setLocalTabs,
+    addTab,
+    deleteTab,
+    renameTab,
+    saveTabs,
+  };
 };

@@ -27,7 +27,7 @@ const createClient = (config?: AxiosRequestConfig) => {
     }
   );
 
-  axiosInstance.interceptors.request.use(
+  axiosInstance.interceptors.response.use(
     (response) => {
       return response;
     },
@@ -45,6 +45,26 @@ const createClient = (config?: AxiosRequestConfig) => {
 };
 
 export const httpClient = createClient();
+
+export const get = async <T>(...args: Parameters<typeof httpClient.get>) => {
+  const response = await httpClient.get<T>(...args);
+  return response.data;
+};
+
+export const post = async <T>(...args: Parameters<typeof httpClient.post>) => {
+  const response = await httpClient.post<T>(...args);
+  return response.data;
+};
+
+export const put = async <T>(...args: Parameters<typeof httpClient.put>) => {
+  const response = await httpClient.put<T>(...args);
+  return response.data;
+};
+
+export const del = async <T>(...args: Parameters<typeof httpClient.delete>) => {
+  const response = await httpClient.delete<T>(...args);
+  return response.data;
+};
 
 const getToken = () => {
   const token = localStorage.getItem("token");

@@ -12,14 +12,12 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AdminPage from "./AdminPage";
-import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
   userid: string;
 }
 
 export default function AdminLayout({ userid }: Props) {
-  const { tabs, setTabs } = useTabs(userid);
   const [show, setShow] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -32,15 +30,6 @@ export default function AdminLayout({ userid }: Props) {
     const res = await axios.get(`/api/get/user?userid=${userid}`);
     setUsername(res.data[0].username);
     setEmail(res.data[0].email);
-  };
-
-  const getTabs = async () => {
-    // const res = await axios.get(`/api/get/tabs?userid=${userid}`);
-    // console.log(res.data); // [ {tid: 1,  tname: "Tab1", userid: "test2"} ] or []
-    const res = await axios.get(`/api/tabs?userid=${userid}`);
-    if (res.data.length > 0) {
-      setTabs(res.data);
-    }
   };
 
   const handleLogout = () => {
@@ -107,7 +96,6 @@ export default function AdminLayout({ userid }: Props) {
 
   useEffect(() => {
     getUser();
-    getTabs();
   }, []);
 
   return (
