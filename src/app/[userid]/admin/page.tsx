@@ -1,18 +1,16 @@
-"use client";
+import AdminLayout from "@/app/components/admin/AdminLayout";
+import RequireAuth from "@/app/components/RequireAuthPage";
 
-import { usePathname } from "next/navigation";
-import AdminLayout from "../../components/admin/AdminLayout";
-import RequireAuth from "../../components/RequireAuthPage";
+interface Props {
+  params: {
+    userid: string;
+  };
+}
 
-export default function Page() {
-  const pathname = usePathname();
-  let userid = "";
-  if (pathname) {
-    userid = pathname.split("/")[1];
-  }
+export default function Page({ params }: Props) {
   return (
-    <RequireAuth url={userid}>
-      <AdminLayout userid={userid} />
+    <RequireAuth url={params.userid}>
+      <AdminLayout userid={params.userid} />
     </RequireAuth>
   );
 }

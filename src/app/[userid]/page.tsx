@@ -1,14 +1,11 @@
-"use client";
+import NonAdminLayout from "@/app/components/non-admin/NonAdminLayout";
 
-import { usePathname } from "next/navigation";
-import NonAdminLayout from "../components/non-admin/NonAdminLayout";
+interface Props {
+  params: {
+    userid: string;
+  };
+}
 
-export default function Page() {
-  const pathname = usePathname();
-  let userid = "";
-  if (pathname) {
-    userid = pathname.split("/")[1];
-  }
-
-  return <NonAdminLayout userid={userid} />;
+export default function Page({ params }: Props) {
+  return <NonAdminLayout userid={params.userid} />;
 }
