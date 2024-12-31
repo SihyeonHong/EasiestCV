@@ -34,11 +34,12 @@ export const useTabs = (userid: string) => {
       return;
     }
 
-    const newTab = {
+    const newTab: Tab = {
       userid,
       tid: Math.floor(Math.random() * 1000000),
       tname: newTabName,
       torder: tabs.length,
+      contents: null,
     };
 
     setLocalTabs([...tabs, newTab]);

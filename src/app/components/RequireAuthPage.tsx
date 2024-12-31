@@ -2,6 +2,7 @@
 
 import useAuth from "@/hooks/useAuth";
 import Link from "next/link";
+import { LoadingIcon } from "./LoadingIcon";
 
 export default function RequireAuth({
   url,
@@ -12,8 +13,7 @@ export default function RequireAuth({
 }) {
   const { user, isLoading } = useAuth();
 
-  // 로딩 중에는 아무것도 보여주지 않음
-  if (isLoading) return null;
+  if (isLoading) return <LoadingIcon />;
 
   // 비로그인 상태이거나 다른 사용자의 admin 페이지 접근 시도
   if (!user || user.userid !== url) {
