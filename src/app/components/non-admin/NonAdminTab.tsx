@@ -1,7 +1,6 @@
 "use client";
 
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useTabs } from "@/hooks/useTabs";
 import styled from "styled-components";
 
 interface Props {
@@ -9,25 +8,16 @@ interface Props {
   tid: number;
 }
 
-export default function NonAdminPage({ userid, tid }: Props) {
-  const [contents, setContents] = useState();
-
-  const getPages = async () => {
-    const res = await axios.get(
-      `/api/get/tabpages?userid=${userid}&tid=${tid}`
-    );
-    setContents(res.data);
-  };
-
-  useEffect(() => {
-    getPages();
-  }, [tid]);
+export default function NonAdminTab({ userid, tid }: Props) {
+  const { tabs } = useTabs(userid);
 
   return (
     <>
-      {contents && (
+      {tabs.find((tab) => tab.tid === tid)?.contents && (
         <NonAdminPageStyle
-          dangerouslySetInnerHTML={{ __html: contents }}
+          dangerouslySetInnerHTML={{
+            __html: tabs.find((tab) => tab.tid === tid)?.contents!,
+          }}
         ></NonAdminPageStyle>
       )}
     </>
