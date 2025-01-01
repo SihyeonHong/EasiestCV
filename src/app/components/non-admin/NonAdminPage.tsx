@@ -1,13 +1,12 @@
 "use client";
 
 import { Nav, Container, Row } from "react-bootstrap";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import NonAdminHome from "./NonAdminHome";
-import NonAdminTab from "./NonAdminTab";
-import Footer from "../Footer";
-import Body from "../Body";
-import { useHome } from "../../../hooks/useHome";
+import { useState } from "react";
+import NonAdminHome from "@/app/components/non-admin/NonAdminHome";
+import NonAdminTab from "@/app/components/non-admin/NonAdminTab";
+import Footer from "@/app/components/common/Footer";
+import Body from "@/app/components/Body";
+import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
