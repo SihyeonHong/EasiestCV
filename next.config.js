@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {},
+  images: {
+    domains: ["storage.googleapis.com"],
+  },
 };
-
 export default nextConfig;

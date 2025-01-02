@@ -9,7 +9,7 @@ export default function NonAdminLayout({ userid }: { userid: string }) {
   const { user, isUserExist, loading } = useUser(userid);
 
   return (
-    <div>
+    <div className="">
       <h1 className="mx-auto my-10 cursor-default text-center font-semibold">
         {user && user.username
           ? user.username.toUpperCase()
