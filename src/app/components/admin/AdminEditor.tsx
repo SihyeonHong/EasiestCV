@@ -28,37 +28,6 @@ export default function AdminEditor({ userid, tid }: Props) {
     }
   }, [tid, homeData.intro]);
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link"],
-      [{ align: [] }, { color: [] }, { background: [] }],
-      ["clean"],
-    ],
-  };
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "align",
-    "color",
-    "background",
-    "clean",
-  ];
-
   const updateContents = async () => {
     if (tid === 0) {
       const data = { ...homeData, intro: value };
@@ -112,6 +81,7 @@ const AdminTabEditorStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
 
   button {
     width: fit-content;
@@ -122,3 +92,34 @@ const AdminTabEditorStyle = styled.div`
     background-color: white;
   }
 `;
+
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link"],
+    [{ align: [] }, { color: [] }, { background: [] }],
+    ["clean"],
+  ],
+};
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "align",
+  "color",
+  "background",
+  "clean",
+];

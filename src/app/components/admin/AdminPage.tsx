@@ -5,7 +5,7 @@ import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
 import { useState, useRef } from "react";
 import AdminHome from "./AdminHome";
 import AdminEditor from "./AdminEditor";
-import Footer from "../Footer";
+import Footer from "../common/Footer";
 import Body from "../Body";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";

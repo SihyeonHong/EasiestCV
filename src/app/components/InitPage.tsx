@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Row, Nav } from "react-bootstrap";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
+import { Nav } from "react-bootstrap";
+import LoginForm from "@/app/components/LoginForm";
+import RegisterForm from "@/app/components/RegisterForm";
 import styled from "styled-components";
 
 export default function InitPage() {
@@ -12,7 +12,7 @@ export default function InitPage() {
   const handleSignupOpen = () => setShowLogin(false);
 
   return (
-    <Container>
+    <div className="flex flex-col items-center">
       <Nav
         variant="underline"
         defaultActiveKey="login"
@@ -29,8 +29,8 @@ export default function InitPage() {
           </Nav.Link>
         </Nav.Item>
       </Nav>
-      <Row>{showLogin ? <LoginForm /> : <RegisterForm />}</Row>
-      <Row>
+      <div>{showLogin ? <LoginForm /> : <RegisterForm />}</div>
+      <div>
         <DemoText>
           Want to try? Use this demo account{" "}
           <DemoCredentials>ID: tutorial / PW: easiestcv</DemoCredentials> or
@@ -43,8 +43,8 @@ export default function InitPage() {
             Professor John Doe's CV →
           </DemoLink>
         </DemoText>
-      </Row>
-    </Container>
+      </div>
+    </div>
   );
 }
 const DemoText = styled.p`

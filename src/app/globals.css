@@ -1,19 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 * {
   font-family: "Pretendard", sans-serif;
   word-wrap: break-word;
-}
-
-.title {
-  margin: 50px auto;
-  text-align: center;
-  a {
-    color: black;
-    text-decoration: none;
-  }
-  cursor: default;
 }
 
 .nav {

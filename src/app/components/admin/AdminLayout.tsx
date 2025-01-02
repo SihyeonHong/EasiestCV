@@ -189,7 +189,7 @@ export default function AdminLayout({ userid }: Props) {
         </Modal>
       </Row>
       <Row>
-        <h1 className="title">
+        <h1 className="my-14 mx-auto text-center cursor-default">
           {username ? username.toUpperCase() : userid.toUpperCase()}
         </h1>
       </Row>

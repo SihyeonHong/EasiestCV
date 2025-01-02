@@ -1,13 +1,12 @@
 "use client";
 
 import { Nav, Container, Row } from "react-bootstrap";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import NonAdminHome from "./NonAdminHome";
-import NonAdminTab from "./NonAdminTab";
-import Footer from "../Footer";
-import Body from "../Body";
-import { useHome } from "../../../hooks/useHome";
+import { useState } from "react";
+import NonAdminHome from "@/app/components/non-admin/NonAdminHome";
+import NonAdminTab from "@/app/components/non-admin/NonAdminTab";
+import Footer from "@/app/components/common/Footer";
+import Body from "@/app/components/Body";
+import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 
 interface Props {
@@ -28,53 +27,47 @@ export default function NonAdminPage({ userid }: Props) {
   };
 
   return (
-    <div>
-      <Container>
-        <Row>
-          <Nav
-            variant="underline"
-            className="nav justify-content-center"
-            activeKey={activeKey}
+    <div className="flex flex-col">
+      <Nav
+        variant="underline"
+        className="nav justify-content-center"
+        activeKey={activeKey}
+      >
+        <Nav.Item>
+          <Nav.Link
+            eventKey={0}
+            onClick={() => {
+              setActiceKey(0);
+            }}
           >
-            <Nav.Item>
+            Home
+          </Nav.Link>
+        </Nav.Item>
+        {tabs &&
+          tabs.map((tab, idx) => (
+            <Nav.Item key={tab.tid}>
               <Nav.Link
-                eventKey={0}
+                eventKey={tab.tid}
                 onClick={() => {
-                  setActiceKey(0);
+                  setActiceKey(tab.tid);
                 }}
               >
-                Home
+                {tab.tname}
               </Nav.Link>
             </Nav.Item>
-            {tabs &&
-              tabs.map((tab, idx) => (
-                <Nav.Item key={tab.tid}>
-                  <Nav.Link
-                    eventKey={tab.tid}
-                    onClick={() => {
-                      setActiceKey(tab.tid);
-                    }}
-                  >
-                    {tab.tname}
-                  </Nav.Link>
-                </Nav.Item>
-              ))}
-            <Nav.Item>
-              <Nav.Link onClick={handlePDF}>PDF</Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </Row>
-        <Body>
-          {activeKey === 0 ? (
-            <NonAdminHome userid={userid} />
-          ) : (
-            <NonAdminTab userid={userid} tid={activeKey} />
-          )}
-        </Body>
-        <Row>
-          <Footer />
-        </Row>
-      </Container>
+          ))}
+        <Nav.Item>
+          <Nav.Link onClick={handlePDF}>PDF</Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <div className="p-8">
+        {activeKey === 0 ? (
+          <NonAdminHome userid={userid} />
+        ) : (
+          <NonAdminTab userid={userid} tid={activeKey} />
+        )}
+      </div>
+      <Footer />
     </div>
   );
 }
