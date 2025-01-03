@@ -36,7 +36,7 @@ export const useTabs = (userid: string) => {
 
     const newTab: Tab = {
       userid,
-      tid: Math.floor(Math.random() * 1000000),
+      tid: generateUniqueTid(tabs),
       tname: newTabName,
       torder: tabs.length,
       contents: null,
@@ -47,7 +47,7 @@ export const useTabs = (userid: string) => {
 
   const deleteTab = (tid: number) => {
     const confirm = window.confirm(
-      "정말 삭제하시겠습니까? 탭 속 내용도 함께 삭제됩니다."
+      "정말 삭제하시겠습니까? 탭 속 내용도 함께 삭제됩니다.",
     );
     if (!confirm) return;
 
@@ -64,7 +64,9 @@ export const useTabs = (userid: string) => {
     const newTabName = window.prompt("새 탭 이름을 입력하세요.");
     if (!newTabName) return;
     setLocalTabs(
-      tabs.map((tab) => (tab.tid === tid ? { ...tab, tname: newTabName } : tab))
+      tabs.map((tab) =>
+        tab.tid === tid ? { ...tab, tname: newTabName } : tab,
+      ),
     );
   };
 
@@ -82,4 +84,15 @@ export const useTabs = (userid: string) => {
     renameTab,
     saveTabs,
   };
+};
+
+const generateUniqueTid = (existingTabs: Tab[]): number => {
+  const existingTids = new Set(existingTabs.map((tab) => tab.tid));
+  let newTid: number;
+
+  do {
+    newTid = Math.floor(Math.random() * 999999) + 1;
+  } while (existingTids.has(newTid));
+
+  return newTid;
 };

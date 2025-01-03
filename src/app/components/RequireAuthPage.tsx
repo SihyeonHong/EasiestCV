@@ -11,12 +11,12 @@ export default function RequireAuth({
   url: string;
   children: React.ReactNode;
 }) {
-  const { user, isLoading } = useAuth();
+  const { me, isLoading } = useAuth();
 
   if (isLoading) return <LoadingIcon />;
 
   // 비로그인 상태이거나 다른 사용자의 admin 페이지 접근 시도
-  if (!user || user.userid !== url) {
+  if (!me || me.userid !== url) {
     return (
       <div>
         You cannot access this page without logging in.
