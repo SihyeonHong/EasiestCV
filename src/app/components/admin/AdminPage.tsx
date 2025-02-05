@@ -1,63 +1,27 @@
 "use client";
 
 import axios from "axios";
-import { Nav, Container, Row, Modal, Button, Table } from "react-bootstrap";
-import { useState, useRef } from "react";
-import AdminHome from "./AdminHome";
-import AdminEditor from "./AdminEditor";
-import Footer from "../common/Footer";
+import { Nav, Container, Row } from "react-bootstrap";
+import { useState } from "react";
+import AdminHome from "@/app/components/admin/AdminHome";
+import AdminEditor from "@/app/components/admin/AdminEditor";
+import Footer from "@/app/components/common/Footer";
 import Body from "../Body";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
+import TabModal from "@/app/components/admin/TabModal";
 
 interface Props {
   userid: string;
 }
 
 export default function AdminPage({ userid }: Props) {
-  const { tabs, setLocalTabs, addTab, deleteTab, renameTab, saveTabs } =
-    useTabs(userid);
+  const { tabs, setCurrentTab } = useTabs(userid);
   const { homeData, setHomeData } = useHome(userid);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeKey, setActiveKey] = useState<number>(0);
-  const [show, setShow] = useState(false);
-
-  const [newTabName, setNewTabName] = useState<string>("New Tab");
   const [selectedPDF, setSelectedPDF] = useState<File | null>(null);
-
-  // save reference for dragItem and dragOverItem
-  const dragItem = useRef<any>(null); // 내가 드래그중인 아이템
-  const dragOverItem = useRef<any>(null); // 내가 드래그하고 있는 아이템이 들어갈 위치
-
-  // handle drag sorting
-  const handleSort = () => {
-    //duplicate items
-    let _tabs = [...tabs];
-
-    //remove and save the dragged item content
-    const draggedItemContent = _tabs.splice(dragItem.current, 1)[0];
-
-    //switch the position
-    _tabs.splice(dragOverItem.current, 0, draggedItemContent);
-
-    // update torder based on the current index
-    _tabs = _tabs.map((item, index) => ({
-      ...item,
-      torder: index,
-    }));
-
-    //reset the position ref
-    dragItem.current = null;
-    dragOverItem.current = null;
-
-    //update the actual array
-    setLocalTabs(_tabs);
-  };
-
-  const handleSave = () => {
-    saveTabs();
-    setShow(false);
-  };
 
   const handlePDFUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -97,6 +61,7 @@ export default function AdminPage({ userid }: Props) {
                 eventKey={0}
                 onClick={() => {
                   setActiveKey(0);
+                  setCurrentTab(null);
                 }}
               >
                 Home
@@ -108,6 +73,7 @@ export default function AdminPage({ userid }: Props) {
                   eventKey={tab.tid}
                   onClick={() => {
                     setActiveKey(tab.tid);
+                    setCurrentTab(tab);
                   }}
                 >
                   {tab.tname}
@@ -125,80 +91,14 @@ export default function AdminPage({ userid }: Props) {
               </div>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link onClick={() => setShow(true)}>탭 관리</Nav.Link>
-              <Modal
-                show={show}
-                onHide={() => setShow(false)}
-                backdrop="static"
-                keyboard={false}
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>탭 관리</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  위아래로 드래그하면 탭의 순서를 바꿀 수 있습니다.
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Index</th>
-                        <th>Tab Name</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tabs &&
-                        tabs.map((tab, idx) => (
-                          <tr
-                            key={idx}
-                            draggable
-                            onDragStart={(e) => {
-                              dragItem.current = idx;
-                            }}
-                            onDragOver={(e) => {
-                              e.preventDefault();
-                              dragOverItem.current = idx;
-                            }}
-                            onDragEnd={handleSort}
-                          >
-                            <td>{tab.torder + 1}</td>
-                            <td>{tab.tname}</td>
-                            <td>
-                              <Button
-                                variant="dark"
-                                onClick={() => renameTab(tab.tid)}
-                              >
-                                RENAME
-                              </Button>
-                              <Button
-                                variant="light"
-                                onClick={() => deleteTab(tab.tid)}
-                              >
-                                DELETE
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </Table>
-                  <input
-                    type="text"
-                    placeholder="New Tab Name"
-                    value={newTabName}
-                    onChange={(e) => setNewTabName(e.target.value)}
-                  />
-                  <Button variant="dark" onClick={() => addTab(newTabName)}>
-                    탭 추가
-                  </Button>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="light" onClick={() => setShow(false)}>
-                    초기화
-                  </Button>
-                  <Button variant="dark" onClick={handleSave}>
-                    이대로 저장하기
-                  </Button>
-                </Modal.Footer>
-              </Modal>
+              <Nav.Link onClick={() => setIsModalOpen(true)}>
+                Tab Settings
+              </Nav.Link>
+              <TabModal
+                userid={userid}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+              />
             </Nav.Item>
           </Nav>
         </Row>

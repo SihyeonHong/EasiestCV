@@ -3,11 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
 import { get, put } from "@/api/http";
 import { useState } from "react";
+import { UpdateContentsRequest } from "@/app/api/contents/route";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();
 
   const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
+  const [currentTab, setCurrentTab] = useState<Tab | null>(null);
 
   const { data: serverTabs = [] } = useQuery<Tab[]>({
     queryKey: queryKeys.tabs({ userid }),
@@ -25,6 +27,18 @@ export const useTabs = (userid: string) => {
     onError: (error) => {
       alert("탭 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
       console.error("탭 저장 오류:", error);
+    },
+  });
+
+  const { mutate: updateContentsMutation } = useMutation({
+    mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
+      put(`/contents`, updateContentsRequest),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
+    },
+    onError: (error) => {
+      alert("탭 내용 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      console.error("내용 저장 오류:", error);
     },
   });
 
@@ -76,6 +90,21 @@ export const useTabs = (userid: string) => {
     }
   };
 
+  const updateContents = ({
+    tid,
+    newContent,
+  }: {
+    tid: number;
+    newContent: string;
+  }) => {
+    const updateContentsRequest: UpdateContentsRequest = {
+      userid,
+      tid,
+      contents: newContent,
+    };
+    updateContentsMutation(updateContentsRequest);
+  };
+
   return {
     tabs,
     setLocalTabs,
@@ -83,6 +112,9 @@ export const useTabs = (userid: string) => {
     deleteTab,
     renameTab,
     saveTabs,
+    updateContents,
+    currentTab,
+    setCurrentTab,
   };
 };
 
