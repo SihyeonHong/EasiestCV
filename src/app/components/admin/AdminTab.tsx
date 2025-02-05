@@ -1,7 +1,7 @@
-import TextEditor from "@/app/components/admin/TextEditor";
 import { useTabs } from "@/hooks/useTabs";
 import Button from "../common/Button";
 import { useEffect, useState } from "react";
+import AdminEditor from "./AdminEditor";
 
 interface AdminTabProps {
   userid: string;
@@ -9,7 +9,7 @@ interface AdminTabProps {
 }
 
 export default function AdminTab({ userid, tid }: AdminTabProps) {
-  const { tabs, updateContents, currentTab } = useTabs(userid);
+  const { updateContents, currentTab } = useTabs(userid);
   const [content, setContent] = useState("");
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function AdminTab({ userid, tid }: AdminTabProps) {
         <p>{currentTab ? currentTab.tname : tid}</p>
         <Button onClick={handleSave}>Save</Button>
       </div>
-      <TextEditor content={content} onChange={setContent} />
+      <AdminEditor userid={userid} tid={tid} />
     </div>
   );
 }

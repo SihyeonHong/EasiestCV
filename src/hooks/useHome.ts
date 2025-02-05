@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import { HomeData } from "../models/home.model";
+import { HomeData } from "@/models/home.model";
 import { fetchHomeData, fetchHomeImg } from "../api/home.api";
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import { queryKeys } from "@/constants/queryKeys";
+// import { get, put } from "@/api/http";
 
 export const useHome = (userid: string) => {
+  //   const queryClient = useQueryClient();
+
   const [homeData, setHomeData] = useState<HomeData>({
     userid: userid,
   });
@@ -29,9 +34,7 @@ export const useHome = (userid: string) => {
     try {
       const res = await fetchHomeImg(formData);
       if (res?.data.imageUrl) {
-        // 이미지 업로드 후 전체 데이터를 다시 불러옵니다
         const updatedData = await fetchHomeData(userid);
-        console.log(updatedData.img);
         setHomeData(updatedData);
       }
     } catch (error) {

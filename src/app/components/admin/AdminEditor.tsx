@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-import { useHome } from "../../../hooks/useHome";
-import { useTabs } from "../../../hooks/useTabs";
+import { useHome } from "@/hooks/useHome";
+import { useTabs } from "@/hooks/useTabs";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
@@ -16,8 +16,8 @@ interface Props {
 
 export default function AdminEditor({ userid, tid }: Props) {
   const { homeData } = useHome(userid);
+  const { tabs, updateContents } = useTabs(userid);
   const [value, setValue] = useState("");
-  const { tabs } = useTabs(userid);
 
   useEffect(() => {
     if (tid === 0) {
@@ -28,7 +28,7 @@ export default function AdminEditor({ userid, tid }: Props) {
     }
   }, [tid, homeData.intro]);
 
-  const updateContents = async () => {
+  const handleUpdate = async () => {
     if (tid === 0) {
       const data = { ...homeData, intro: value };
       const res = await axios
@@ -41,26 +41,46 @@ export default function AdminEditor({ userid, tid }: Props) {
         });
     } else {
       const data = {
-        userid: homeData.userid,
         tid: tid,
-        contents: value,
+        newContent: value,
       };
-
-      axios
-        .put("/api/put/tabpages", data)
-        .then((res) => {
-          alert("저장되었습니다.");
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err);
-        });
+      updateContents(data);
     }
   };
 
+  //   const updateContents = async () => {
+  //     if (tid === 0) {
+  //       const data = { ...homeData, intro: value };
+  //       const res = await axios
+  //         .put("/api/put/home", data)
+  //         .then((res) => {
+  //           alert("자기소개가 저장되었습니다.");
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     } else {
+  //       const data = {
+  //         userid: homeData.userid,
+  //         tid: tid,
+  //         contents: value,
+  //       };
+
+  //       axios
+  //         .put("/api/put/tabpages", data)
+  //         .then((res) => {
+  //           alert("저장되었습니다.");
+  //         })
+  //         .catch((err) => {
+  //           alert(err);
+  //           console.log(err);
+  //         });
+  //     }
+  //   };
+
   return (
     <AdminTabEditorStyle>
-      <Button variant="dark" onClick={updateContents}>
+      <Button variant="dark" onClick={handleUpdate}>
         저장
       </Button>
       <div>
