@@ -1,11 +1,10 @@
 "use client";
 
-import { Nav, Container, Row } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { useState } from "react";
 import NonAdminHome from "@/app/components/non-admin/NonAdminHome";
 import NonAdminTab from "@/app/components/non-admin/NonAdminTab";
 import Footer from "@/app/components/common/Footer";
-import Body from "@/app/components/Body";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 
@@ -27,7 +26,7 @@ export default function NonAdminPage({ userid }: Props) {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="mx-4 flex w-full max-w-full flex-col break-words sm:mx-6 md:mx-auto md:w-[85%] md:max-w-[850px] lg:w-[1024px] lg:max-w-[1024px]">
       <Nav
         variant="underline"
         className="nav justify-content-center"

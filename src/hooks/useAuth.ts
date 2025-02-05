@@ -17,7 +17,7 @@ export default function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery({
+  const { data: me, isLoading } = useQuery({
     queryKey: queryKeys.auth(),
     queryFn: async () => {
       try {
@@ -44,7 +44,7 @@ export default function useAuth() {
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
-      const currentUserId = user?.userid;
+      const currentUserId = me?.userid;
       const response = await post<{ message: string }>(`/users/logout`);
       return { response, currentUserId };
     },
@@ -61,5 +61,5 @@ export default function useAuth() {
     },
   });
 
-  return { user, isLoading, login, isLoggingIn, logout, isLoggingOut };
+  return { me, isLoading, login, isLoggingIn, logout, isLoggingOut };
 }

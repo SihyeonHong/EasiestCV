@@ -1,7 +1,6 @@
 "use client";
 
 import { useTabs } from "@/hooks/useTabs";
-import styled from "styled-components";
 
 interface Props {
   userid: string;
@@ -14,22 +13,12 @@ export default function NonAdminTab({ userid, tid }: Props) {
   return (
     <>
       {tabs.find((tab) => tab.tid === tid)?.contents && (
-        <NonAdminPageStyle
+        <div
           dangerouslySetInnerHTML={{
             __html: tabs.find((tab) => tab.tid === tid)?.contents!,
           }}
-        ></NonAdminPageStyle>
+        ></div>
       )}
     </>
   );
 }
-
-const NonAdminPageStyle = styled.div`
-  color: #333;
-  font-size: 16px;
-  line-height: 1.6;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-`;

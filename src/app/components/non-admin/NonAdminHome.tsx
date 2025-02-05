@@ -14,14 +14,14 @@ export default function NonAdminHome({ userid }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-5 md:flex-row">
       {homeData.img && (
-        <div className="flex-1 md:w-auto">
+        <div className="flex-1">
           <Image
             src={homeData.img}
             alt="profile-img"
             width={0}
             height={0}
             sizes="100%"
-            className="h-auto w-full"
+            className="h-auto w-full object-cover"
             priority
           />
         </div>
