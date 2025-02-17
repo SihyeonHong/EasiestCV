@@ -1,3 +1,8 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export default function NoUserPage() {
-  return <h2 style={{ textAlign: "center" }}>No Such User</h2>;
+  const t = useTranslations("message");
+  return <h2 className="text-center">{t("noUser")}</h2>;
 }

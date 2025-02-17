@@ -1,0 +1,12 @@
+{
+  "button": {
+    "save": "Save",
+    "loginOrSignup": "Log In / Sign Up",
+    "logout": "Log Out",
+    "editUserInfo": "Edit User Info",
+    "switchLanguage": "한국어로 변경"
+  },
+  "message": {
+    "noUser": "No Such User"
+  }
+}

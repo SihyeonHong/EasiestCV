@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,13 +11,13 @@ export const metadata: Metadata = {
   description: "Easiest way to make your CV",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html>
       <body
         className={inter.className}
         style={{ backgroundColor: "rgb(250, 250, 247)" }}
