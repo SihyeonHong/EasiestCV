@@ -1,0 +1,12 @@
+{
+  "button": {
+    "save": "저장",
+    "loginOrSignup": "로그인 / 회원가입",
+    "logout": "로그아웃",
+    "editUserInfo": "회원정보 수정",
+    "switchLanguage": "Switch to English"
+  },
+  "message": {
+    "noUser": "존재하지 않는 사용자입니다"
+  }
+}

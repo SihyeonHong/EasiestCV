@@ -1,10 +1,24 @@
 import Button from "@/app/components/common/Button";
+import { getTranslations } from "next-intl/server";
 
-export default function Header() {
+interface HeaderProps {
+  params: {
+    locale: string;
+    userid: string;
+  };
+}
+
+export default async function Header({ params }: HeaderProps) {
+  const t = await getTranslations("button");
+  const newLocale = params.locale === "en" ? "ko" : "en";
+
   return (
     <div className="flex w-full justify-end">
+      <Button variant="link" href={`/${newLocale}/${params.userid}`}>
+        {t("switchLanguage")}
+      </Button>
       <Button variant="link" href="/">
-        Log In | Sign Up
+        {t("loginOrSignup")}
       </Button>
     </div>
   );
