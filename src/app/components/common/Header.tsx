@@ -14,10 +14,14 @@ export default async function Header({ params }: HeaderProps) {
 
   return (
     <div className="flex w-full justify-end">
-      <Button variant="link" href={`/${newLocale}/${params.userid}`}>
+      <Button
+        variant="secondary"
+        role="link"
+        href={`/${newLocale}/${params.userid}`}
+      >
         {t("switchLanguage")}
       </Button>
-      <Button variant="link" href="/">
+      <Button variant="primary" role="link" href="/">
         {t("loginOrSignup")}
       </Button>
     </div>

@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
+import { useTranslations } from "next-intl";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
@@ -15,6 +16,9 @@ interface Props {
 }
 
 export default function AdminEditor({ userid, tid }: Props) {
+  const t = useTranslations("button");
+  console.log("translations", t("save"));
+
   const { homeData } = useHome(userid);
   const { tabs, updateContents } = useTabs(userid);
   const [value, setValue] = useState("");
@@ -81,7 +85,7 @@ export default function AdminEditor({ userid, tid }: Props) {
   return (
     <AdminTabEditorStyle>
       <Button variant="dark" onClick={handleUpdate}>
-        저장
+        {t("save")}
       </Button>
       <div>
         <ReactQuill
