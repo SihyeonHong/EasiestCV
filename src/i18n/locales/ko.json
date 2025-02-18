@@ -8,5 +8,11 @@
   },
   "message": {
     "noUser": "존재하지 않는 사용자입니다"
+  },
+  "displayMode": {
+    "label": "화면 모드",
+    "light": "라이트 모드",
+    "dark": "다크 모드",
+    "system": "시스템 설정"
   }
 }

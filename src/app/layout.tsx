@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
+import { ThemeProvider } from "@/provider/ThemeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
@@ -13,16 +14,22 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: ReactNode;
+  params?: { locale: string };
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
-    <html>
-      <body
-        className={inter.className}
-        style={{ backgroundColor: "rgb(250, 250, 247)" }}
-      >
-        <TanstackQueryProvider>{children}</TanstackQueryProvider>
+    <html lang={params?.locale || "en"} suppressHydrationWarning>
+      <head />
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

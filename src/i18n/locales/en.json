@@ -8,5 +8,11 @@
   },
   "message": {
     "noUser": "No Such User"
+  },
+  "displayMode": {
+    "label": "Display Mode",
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "system": "System Setting"
   }
 }
