@@ -20,7 +20,9 @@ export const useUser = (userid: string) => {
     retry: false,
   });
 
-  // 비밀번호 변경 여기로
-
-  return { user, isLoading, isError };
+  return {
+    user,
+    isLoading,
+    isError,
+  };
 };

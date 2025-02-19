@@ -21,6 +21,7 @@ import {
   TabsTrigger,
 } from "@/app/components/common/Tabs";
 import useAuth from "@/hooks/useAuth";
+import { useResetPassword } from "@/hooks/useResetPW";
 
 export default function InitPage() {
   const t = useTranslations("initpage");
@@ -29,12 +30,53 @@ export default function InitPage() {
     userid: "",
     password: "",
   });
+  const [resetData, setResetData] = useState({
+    userid: "",
+    email: "",
+  });
+  const [signupData, setSignupData] = useState({
+    userid: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const { login } = useAuth();
+  const passwordsMatch = () => {
+    return signupData.password && signupData.confirmPassword
+      ? signupData.password === signupData.confirmPassword
+      : null;
+  };
+
+  const { login, signup } = useAuth();
+  const { resetPassword } = useResetPassword();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(loginData);
+  };
+
+  const handleSignup = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (signupData.password !== signupData.confirmPassword) {
+      alert(t("passwordMismatch"));
+      return;
+    }
+    signup(signupData);
+  };
+
+  const handleReset = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    resetPassword(
+      { userid: resetData.userid, email: resetData.email },
+      {
+        onSuccess: () => {
+          setResetData({ userid: "", email: "" });
+          setShowResetForm(false);
+        },
+      },
+    );
   };
 
   return (
@@ -94,20 +136,34 @@ export default function InitPage() {
             </button>
           </CardFooter>
           <CardContent className={showResetForm ? "" : "hidden"}>
-            <form>
+            <form onSubmit={handleReset}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <Input
                     id="userid"
-                    type="userid"
+                    type="text"
                     placeholder={t("idPlaceholder")}
                     required
+                    value={resetData.userid}
+                    onChange={(e) =>
+                      setResetData((prev) => ({
+                        ...prev,
+                        userid: e.target.value,
+                      }))
+                    }
                   />
                   <Input
                     id="email"
                     type="email"
                     placeholder={t("emailPlaceholder")}
                     required
+                    value={resetData.email}
+                    onChange={(e) =>
+                      setResetData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <CardDescription>{t("description")}</CardDescription>
@@ -125,7 +181,7 @@ export default function InitPage() {
             <CardTitle className="text-2xl">{t("signup")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <form>
+            <form onSubmit={handleSignup}>
               <div className="flex flex-col gap-6">
                 <div className="space-y-1">
                   <Label htmlFor="userid">Your ID</Label>
@@ -139,6 +195,13 @@ export default function InitPage() {
                       placeholder={t("idPlaceholder")}
                       className="ml-2"
                       required
+                      value={signupData.userid}
+                      onChange={(e) =>
+                        setSignupData((prev) => ({
+                          ...prev,
+                          userid: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                   <CardDescription className="">
@@ -152,6 +215,13 @@ export default function InitPage() {
                     type="text"
                     placeholder={t("namePlaceholder")}
                     required
+                    value={signupData.username}
+                    onChange={(e) =>
+                      setSignupData((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <div className="space-y-1">
@@ -161,6 +231,13 @@ export default function InitPage() {
                     type="email"
                     placeholder={t("emailPlaceholder")}
                     required
+                    value={signupData.email}
+                    onChange={(e) =>
+                      setSignupData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                   />
                   <CardDescription>
                     {t("signupEmailDescription")}
@@ -173,6 +250,13 @@ export default function InitPage() {
                     type="password"
                     placeholder={t("passwordPlaceholder")}
                     required
+                    value={signupData.password}
+                    onChange={(e) =>
+                      setSignupData((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <div className="space-y-1">
@@ -184,7 +268,27 @@ export default function InitPage() {
                     type="password"
                     placeholder={t("comfirmPasswordPlaceholder")}
                     required
+                    value={signupData.confirmPassword}
+                    onChange={(e) =>
+                      setSignupData((prev) => ({
+                        ...prev,
+                        confirmPassword: e.target.value,
+                      }))
+                    }
+                    className={`${
+                      signupData.confirmPassword
+                        ? passwordsMatch()
+                          ? "border-green-500 focus-visible:ring-green-500" // 일치할 때 초록색
+                          : "border-red-500 focus-visible:ring-red-500" // 불일치할 때 빨간색
+                        : ""
+                    }`}
                   />
+                  {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
+                  {signupData.confirmPassword && !passwordsMatch() && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {t("passwordMismatch")}
+                    </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full">
                   {t("signup")}
