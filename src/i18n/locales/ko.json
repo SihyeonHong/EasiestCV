@@ -14,5 +14,24 @@
     "light": "라이트 모드",
     "dark": "다크 모드",
     "system": "시스템 설정"
+  },
+  "initpage": {
+    "login": "로그인",
+    "signup": "회원가입",
+    "email": "이메일 주소",
+    "emailPlaceholder": "이메일을 입력하세요",
+    "name": "이름",
+    "namePlaceholder": "이름을 입력하세요",
+    "id": "아이디",
+    "idPlaceholder": "아이디를 입력하세요",
+    "password": "비밀번호",
+    "comfirmPassword": "비밀번호 확인",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
+    "comfirmPasswordPlaceholder": "비밀번호를 한 번 더 입력하세요",
+    "resetPW": "비밀번호 초기화",
+    "showResetForm": "비밀번호를 잊으셨나요?",
+    "description": "아래 버튼을 클릭하시면 비밀번호가 초기화되고 임시 비밀번호가 이메일로 발송됩니다.",
+    "signupIdDescription": "이 ID로 당신의 사이트 주소가 만들어집니다. ID는 나중에 변경할 수 없습니다.",
+    "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다."
   }
 }

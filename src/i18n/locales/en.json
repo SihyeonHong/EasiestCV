@@ -4,7 +4,7 @@
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
     "editUserInfo": "Edit User Info",
-    "switchLanguage": "한국어로 변경"
+    "switchLanguage": "Switch to Korean"
   },
   "message": {
     "noUser": "No Such User"
@@ -14,5 +14,24 @@
     "light": "Light Mode",
     "dark": "Dark Mode",
     "system": "System Setting"
+  },
+  "initpage": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "id": "ID",
+    "idPlaceholder": "Enter your ID",
+    "password": "Password",
+    "comfirmPassword": "Confirm Password",
+    "passwordPlaceholder": "Enter your password",
+    "comfirmPasswordPlaceholder": "Re-enter your password",
+    "resetPW": "Reset Password",
+    "showResetForm": "Forgot your password?",
+    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
+    "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
+    "signupEmailDescription": "If you forget your password, you will receive email here."
   }
 }

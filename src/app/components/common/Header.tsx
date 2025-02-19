@@ -8,7 +8,7 @@ import DisplayMode from "@/app/components/common/DisplayMode";
 interface HeaderProps {
   params: {
     locale: string;
-    userid: string;
+    userid?: string;
   };
 }
 
@@ -20,13 +20,19 @@ export default function Header({ params }: HeaderProps) {
     <div className="flex w-full items-center justify-end gap-2">
       <DisplayMode />
       <Button variant="secondary" asChild>
-        <Link href={`/${newLocale}/${params.userid}`}>
+        <Link
+          href={
+            params.userid ? `/${newLocale}/${params.userid}` : `/${newLocale}`
+          }
+        >
           {t("switchLanguage")}
         </Link>
       </Button>
-      <Button asChild>
-        <Link href="/">{t("loginOrSignup")}</Link>
-      </Button>
+      {!params.userid && (
+        <Button asChild>
+          <Link href="/">{t("loginOrSignup")}</Link>
+        </Button>
+      )}
     </div>
   );
 }
