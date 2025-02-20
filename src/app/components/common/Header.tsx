@@ -17,7 +17,7 @@ export default function Header({ params }: HeaderProps) {
   const newLocale = params.locale === "en" ? "ko" : "en";
 
   return (
-    <div className="flex w-full items-center justify-end gap-2">
+    <div className="flex w-full items-center justify-end gap-2 p-1">
       <DisplayMode />
       <Button variant="secondary" asChild>
         <Link
@@ -28,7 +28,7 @@ export default function Header({ params }: HeaderProps) {
           {t("switchLanguage")}
         </Link>
       </Button>
-      {!params.userid && (
+      {params.userid && (
         <Button asChild>
           <Link href="/">{t("loginOrSignup")}</Link>
         </Button>

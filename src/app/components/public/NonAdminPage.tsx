@@ -2,8 +2,8 @@
 
 import { Nav } from "react-bootstrap";
 import { useState } from "react";
-import NonAdminHome from "@/app/components/non-admin/NonAdminHome";
-import NonAdminTab from "@/app/components/non-admin/NonAdminTab";
+import NonAdminHome from "@/app/components/public/NonAdminHome";
+import NonAdminTab from "@/app/components/public/NonAdminTab";
 import Footer from "@/app/components/common/Footer";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
