@@ -2,6 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { LuSun, LuMoon } from "react-icons/lu";
+import { MdSettings } from "react-icons/md";
 import { Button } from "@/app/components/common/Button";
 import { useState, useEffect } from "react";
 import {
@@ -31,21 +33,44 @@ export default function DisplayMode() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          {theme === "system" ? resolvedTheme : theme}
+        <Button variant="outline" className="flex items-center gap-2">
+          {theme === "system" ? (
+            resolvedTheme === "dark" ? (
+              <LuMoon className="h-4 w-4" />
+            ) : (
+              <LuSun className="h-4 w-4" />
+            )
+          ) : theme === "dark" ? (
+            <LuMoon className="h-4 w-4" />
+          ) : (
+            <LuSun className="h-4 w-4" />
+          )}
+          {theme === "system" ? t(resolvedTheme) : t(theme)}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-          <DropdownMenuRadioItem value="dark">
+          <DropdownMenuRadioItem
+            value="dark"
+            className="flex items-center gap-2"
+          >
+            <LuMoon className="h-4 w-4" />
             {t("dark")}
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="light">
+          <DropdownMenuRadioItem
+            value="light"
+            className="flex items-center gap-2"
+          >
+            <LuSun className="h-4 w-4" />
             {t("light")}
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">
+          <DropdownMenuRadioItem
+            value="system"
+            className="flex items-center gap-2"
+          >
+            <MdSettings className="h-4 w-4" />
             {t("system")}
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

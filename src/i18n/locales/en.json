@@ -4,10 +4,11 @@
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
     "editUserInfo": "Edit User Info",
-    "switchLanguage": "Switch to Korean"
+    "switchLanguage": "한국어로 변경"
   },
   "message": {
-    "noUser": "No Such User"
+    "noUser": "No Such User",
+    "confirmLogout": "Are you sure you want to log out?"
   },
   "displayMode": {
     "label": "Display Mode",

@@ -1,8 +1,10 @@
+import AdminContainer from "@/app/components/admin/AdminContainer";
 import AdminLayout from "@/app/components/admin/AdminLayout";
 import RequireAuth from "@/app/components/RequireAuthPage";
 
 interface Props {
   params: {
+    locale: string;
     userid: string;
   };
 }
@@ -10,7 +12,7 @@ interface Props {
 export default function Page({ params }: Props) {
   return (
     <RequireAuth url={params.userid}>
-      <AdminLayout userid={params.userid} />
+      <AdminContainer params={params} />
     </RequireAuth>
   );
 }

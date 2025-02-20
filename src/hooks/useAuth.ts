@@ -1,10 +1,11 @@
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 import { LoginForm, SignupRequest } from "@/models/user.model";
 import { get, post } from "@/api/http";
 import { queryKeys } from "@/constants/queryKeys";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface LoginResponse {
   message: string;
@@ -16,6 +17,7 @@ interface LoginResponse {
 export default function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const t = useTranslations("message");
 
   const { data: me, isLoading } = useQuery({
     queryKey: queryKeys.auth(),
@@ -44,6 +46,9 @@ export default function useAuth() {
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
+      if (!confirm(t("confirmLogout"))) {
+        throw new Error("Logout cancelled");
+      }
       const currentUserId = me?.userid;
       const response = await post<{ message: string }>(`/users/logout`);
       return { response, currentUserId };
@@ -57,6 +62,7 @@ export default function useAuth() {
       }
     },
     onError: (error: Error) => {
+      if (error.message === "Logout cancelled") return;
       console.log("Logout Failed: ", error);
     },
   });
