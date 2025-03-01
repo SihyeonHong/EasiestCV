@@ -1,9 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 
 const storage = new Storage({
-  credentials: JSON.parse(
-    process.env.GCS_CREDENTIALS ? process.env.GCS_CREDENTIALS : ""
-  ),
+  credentials: JSON.parse(process.env.GCS_CREDENTIALS ?? ""),
   projectId: "easiest-cv",
 });
 
@@ -12,7 +10,7 @@ const bucket = storage.bucket("easiest-cv");
 export const uploadFile = async (
   filename: string,
   buffer: Buffer,
-  type: "image" | "pdf"
+  type: "image" | "pdf",
 ) => {
   const file = bucket.file(filename);
   const stream = file.createWriteStream({
@@ -37,6 +35,7 @@ export const downloadFile = async (filename: string) => {
 
   return new Promise((resolve, reject) => {
     let chunks: Buffer[] = [];
+
     file
       .createReadStream()
       .on("data", (chunk) => chunks.push(chunk))

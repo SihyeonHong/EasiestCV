@@ -1,7 +1,7 @@
 "use client";
 
 import { useTabs } from "@/hooks/useTabs";
-import { Card, CardContent } from "../common/Card";
+import { Card, CardContent } from "@/app/components/common/Card";
 
 interface Props {
   userid: string;
@@ -13,7 +13,7 @@ export default function PublicContents({ userid, tid }: Props) {
 
   return (
     <Card className="mx-2 md:mx-8 lg:w-[1024px]">
-      <CardContent className="prose dark:prose-invert max-w-none">
+      <CardContent className="prose max-w-none dark:prose-invert">
         {tabs.find((tab) => tab.tid === tid)?.contents && (
           <div
             dangerouslySetInnerHTML={{

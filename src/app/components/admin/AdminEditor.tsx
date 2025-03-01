@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button } from "@/app/components/common/Button";
 import axios from "axios";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
@@ -17,7 +16,6 @@ interface Props {
 
 export default function AdminEditor({ userid, tid }: Props) {
   const t = useTranslations("button");
-  console.log("translations", t("save"));
 
   const { homeData } = useHome(userid);
   const { tabs, updateContents } = useTabs(userid);
@@ -25,12 +23,12 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   useEffect(() => {
     if (tid === 0) {
-      setValue(homeData.intro || "");
+      setValue(homeData?.intro || "");
     } else {
       const tab = tabs.find((t) => t.tid === tid);
       setValue(tab?.contents || "");
     }
-  }, [tid, homeData.intro]);
+  }, [tid, homeData]);
 
   const handleUpdate = async () => {
     if (tid === 0) {
@@ -83,11 +81,11 @@ export default function AdminEditor({ userid, tid }: Props) {
   //   };
 
   return (
-    <AdminTabEditorStyle>
-      <Button variant="dark" onClick={handleUpdate}>
+    <div className="flex flex-col gap-4">
+      <Button size="sm" onClick={handleUpdate} className="self-end">
         {t("save")}
       </Button>
-      <div>
+      <div className="bg-white">
         <ReactQuill
           style={{ height: "400px" }}
           theme="snow"
@@ -97,25 +95,9 @@ export default function AdminEditor({ userid, tid }: Props) {
           onChange={setValue}
         />
       </div>
-    </AdminTabEditorStyle>
+    </div>
   );
 }
-
-const AdminTabEditorStyle = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-
-  button {
-    width: fit-content;
-    align-self: flex-end;
-  }
-
-  div {
-    background-color: white;
-  }
-`;
 
 const modules = {
   toolbar: [

@@ -8,7 +8,9 @@
   },
   "message": {
     "noUser": "No Such User",
-    "confirmLogout": "Are you sure you want to log out?"
+    "confirmLogout": "Are you sure you want to log out?",
+    "saveSuccess": "Save Success",
+    "saveFail": "Save Fail"
   },
   "displayMode": {
     "label": "Display Mode",

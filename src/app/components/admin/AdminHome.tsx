@@ -13,7 +13,7 @@ export default function AdminHome({ userid }: Props) {
       <div className="flex flex-1 flex-col gap-2">
         <h5>프로필 사진 첨부</h5>
         <input type="file" accept="image/*" onChange={uploadImg} />
-        {homeData.img && (
+        {homeData?.img && (
           <Image
             src={homeData.img}
             alt="profile-img"

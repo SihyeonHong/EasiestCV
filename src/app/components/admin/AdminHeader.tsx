@@ -11,7 +11,7 @@ export default function AdminHeader() {
   return (
     <div className="flex gap-2">
       <Button variant="secondary">회원정보수정</Button>
-      <Button onClick={() => logout}>{t("logout")}</Button>
+      <Button onClick={() => logout()}>{t("logout")}</Button>
     </div>
   );
 }
