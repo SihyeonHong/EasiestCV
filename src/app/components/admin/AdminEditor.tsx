@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/common/Button";
-import axios from "axios";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 import { useTranslations } from "next-intl";
@@ -17,7 +16,7 @@ interface Props {
 export default function AdminEditor({ userid, tid }: Props) {
   const t = useTranslations("button");
 
-  const { homeData } = useHome(userid);
+  const { homeData, mutateUploadIntro } = useHome(userid);
   const { tabs, updateContents } = useTabs(userid);
   const [value, setValue] = useState("");
 
@@ -30,55 +29,14 @@ export default function AdminEditor({ userid, tid }: Props) {
     }
   }, [tid, homeData]);
 
-  const handleUpdate = async () => {
-    if (tid === 0) {
-      const data = { ...homeData, intro: value };
-      const res = await axios
-        .put("/api/put/home", data)
-        .then((res) => {
-          alert("자기소개가 저장되었습니다.");
-        })
-        .catch((err) => {
-          console.log(err);
+  const handleUpdate = () => {
+    tid === 0
+      ? mutateUploadIntro(value)
+      : updateContents({
+          tid: tid,
+          newContent: value,
         });
-    } else {
-      const data = {
-        tid: tid,
-        newContent: value,
-      };
-      updateContents(data);
-    }
   };
-
-  //   const updateContents = async () => {
-  //     if (tid === 0) {
-  //       const data = { ...homeData, intro: value };
-  //       const res = await axios
-  //         .put("/api/put/home", data)
-  //         .then((res) => {
-  //           alert("자기소개가 저장되었습니다.");
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     } else {
-  //       const data = {
-  //         userid: homeData.userid,
-  //         tid: tid,
-  //         contents: value,
-  //       };
-
-  //       axios
-  //         .put("/api/put/tabpages", data)
-  //         .then((res) => {
-  //           alert("저장되었습니다.");
-  //         })
-  //         .catch((err) => {
-  //           alert(err);
-  //           console.log(err);
-  //         });
-  //     }
-  //   };
 
   return (
     <div className="flex flex-col gap-4">

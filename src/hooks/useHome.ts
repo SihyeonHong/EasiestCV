@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HomeData } from "@/models/home.model";
 import { queryKeys } from "@/constants/queryKeys";
-import { get, post } from "@/api/http";
+import { get, patch, post } from "@/api/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
@@ -57,6 +57,27 @@ export const useHome = (userid: string) => {
     },
   });
 
+  // 4) 프로필 소개 업로드 Mutation
+  const {
+    mutate: mutateUploadIntro,
+    status: introUploadStatus,
+    isPending: isIntroPending,
+  } = useMutation({
+    mutationFn: (newIntro: string) =>
+      patch<UploadIntroResponse>(`/home/intro`, {
+        userid: userid,
+        intro: newIntro,
+      }),
+    onSuccess: () => {
+      alert(t("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+    },
+    onError: (error) => {
+      alert(t("saveFail"));
+      console.error("intro 업로드 에러:", error);
+    },
+  });
+
   return {
     // 홈 데이터 관련
     homeData,
@@ -73,6 +94,11 @@ export const useHome = (userid: string) => {
     mutateUploadImg,
     imgUploadStatus,
     isImgPending,
+
+    // intro 업로드
+    mutateUploadIntro,
+    introUploadStatus,
+    isIntroPending,
   };
 };
 
@@ -96,15 +122,15 @@ async function uploadPdf({ userid, file }: UploadPdfVariables) {
 }
 
 // ---------- 이미지 업로드 ----------
-type UploadImgVariables = {
+interface UploadImgVariables {
   userid: string;
   file: File;
-};
+}
 
-type UploadImgResponse = {
+interface UploadImgResponse {
   imageUrl?: string; // 성공 시 서버에서 imageUrl을 내려줌
   error?: string;
-};
+}
 
 async function uploadImg({ userid, file }: UploadImgVariables) {
   const formData = new FormData();
@@ -113,3 +139,11 @@ async function uploadImg({ userid, file }: UploadImgVariables) {
 
   return await post<UploadImgResponse>("/home/img", formData);
 }
+
+// ---------- 인트로 업로드 ----------
+interface UploadIntroResponse {
+  success: boolean;
+  intro: string;
+}
+
+async function uploadIntro(newIntro: string) {}

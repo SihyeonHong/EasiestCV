@@ -45,10 +45,9 @@ export const del = async <T>(...args: Parameters<typeof httpClient.delete>) => {
   return response.data;
 };
 
-const getToken = () => {
-  const token = localStorage.getItem("token");
-  return token;
-};
-const removeToken = () => {
-  localStorage.removeItem("token");
+export const patch = async <T>(
+  ...args: Parameters<typeof httpClient.patch>
+) => {
+  const response = await httpClient.patch<T>(...args);
+  return response.data;
 };
