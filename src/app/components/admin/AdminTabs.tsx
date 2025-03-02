@@ -7,6 +7,7 @@ import {
 import { useTabs } from "@/hooks/useTabs";
 import AdminHome from "@/app/components/admin/AdminHome";
 import AdminEditor from "@/app/components/admin/AdminEditor";
+import AdminPDF from "@/app/components/admin/AdminPDF";
 
 interface Props {
   userid: string;
@@ -36,6 +37,9 @@ export default function AdminTabs({ userid }: Props) {
             <AdminEditor userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
+      <TabsContent value="pdf">
+        <AdminPDF userid={userid} />
+      </TabsContent>
     </Tabs>
   );
 }

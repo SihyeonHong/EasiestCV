@@ -36,5 +36,13 @@
     "description": "아래 버튼을 클릭하시면 비밀번호가 초기화되고 임시 비밀번호가 이메일로 발송됩니다.",
     "signupIdDescription": "이 ID로 당신의 사이트 주소가 만들어집니다. ID는 나중에 변경할 수 없습니다.",
     "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다."
+  },
+  "admin": {
+    "pdfAttach": "PDF 첨부",
+    "pdfOpen": "현재 PDF 보기",
+    "pdfPending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
+    "noPdf": "PDF 파일이 없습니다.",
+    "profileImgAttach": "프로필 사진 첨부",
+    "imgPending": "이미지 업로드 중입니다. 잠시만 기다려 주세요."
   }
 }

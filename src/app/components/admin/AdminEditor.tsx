@@ -85,16 +85,14 @@ export default function AdminEditor({ userid, tid }: Props) {
       <Button size="sm" onClick={handleUpdate} className="self-end">
         {t("save")}
       </Button>
-      <div className="bg-white">
-        <ReactQuill
-          style={{ height: "400px" }}
-          theme="snow"
-          modules={modules}
-          formats={formats}
-          value={value}
-          onChange={setValue}
-        />
-      </div>
+      <ReactQuill
+        className="bg-white dark:bg-[hsl(var(--background))]"
+        theme="snow"
+        modules={modules}
+        formats={formats}
+        value={value}
+        onChange={setValue}
+      />
     </div>
   );
 }

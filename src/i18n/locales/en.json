@@ -9,8 +9,8 @@
   "message": {
     "noUser": "No Such User",
     "confirmLogout": "Are you sure you want to log out?",
-    "saveSuccess": "Save Success",
-    "saveFail": "Save Fail"
+    "saveSuccess": "Saved successfully.",
+    "saveFail": "An error occurred while saving. Please try again."
   },
   "displayMode": {
     "label": "Display Mode",
@@ -36,5 +36,13 @@
     "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
     "signupEmailDescription": "If you forget your password, you will receive email here."
+  },
+  "admin": {
+    "pdfAttach": "Attach PDF",
+    "pdfOpen": "Open current PDF",
+    "pdfPending": "Uploading PDF. Please wait...",
+    "noPdf": "No PDF file",
+    "profileImgAttach": "Attach Profile Image",
+    "imgPending": "Uploading image. Please wait..."
   }
 }

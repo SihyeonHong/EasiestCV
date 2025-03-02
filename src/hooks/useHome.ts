@@ -1,53 +1,115 @@
-import { HomeData } from "@/models/home.model";
-import { fetchHomeData, fetchHomeImg } from "../api/home.api";
+import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { HomeData } from "@/models/home.model";
 import { queryKeys } from "@/constants/queryKeys";
-import { get, put } from "@/api/http";
+import { get, post } from "@/api/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
+  const t = useTranslations("message");
 
-  const { data: homeData } = useQuery<HomeData>({
+  // 1) 홈 데이터 조회
+  const {
+    data: homeData,
+    isLoading: isHomeLoading,
+    isError: isHomeError,
+    error: homeError,
+    refetch,
+  } = useQuery<HomeData>({
     queryKey: queryKeys.home({ userid }),
     queryFn: () => get<HomeData>(`/home?userid=${userid}`),
+    enabled: !!userid, // userid가 있어야만 요청
   });
 
-  const { mutate: updateHomeMutation } = useMutation({
-    mutationFn: (newHomeData: HomeData) =>
-      put<HomeData>(`/home?userid=${userid}`, newHomeData),
-    onSuccess: () => {
+  // 2) PDF 업로드 Mutation
+  const {
+    mutate: mutateUploadPdf,
+    status: pdfUploadStatus,
+    isPending: isPdfPending,
+  } = useMutation({
+    mutationFn: uploadPdf,
+    onSuccess: (data) => {
+      alert(t("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
-      alert("저장되었습니다");
+      refetch();
     },
-    onError: (error) => {
-      alert("저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
-      console.error("homeData 오류:", error);
+    onError: (err) => {
+      alert(t("saveFail"));
+      console.error("PDF 업로드 에러:", err);
     },
   });
 
-  const uploadImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) return;
+  // 3) 이미지 업로드 Mutation
+  const {
+    mutate: mutateUploadImg,
+    status: imgUploadStatus,
+    isPending: isImgPending,
+  } = useMutation({
+    mutationFn: uploadImg,
+    onSuccess: (data) => {
+      alert(t("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+      refetch();
+    },
+    onError: (err) => {
+      alert(t("saveFail"));
+      console.error("이미지 업로드 에러:", err);
+    },
+  });
 
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    formData.append("userid", userid);
+  return {
+    // 홈 데이터 관련
+    homeData,
+    isHomeLoading,
+    isHomeError,
+    homeError,
 
-    // Check FormData contents
-    // const entries = Array.from(formData.entries());
-    // entries.forEach(([key, value]) => {
-    //   console.log(key, value);
-    // });
+    // PDF 업로드
+    mutateUploadPdf,
+    pdfUploadStatus,
+    isPdfPending,
 
-    // try {
-    //   const res = await fetchHomeImg(formData);
-    //   if (res?.data.imageUrl) {
-    //     const updatedData = await fetchHomeData(userid);
-    //     setHomeData(updatedData);
-    //   }
-    // } catch (error) {
-    //   console.error("이미지 업로드 중 오류 발생:", error);
-    // }
+    // 이미지 업로드
+    mutateUploadImg,
+    imgUploadStatus,
+    isImgPending,
   };
-
-  return { homeData, updateHomeMutation, uploadImg };
 };
+
+// ---------- PDF 업로드 ----------
+type UploadPdfVariables = {
+  userid: string;
+  file: File;
+};
+
+type UploadPdfResponse = {
+  pdfUrl?: string; // 성공 시 서버에서 pdfUrl을 내려줌
+  error?: string;
+};
+
+async function uploadPdf({ userid, file }: UploadPdfVariables) {
+  const formData = new FormData();
+  formData.append("userid", userid);
+  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
+
+  return await post<UploadPdfResponse>("/home/pdf", formData);
+}
+
+// ---------- 이미지 업로드 ----------
+type UploadImgVariables = {
+  userid: string;
+  file: File;
+};
+
+type UploadImgResponse = {
+  imageUrl?: string; // 성공 시 서버에서 imageUrl을 내려줌
+  error?: string;
+};
+
+async function uploadImg({ userid, file }: UploadImgVariables) {
+  const formData = new FormData();
+  formData.append("userid", userid);
+  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
+
+  return await post<UploadImgResponse>("/home/img", formData);
+}

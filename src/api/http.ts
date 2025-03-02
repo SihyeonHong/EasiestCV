@@ -7,9 +7,6 @@ const createClient = (config?: AxiosRequestConfig) => {
   const axiosInstance = axios.create({
     baseURL: BASE_URL + "/api",
     timeout: DEFAULT_TIMEOUT,
-    headers: {
-      "Content-Type": "application/json",
-    },
     withCredentials: true,
     ...config,
   });
@@ -20,7 +17,7 @@ const createClient = (config?: AxiosRequestConfig) => {
     },
     (error) => {
       return Promise.reject(error);
-    }
+    },
   );
 
   return axiosInstance;
