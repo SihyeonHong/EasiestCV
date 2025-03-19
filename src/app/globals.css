@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "bootstrap/dist/css/bootstrap.min.css";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 * {
@@ -10,59 +9,21 @@
   word-wrap: break-word;
 }
 
-.nav {
-  padding: 8px;
-  border-radius: 5px;
+@layer base {
+  :root {
+    --background: 60 13% 97%;
+    --foreground: 20 14.3% 4.1%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+  }
 }
 
-.nav > * {
-  text-align: center;
-  font-size: larger;
-}
-
-.nav-link {
-  margin-left: 20px;
-  margin-right: 20px;
-  color: black !important;
-}
-
-.body-init > * {
-  margin-top: 30px;
-  text-align: left;
-  font-weight: bold;
-}
-
-.form-id {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.form-id-child2 {
-  flex-grow: 1;
-  margin-left: 10px;
-}
-
-.unconfirmed {
-  border: 2px solid red !important;
-}
-
-.options-column {
-  width: fit-content;
-}
-
-.contents-column {
-  width: auto;
-  text-align: left;
-}
-
-.nav-pdf {
-  /* --bs-nav-link-padding-x: 1rem;
-  --bs-nav-link-padding-y: 0.5rem; */
-  padding: 0.3rem 1rem 0.5rem 1rem;
-  color: black;
-}
-
-.change-pw-hidden {
-  display: none;
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
 }

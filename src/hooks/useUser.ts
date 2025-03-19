@@ -1,7 +1,7 @@
 import { User } from "@/models/user.model";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
-import { get } from "@/api/http";
+import { get } from "@/util/http";
 
 export const useUser = (userid: string) => {
   const {
@@ -20,7 +20,9 @@ export const useUser = (userid: string) => {
     retry: false,
   });
 
-  // 비밀번호 변경 여기로
-
-  return { user, isLoading, isError };
+  return {
+    user,
+    isLoading,
+    isError,
+  };
 };

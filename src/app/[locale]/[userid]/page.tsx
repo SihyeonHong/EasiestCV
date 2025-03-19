@@ -1,5 +1,6 @@
-import NonAdminLayout from "@/app/components/non-admin/NonAdminLayout";
+import PublicContainer from "@/app/components/public/PublicContainer";
 import Header from "@/app/components/common/Header";
+import Footer from "@/app/components/common/Footer";
 
 interface Props {
   params: {
@@ -12,7 +13,8 @@ export default function Page({ params }: Props) {
   return (
     <div className="flex flex-col items-center p-0">
       <Header params={params} />
-      <NonAdminLayout userid={params.userid} />
+      <PublicContainer userid={params.userid} />
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useTabs } from "@/hooks/useTabs";
-import Button from "@/app/components/common/Button";
+import { Button } from "@/app/components/common/Button";
 import { useEffect, useState } from "react";
 import AdminEditor from "./AdminEditor";
 

@@ -1,46 +1,149 @@
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HomeData } from "@/models/home.model";
-import { fetchHomeData, fetchHomeImg } from "../api/home.api";
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import { queryKeys } from "@/constants/queryKeys";
-// import { get, put } from "@/api/http";
+import { queryKeys } from "@/constants/queryKeys";
+import { get, patch, post } from "@/util/http";
 
 export const useHome = (userid: string) => {
-  //   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
+  const t = useTranslations("message");
 
-  const [homeData, setHomeData] = useState<HomeData>({
-    userid: userid,
+  // 1) 홈 데이터 조회
+  const {
+    data: homeData,
+    isLoading: isHomeLoading,
+    isError: isHomeError,
+    error: homeError,
+    refetch,
+  } = useQuery<HomeData>({
+    queryKey: queryKeys.home({ userid }),
+    queryFn: () => get<HomeData>(`/home?userid=${userid}`),
+    enabled: !!userid, // userid가 있어야만 요청
   });
 
-  useEffect(() => {
-    if (!userid) return;
+  // 2) PDF 업로드 Mutation
+  const {
+    mutate: mutateUploadPdf,
+    status: pdfUploadStatus,
+    isPending: isPdfPending,
+  } = useMutation({
+    mutationFn: uploadPdf,
+    onSuccess: (data) => {
+      alert(t("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+      refetch();
+    },
+    onError: (err) => {
+      alert(t("saveFail"));
+      console.error("PDF 업로드 에러:", err);
+    },
+  });
 
-    fetchHomeData(userid).then((data) => setHomeData(data));
-  }, [userid]);
+  // 3) 이미지 업로드 Mutation
+  const {
+    mutate: mutateUploadImg,
+    status: imgUploadStatus,
+    isPending: isImgPending,
+  } = useMutation({
+    mutationFn: uploadImg,
+    onSuccess: (data) => {
+      alert(t("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+      refetch();
+    },
+    onError: (err) => {
+      alert(t("saveFail"));
+      console.error("이미지 업로드 에러:", err);
+    },
+  });
 
-  const uploadImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) return;
+  // 4) 프로필 소개 업로드 Mutation
+  const {
+    mutate: mutateUploadIntro,
+    status: introUploadStatus,
+    isPending: isIntroPending,
+  } = useMutation({
+    mutationFn: (newIntro: string) =>
+      patch<UploadIntroResponse>(`/home/intro`, {
+        userid: userid,
+        intro: newIntro,
+      }),
+    onSuccess: () => {
+      alert(t("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+    },
+    onError: (error) => {
+      alert(t("saveFail"));
+      console.error("intro 업로드 에러:", error);
+    },
+  });
 
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    formData.append("userid", userid);
+  return {
+    // 홈 데이터 관련
+    homeData,
+    isHomeLoading,
+    isHomeError,
+    homeError,
 
-    // Check FormData contents
-    // const entries = Array.from(formData.entries());
-    // entries.forEach(([key, value]) => {
-    //   console.log(key, value);
-    // });
+    // PDF 업로드
+    mutateUploadPdf,
+    pdfUploadStatus,
+    isPdfPending,
 
-    try {
-      const res = await fetchHomeImg(formData);
-      if (res?.data.imageUrl) {
-        const updatedData = await fetchHomeData(userid);
-        setHomeData(updatedData);
-      }
-    } catch (error) {
-      console.error("이미지 업로드 중 오류 발생:", error);
-    }
+    // 이미지 업로드
+    mutateUploadImg,
+    imgUploadStatus,
+    isImgPending,
+
+    // intro 업로드
+    mutateUploadIntro,
+    introUploadStatus,
+    isIntroPending,
   };
-
-  return { homeData, setHomeData, uploadImg };
 };
+
+// ---------- PDF 업로드 ----------
+type UploadPdfVariables = {
+  userid: string;
+  file: File;
+};
+
+type UploadPdfResponse = {
+  pdfUrl?: string; // 성공 시 서버에서 pdfUrl을 내려줌
+  error?: string;
+};
+
+async function uploadPdf({ userid, file }: UploadPdfVariables) {
+  const formData = new FormData();
+  formData.append("userid", userid);
+  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
+
+  return await post<UploadPdfResponse>("/home/pdf", formData);
+}
+
+// ---------- 이미지 업로드 ----------
+interface UploadImgVariables {
+  userid: string;
+  file: File;
+}
+
+interface UploadImgResponse {
+  imageUrl?: string; // 성공 시 서버에서 imageUrl을 내려줌
+  error?: string;
+}
+
+async function uploadImg({ userid, file }: UploadImgVariables) {
+  const formData = new FormData();
+  formData.append("userid", userid);
+  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
+
+  return await post<UploadImgResponse>("/home/img", formData);
+}
+
+// ---------- 인트로 업로드 ----------
+interface UploadIntroResponse {
+  success: boolean;
+  intro: string;
+}
+
+async function uploadIntro(newIntro: string) {}

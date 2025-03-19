@@ -1,19 +1,34 @@
-import AdminEditor from "./AdminEditor";
+import { useTranslations } from "next-intl";
+import AdminEditor from "@/app/components/admin/AdminEditor";
 import { useHome } from "@/hooks/useHome";
 import Image from "next/image";
+import { Input } from "@/app/components/common/Input";
+import { Label } from "@/app/components/common/Label";
 
 interface Props {
   userid: string;
 }
 export default function AdminHome({ userid }: Props) {
-  const { homeData, uploadImg } = useHome(userid);
+  const t = useTranslations("admin");
+  const { homeData, mutateUploadImg } = useHome(userid);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    mutateUploadImg({ userid, file });
+  };
 
   return (
     <div className="flex flex-col gap-6 md:flex-row">
       <div className="flex flex-1 flex-col gap-2">
-        <h5>프로필 사진 첨부</h5>
-        <input type="file" accept="image/*" onChange={uploadImg} />
-        {homeData.img && (
+        <Label htmlFor="profileImg">{t("profileImgAttach")}</Label>
+        <Input
+          id="profileImg"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {homeData?.img && (
           <Image
             src={homeData.img}
             alt="profile-img"

@@ -1,12 +1,15 @@
 import { Tab } from "@/models/tab.model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
-import { get, put } from "@/api/http";
+import { get, put } from "@/util/http";
 import { useState } from "react";
 import { UpdateContentsRequest } from "@/app/api/contents/route";
+import { useTranslations } from "next-intl";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();
+  const tMessage = useTranslations("message");
+  const tAdmin = useTranslations("admin");
 
   const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
   const [currentTab, setCurrentTab] = useState<Tab | null>(null);
@@ -23,9 +26,10 @@ export const useTabs = (userid: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
       setLocalTabs(null);
+      alert(tMessage("saveSuccess"));
     },
     onError: (error) => {
-      alert("탭 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      alert(tMessage("saveFail"));
       console.error("탭 저장 오류:", error);
     },
   });
@@ -37,14 +41,14 @@ export const useTabs = (userid: string) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
     },
     onError: (error) => {
-      alert("탭 내용 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      alert(tMessage("saveFail"));
       console.error("내용 저장 오류:", error);
     },
   });
 
   const addTab = (newTabName: string) => {
     if (!newTabName || newTabName.trim() === "") {
-      alert("새 탭 이름을 입력하세요.");
+      alert(tAdmin("noTabName"));
       return;
     }
 
@@ -60,9 +64,7 @@ export const useTabs = (userid: string) => {
   };
 
   const deleteTab = (tid: number) => {
-    const confirm = window.confirm(
-      "정말 삭제하시겠습니까? 탭 속 내용도 함께 삭제됩니다.",
-    );
+    const confirm = window.confirm(tAdmin("deleteConfirm"));
     if (!confirm) return;
 
     const _tabs = tabs.filter((tab) => tab.tid !== tid);
@@ -75,7 +77,7 @@ export const useTabs = (userid: string) => {
   };
 
   const renameTab = (tid: number) => {
-    const newTabName = window.prompt("새 탭 이름을 입력하세요.");
+    const newTabName = window.prompt(tAdmin("newTabNamePlaceholder"));
     if (!newTabName) return;
     setLocalTabs(
       tabs.map((tab) =>
@@ -88,6 +90,10 @@ export const useTabs = (userid: string) => {
     if (localTabs) {
       updateTabsMutation(localTabs);
     }
+  };
+
+  const resetTabs = () => {
+    setLocalTabs(null);
   };
 
   const updateContents = ({
@@ -112,6 +118,7 @@ export const useTabs = (userid: string) => {
     deleteTab,
     renameTab,
     saveTabs,
+    resetTabs,
     updateContents,
     currentTab,
     setCurrentTab,
