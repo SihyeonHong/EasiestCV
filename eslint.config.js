@@ -8,14 +8,7 @@ import prettier from "eslint-config-prettier";
 export default [
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-    ignores: [
-      "node_modules/",
-      "dist/",
-      "build/",
-      ".next/",
-      "src/pages/",
-      "public/",
-    ],
+    ignores: ["node_modules/", "dist/", "build/", ".next/", "public/"],
     languageOptions: { globals: globals.browser },
   },
 
