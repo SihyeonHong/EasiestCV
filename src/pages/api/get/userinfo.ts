@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      let userId = req.query.userid;
+      const userId = req.query.userid;
       const result = await query("SELECT * FROM userinfo WHERE userid = $1", [
         userId,
       ]);

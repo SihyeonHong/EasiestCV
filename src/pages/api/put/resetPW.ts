@@ -32,7 +32,7 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     // console.log(req.body);
-    let { userid, email } = req.body;
+    const { userid, email } = req.body;
 
     // make random password
     const randomStr = generateRandomPW();

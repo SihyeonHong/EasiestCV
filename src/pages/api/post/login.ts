@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    let { userid, password } = req.body;
+    const { userid, password } = req.body;
     try {
       const result = await query("SELECT * FROM users WHERE userid = $1", [
         userid,

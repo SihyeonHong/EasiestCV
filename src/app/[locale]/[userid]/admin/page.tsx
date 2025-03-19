@@ -1,5 +1,4 @@
 import AdminContainer from "@/app/components/admin/AdminContainer";
-import AdminLayout from "@/app/components/admin/AdminLayout";
 import RequireAuth from "@/app/components/RequireAuthPage";
 
 interface Props {

@@ -7,9 +7,9 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     // console.log(req.body); // redux
-    let { userinfo } = req.body;
+    const { userinfo } = req.body;
     console.log(userinfo); // { userid: 'testid', intro: 'Hello! 추가', img: null, pdf: null }
-    let { userid, intro, img, pdf } = req.body;
+    const { userid, intro, img, pdf } = req.body;
 
     // try update DB
     try {

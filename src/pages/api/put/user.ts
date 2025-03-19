@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     console.log(req.body);
-    let { userid, username, email } = req.body;
+    const { userid, username, email } = req.body;
 
     // try update DB
     try {

@@ -50,7 +50,7 @@ export default function handler(req: any, res: any) {
 
       // Upload the file to GCS
       try {
-        let uniqueFilename = `${Date.now()}-${req.file.originalname}`;
+        const uniqueFilename = `${Date.now()}-${req.file.originalname}`;
         url = url + uniqueFilename;
 
         if (req.file.mimetype === "application/pdf") {

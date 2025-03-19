@@ -34,7 +34,7 @@ export const downloadFile = async (filename: string) => {
   const file = bucket.file(filename);
 
   return new Promise((resolve, reject) => {
-    let chunks: Buffer[] = [];
+    const chunks: Buffer[] = [];
 
     file
       .createReadStream()
