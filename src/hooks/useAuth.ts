@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
 import { LoginForm, SignupRequest } from "@/models/user.model";
-import { get, post } from "@/api/http";
+import { get, post } from "@/util/http";
 import { queryKeys } from "@/constants/queryKeys";
 
 interface LoginResponse {

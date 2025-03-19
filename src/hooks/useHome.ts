@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HomeData } from "@/models/home.model";
 import { queryKeys } from "@/constants/queryKeys";
-import { get, patch, post } from "@/api/http";
+import { get, patch, post } from "@/util/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
