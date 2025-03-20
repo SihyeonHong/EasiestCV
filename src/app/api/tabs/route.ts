@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
-import { query } from "@/util/database";
+
 import { Tab } from "@/models/tab.model";
+import { query } from "@/util/database";
 
 export async function PUT(request: Request) {
   try {
     const body: Tab[] = await request.json();
 
-    const currentTabs = await query("SELECT tid FROM tabs WHERE userid = $1", [
-      body[0].userid,
-    ]);
+    const currentTabs = await query<Tab>(
+      "SELECT tid FROM tabs WHERE userid = $1",
+      [body[0].userid],
+    );
 
     // DB에 있는 탭 목록
     const currentTids = currentTabs.map((tab: Tab) => tab.tid);
@@ -18,12 +20,12 @@ export async function PUT(request: Request) {
 
     // 새로 추가된 탭
     const newTids = receivedTids.filter(
-      (tid: number) => !currentTids.includes(tid)
+      (tid: number) => !currentTids.includes(tid),
     );
 
     // 삭제된 탭
     const deletedTids = currentTids.filter(
-      (tid: number) => !receivedTids.includes(tid)
+      (tid: number) => !receivedTids.includes(tid),
     );
 
     // 삭제된 탭 제거
@@ -37,7 +39,7 @@ export async function PUT(request: Request) {
           body[0].userid,
           tid,
         ]);
-      })
+      }),
     );
 
     // 새로운 탭 추가
@@ -47,9 +49,9 @@ export async function PUT(request: Request) {
         .map(async (tab: Tab) => {
           return query(
             "INSERT INTO tabs (userid, tname, torder) VALUES ($1,$2,$3)",
-            [tab.userid, tab.tname, tab.torder]
+            [tab.userid, tab.tname, tab.torder],
           );
-        })
+        }),
     );
 
     // 기존 탭 업데이트
@@ -57,15 +59,21 @@ export async function PUT(request: Request) {
       body.map(async (tab: Tab) => {
         return query(
           "UPDATE tabs SET torder = $1, tname = $2 WHERE userid = $3 and tid = $4",
-          [tab.torder, tab.tname, tab.userid, tab.tid]
+          [tab.torder, tab.tname, tab.userid, tab.tid],
         );
-      })
+      }),
     );
 
     return NextResponse.json({ message: "ok" }, { status: 200 });
-  } catch (e: any) {
-    console.log("server error", e);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json(
+        { message: "An unexpected error occurred" },
+        { status: 500 },
+      );
+    }
   }
 }
 
@@ -74,14 +82,20 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userid");
 
-    const result = await query("SELECT * FROM tabs WHERE userid = $1", [
+    const result = await query<Tab>("SELECT * FROM tabs WHERE userid = $1", [
       userId,
     ]);
     return NextResponse.json(
-      result.sort((a: Tab, b: Tab) => a.torder - b.torder)
+      result.sort((a: Tab, b: Tab) => a.torder - b.torder),
     );
-  } catch (e: any) {
-    console.log("server error: ", e);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json(
+        { message: "An unexpected error occurred" },
+        { status: 500 },
+      );
+    }
   }
 }

@@ -4,7 +4,7 @@ export async function POST() {
   try {
     const response = NextResponse.json(
       { message: "logout success" },
-      { status: 200 }
+      { status: 200 },
     );
 
     response.cookies.set({

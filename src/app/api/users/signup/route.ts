@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { query } from "@/util/database";
+import { NextRequest, NextResponse } from "next/server";
+
 import { SignupRequest } from "@/models/user.model";
+import { query } from "@/util/database";
 
 export async function POST(request: NextRequest) {
   try {

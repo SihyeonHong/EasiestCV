@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ userid: decoded.userid });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(null, { status: 401 });
   }
 }

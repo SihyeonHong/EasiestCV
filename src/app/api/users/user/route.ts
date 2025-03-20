@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { query } from "@/util/database";
 
 export async function GET(request: Request) {

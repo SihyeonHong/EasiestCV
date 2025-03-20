@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+
+import { HomeData } from "@/models/home.model";
 import { query } from "@/util/database";
 
 export async function GET(request: Request) {
@@ -28,7 +30,7 @@ export async function GET(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { userid, intro, img, pdf } = body;
+    const { userid, intro, img, pdf }: HomeData = body;
 
     if (!userid) {
       return NextResponse.json(
@@ -38,7 +40,7 @@ export async function PATCH(request: Request) {
     }
 
     const fieldsToUpdate: string[] = [];
-    const values: any[] = [];
+    const values: (string | null)[] = [];
 
     if (intro !== undefined) {
       fieldsToUpdate.push("intro");
@@ -70,7 +72,7 @@ export async function PATCH(request: Request) {
 
     values.push(userid);
 
-    const result = await query(sql, values);
+    const result = await query<HomeData>(sql, values);
 
     return NextResponse.json({
       message: "Update successful",

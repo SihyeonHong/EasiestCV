@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-import tailwindcssAnimate from "tailwindcss-animate";
 import typography from "@tailwindcss/typography";
+import tailwindcssAnimate from "tailwindcss-animate";
 
-export default {
+const tailwindConfig = {
   darkMode: ["class"],
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
@@ -23,3 +23,5 @@ export default {
     preflight: true,
   },
 };
+
+export default tailwindConfig;

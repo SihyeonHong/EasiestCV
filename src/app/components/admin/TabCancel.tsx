@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -8,8 +9,8 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/app/components/common/AlertDialog";
-import { DialogClose } from "@/app/components/common/Dialog";
 import { Button } from "@/app/components/common/Button";
+import { DialogClose } from "@/app/components/common/Dialog";
 
 export default function TabCancel({ resetTabs }: { resetTabs: () => void }) {
   const tAdmin = useTranslations("admin");

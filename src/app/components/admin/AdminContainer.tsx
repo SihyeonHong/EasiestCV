@@ -1,10 +1,10 @@
 "use client";
 
+import AdminTabs from "@/app/components/admin/AdminTabs";
+import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import { useUser } from "@/hooks/useUser";
-import AdminTabs from "@/app/components/admin/AdminTabs";
-import Footer from "@/app/components/common/Footer";
 
 interface Props {
   params: {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function AdminContainer({ params }: Props) {
-  const { user, isLoading, isError } = useUser(params.userid);
+  const { user } = useUser(params.userid);
 
   return (
     <div>

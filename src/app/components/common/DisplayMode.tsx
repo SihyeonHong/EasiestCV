@@ -1,11 +1,12 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 import { LuSun, LuMoon } from "react-icons/lu";
 import { MdSettings } from "react-icons/md";
+
 import { Button } from "@/app/components/common/Button";
-import { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,

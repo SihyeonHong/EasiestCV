@@ -9,16 +9,9 @@ interface Props {
 
 export default function NonAdminTab({ userid, tid }: Props) {
   const { tabs } = useTabs(userid);
+  const content = tabs.find((tab) => tab.tid === tid)?.contents;
 
   return (
-    <>
-      {tabs.find((tab) => tab.tid === tid)?.contents && (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: tabs.find((tab) => tab.tid === tid)?.contents!,
-          }}
-        ></div>
-      )}
-    </>
+    <>{content && <div dangerouslySetInnerHTML={{ __html: content }}></div>}</>
   );
 }

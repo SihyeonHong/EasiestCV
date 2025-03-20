@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { query } from "@/util/database";
 import bcrypt from "bcrypt";
-import nodemailer, { SentMessageInfo } from "nodemailer";
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+
+import { User } from "@/models/user.model";
+import { query } from "@/util/database";
 
 // 환경변수 확인
 const { email_service, user, pass } = process.env;
@@ -49,7 +51,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // 사용자 확인
-    const result = await query("SELECT * FROM users WHERE userid = $1", [
+    const result = await query<User>("SELECT * FROM users WHERE userid = $1", [
       userid,
     ]);
 
@@ -73,8 +75,7 @@ export async function PUT(request: NextRequest) {
 
     // 이메일 전송 및 DB 업데이트
     try {
-      const info: SentMessageInfo = await transporter.sendMail(mailOptions);
-      //   console.log("Email Sent:", info);
+      await transporter.sendMail(mailOptions);
 
       // 이메일 전송 성공 시에만 DB 업데이트
       await query("UPDATE users SET password = $1 WHERE userid = $2", [
@@ -86,7 +87,8 @@ export async function PUT(request: NextRequest) {
         { message: "임시 비밀번호가 이메일로 전송되었습니다." },
         { status: 200 },
       );
-    } catch (emailError) {
+    } catch (error) {
+      console.error(error);
       throw new Error("이메일 전송에 실패했습니다.");
     }
   } catch (error) {

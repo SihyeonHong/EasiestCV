@@ -10,7 +10,10 @@ const pool = new Pool({
   },
 });
 
-export async function query(text: string, params?: any[]) {
+export async function query<T = unknown>(
+  text: string,
+  params?: (string | number | boolean | null)[],
+) {
   const res = await pool.query(text, params);
-  return res.rows;
+  return res.rows as T[];
 }
