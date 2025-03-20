@@ -1,7 +1,9 @@
-import { HomeData } from "@/models/home.model";
-import LoadingPage from "../LoadingPage";
 import Image from "next/image";
+
+import { HomeData } from "@/models/home.model";
+
 import { Card, CardContent } from "../common/Card";
+import LoadingPage from "../LoadingPage";
 
 interface Props {
   homeData: HomeData;
@@ -27,7 +29,7 @@ export default function PublicHome({ homeData }: Props) {
           </CardContent>
         )}
         <CardContent
-          className="prose dark:prose-invert max-w-none flex-1"
+          className="prose max-w-none flex-1 dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }}
         />
       </CardContent>

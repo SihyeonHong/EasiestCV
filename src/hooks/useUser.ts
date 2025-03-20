@@ -1,6 +1,7 @@
-import { User } from "@/models/user.model";
 import { useQuery } from "@tanstack/react-query";
+
 import { queryKeys } from "@/constants/queryKeys";
+import { User } from "@/models/user.model";
 import { get } from "@/util/http";
 
 export const useUser = (userid: string) => {

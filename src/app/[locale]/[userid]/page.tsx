@@ -1,6 +1,6 @@
-import PublicContainer from "@/app/components/public/PublicContainer";
-import Header from "@/app/components/common/Header";
 import Footer from "@/app/components/common/Footer";
+import Header from "@/app/components/common/Header";
+import PublicContainer from "@/app/components/public/PublicContainer";
 
 interface Props {
   params: {

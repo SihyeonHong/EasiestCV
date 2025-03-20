@@ -1,10 +1,11 @@
-import { Tab } from "@/models/tab.model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/constants/queryKeys";
-import { get, put } from "@/util/http";
-import { useState } from "react";
-import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+
+import { UpdateContentsRequest } from "@/app/api/contents/route";
+import { queryKeys } from "@/constants/queryKeys";
+import { Tab } from "@/models/tab.model";
+import { get, put } from "@/util/http";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { query } from "@/util/database";
 import { uploadFile, deleteFile } from "@/util/gcs";
 
@@ -27,11 +28,12 @@ export async function POST(req: Request) {
     }
 
     // 1) 기존에 DB에 저장된 PDF 경로가 있으면 GCS에서 삭제
-    const existing = await query("SELECT pdf FROM userinfo WHERE userid = $1", [
-      userId,
-    ]);
-    if (existing[0]?.pdf) {
-      const oldFileName = existing[0].pdf.split("/").pop();
+    const existing = await query<{ pdf: string | null }>(
+      "SELECT pdf FROM userinfo WHERE userid = $1",
+      [userId],
+    );
+    if (existing.length > 0 && existing[0]?.pdf) {
+      const oldFileName = existing[0].pdf.split("/").pop() ?? "";
       try {
         await deleteFile(oldFileName);
       } catch (err) {
@@ -64,4 +66,11 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json(
+    { error: "이 API는 POST 요청만 지원합니다." },
+    { status: 405 },
+  );
 }

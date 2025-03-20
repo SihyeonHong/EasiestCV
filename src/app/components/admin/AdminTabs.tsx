@@ -1,3 +1,7 @@
+import AdminEditor from "@/app/components/admin/AdminEditor";
+import AdminHome from "@/app/components/admin/AdminHome";
+import AdminPDF from "@/app/components/admin/AdminPDF";
+import TabManager from "@/app/components/admin/TabManager";
 import {
   Tabs,
   TabsContent,
@@ -5,10 +9,6 @@ import {
   TabsTrigger,
 } from "@/app/components/common/Tabs";
 import { useTabs } from "@/hooks/useTabs";
-import AdminHome from "@/app/components/admin/AdminHome";
-import AdminEditor from "@/app/components/admin/AdminEditor";
-import AdminPDF from "@/app/components/admin/AdminPDF";
-import TabManager from "@/app/components/admin/TabManager";
 
 interface Props {
   userid: string;

@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 
-import useAuth from "@/hooks/useAuth";
 import { Button } from "@/app/components/common/Button";
+import useAuth from "@/hooks/useAuth";
 
 export default function AdminHeader() {
   const t = useTranslations("button");

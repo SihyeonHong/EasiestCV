@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { NextRequest, NextResponse } from "next/server";
+
+import { SignupRequest } from "@/models/user.model";
 import { query } from "@/util/database";
 
 export async function POST(request: NextRequest) {
@@ -10,13 +12,14 @@ export async function POST(request: NextRequest) {
     if (!userid || !password) {
       return NextResponse.json(
         { message: "아이디와 비밀번호를 입력해주세요." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const result = await query("SELECT * FROM users WHERE userid = $1", [
-      userid,
-    ]);
+    const result = await query<SignupRequest>(
+      "SELECT * FROM users WHERE userid = $1",
+      [userid],
+    );
 
     if (
       result.length > 0 &&
@@ -38,7 +41,7 @@ export async function POST(request: NextRequest) {
             userid: result[0].userid,
           },
         },
-        { status: 200 }
+        { status: 200 },
       );
 
       response.cookies.set({
@@ -57,10 +60,17 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { message: "Invalid ID or Password" },
-      { status: 401 }
+      { status: 401 },
     );
-  } catch (e: any) {
-    console.error("Login error:", e);
-    return NextResponse.json({ message: "Server Error" }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Login Error");
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json(
+        { message: "An unexpected error occurred" },
+        { status: 500 },
+      );
+    }
   }
 }

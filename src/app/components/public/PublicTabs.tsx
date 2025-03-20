@@ -4,10 +4,10 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/common/Tabs";
+import PublicContents from "@/app/components/public/PublicContents";
+import PublicHome from "@/app/components/public/PublicHome";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
-import PublicHome from "@/app/components/public/PublicHome";
-import PublicContents from "@/app/components/public/PublicContents";
 
 interface Props {
   userid: string;

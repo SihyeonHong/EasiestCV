@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
+
+import TabCancel from "@/app/components/admin/TabCancel";
+import { Button } from "@/app/components/common/Button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/app/components/common/Dialog";
-import { Button } from "@/app/components/common/Button";
+import { Input } from "@/app/components/common/Input";
 import {
   Table,
   TableBody,
@@ -23,8 +25,6 @@ import {
   TableRow,
 } from "@/app/components/common/Table";
 import { useTabs } from "@/hooks/useTabs";
-import { Input } from "@/app/components/common/Input";
-import TabCancel from "@/app/components/admin/TabCancel";
 
 interface TabManagerProps {
   userid: string;
@@ -46,11 +46,13 @@ export default function TabManager({ userid }: TabManagerProps) {
   const [newTabName, setNewTabName] = useState<string>("");
 
   // save reference for dragItem and dragOverItem
-  const dragItem = useRef<any>(null); // 내가 드래그중인 아이템
-  const dragOverItem = useRef<any>(null); // 내가 드래그하고 있는 아이템이 들어갈 위치
+  const dragItem = useRef<number | null>(null); // 내가 드래그중인 아이템
+  const dragOverItem = useRef<number | null>(null); // 내가 드래그하고 있는 아이템이 들어갈 위치
 
   // handle drag sorting
   const handleSort = () => {
+    if (dragItem.current === null || dragOverItem.current === null) return;
+
     let _tabs = [...tabs];
 
     //remove and save the dragged item content

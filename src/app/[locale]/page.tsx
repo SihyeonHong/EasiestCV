@@ -1,6 +1,6 @@
 import Header from "@/app/components/common/Header";
-import InitPage from "@/app/components/InitPage";
 import Title from "@/app/components/common/Title";
+import InitPage from "@/app/components/InitPage";
 
 interface Props {
   params: {

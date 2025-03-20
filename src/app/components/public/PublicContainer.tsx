@@ -1,10 +1,10 @@
 "use client";
 
-import { useUser } from "@/hooks/useUser";
-import NoUserPage from "@/app/components/NoUserPage";
-import LoadingPage from "@/app/components/LoadingPage";
-import PublicTabs from "@/app/components/public/PublicTabs";
 import Title from "@/app/components/common/Title";
+import LoadingPage from "@/app/components/LoadingPage";
+import NoUserPage from "@/app/components/NoUserPage";
+import PublicTabs from "@/app/components/public/PublicTabs";
+import { useUser } from "@/hooks/useUser";
 
 export default function PublicContainer({ userid }: { userid: string }) {
   const { user, isLoading, isError } = useUser(userid);

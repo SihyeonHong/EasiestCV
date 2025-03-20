@@ -1,9 +1,10 @@
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+
 import { Button } from "@/app/components/common/Button";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
-import { useTranslations } from "next-intl";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
@@ -27,15 +28,17 @@ export default function AdminEditor({ userid, tid }: Props) {
       const tab = tabs.find((t) => t.tid === tid);
       setValue(tab?.contents || "");
     }
-  }, [tid, homeData]);
+  }, [tid, homeData, tabs]);
 
   const handleUpdate = () => {
-    tid === 0
-      ? mutateUploadIntro(value)
-      : updateContents({
-          tid: tid,
-          newContent: value,
-        });
+    if (tid === 0) {
+      mutateUploadIntro(value);
+    } else {
+      updateContents({
+        tid: tid,
+        newContent: value,
+      });
+    }
   };
 
   return (

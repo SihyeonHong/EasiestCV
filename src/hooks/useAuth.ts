@@ -1,11 +1,12 @@
-import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
+import { queryKeys } from "@/constants/queryKeys";
 import { LoginForm, SignupRequest } from "@/models/user.model";
 import { get, post } from "@/util/http";
-import { queryKeys } from "@/constants/queryKeys";
 
 interface LoginResponse {
   message: string;
@@ -72,11 +73,14 @@ export default function useAuth() {
       try {
         const response = await post<{ message: string }>(`/users/signup`, data);
         return response;
-      } catch (error: any) {
-        // 서버에서 보낸 에러 메시지를 그대로 throw
-        throw new Error(
-          error.response?.data?.message || "회원가입 중 오류가 발생했습니다.",
-        );
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          // Axios 에러인 경우, 서버에서 보낸 메시지를 그대로 throw
+          throw new Error(
+            error.response?.data?.message || "회원가입 중 오류가 발생했습니다.",
+          );
+        }
+        throw new Error("알 수 없는 오류가 발생했습니다.");
       }
     },
     onSuccess: (response) => {

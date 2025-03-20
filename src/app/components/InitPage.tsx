@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { useState, FormEvent } from "react";
 
 import { Button } from "@/app/components/common/Button";
-import { Input } from "@/app/components/common/Input";
-import { Label } from "@/app/components/common/Label";
 import {
   Card,
   CardContent,
@@ -14,6 +12,8 @@ import {
   CardTitle,
   CardFooter,
 } from "@/app/components/common/Card";
+import { Input } from "@/app/components/common/Input";
+import { Label } from "@/app/components/common/Label";
 import {
   Tabs,
   TabsContent,

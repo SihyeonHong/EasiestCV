@@ -1,6 +1,7 @@
-import { useHome } from "@/hooks/useHome";
 import Image from "next/image";
+
 import LoadingPage from "@/app/components/LoadingPage";
+import { useHome } from "@/hooks/useHome";
 
 interface Props {
   userid: string;

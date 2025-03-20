@@ -1,7 +1,8 @@
-import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { HomeData } from "@/models/home.model";
+import { useTranslations } from "next-intl";
+
 import { queryKeys } from "@/constants/queryKeys";
+import { HomeData } from "@/models/home.model";
 import { get, patch, post } from "@/util/http";
 
 export const useHome = (userid: string) => {
@@ -28,7 +29,7 @@ export const useHome = (userid: string) => {
     isPending: isPdfPending,
   } = useMutation({
     mutationFn: uploadPdf,
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert(t("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
@@ -46,7 +47,7 @@ export const useHome = (userid: string) => {
     isPending: isImgPending,
   } = useMutation({
     mutationFn: uploadImg,
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert(t("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
@@ -145,5 +146,3 @@ interface UploadIntroResponse {
   success: boolean;
   intro: string;
 }
-
-async function uploadIntro(newIntro: string) {}

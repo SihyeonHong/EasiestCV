@@ -1,9 +1,10 @@
 import "@/app/globals.css";
-import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
-import { ThemeProvider } from "@/provider/ThemeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
+
+import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
+import { ThemeProvider } from "@/provider/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

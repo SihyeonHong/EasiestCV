@@ -1,7 +1,9 @@
 "use client";
 
-import useAuth from "@/hooks/useAuth";
 import Link from "next/link";
+
+import useAuth from "@/hooks/useAuth";
+
 import { LoadingIcon } from "./LoadingIcon";
 
 export default function RequireAuth({
