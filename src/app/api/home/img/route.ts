@@ -42,11 +42,12 @@ export async function POST(req: Request) {
     }
 
     // 1) 기존에 DB에 저장된 이미지 경로가 있으면 GCS에서 삭제
-    const existing = await query("SELECT img FROM userinfo WHERE userid = $1", [
-      userId,
-    ]);
-    if (existing[0]?.img) {
-      const oldFileName = existing[0].img.split("/").pop();
+    const existing = await query<{ img: string | null }>(
+      "SELECT img FROM userinfo WHERE userid = $1",
+      [userId],
+    );
+    if (existing.length > 0 && existing[0]?.img) {
+      const oldFileName = existing[0].img.split("/").pop() ?? "";
       try {
         await deleteFile(oldFileName);
       } catch (err) {
@@ -58,7 +59,7 @@ export async function POST(req: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uniqueFilename = `${Date.now()}-${file.name}`;
+    const uniqueFilename = `${file.name}-${Date.now()}`;
     const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
 
     // GCS에 업로드 (uploadFile 함수 구현 방식에 맞춰 인자 전달)
@@ -79,4 +80,11 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json(
+    { error: "이 API는 POST 요청만 지원합니다." },
+    { status: 405 },
+  );
 }
