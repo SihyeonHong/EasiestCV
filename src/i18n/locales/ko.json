@@ -40,7 +40,14 @@
     "showResetForm": "비밀번호를 잊으셨나요?",
     "description": "아래 버튼을 클릭하시면 비밀번호가 초기화되고 임시 비밀번호가 이메일로 발송됩니다.",
     "signupIdDescription": "이 ID로 당신의 사이트 주소가 만들어집니다. ID는 나중에 변경할 수 없습니다.",
-    "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다."
+    "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다.",
+    "try": "사용해보고 싶으신가요?",
+    "use": "이 테스트 계정으로 로그인해보세요:",
+    "or": "또는",
+    "demoId": "아이디: tutorial",
+    "demoPW": "비밀번호: easiestcv",
+    "checkOut": "여기를 둘러보세요: ",
+    "professorCV": "John Doe 교수님의 이력서 →"
   },
   "admin": {
     "pdfAttach": "PDF 첨부",

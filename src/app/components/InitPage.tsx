@@ -80,224 +80,247 @@ export default function InitPage() {
   };
 
   return (
-    <Tabs defaultValue="login" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="login">{t("login")}</TabsTrigger>
-        <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="login">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">{t("login")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin}>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Input
-                    id="userid"
-                    type="text"
-                    placeholder={t("idPlaceholder")}
-                    required
-                    value={loginData.userid}
-                    onChange={(e) =>
-                      setLoginData((prev) => ({
-                        ...prev,
-                        userid: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder={t("passwordPlaceholder")}
-                    required
-                    value={loginData.password}
-                    onChange={(e) =>
-                      setLoginData((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  {t("login")}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <button
-              onClick={() => setShowResetForm(!showResetForm)}
-              className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-            >
-              {t("showResetForm")}
-            </button>
-          </CardFooter>
-          <CardContent className={showResetForm ? "" : "hidden"}>
-            <form onSubmit={handleReset}>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Input
-                    id="userid"
-                    type="text"
-                    placeholder={t("idPlaceholder")}
-                    required
-                    value={resetData.userid}
-                    onChange={(e) =>
-                      setResetData((prev) => ({
-                        ...prev,
-                        userid: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={t("emailPlaceholder")}
-                    required
-                    value={resetData.email}
-                    onChange={(e) =>
-                      setResetData((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <CardDescription>{t("description")}</CardDescription>
-                <Button type="submit" className="w-full">
-                  {t("resetPW")}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="signup">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">{t("signup")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSignup}>
-              <div className="flex flex-col gap-6">
-                <div className="space-y-1">
-                  <Label htmlFor="userid">Your ID</Label>
-                  <div className="flex items-center">
-                    <span className="whitespace-nowrap text-sm">
-                      https://easiest-cv.com/
-                    </span>
+    <div>
+      <Tabs defaultValue="login" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="login">{t("login")}</TabsTrigger>
+          <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="login">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">{t("login")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleLogin}>
+                <div className="flex flex-col gap-6">
+                  <div className="grid gap-2">
                     <Input
                       id="userid"
                       type="text"
                       placeholder={t("idPlaceholder")}
-                      className="ml-2"
                       required
-                      value={signupData.userid}
+                      value={loginData.userid}
                       onChange={(e) =>
-                        setSignupData((prev) => ({
+                        setLoginData((prev) => ({
                           ...prev,
                           userid: e.target.value,
                         }))
                       }
                     />
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder={t("passwordPlaceholder")}
+                      required
+                      value={loginData.password}
+                      onChange={(e) =>
+                        setLoginData((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
+                      }
+                    />
                   </div>
-                  <CardDescription className="">
-                    {t("signupIdDescription")}
-                  </CardDescription>
+                  <Button type="submit" className="w-full">
+                    {t("login")}
+                  </Button>
                 </div>
-                <div className="space-y-1">
-                  <Label htmlFor="username">{t("name")}</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder={t("namePlaceholder")}
-                    required
-                    value={signupData.username}
-                    onChange={(e) =>
-                      setSignupData((prev) => ({
-                        ...prev,
-                        username: e.target.value,
-                      }))
-                    }
-                  />
+              </form>
+            </CardContent>
+            <CardFooter>
+              <button
+                onClick={() => setShowResetForm(!showResetForm)}
+                className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+              >
+                {t("showResetForm")}
+              </button>
+            </CardFooter>
+            <CardContent className={showResetForm ? "" : "hidden"}>
+              <form onSubmit={handleReset}>
+                <div className="flex flex-col gap-6">
+                  <div className="grid gap-2">
+                    <Input
+                      id="userid"
+                      type="text"
+                      placeholder={t("idPlaceholder")}
+                      required
+                      value={resetData.userid}
+                      onChange={(e) =>
+                        setResetData((prev) => ({
+                          ...prev,
+                          userid: e.target.value,
+                        }))
+                      }
+                    />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={t("emailPlaceholder")}
+                      required
+                      value={resetData.email}
+                      onChange={(e) =>
+                        setResetData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <CardDescription>{t("description")}</CardDescription>
+                  <Button type="submit" className="w-full">
+                    {t("resetPW")}
+                  </Button>
                 </div>
-                <div className="space-y-1">
-                  <Label htmlFor="email">{t("email")}</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={t("emailPlaceholder")}
-                    required
-                    value={signupData.email}
-                    onChange={(e) =>
-                      setSignupData((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                  />
-                  <CardDescription>
-                    {t("signupEmailDescription")}
-                  </CardDescription>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="signup">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">{t("signup")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSignup}>
+                <div className="flex flex-col gap-6">
+                  <div className="space-y-1">
+                    <Label htmlFor="userid">Your ID</Label>
+                    <div className="flex items-center">
+                      <span className="whitespace-nowrap text-sm">
+                        https://easiest-cv.com/
+                      </span>
+                      <Input
+                        id="userid"
+                        type="text"
+                        placeholder={t("idPlaceholder")}
+                        className="ml-2"
+                        required
+                        value={signupData.userid}
+                        onChange={(e) =>
+                          setSignupData((prev) => ({
+                            ...prev,
+                            userid: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <CardDescription className="">
+                      {t("signupIdDescription")}
+                    </CardDescription>
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="username">{t("name")}</Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder={t("namePlaceholder")}
+                      required
+                      value={signupData.username}
+                      onChange={(e) =>
+                        setSignupData((prev) => ({
+                          ...prev,
+                          username: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="email">{t("email")}</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={t("emailPlaceholder")}
+                      required
+                      value={signupData.email}
+                      onChange={(e) =>
+                        setSignupData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                    />
+                    <CardDescription>
+                      {t("signupEmailDescription")}
+                    </CardDescription>
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="password">{t("password")}</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder={t("passwordPlaceholder")}
+                      required
+                      value={signupData.password}
+                      onChange={(e) =>
+                        setSignupData((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="confirmPassword">
+                      {t("comfirmPassword")}
+                    </Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      placeholder={t("comfirmPasswordPlaceholder")}
+                      required
+                      value={signupData.confirmPassword}
+                      onChange={(e) =>
+                        setSignupData((prev) => ({
+                          ...prev,
+                          confirmPassword: e.target.value,
+                        }))
+                      }
+                      className={`${
+                        signupData.confirmPassword
+                          ? passwordsMatch()
+                            ? "border-green-500 focus-visible:ring-green-500" // 일치할 때 초록색
+                            : "border-red-500 focus-visible:ring-red-500" // 불일치할 때 빨간색
+                          : ""
+                      }`}
+                    />
+                    {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
+                    {signupData.confirmPassword && !passwordsMatch() && (
+                      <p className="mt-1 text-sm text-red-500">
+                        {t("passwordMismatch")}
+                      </p>
+                    )}
+                  </div>
+                  <Button type="submit" className="w-full">
+                    {t("signup")}
+                  </Button>
                 </div>
-                <div className="space-y-1">
-                  <Label htmlFor="password">{t("password")}</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder={t("passwordPlaceholder")}
-                    required
-                    value={signupData.password}
-                    onChange={(e) =>
-                      setSignupData((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="confirmPassword">
-                    {t("comfirmPassword")}
-                  </Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder={t("comfirmPasswordPlaceholder")}
-                    required
-                    value={signupData.confirmPassword}
-                    onChange={(e) =>
-                      setSignupData((prev) => ({
-                        ...prev,
-                        confirmPassword: e.target.value,
-                      }))
-                    }
-                    className={`${
-                      signupData.confirmPassword
-                        ? passwordsMatch()
-                          ? "border-green-500 focus-visible:ring-green-500" // 일치할 때 초록색
-                          : "border-red-500 focus-visible:ring-red-500" // 불일치할 때 빨간색
-                        : ""
-                    }`}
-                  />
-                  {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
-                  {signupData.confirmPassword && !passwordsMatch() && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {t("passwordMismatch")}
-                    </p>
-                  )}
-                </div>
-                <Button type="submit" className="w-full">
-                  {t("signup")}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      <div className="mb-2 flex flex-col gap-1 p-4">
+        <h5 className="text-lg font-bold">{t("try")}</h5>
+        <span className="inline-flex items-center gap-1">
+          <p className="text-sm">{t("checkOut")}</p>
+          <a
+            href="https://easiest-cv.vercel.app/tutorial"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-blue-500 hover:underline"
+          >
+            {t("professorCV")}
+          </a>
+        </span>
+        <p className="text-sm">{t("or")}</p>
+        <p className="text-sm">{t("use")}</p>
+        <span className="rounded-md border bg-[#f8f9fa] p-1">
+          <p className="font-mono text-sm text-gray-700">{t("demoId")}</p>
+          <p className="font-mono text-sm text-gray-700">{t("demoPW")}</p>
+        </span>
+      </div>
+    </div>
   );
 }
