@@ -47,7 +47,8 @@
     "demoId": "ID: tutorial",
     "demoPW": "PW: easiestcv",
     "checkOut": "Check out",
-    "professorCV": "Professor John Doe's CV →"
+    "professorCV": "Professor John Doe's CV →",
+    "isLoggingIn": "Please wait..."
   },
   "admin": {
     "pdfAttach": "Attach PDF",

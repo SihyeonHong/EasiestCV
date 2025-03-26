@@ -47,7 +47,8 @@
     "demoId": "아이디: tutorial",
     "demoPW": "비밀번호: easiestcv",
     "checkOut": "여기를 둘러보세요: ",
-    "professorCV": "John Doe 교수님의 이력서 →"
+    "professorCV": "John Doe 교수님의 이력서 →",
+    "isLoggingIn": "잠시만 기다려 주세요..."
   },
   "admin": {
     "pdfAttach": "PDF 첨부",

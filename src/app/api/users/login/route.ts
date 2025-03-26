@@ -6,8 +6,11 @@ import { SignupRequest } from "@/models/user.model";
 import { query } from "@/util/database";
 
 export async function POST(request: NextRequest) {
+  const startAll = Date.now();
   try {
+    const startBody = Date.now();
     const { userid, password } = await request.json();
+    console.log("Parsing request body took", Date.now() - startBody, "ms");
 
     if (!userid || !password) {
       return NextResponse.json(
@@ -16,15 +19,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const startQuery = Date.now();
     const result = await query<SignupRequest>(
       "SELECT * FROM users WHERE userid = $1",
       [userid],
     );
+    console.log("DB query took", Date.now() - startQuery, "ms");
 
-    if (
-      result.length > 0 &&
-      (await bcrypt.compare(password, result[0].password))
-    ) {
+    const startCompare = Date.now();
+    const isMatch = await bcrypt.compare(password, result[0].password);
+    console.log("bcrypt.compare took", Date.now() - startCompare, "ms");
+
+    if (result.length > 0 && isMatch) {
       const payload = { userid: result[0].userid };
       const secret = process.env.JWT_SECRET;
 
@@ -32,7 +38,9 @@ export async function POST(request: NextRequest) {
         throw new Error("JWT_SECRET is not defined in .env.local");
       }
 
+      const startJwt = Date.now();
       const token = jwt.sign(payload, secret, { expiresIn: "12h" });
+      console.log("JWT signing took", Date.now() - startJwt, "ms");
 
       const response = NextResponse.json(
         {
@@ -55,6 +63,7 @@ export async function POST(request: NextRequest) {
         path: "/",
       });
 
+      console.log("Total login time:", Date.now() - startAll, "ms");
       return response;
     }
 

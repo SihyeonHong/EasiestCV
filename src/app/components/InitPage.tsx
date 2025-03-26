@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
@@ -48,10 +49,11 @@ export default function InitPage() {
       : null;
   };
 
-  const { login, signup } = useAuth();
+  const { login, signup, isLoggingIn } = useAuth();
   const { resetPassword } = useResetPassword();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    sessionStorage.setItem("login_start", String(performance.now()));
     e.preventDefault();
     login(loginData);
   };
@@ -122,9 +124,16 @@ export default function InitPage() {
                       }
                     />
                   </div>
-                  <Button type="submit" className="w-full">
-                    {t("login")}
-                  </Button>
+                  {isLoggingIn ? (
+                    <Button disabled className="w-full">
+                      <Loader2 className="animate-spin" />
+                      {t("isLoggingIn")}
+                    </Button>
+                  ) : (
+                    <Button type="submit" className="w-full">
+                      {t("login")}
+                    </Button>
+                  )}
                 </div>
               </form>
             </CardContent>
