@@ -1,3 +1,4 @@
+import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import InitPage from "@/app/components/InitPage";
@@ -15,6 +16,7 @@ export default function page({ params }: Props) {
       <Header params={params} />
       <Title />
       <InitPage />
+      <Footer />
     </div>
   );
 }

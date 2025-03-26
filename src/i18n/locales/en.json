@@ -40,7 +40,15 @@
     "showResetForm": "Forgot your password?",
     "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
-    "signupEmailDescription": "If you forget your password, you will receive email here."
+    "signupEmailDescription": "If you forget your password, you will receive email here.",
+    "try": "Want to try?",
+    "or": "Or",
+    "use": "Use this demo account:",
+    "demoId": "ID: tutorial",
+    "demoPW": "PW: easiestcv",
+    "checkOut": "Check out",
+    "professorCV": "Professor John Doe's CV →",
+    "isLoggingIn": "Please wait..."
   },
   "admin": {
     "pdfAttach": "Attach PDF",

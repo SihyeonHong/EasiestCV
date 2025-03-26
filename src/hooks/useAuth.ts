@@ -55,12 +55,12 @@ export default function useAuth() {
       return { response, currentUserId };
     },
     onSuccess: ({ currentUserId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
       if (currentUserId) {
         router.push(`/${currentUserId}`);
       } else {
         router.push("/");
       }
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
     },
     onError: (error: Error) => {
       if (error.message === "Logout cancelled") return;
