@@ -42,7 +42,7 @@ export default function AdminEditor({ userid, tid }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-4">
       <Button size="sm" onClick={handleUpdate} className="self-end">
         {t("save")}
       </Button>
