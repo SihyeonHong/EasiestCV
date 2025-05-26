@@ -10,7 +10,7 @@ interface Props {
   userid: string;
 }
 export default function AdminHome({ userid }: Props) {
-  const t = useTranslations("admin");
+  const tAdmin = useTranslations("admin");
   const { homeData, mutateUploadImg } = useHome(userid);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export default function AdminHome({ userid }: Props) {
   return (
     <div className="flex flex-col gap-6 md:flex-row">
       <div className="flex flex-1 flex-col gap-2">
-        <Label htmlFor="profileImg">{t("profileImgAttach")}</Label>
+        <Label htmlFor="profileImg">{tAdmin("profileImgAttach")}</Label>
         <Input
           id="profileImg"
           type="file"
