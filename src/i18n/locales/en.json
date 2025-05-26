@@ -1,0 +1,71 @@
+{
+  "button": {
+    "save": "Save",
+    "loginOrSignup": "Log In / Sign Up",
+    "logout": "Log Out",
+    "editUserInfo": "Edit User Info",
+    "switchLanguage": "한국어로 변경",
+    "delete": "Delete",
+    "rename": "Rename",
+    "addTab": "Add New Tab",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "message": {
+    "noUser": "No Such User",
+    "confirmLogout": "Are you sure you want to log out?",
+    "saveSuccess": "Saved successfully.",
+    "saveFail": "An error occurred while saving. Please try again."
+  },
+  "displayMode": {
+    "label": "Display Mode",
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "system": "System Setting"
+  },
+  "initpage": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "id": "ID",
+    "idPlaceholder": "Enter your ID",
+    "password": "Password",
+    "comfirmPassword": "Confirm Password",
+    "passwordPlaceholder": "Enter your password",
+    "comfirmPasswordPlaceholder": "Re-enter your password",
+    "resetPW": "Reset Password",
+    "showResetForm": "Forgot your password?",
+    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
+    "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
+    "signupEmailDescription": "If you forget your password, you will receive email here.",
+    "try": "Want to try?",
+    "or": "Or",
+    "use": "Use this demo account:",
+    "demoId": "ID: tutorial",
+    "demoPW": "PW: easiestcv",
+    "checkOut": "Check out",
+    "professorCV": "Professor John Doe's CV →",
+    "isLoggingIn": "Please wait..."
+  },
+  "admin": {
+    "pdfAttach": "Attach PDF",
+    "pdfOpen": "Open current PDF",
+    "pdfPending": "Uploading PDF. Please wait...",
+    "noPdf": "No PDF file",
+    "profileImgAttach": "Attach Profile Image",
+    "imgPending": "Uploading image. Please wait...",
+    "tabManager": "Manage Tabs",
+    "tabManagerDescription": "Drag up and down to change the order of tabs.",
+    "tabName": "Tab Name",
+    "tabOrder": "Index",
+    "actions": "Action",
+    "cancel": "Cancel",
+    "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
+    "newTabNamePlaceholder": "Enter new tab name.",
+    "noTabName": "Tab name cannot be empty.",
+    "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?"
+  }
+}

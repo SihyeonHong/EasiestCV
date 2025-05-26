@@ -3,5 +3,5 @@ export interface Tab {
   tid: number;
   tname: string;
   torder: number;
-  contents?: string;
+  contents: string | null;
 }

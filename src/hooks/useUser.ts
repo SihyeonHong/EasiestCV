@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
-import { User } from "../models/user.model";
-import { fetchUser } from "../api/user.api";
+import { useQuery } from "@tanstack/react-query";
+
+import { queryKeys } from "@/constants/queryKeys";
+import { User } from "@/models/user.model";
+import { get } from "@/util/http";
 
 export const useUser = (userid: string) => {
-  const [user, setUser] = useState<User>();
-  const [isUserExist, setIsUserExist] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchUser(userid).then((data) => {
-      if (data) {
-        setUser(data);
-        setIsUserExist(true);
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: queryKeys.user({ userid }),
+    queryFn: async () => {
+      const response = await get<User>(`/users/user?userid=${userid}`);
+      if (!response) {
+        throw new Error("사용자를 찾을 수 없습니다.");
       }
-      setLoading(false);
-    });
-  }, [userid]);
+      return response;
+    },
+    retry: false,
+  });
 
-  return { user, isUserExist, loading };
+  return {
+    user,
+    isLoading,
+    isError,
+  };
 };

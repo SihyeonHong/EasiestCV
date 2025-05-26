@@ -1,10 +1,5 @@
-import InitPage from "./components/InitPage";
+import { redirect } from "next/navigation";
 
 export default function page() {
-  return (
-    <>
-      <h1 className="title">Easiest CV</h1>
-      <InitPage />
-    </>
-  );
+  redirect("/en");
 }

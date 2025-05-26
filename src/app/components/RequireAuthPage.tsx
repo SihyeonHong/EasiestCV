@@ -1,27 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function RequireAuth({
-  url,
-  children,
-}: {
+import LoadingPage from "@/app/components/LoadingPage";
+import useAuth from "@/hooks/useAuth";
+
+interface Props {
   url: string;
-  children: any;
-}) {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  children: React.ReactNode;
+}
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    const userid = sessionStorage.getItem("userid");
+export default function RequireAuth({ url, children }: Props) {
+  const { me, isLoading } = useAuth();
 
-    if (token && url === userid) {
-      setIsAuthorized(true);
-    }
-  }, [url]);
+  if (isLoading) return <LoadingPage />;
 
-  if (!isAuthorized) {
+  // 비로그인 상태이거나 다른 사용자의 admin 페이지 접근 시도
+  if (!me || me.userid !== url) {
     return (
       <div>
         You cannot access this page without logging in.
@@ -30,6 +25,5 @@ export default function RequireAuth({
     );
   }
 
-  // if token and userid are valid, render the children
   return children;
 }
