@@ -17,6 +17,7 @@ export default function PublicContents({ userid, tid }: Props) {
       <CardContent className="prose max-w-none dark:prose-invert">
         {content && (
           <div
+            className="ql-editor prose-headings:!text-inherit prose-p:!text-inherit"
             dangerouslySetInnerHTML={{
               __html: content,
             }}

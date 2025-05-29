@@ -14,7 +14,7 @@ export default function PublicHome({ homeData }: Props) {
 
   return (
     <Card className="mx-2 md:mx-8 lg:w-[1024px]">
-      <CardContent className="flex flex-col items-center justify-center gap-5 md:flex-row">
+      <CardContent className="flex flex-col items-start justify-center gap-5 md:flex-row">
         {homeData.img && (
           <CardContent className="flex-1">
             <Image
@@ -29,7 +29,7 @@ export default function PublicHome({ homeData }: Props) {
           </CardContent>
         )}
         <CardContent
-          className="prose max-w-none flex-1 dark:prose-invert"
+          className="ql-editor prose max-w-none flex-1 dark:prose-invert prose-headings:!text-inherit prose-p:!text-inherit"
           dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }}
         />
       </CardContent>
