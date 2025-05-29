@@ -70,11 +70,9 @@ export const useHome = (userid: string) => {
         intro: newIntro,
       }),
     onSuccess: () => {
-      alert(t("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
     },
     onError: (error) => {
-      alert(t("saveFail"));
       console.error("intro 업로드 에러:", error);
     },
   });

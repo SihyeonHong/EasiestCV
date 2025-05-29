@@ -40,10 +40,8 @@ export const useTabs = (userid: string) => {
       put(`/contents`, updateContentsRequest),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
-      alert(tMessage("saveSuccess"));
     },
     onError: (error) => {
-      alert(tMessage("saveFail"));
       console.error("내용 저장 오류:", error);
     },
   });

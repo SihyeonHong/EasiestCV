@@ -67,5 +67,12 @@
     "newTabNamePlaceholder": "Enter new tab name.",
     "noTabName": "Tab name cannot be empty.",
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?"
+  },
+  "editor": {
+    "saved": "Saved",
+    "saving": "Saving...",
+    "unsaved": "Typing...",
+    "error": "Save failed",
+    "autoSaveInfo": "Changes are saved automatically."
   }
 }
