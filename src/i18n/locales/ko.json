@@ -15,7 +15,8 @@
     "noUser": "존재하지 않는 사용자입니다",
     "confirmLogout": "로그아웃 하시겠습니까?",
     "saveSuccess": "저장되었습니다.",
-    "saveFail": "저장 중 오류가 발생했습니다. 다시 시도해 주세요."
+    "saveFail": "저장 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "loading": "불러오는 중..."
   },
   "displayMode": {
     "label": "화면 모드",

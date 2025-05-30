@@ -15,7 +15,8 @@
     "noUser": "No Such User",
     "confirmLogout": "Are you sure you want to log out?",
     "saveSuccess": "Saved successfully.",
-    "saveFail": "An error occurred while saving. Please try again."
+    "saveFail": "An error occurred while saving. Please try again.",
+    "loading": "Loading..."
   },
   "displayMode": {
     "label": "Display Mode",
