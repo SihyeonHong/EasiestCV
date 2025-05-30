@@ -73,6 +73,11 @@
     "saving": "Saving...",
     "unsaved": "Typing...",
     "error": "Save failed",
-    "autoSaveInfo": "Changes are saved automatically."
+    "autoSaveInfo": "Changes are saved automatically.",
+    "revert": "Revert",
+    "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
+    "revertError": "An error occurred while reverting. Please try again.",
+    "revertNoBackup": "No backup data available.",
+    "revertNoBackupForTab": "No backup data found for this tab."
   }
 }

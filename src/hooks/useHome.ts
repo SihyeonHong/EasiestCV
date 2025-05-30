@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { HomeData } from "@/models/home.model";
@@ -7,7 +8,8 @@ import { get, patch, post } from "@/util/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
-  const t = useTranslations("message");
+  const tMessage = useTranslations("message");
+  const tEditor = useTranslations("editor");
 
   // 1) 홈 데이터 조회
   const {
@@ -30,12 +32,12 @@ export const useHome = (userid: string) => {
   } = useMutation({
     mutationFn: uploadPdf,
     onSuccess: () => {
-      alert(t("saveSuccess"));
+      alert(tMessage("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
     onError: (err) => {
-      alert(t("saveFail"));
+      alert(tMessage("saveFail"));
       console.error("PDF 업로드 에러:", err);
     },
   });
@@ -48,12 +50,12 @@ export const useHome = (userid: string) => {
   } = useMutation({
     mutationFn: uploadImg,
     onSuccess: () => {
-      alert(t("saveSuccess"));
-      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+      alert(tMessage("saveSuccess"));
+      queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
     onError: (err) => {
-      alert(t("saveFail"));
+      alert(tMessage("saveFail"));
       console.error("이미지 업로드 에러:", err);
     },
   });
@@ -70,12 +72,38 @@ export const useHome = (userid: string) => {
         intro: newIntro,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
+      queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
     },
     onError: (error) => {
+      alert(tMessage("saveFail"));
       console.error("intro 업로드 에러:", error);
     },
   });
+
+  // 프로필 소개 되돌리기
+  const backUpIntroRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!backUpIntroRef.current && homeData && homeData.intro) {
+      backUpIntroRef.current = homeData.intro;
+    }
+  }, [homeData]);
+
+  const revertIntro = (): null | void => {
+    try {
+      if (!backUpIntroRef.current || backUpIntroRef.current.length === 0) {
+        alert(tEditor("revertNoBackup"));
+        return null;
+      }
+
+      const confirm = window.confirm(tEditor("revertConfirm"));
+      if (!confirm) return null;
+
+      mutateUploadIntro(backUpIntroRef.current);
+    } catch (error) {
+      console.error("revertIntro: ", error);
+    }
+  };
 
   return {
     // 홈 데이터 관련
@@ -98,6 +126,9 @@ export const useHome = (userid: string) => {
     mutateUploadIntro,
     introUploadStatus,
     isIntroPending,
+
+    // intro 되돌리기
+    revertIntro,
   };
 };
 

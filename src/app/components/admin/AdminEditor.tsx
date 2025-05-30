@@ -2,8 +2,11 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
+import { Button } from "@/app/components/common/Button";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
+import { Tab } from "@/models/tab.model";
+import { cn } from "@/util/classname";
 import useDebounce from "@/util/useDebounce";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -19,10 +22,26 @@ interface Props {
 export default function AdminEditor({ userid, tid }: Props) {
   const t = useTranslations("editor");
 
-  const { homeData, mutateUploadIntro } = useHome(userid);
-  const { tabs, updateContents } = useTabs(userid);
+  const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
+  const { tabs, updateContents, revertContents } = useTabs(userid);
   const [value, setValue] = useState("");
+  const [currentTab, setCurrentTab] = useState<Tab | null>(
+    tabs.find((t) => t.tid === tid) || null,
+  );
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
+
+  useEffect(() => {
+    setCurrentTab(tabs.find((t) => t.tid === tid) || null);
+  }, [tid, tabs]);
+
+  useEffect(() => {
+    if (tid === 0) {
+      setValue(homeData?.intro || "");
+    } else {
+      setValue(currentTab?.contents || "");
+    }
+    setSaveStatus("saved");
+  }, [tid, homeData, currentTab]);
 
   const autoSave = useDebounce(async (content: string) => {
     setSaveStatus("saving");
@@ -43,20 +62,23 @@ export default function AdminEditor({ userid, tid }: Props) {
     }
   }, 2000);
 
-  useEffect(() => {
-    if (tid === 0) {
-      setValue(homeData?.intro || "");
-    } else {
-      const tab = tabs.find((t) => t.tid === tid);
-      setValue(tab?.contents || "");
-    }
-    setSaveStatus("saved"); // 새 탭 로드시 저장된 상태로 초기화
-  }, [tid, homeData, tabs]);
-
   const handleValueChange = (newValue: string) => {
     setValue(newValue);
     setSaveStatus("unsaved");
     autoSave(newValue);
+  };
+
+  const handleRevert = () => {
+    setSaveStatus("saving");
+    try {
+      if (tid === 0) revertIntro();
+      else revertContents(tid);
+
+      setSaveStatus("saved");
+    } catch (error) {
+      setSaveStatus("error");
+      console.error("Revert failed:", error);
+    }
   };
 
   const getStatusDisplay = () => {
@@ -92,10 +114,19 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <div className="flex items-end justify-between">
-        <p className="prose prose-slate text-sm">{t("autoSaveInfo")}</p>
+      <div className="flex items-end justify-between gap-1">
+        <div className="flex items-end gap-2">
+          <Button variant="destructive" size="sm" onClick={handleRevert}>
+            {t("revert")}
+          </Button>
+          <p className="prose prose-slate text-sm">{t("autoSaveInfo")}</p>
+        </div>
+
         <div
-          className={`flex items-center gap-1 text-sm ${statusDisplay.className}`}
+          className={cn(
+            "flex items-center gap-2 text-sm",
+            statusDisplay.className,
+          )}
         >
           <span>{statusDisplay.icon}</span>
           <span>{statusDisplay.text}</span>
