@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
@@ -11,6 +11,7 @@ export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
   const tAdmin = useTranslations("admin");
+  const tEditor = useTranslations("editor");
 
   const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
   const [currentTab, setCurrentTab] = useState<Tab | null>(null);
@@ -25,7 +26,7 @@ export const useTabs = (userid: string) => {
   const { mutate: updateTabsMutation } = useMutation({
     mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
+      queryClient.refetchQueries({ queryKey: queryKeys.tabs({ userid }) });
       setLocalTabs(null);
       alert(tMessage("saveSuccess"));
     },
@@ -39,11 +40,9 @@ export const useTabs = (userid: string) => {
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tabs({ userid }) });
-      alert(tMessage("saveSuccess"));
+      queryClient.refetchQueries({ queryKey: queryKeys.tabs({ userid }) });
     },
     onError: (error) => {
-      alert(tMessage("saveFail"));
       console.error("내용 저장 오류:", error);
     },
   });
@@ -113,6 +112,48 @@ export const useTabs = (userid: string) => {
     updateContentsMutation(updateContentsRequest);
   };
 
+  // 내용 되돌리기
+
+  const backUpTabsRef = useRef<Tab[] | null>(null);
+  useEffect(() => {
+    if (serverTabs.length > 0 && !backUpTabsRef.current) {
+      backUpTabsRef.current = [...serverTabs];
+    }
+  }, [serverTabs]);
+
+  const revertContents = (tid: number): null | void => {
+    try {
+      if (!backUpTabsRef.current) {
+        alert(tEditor("revertNoBackup"));
+        return null;
+      }
+
+      const backupTab = backUpTabsRef.current.find((tab) => tab.tid === tid);
+
+      if (
+        !backupTab ||
+        backupTab.contents === undefined ||
+        backupTab.contents === null
+      ) {
+        alert(tEditor("revertNoBackupForTab"));
+        console.error(`탭 ID ${tid}에 대한 백업 데이터를 찾을 수 없습니다.`);
+        return null;
+      }
+
+      const confirm = window.confirm(tEditor("revertConfirm"));
+      if (!confirm) return null;
+
+      updateContentsMutation({
+        userid,
+        tid,
+        contents: backupTab.contents,
+      });
+    } catch (error) {
+      alert(tEditor("revertError"));
+      console.error("revertContents", error);
+    }
+  };
+
   return {
     tabs,
     setLocalTabs,
@@ -124,6 +165,7 @@ export const useTabs = (userid: string) => {
     updateContents,
     currentTab,
     setCurrentTab,
+    revertContents,
   };
 };
 

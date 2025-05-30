@@ -15,7 +15,8 @@
     "noUser": "No Such User",
     "confirmLogout": "Are you sure you want to log out?",
     "saveSuccess": "Saved successfully.",
-    "saveFail": "An error occurred while saving. Please try again."
+    "saveFail": "An error occurred while saving. Please try again.",
+    "loading": "Loading..."
   },
   "displayMode": {
     "label": "Display Mode",
@@ -67,5 +68,17 @@
     "newTabNamePlaceholder": "Enter new tab name.",
     "noTabName": "Tab name cannot be empty.",
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?"
+  },
+  "editor": {
+    "saved": "Saved",
+    "saving": "Saving...",
+    "unsaved": "Typing...",
+    "error": "Save failed",
+    "autoSaveInfo": "Changes are saved automatically.",
+    "revert": "Revert",
+    "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
+    "revertError": "An error occurred while reverting. Please try again.",
+    "revertNoBackup": "No backup data available.",
+    "revertNoBackupForTab": "No backup data found for this tab."
   }
 }
