@@ -24,6 +24,8 @@ import {
 import useAuth from "@/hooks/useAuth";
 import { useResetPassword } from "@/hooks/useResetPW";
 
+import UsageGuide from "./UsageGuide";
+
 export default function InitPage() {
   const t = useTranslations("initpage");
   const [showResetForm, setShowResetForm] = useState(false);
@@ -82,9 +84,9 @@ export default function InitPage() {
   };
 
   return (
-    <div>
-      <Tabs defaultValue="login" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-2">
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-4 p-2 md:max-w-xl">
+      <Tabs defaultValue="login" className="mx-0 w-full max-w-none md:mx-0">
+        <TabsList className="grid grid-cols-2">
           <TabsTrigger value="login">{t("login")}</TabsTrigger>
           <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
         </TabsList>
@@ -309,27 +311,7 @@ export default function InitPage() {
           </Card>
         </TabsContent>
       </Tabs>
-
-      <div className="mb-2 flex flex-col gap-1 p-4">
-        <h5 className="text-lg font-bold">{t("try")}</h5>
-        <span className="inline-flex items-center gap-1">
-          <p className="text-sm">{t("checkOut")}</p>
-          <a
-            href="https://easiest-cv.vercel.app/tutorial"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-500 hover:underline"
-          >
-            {t("professorCV")}
-          </a>
-        </span>
-        <p className="text-sm">{t("or")}</p>
-        <p className="text-sm">{t("use")}</p>
-        <span className="rounded-md border bg-[#f8f9fa] p-1">
-          <p className="font-mono text-sm text-gray-700">{t("demoId")}</p>
-          <p className="font-mono text-sm text-gray-700">{t("demoPW")}</p>
-        </span>
-      </div>
+      <UsageGuide />
     </div>
   );
 }

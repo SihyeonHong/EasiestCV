@@ -13,7 +13,7 @@ export default function PublicContents({ userid, tid }: Props) {
   const content = tabs.find((tab) => tab.tid === tid)?.contents;
 
   return (
-    <Card className="mx-2 md:mx-8 lg:w-[1024px]">
+    <Card>
       <CardContent className="prose max-w-none dark:prose-invert">
         {content && (
           <div

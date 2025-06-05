@@ -27,7 +27,7 @@ export default function PublicTabs({ userid }: Props) {
 
   return (
     <Tabs defaultValue="home">
-      <TabsList className="flex w-full">
+      <TabsList>
         <TabsTrigger value="home">Home</TabsTrigger>
         {tabs &&
           tabs.map((tab) => (
