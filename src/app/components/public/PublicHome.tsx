@@ -13,7 +13,7 @@ export default function PublicHome({ homeData }: Props) {
 
   return (
     <Card>
-      <CardContent className="flex flex-col items-start justify-center gap-5 md:flex-row">
+      <CardContent className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-start">
         {homeData.img && (
           <CardContent className="flex-1">
             <Image

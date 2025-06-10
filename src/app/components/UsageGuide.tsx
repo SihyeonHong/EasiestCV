@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 
 export default function UsageGuide() {
-  const t = useTranslations("UsageGuide");
+  const t = useTranslations("usageGuide");
 
   return (
     <div className="flex flex-col gap-1">
