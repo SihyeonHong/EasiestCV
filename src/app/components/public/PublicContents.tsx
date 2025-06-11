@@ -13,17 +13,22 @@ export default function PublicContents({ userid, tid }: Props) {
   const content = tabs.find((tab) => tab.tid === tid)?.contents;
 
   return (
-    <Card className="mx-2 md:mx-8 lg:w-[1024px]">
-      <CardContent className="prose max-w-none dark:prose-invert">
+    <Card className="w-full">
+      <CardContent className="prose w-full dark:prose-invert">
         {content && (
           <div
             className="ql-editor prose-headings:!text-inherit prose-p:!text-inherit"
             dangerouslySetInnerHTML={{
               __html: content,
             }}
-          ></div>
+          />
         )}
       </CardContent>
     </Card>
   );
 }
+
+//   <CardContent className="prose max-w-none dark:prose-invert">
+//     {content && (
+//       <div
+//         className="ql-editor prose-headings:!text-inherit prose-p:!text-inherit"

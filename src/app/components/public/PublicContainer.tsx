@@ -10,15 +10,17 @@ export default function PublicContainer({ userid }: { userid: string }) {
   const { user, isLoading, isError } = useUser(userid);
 
   return (
-    <div className="">
-      <Title title={user?.username || userid} />
-      {isLoading ? (
-        <LoadingPage />
-      ) : isError || !user ? (
-        <NoUserPage />
-      ) : (
-        <PublicTabs userid={userid} />
-      )}
+    <div className="flex w-full justify-center px-4">
+      <div className="w-full max-w-[1024px]">
+        <Title title={user?.username || userid} />
+        {isLoading ? (
+          <LoadingPage />
+        ) : isError || !user ? (
+          <NoUserPage />
+        ) : (
+          <PublicTabs userid={userid} />
+        )}
+      </div>
     </div>
   );
 }

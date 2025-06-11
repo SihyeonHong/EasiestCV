@@ -1,9 +1,8 @@
 import Image from "next/image";
 
+import { Card, CardContent } from "@/app/components/common/Card";
+import LoadingPage from "@/app/components/LoadingPage";
 import { HomeData } from "@/models/home.model";
-
-import { Card, CardContent } from "../common/Card";
-import LoadingPage from "../LoadingPage";
 
 interface Props {
   homeData: HomeData;
@@ -13,8 +12,8 @@ export default function PublicHome({ homeData }: Props) {
   if (!homeData) return <LoadingPage />;
 
   return (
-    <Card className="mx-2 md:mx-8 lg:w-[1024px]">
-      <CardContent className="flex flex-col items-start justify-center gap-5 md:flex-row">
+    <Card>
+      <CardContent className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-start">
         {homeData.img && (
           <CardContent className="flex-1">
             <Image

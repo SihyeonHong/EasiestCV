@@ -42,14 +42,16 @@
     "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
     "signupEmailDescription": "If you forget your password, you will receive email here.",
-    "try": "Want to try?",
-    "or": "Or",
-    "use": "Use this demo account:",
-    "demoId": "ID: tutorial",
-    "demoPW": "PW: easiestcv",
-    "checkOut": "Check out",
-    "professorCV": "Professor John Doe's CV →",
     "isLoggingIn": "Please wait..."
+  },
+  "usageGuide": {
+    "try": "Want to try it out?",
+    "use": "Log in with this demo account:",
+    "or": "Or",
+    "demoId": "ID: tutorial",
+    "demoPW": "Password: easiestcv",
+    "checkOut": "Check out this page: ",
+    "professorCV": "Professor John Doe's CV →"
   },
   "admin": {
     "pdfAttach": "Attach PDF",

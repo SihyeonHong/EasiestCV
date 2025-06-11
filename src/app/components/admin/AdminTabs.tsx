@@ -18,8 +18,8 @@ export default function AdminTabs({ userid }: Props) {
   const { tabs } = useTabs(userid);
 
   return (
-    <Tabs defaultValue="home" className="mx-2 md:mx-8 lg:mx-auto lg:w-[1024px]">
-      <TabsList className="flex w-full">
+    <Tabs defaultValue="home">
+      <TabsList>
         <TabsTrigger value="home">Home</TabsTrigger>
         {tabs &&
           tabs.map((tab) => (

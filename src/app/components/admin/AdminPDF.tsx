@@ -14,8 +14,8 @@ export default function AdminPDF({ userid }: Props) {
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
 
   return (
-    <Card className="mx-2 md:mx-8 lg:w-[1024px]">
-      <CardContent className="prose max-w-none dark:prose-invert">
+    <Card>
+      <CardContent className="prose dark:prose-invert">
         <Label htmlFor="pdf">{t("pdfAttach")}</Label>
         <Input
           id="pdf"

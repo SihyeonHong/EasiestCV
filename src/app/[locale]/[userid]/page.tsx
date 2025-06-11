@@ -11,7 +11,7 @@ interface Props {
 
 export default function Page({ params }: Props) {
   return (
-    <div className="flex flex-col items-center p-0">
+    <div className="flex flex-col items-center">
       <Header params={params} />
       <PublicContainer userid={params.userid} />
       <Footer />
