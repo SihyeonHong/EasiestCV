@@ -37,7 +37,7 @@ export default function Header({ params, isAdmin }: HeaderProps) {
 
       {params.userid &&
         (isAdmin ? (
-          <AdminHeader />
+          <AdminHeader userid={params.userid} />
         ) : (
           <Button asChild>
             <Link href="/">{t("loginOrSignup")}</Link>

@@ -1,14 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { User } from "@/models/user.model";
-import { get } from "@/util/http";
+import { get, put } from "@/util/http";
 
 export const useUser = (userid: string) => {
+  const queryClient = useQueryClient();
+
   const {
     data: user,
-    isLoading,
-    isError,
+    isLoading: isUserLoading,
+    isError: isUserError,
   } = useQuery({
     queryKey: queryKeys.user({ userid }),
     queryFn: async () => {
@@ -21,9 +23,23 @@ export const useUser = (userid: string) => {
     retry: false,
   });
 
+  const {
+    mutateAsync: updateUserInfo,
+    status: updateStatus,
+    error: updateError,
+  } = useMutation<{ message: string }, Error, User>({
+    mutationFn: (payload) => put(`/users/user`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.user({ userid }) });
+    },
+  });
+
   return {
     user,
-    isLoading,
-    isError,
+    isUserLoading,
+    isUserError,
+    updateUserInfo,
+    updateStatus,
+    updateError,
   };
 };

@@ -3,7 +3,6 @@
     "save": "Save",
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
-    "editUserInfo": "Edit User Info",
     "switchLanguage": "한국어로 변경",
     "delete": "Delete",
     "rename": "Rename",
@@ -82,5 +81,24 @@
     "revertError": "An error occurred while reverting. Please try again.",
     "revertNoBackup": "No backup data available.",
     "revertNoBackupForTab": "No backup data found for this tab."
+  },
+  "editUserInfo": {
+    "button": "Edit User Info",
+    "title": "Edit User Information",
+    "editUserInfoBtn": "Edit Name/Email",
+    "resetPW": "Reset Password",
+    "description": "You can update your username and email. Changes will not be saved if you click Cancel.",
+    "nameLabel": "Your Name",
+    "emailLabel": "Email",
+    "usernamePlaceholder": "Enter your name",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Submit",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "passwordMismatch": "Passwords do not match.",
+    "updateSuccess": "User information updated successfully.",
+    "updateFail": "Failed to update user information. Please try again."
   }
 }
