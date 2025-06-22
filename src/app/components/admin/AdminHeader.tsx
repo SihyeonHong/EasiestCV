@@ -5,7 +5,7 @@ import { Button } from "@/app/components/common/Button";
 import useAuth from "@/hooks/useAuth";
 
 export default function AdminHeader({ userid }: { userid: string }) {
-  const t = useTranslations("button");
+  const t = useTranslations("header");
 
   const { logout } = useAuth();
 

@@ -13,20 +13,20 @@ import { Button } from "@/app/components/common/Button";
 import { DialogClose } from "@/app/components/common/Dialog";
 
 export default function TabCancel({ resetTabs }: { resetTabs: () => void }) {
-  const tAdmin = useTranslations("admin");
+  const tMessage = useTranslations("message");
   const tButton = useTranslations("button");
 
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button variant="secondary">{tAdmin("cancel")}</Button>
+        <Button variant="secondary">{tButton("cancel")}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <AlertDialogHeader>{tAdmin("cancelConfirm")}</AlertDialogHeader>
+        <AlertDialogHeader>{tMessage("cancelConfirm")}</AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{tButton("no")}</AlertDialogCancel>
+          <AlertDialogCancel>{tButton("cancel")}</AlertDialogCancel>
           <AlertDialogAction asChild onClick={() => resetTabs()}>
-            <DialogClose>{tButton("yes")}</DialogClose>
+            <DialogClose>{tButton("confirm")}</DialogClose>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

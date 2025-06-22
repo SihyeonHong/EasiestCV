@@ -13,6 +13,8 @@ import {
 } from "@/app/components/common/DropdownMenu";
 
 export default function UserInfoDropDown({ userid }: { userid: string }) {
+  const tHeader = useTranslations("header");
+  const tResetPW = useTranslations("resetPassword");
   const t = useTranslations("editUserInfo");
 
   const [isUserInfoEditorOpen, setIsUserInfoEditorOpen] = useState(false);
@@ -21,7 +23,7 @@ export default function UserInfoDropDown({ userid }: { userid: string }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary">{t("button")}</Button>
+          <Button variant="secondary">{tHeader("dropdown")}</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>{t("title")}</DropdownMenuLabel>
@@ -29,7 +31,7 @@ export default function UserInfoDropDown({ userid }: { userid: string }) {
           <DropdownMenuItem onClick={() => setIsUserInfoEditorOpen(true)}>
             {t("editUserInfoBtn")}
           </DropdownMenuItem>
-          <DropdownMenuItem>{t("resetPW")}</DropdownMenuItem>
+          <DropdownMenuItem>{tResetPW("resetPW")}</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <UserInfoEditor

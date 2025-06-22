@@ -27,6 +27,11 @@ export default function UserInfoEditor({
   onClose,
 }: UserInfoEditorProps) {
   const t = useTranslations("editUserInfo");
+  const tLabel = useTranslations("label");
+  const tPlaceholder = useTranslations("placeholder");
+  const tButton = useTranslations("button");
+  const tMessage = useTranslations("message");
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const { user, isUserLoading, updateUserInfo } = useUser(userid);
@@ -49,10 +54,10 @@ export default function UserInfoEditor({
         username,
         email,
       });
-      alert(t("updateSuccess"));
+      alert(tMessage("saveSuccess"));
       onClose();
     } catch (error) {
-      alert(t("updateFail"));
+      alert(tMessage("saveFail"));
       console.error("회원정보 수정 오류:", error);
     }
   };
@@ -74,12 +79,12 @@ export default function UserInfoEditor({
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-3">
             <label htmlFor="username" className="text-sm">
-              {t("nameLabel")}
+              {tLabel("name")}
             </label>
             <Input
               id="username"
               type="text"
-              placeholder={t("usernamePlaceholder")}
+              placeholder={tPlaceholder("namePlaceholder")}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -87,12 +92,12 @@ export default function UserInfoEditor({
           </div>
           <div className="flex flex-col gap-3">
             <label htmlFor="email" className="text-sm">
-              {t("emailLabel")}
+              {tLabel("email")}
             </label>
             <Input
               id="email"
               type="email"
-              placeholder={t("emailPlaceholder")}
+              placeholder={tPlaceholder("emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -101,10 +106,10 @@ export default function UserInfoEditor({
 
           <DialogFooter>
             <Button variant="secondary" type="button" onClick={handleCancel}>
-              {t("cancel")}
+              {tButton("cancel")}
             </Button>
             <Button variant="default" type="submit">
-              {t("submit")}
+              {tButton("confirm")}
             </Button>
           </DialogFooter>
         </form>

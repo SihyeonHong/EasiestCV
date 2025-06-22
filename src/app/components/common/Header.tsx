@@ -17,7 +17,7 @@ interface HeaderProps {
 }
 
 export default function Header({ params, isAdmin }: HeaderProps) {
-  const t = useTranslations("button");
+  const t = useTranslations("header");
   const pathname = usePathname();
   const newLocale = params.locale === "en" ? "ko" : "en";
   const newPathname = pathname
