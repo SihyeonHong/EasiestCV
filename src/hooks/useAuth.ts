@@ -85,7 +85,7 @@ export default function useAuth() {
     },
     onSuccess: (response) => {
       alert(response.message); // 회원가입이 완료되었습니다.
-      router.push("/"); // 로그인 페이지로 이동
+      router.push("/"); // 로그인 페이지로 이동 - 이거 안되더라 새로고침 해줘야 할듯
     },
     onError: (error: Error) => {
       console.log(error.message);

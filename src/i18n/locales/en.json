@@ -3,7 +3,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "pending": "Please wait..."
   },
   "message": {
     "noUser": "No Such User",
@@ -11,7 +12,9 @@
     "saveSuccess": "Saved successfully.",
     "saveFail": "An error occurred while saving. Please try again.",
     "loading": "Loading...",
-    "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?"
+    "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
+    "passwordMismatch": "Passwords do not match.",
+    "networkError": "Please check your network connection."
   },
   "label": {
     "name": "Name",
@@ -45,8 +48,7 @@
     "login": "Log In",
     "signup": "Sign Up",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
-    "signupEmailDescription": "If you forget your password, you will receive email here.",
-    "isLoggingIn": "Please wait..."
+    "signupEmailDescription": "If you forget your password, you will receive email here."
   },
   "usageGuide": {
     "try": "Want to try it out?",
@@ -95,7 +97,19 @@
   "resetPassword": {
     "resetPW": "Reset Password",
     "showResetForm": "Forgot your password?",
-    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
-    "passwordMismatch": "Passwords do not match."
+    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email."
+  },
+  "changePassword": {
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmNewPasswordPlaceholder": "Re-enter your new password",
+    "changeSuccess": "Your password has been changed successfully.",
+    "changeFail": "An error occurred while changing the password. Please try again.",
+    "invalidCurrent": "The current password is incorrect.",
+    "samePassword": "The new password is the same as the current one."
   }
 }

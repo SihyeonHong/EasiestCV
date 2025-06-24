@@ -29,7 +29,9 @@ export default function InitPage() {
   const tInitPage = useTranslations("initpage");
   const tPlaceholder = useTranslations("placeholder");
   const tResetPW = useTranslations("resetPassword");
+  const tMessage = useTranslations("message");
   const tLabel = useTranslations("label");
+  const tButton = useTranslations("button");
 
   const [showResetForm, setShowResetForm] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -67,7 +69,7 @@ export default function InitPage() {
     e.preventDefault();
 
     if (signupData.password !== signupData.confirmPassword) {
-      alert(tResetPW("passwordMismatch"));
+      alert(tMessage("passwordMismatch"));
       return;
     }
     signup(signupData);
@@ -132,7 +134,7 @@ export default function InitPage() {
                   {isLoggingIn ? (
                     <Button disabled className="w-full">
                       <Loader2 className="animate-spin" />
-                      {tInitPage("isLoggingIn")}
+                      {tButton("pending")}
                     </Button>
                   ) : (
                     <Button type="submit" className="w-full">
@@ -219,7 +221,7 @@ export default function InitPage() {
                         }
                       />
                     </div>
-                    <CardDescription className="">
+                    <CardDescription>
                       {tInitPage("signupIdDescription")}
                     </CardDescription>
                   </div>
@@ -301,7 +303,7 @@ export default function InitPage() {
                     {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
                     {signupData.confirmPassword && !passwordsMatch() && (
                       <p className="mt-1 text-sm text-red-500">
-                        {tResetPW("passwordMismatch")}
+                        {tMessage("passwordMismatch")}
                       </p>
                     )}
                   </div>

@@ -11,13 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/components/common/DropdownMenu";
+import PasswordChangeDialog from "@/app/components/common/PasswordChangeDialog";
 
 export default function UserInfoDropDown({ userid }: { userid: string }) {
   const tHeader = useTranslations("header");
-  const tResetPW = useTranslations("resetPassword");
+  const tChangePW = useTranslations("changePassword");
   const t = useTranslations("editUserInfo");
 
   const [isUserInfoEditorOpen, setIsUserInfoEditorOpen] = useState(false);
+  const [isResetPWDialogOpen, setIsResetPWDialogOpen] = useState(false);
 
   return (
     <>
@@ -31,13 +33,20 @@ export default function UserInfoDropDown({ userid }: { userid: string }) {
           <DropdownMenuItem onClick={() => setIsUserInfoEditorOpen(true)}>
             {t("editUserInfoBtn")}
           </DropdownMenuItem>
-          <DropdownMenuItem>{tResetPW("resetPW")}</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsResetPWDialogOpen(true)}>
+            {tChangePW("changePassword")}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <UserInfoEditor
         userid={userid}
         isOpen={isUserInfoEditorOpen}
         onClose={() => setIsUserInfoEditorOpen(false)}
+      />
+      <PasswordChangeDialog
+        userid={userid}
+        isOpen={isResetPWDialogOpen}
+        onClose={() => setIsResetPWDialogOpen(false)}
       />
     </>
   );
