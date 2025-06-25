@@ -17,7 +17,8 @@
     "networkError": "Please check your network connection.",
     "unknownError": "An unknown error occurred. Please try again.",
     "serverError": "Server error occurred. Please contact the administrator.",
-    "missingFields": "Please fill in all fields."
+    "missingFields": "Please fill in all fields correctly.",
+    "timeout": "Request timed out. Please try again."
   },
   "label": {
     "name": "Name",

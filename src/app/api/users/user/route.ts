@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { ApiErrorResponse, DBError } from "@/models/api";
 import { query } from "@/util/database";
 
 export async function GET(request: Request) {
@@ -35,35 +36,29 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const body = await request.json();
-    const { userid, username, email } = body as {
-      userid?: string;
-      username?: string;
-      email?: string;
-    };
+    const { userid, username, email } = await request.json();
 
     const missingFields: string[] = [];
     if (!userid) missingFields.push("userid");
     if (!username) missingFields.push("username");
     if (!email) missingFields.push("email");
 
-    if (!userid) {
-      return NextResponse.json(
-        { message: "userid가 누락되었습니다." },
-        { status: 400 },
-      );
+    if (missingFields.length > 0) {
+      const response: ApiErrorResponse = {
+        message: `필수 필드가 누락되었습니다: ${missingFields.join(", ")}`,
+        errorType: "VALIDATION_ERROR",
+      };
+      return NextResponse.json(response, { status: 400 });
     }
-    if (!username) {
-      return NextResponse.json(
-        { message: "username이 누락되었습니다." },
-        { status: 400 },
-      );
-    }
-    if (!email) {
-      return NextResponse.json(
-        { message: "email이 누락되었습니다." },
-        { status: 400 },
-      );
+
+    // 이메일 형식 검증
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      const response: ApiErrorResponse = {
+        message: "올바른 이메일 형식이 아닙니다.",
+        errorType: "VALIDATION_ERROR",
+      };
+      return NextResponse.json(response, { status: 400 });
     }
 
     await query(
@@ -71,17 +66,57 @@ export async function PUT(request: Request) {
       [username, email, userid],
     );
 
-    return NextResponse.json("ok");
+    return NextResponse.json({
+      message: "회원정보가 수정되었습니다.",
+    });
   } catch (error: unknown) {
-    console.log("server error:", error);
+    console.log("회원정보 수정 오류:", error);
 
-    if (error instanceof Error) {
-      return NextResponse.json({ message: error.message }, { status: 500 });
+    // DB 연결 오류
+    if (error && typeof error === "object" && "code" in error) {
+      const dbError = error as DBError;
+      if (dbError.code === "ECONNREFUSED" || dbError.code === "ENOTFOUND") {
+        const response: ApiErrorResponse = {
+          message: "데이터베이스 연결에 실패했습니다.",
+          errorType: "DATABASE_CONNECTION_ERROR",
+        };
+        return NextResponse.json(response, { status: 503 });
+      }
+
+      // DB 제약 조건 위반
+      if (dbError.code === "23505") {
+        // PostgreSQL unique constraint violation
+        const response: ApiErrorResponse = {
+          message: "중복된 데이터가 존재합니다.",
+          errorType: "DUPLICATE_DATA",
+        };
+        return NextResponse.json(response, { status: 409 });
+      }
     }
 
-    return NextResponse.json(
-      { message: "알 수 없는 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    // JSON 파싱 오류
+    if (error instanceof SyntaxError) {
+      const response: ApiErrorResponse = {
+        message: "잘못된 요청 형식입니다.",
+        errorType: "INVALID_JSON",
+      };
+      return NextResponse.json(response, { status: 400 });
+    }
+
+    // 일반적인 에러
+    if (error instanceof Error) {
+      const response: ApiErrorResponse = {
+        message: error.message || "서버 내부 오류가 발생했습니다.",
+        errorType: "INTERNAL_ERROR",
+      };
+      return NextResponse.json(response, { status: 500 });
+    }
+
+    // 알 수 없는 에러
+    const response: ApiErrorResponse = {
+      message: "알 수 없는 오류가 발생했습니다.",
+      errorType: "UNKNOWN_ERROR",
+    };
+    return NextResponse.json(response, { status: 500 });
   }
 }

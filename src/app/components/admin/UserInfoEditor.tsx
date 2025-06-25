@@ -30,7 +30,6 @@ export default function UserInfoEditor({
   const tLabel = useTranslations("label");
   const tPlaceholder = useTranslations("placeholder");
   const tButton = useTranslations("button");
-  const tMessage = useTranslations("message");
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -48,18 +47,12 @@ export default function UserInfoEditor({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      await updateUserInfo({
-        ...user,
-        username,
-        email,
-      });
-      alert(tMessage("saveSuccess"));
-      onClose();
-    } catch (error) {
-      alert(tMessage("saveFail"));
-      console.error("회원정보 수정 오류:", error);
-    }
+    await updateUserInfo({
+      userid,
+      username: username.trim(),
+      email: email.trim(),
+    });
+    onClose();
   };
 
   const handleCancel = () => {

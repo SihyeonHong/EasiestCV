@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
+import { ApiErrorResponse } from "@/models/api";
 import { ChangePWRequest, User } from "@/models/user.model";
 import { get, patch, put } from "@/util/http";
 
@@ -31,10 +32,37 @@ export const useUser = (userid: string) => {
     mutateAsync: updateUserInfo,
     status: updateStatus,
     error: updateError,
-  } = useMutation<{ message: string }, Error, User>({
-    mutationFn: (payload) => put(`/users/user`, payload),
+  } = useMutation({
+    mutationFn: (payload: User) => put(`/users/user`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.user({ userid }) });
+      alert(tMessage("saveSuccess"));
+    },
+    onError: (error: AxiosError) => {
+      console.error("회원정보 수정 오류:", error);
+
+      // 네트워크 에러
+      if (!error.response) {
+        alert(
+          error.code === "ECONNABORTED"
+            ? tMessage("timeout")
+            : tMessage("networkError"),
+        );
+        return;
+      }
+
+      // 서버 에러
+      const errorData = error.response.data as ApiErrorResponse;
+      const status = error.response.status;
+
+      // 주요 케이스만 처리
+      if (status === 400 && errorData?.errorType === "VALIDATION_ERROR") {
+        console.log(errorData.message);
+        alert(tMessage("missingFields"));
+      } else {
+        console.log(status, errorData.message);
+        alert(tMessage("saveFail"));
+      }
     },
   });
 
