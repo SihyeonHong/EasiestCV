@@ -52,7 +52,10 @@
     "signup": "회원가입",
     "signupIdDescription": "이 ID로 당신의 사이트 주소가 만들어집니다. ID는 나중에 변경할 수 없습니다.",
     "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다.",
-    "loginFail": "로그인에 실패했습니다. 다시 시도해 주세요."
+    "loginFail": "로그인에 실패했습니다. 다시 시도해 주세요.",
+    "signupSuccess": "회원가입이 완료되었습니다. 로그인해 주세요.",
+    "signupFail": "회원가입 중 오류가 발생했습니다.",
+    "duplicateId": "이미 다른 사람이 사용 중인 아이디입니다."
   },
   "usageGuide": {
     "try": "사용해보고 싶으신가요?",

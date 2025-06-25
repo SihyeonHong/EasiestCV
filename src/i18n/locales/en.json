@@ -52,7 +52,10 @@
     "signup": "Sign Up",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
     "signupEmailDescription": "If you forget your password, you will receive email here.",
-    "loginFail": "Login failed. Please try again."
+    "loginFail": "Login failed. Please try again.",
+    "signupSuccess": "Sign up successful. Please log in.",
+    "signupFail": "An error occurred during sign up.",
+    "duplicateId": "This ID is already in use by another user."
   },
   "usageGuide": {
     "try": "Want to try it out?",

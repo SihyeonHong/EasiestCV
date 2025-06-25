@@ -20,7 +20,7 @@ export default function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
-  const tInitPage = useTranslations("initPage");
+  const tInitPage = useTranslations("initpage");
 
   const { data: me, isLoading } = useQuery({
     queryKey: queryKeys.auth(),
@@ -82,13 +82,16 @@ export default function useAuth() {
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
       if (!confirm(tMessage("confirmLogout"))) {
-        throw new Error("Logout cancelled");
+        return null; // 취소된 경우 null 반환
       }
       const currentUserId = me?.userid;
       const response = await post<{ message: string }>(`/users/logout`);
       return { response, currentUserId };
     },
-    onSuccess: ({ currentUserId }) => {
+    onSuccess: (data) => {
+      if (!data) return; // confirm 취소된 경우 아무것도 하지 않음
+
+      const { currentUserId } = data;
       if (currentUserId) {
         router.push(`/${currentUserId}`);
       } else {
@@ -96,34 +99,68 @@ export default function useAuth() {
       }
       queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
     },
-    onError: (error: Error) => {
-      if (error.message === "Logout cancelled") return;
-      console.log("Logout Failed: ", error);
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      console.log("로그아웃 실패: ", error);
+
+      // 네트워크 에러 (서버에 연결 불가)
+      if (!error.response) {
+        alert(tMessage("networkError"));
+        console.error("네트워크 에러:", error.message);
+        return;
+      }
+
+      // 서버에서 응답은 왔지만 에러인 경우
+      const { status, data } = error.response;
+      const message = data.message || tMessage("unknownError");
+
+      if (status === 500) {
+        alert(tMessage("networkError"));
+      } else {
+        alert(message);
+      }
+
+      console.error(`로그아웃 에러 (HTTP ${status}):`, message);
     },
   });
 
   const { mutate: signup, isPending: isSigningUp } = useMutation({
     mutationFn: async (data: SignupRequest) => {
-      try {
-        const response = await post<{ message: string }>(`/users/signup`, data);
-        return response;
-      } catch (error: unknown) {
-        if (error instanceof AxiosError) {
-          // Axios 에러인 경우, 서버에서 보낸 메시지를 그대로 throw
-          throw new Error(
-            error.response?.data?.message || "회원가입 중 오류가 발생했습니다.",
-          );
-        }
-        throw new Error("알 수 없는 오류가 발생했습니다.");
+      await post(`/users/signup`, data);
+    },
+    onSuccess: () => {
+      alert(tInitPage("signupSuccess"));
+      window.location.reload();
+    },
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      console.log("회원가입 실패: ", error);
+
+      // 네트워크 에러 (서버에 연결 불가)
+      if (!error.response) {
+        alert(tMessage("networkError"));
+        console.error("네트워크 에러:", error.message);
+        return;
       }
-    },
-    onSuccess: (response) => {
-      alert(response.message); // 회원가입이 완료되었습니다.
-      router.push("/"); // 로그인 페이지로 이동 - 이거 안되더라 새로고침 해줘야 할듯
-    },
-    onError: (error: Error) => {
-      console.log(error.message);
-      alert(error.message); // 서버에서 전달받은 에러 메시지 표시
+
+      // 서버에서 응답은 왔지만 에러인 경우
+      const { status, data } = error.response;
+      const message = data.message || tInitPage("signupFail");
+
+      switch (status) {
+        case 400:
+          alert(tMessage("missingFields"));
+          break;
+        case 409:
+          alert(tInitPage("duplicateId"));
+          break;
+        case 500:
+          alert(tMessage("serverError"));
+          break;
+        default:
+          alert(message);
+          break;
+      }
+
+      console.error(`회원가입 에러 (HTTP ${status}):`, message);
     },
   });
 
