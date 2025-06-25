@@ -126,7 +126,7 @@ export default function TabManager({ userid }: TabManagerProps) {
                     size="sm"
                     onClick={() => renameTab(tab.tid)}
                   >
-                    {tButton("rename")}
+                    {tAdmin("rename")}
                   </Button>
                   <Button
                     variant="default"
@@ -157,7 +157,7 @@ export default function TabManager({ userid }: TabManagerProps) {
             placeholder={tAdmin("newTabNamePlaceholder")}
           />
           <Button variant="default" type="submit">
-            {tButton("addTab")}
+            {tAdmin("addTab")}
           </Button>
         </form>
 

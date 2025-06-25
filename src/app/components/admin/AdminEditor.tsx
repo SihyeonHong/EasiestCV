@@ -20,7 +20,7 @@ interface Props {
 }
 
 export default function AdminEditor({ userid, tid }: Props) {
-  const t = useTranslations("editor");
+  const tEditor = useTranslations("editor");
 
   const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabs(userid);
@@ -85,25 +85,25 @@ export default function AdminEditor({ userid, tid }: Props) {
     switch (saveStatus) {
       case "saving":
         return {
-          text: t("saving"),
+          text: tEditor("saving"),
           className: "text-blue-600",
           icon: "⏳",
         };
       case "saved":
         return {
-          text: t("saved"),
+          text: tEditor("saved"),
           className: "text-green-600",
           icon: "✓",
         };
       case "unsaved":
         return {
-          text: t("unsaved"),
+          text: tEditor("unsaved"),
           className: "text-orange-600",
           icon: "○",
         };
       case "error":
         return {
-          text: t("error"),
+          text: tEditor("error"),
           className: "text-red-600",
           icon: "✗",
         };
@@ -117,9 +117,9 @@ export default function AdminEditor({ userid, tid }: Props) {
       <div className="flex items-end justify-between gap-1">
         <div className="flex items-end gap-2">
           <Button variant="destructive" size="sm" onClick={handleRevert}>
-            {t("revert")}
+            {tEditor("revert")}
           </Button>
-          <p className="prose prose-slate text-sm">{t("autoSaveInfo")}</p>
+          <p className="prose prose-slate text-sm">{tEditor("autoSaveInfo")}</p>
         </div>
 
         <div

@@ -21,13 +21,18 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/common/Tabs";
+import UsageGuide from "@/app/components/UsageGuide";
 import useAuth from "@/hooks/useAuth";
 import { useResetPassword } from "@/hooks/useResetPW";
 
-import UsageGuide from "./UsageGuide";
-
 export default function InitPage() {
-  const t = useTranslations("initpage");
+  const tInitPage = useTranslations("initpage");
+  const tPlaceholder = useTranslations("placeholder");
+  const tResetPW = useTranslations("resetPassword");
+  const tMessage = useTranslations("message");
+  const tLabel = useTranslations("label");
+  const tButton = useTranslations("button");
+
   const [showResetForm, setShowResetForm] = useState(false);
   const [loginData, setLoginData] = useState({
     userid: "",
@@ -64,7 +69,7 @@ export default function InitPage() {
     e.preventDefault();
 
     if (signupData.password !== signupData.confirmPassword) {
-      alert(t("passwordMismatch"));
+      alert(tMessage("passwordMismatch"));
       return;
     }
     signup(signupData);
@@ -87,13 +92,13 @@ export default function InitPage() {
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4 p-2 md:max-w-xl">
       <Tabs defaultValue="login" className="mx-0 w-full max-w-none md:mx-0">
         <TabsList className="grid grid-cols-2">
-          <TabsTrigger value="login">{t("login")}</TabsTrigger>
-          <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
+          <TabsTrigger value="login">{tInitPage("login")}</TabsTrigger>
+          <TabsTrigger value="signup">{tInitPage("signup")}</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">{t("login")}</CardTitle>
+              <CardTitle className="text-2xl">{tInitPage("login")}</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin}>
@@ -102,7 +107,7 @@ export default function InitPage() {
                     <Input
                       id="userid"
                       type="text"
-                      placeholder={t("idPlaceholder")}
+                      placeholder={tPlaceholder("idPlaceholder")}
                       required
                       value={loginData.userid}
                       onChange={(e) =>
@@ -115,7 +120,7 @@ export default function InitPage() {
                     <Input
                       id="password"
                       type="password"
-                      placeholder={t("passwordPlaceholder")}
+                      placeholder={tPlaceholder("passwordPlaceholder")}
                       required
                       value={loginData.password}
                       onChange={(e) =>
@@ -129,11 +134,11 @@ export default function InitPage() {
                   {isLoggingIn ? (
                     <Button disabled className="w-full">
                       <Loader2 className="animate-spin" />
-                      {t("isLoggingIn")}
+                      {tButton("pending")}
                     </Button>
                   ) : (
                     <Button type="submit" className="w-full">
-                      {t("login")}
+                      {tInitPage("login")}
                     </Button>
                   )}
                 </div>
@@ -144,7 +149,7 @@ export default function InitPage() {
                 onClick={() => setShowResetForm(!showResetForm)}
                 className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
               >
-                {t("showResetForm")}
+                {tResetPW("showResetForm")}
               </button>
             </CardFooter>
             <CardContent className={showResetForm ? "" : "hidden"}>
@@ -154,7 +159,7 @@ export default function InitPage() {
                     <Input
                       id="userid"
                       type="text"
-                      placeholder={t("idPlaceholder")}
+                      placeholder={tPlaceholder("idPlaceholder")}
                       required
                       value={resetData.userid}
                       onChange={(e) =>
@@ -167,7 +172,7 @@ export default function InitPage() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder={t("emailPlaceholder")}
+                      placeholder={tPlaceholder("emailPlaceholder")}
                       required
                       value={resetData.email}
                       onChange={(e) =>
@@ -178,9 +183,9 @@ export default function InitPage() {
                       }
                     />
                   </div>
-                  <CardDescription>{t("description")}</CardDescription>
+                  <CardDescription>{tResetPW("description")}</CardDescription>
                   <Button type="submit" className="w-full">
-                    {t("resetPW")}
+                    {tResetPW("resetPW")}
                   </Button>
                 </div>
               </form>
@@ -190,7 +195,7 @@ export default function InitPage() {
         <TabsContent value="signup">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">{t("signup")}</CardTitle>
+              <CardTitle className="text-2xl">{tInitPage("signup")}</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSignup}>
@@ -204,7 +209,7 @@ export default function InitPage() {
                       <Input
                         id="userid"
                         type="text"
-                        placeholder={t("idPlaceholder")}
+                        placeholder={tPlaceholder("idPlaceholder")}
                         className="ml-2"
                         required
                         value={signupData.userid}
@@ -216,16 +221,16 @@ export default function InitPage() {
                         }
                       />
                     </div>
-                    <CardDescription className="">
-                      {t("signupIdDescription")}
+                    <CardDescription>
+                      {tInitPage("signupIdDescription")}
                     </CardDescription>
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="username">{t("name")}</Label>
+                    <Label htmlFor="username">{tLabel("name")}</Label>
                     <Input
                       id="username"
                       type="text"
-                      placeholder={t("namePlaceholder")}
+                      placeholder={tPlaceholder("namePlaceholder")}
                       required
                       value={signupData.username}
                       onChange={(e) =>
@@ -237,11 +242,11 @@ export default function InitPage() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="email">{t("email")}</Label>
+                    <Label htmlFor="email">{tLabel("email")}</Label>
                     <Input
                       id="email"
                       type="email"
-                      placeholder={t("emailPlaceholder")}
+                      placeholder={tPlaceholder("emailPlaceholder")}
                       required
                       value={signupData.email}
                       onChange={(e) =>
@@ -252,15 +257,15 @@ export default function InitPage() {
                       }
                     />
                     <CardDescription>
-                      {t("signupEmailDescription")}
+                      {tInitPage("signupEmailDescription")}
                     </CardDescription>
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="password">{t("password")}</Label>
+                    <Label htmlFor="password">{tLabel("password")}</Label>
                     <Input
                       id="password"
                       type="password"
-                      placeholder={t("passwordPlaceholder")}
+                      placeholder={tPlaceholder("passwordPlaceholder")}
                       required
                       value={signupData.password}
                       onChange={(e) =>
@@ -273,12 +278,12 @@ export default function InitPage() {
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor="confirmPassword">
-                      {t("comfirmPassword")}
+                      {tLabel("confirmPassword")}
                     </Label>
                     <Input
                       id="confirmPassword"
                       type="password"
-                      placeholder={t("comfirmPasswordPlaceholder")}
+                      placeholder={tPlaceholder("comfirmPasswordPlaceholder")}
                       required
                       value={signupData.confirmPassword}
                       onChange={(e) =>
@@ -298,12 +303,12 @@ export default function InitPage() {
                     {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
                     {signupData.confirmPassword && !passwordsMatch() && (
                       <p className="mt-1 text-sm text-red-500">
-                        {t("passwordMismatch")}
+                        {tMessage("passwordMismatch")}
                       </p>
                     )}
                   </div>
                   <Button type="submit" className="w-full">
-                    {t("signup")}
+                    {tInitPage("signup")}
                   </Button>
                 </div>
               </form>

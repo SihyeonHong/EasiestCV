@@ -17,7 +17,7 @@ interface HeaderProps {
 }
 
 export default function Header({ params, isAdmin }: HeaderProps) {
-  const t = useTranslations("button");
+  const t = useTranslations("header");
   const pathname = usePathname();
   const newLocale = params.locale === "en" ? "ko" : "en";
   const newPathname = pathname
@@ -37,7 +37,7 @@ export default function Header({ params, isAdmin }: HeaderProps) {
 
       {params.userid &&
         (isAdmin ? (
-          <AdminHeader />
+          <AdminHeader userid={params.userid} />
         ) : (
           <Button asChild>
             <Link href="/">{t("loginOrSignup")}</Link>

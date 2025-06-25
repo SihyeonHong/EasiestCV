@@ -1,22 +1,39 @@
 {
   "button": {
     "save": "Save",
-    "loginOrSignup": "Log In / Sign Up",
-    "logout": "Log Out",
-    "editUserInfo": "Edit User Info",
-    "switchLanguage": "한국어로 변경",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
     "delete": "Delete",
-    "rename": "Rename",
-    "addTab": "Add New Tab",
-    "yes": "Yes",
-    "no": "No"
+    "pending": "Please wait..."
   },
   "message": {
     "noUser": "No Such User",
     "confirmLogout": "Are you sure you want to log out?",
     "saveSuccess": "Saved successfully.",
     "saveFail": "An error occurred while saving. Please try again.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
+    "passwordMismatch": "Passwords do not match.",
+    "networkError": "Please check your network connection.",
+    "unknownError": "An unknown error occurred. Please try again.",
+    "serverError": "Server error occurred. Please contact the administrator.",
+    "missingFields": "Please fill in all fields correctly.",
+    "timeout": "Request timed out. Please try again."
+  },
+  "label": {
+    "name": "Name",
+    "email": "Email",
+    "emailAddress": "Email Address",
+    "id": "ID",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "placeholder": {
+    "namePlaceholder": "Enter your name",
+    "emailPlaceholder": "Enter your email",
+    "idPlaceholder": "Enter your ID",
+    "passwordPlaceholder": "Enter your password",
+    "comfirmPasswordPlaceholder": "Re-enter your password"
   },
   "displayMode": {
     "label": "Display Mode",
@@ -24,29 +41,26 @@
     "dark": "Dark Mode",
     "system": "System Setting"
   },
+  "header": {
+    "loginOrSignup": "Log In / Sign Up",
+    "logout": "Log Out",
+    "switchLanguage": "한국어로 변경",
+    "dropdown": "Edit Profile",
+    "resetPW": "Change Password"
+  },
   "initpage": {
     "login": "Log In",
     "signup": "Sign Up",
-    "email": "Email",
-    "emailPlaceholder": "Enter your email",
-    "name": "Name",
-    "namePlaceholder": "Enter your name",
-    "id": "ID",
-    "idPlaceholder": "Enter your ID",
-    "password": "Password",
-    "comfirmPassword": "Confirm Password",
-    "passwordPlaceholder": "Enter your password",
-    "comfirmPasswordPlaceholder": "Re-enter your password",
-    "resetPW": "Reset Password",
-    "showResetForm": "Forgot your password?",
-    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email.",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
     "signupEmailDescription": "If you forget your password, you will receive email here.",
-    "isLoggingIn": "Please wait..."
+    "loginFail": "Login failed. Please try again.",
+    "signupSuccess": "Sign up successful. Please log in.",
+    "signupFail": "An error occurred during sign up.",
+    "duplicateId": "This ID is already in use by another user."
   },
   "usageGuide": {
     "try": "Want to try it out?",
-    "use": "Log in with this demo account:",
+    "use": "Log in with this demo account for tutorial:",
     "or": "Or",
     "demoId": "ID: tutorial",
     "demoPW": "Password: easiestcv",
@@ -65,16 +79,16 @@
     "tabName": "Tab Name",
     "tabOrder": "Index",
     "actions": "Action",
-    "cancel": "Cancel",
-    "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
     "newTabNamePlaceholder": "Enter new tab name.",
     "noTabName": "Tab name cannot be empty.",
-    "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?"
+    "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?",
+    "rename": "Rename",
+    "addTab": "Add New Tab"
   },
   "editor": {
-    "saved": "Saved",
     "saving": "Saving...",
     "unsaved": "Typing...",
+    "saved": "Saved.",
     "error": "Save failed",
     "autoSaveInfo": "Changes are saved automatically.",
     "revert": "Revert",
@@ -82,5 +96,28 @@
     "revertError": "An error occurred while reverting. Please try again.",
     "revertNoBackup": "No backup data available.",
     "revertNoBackupForTab": "No backup data found for this tab."
+  },
+  "editUserInfo": {
+    "editUserInfoBtn": "Edit Name/Email",
+    "title": "Edit User Information",
+    "description": "You can update your username and email. Changes will not be saved if you click Cancel."
+  },
+  "resetPassword": {
+    "resetPW": "Reset Password",
+    "showResetForm": "Forgot your password?",
+    "description": "If you click this button below, your password will be reset and the temporary password will be sent to your email."
+  },
+  "changePassword": {
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmNewPasswordPlaceholder": "Re-enter your new password",
+    "changeSuccess": "Your password has been changed successfully.",
+    "changeFail": "An error occurred while changing the password. Please try again.",
+    "invalidCurrent": "The current password is incorrect.",
+    "samePassword": "The new password is the same as the current one."
   }
 }
