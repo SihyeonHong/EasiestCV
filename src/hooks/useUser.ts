@@ -29,7 +29,7 @@ export const useUser = (userid: string) => {
   });
 
   const {
-    mutateAsync: updateUserInfo,
+    mutate: updateUserInfo,
     status: updateStatus,
     error: updateError,
   } = useMutation({

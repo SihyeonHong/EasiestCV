@@ -47,12 +47,20 @@ export default function UserInfoEditor({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await updateUserInfo({
-      userid,
-      username: username.trim(),
-      email: email.trim(),
-    });
-    onClose();
+    updateUserInfo(
+      {
+        userid,
+        username: username.trim(),
+        email: email.trim(),
+      },
+      {
+        onSuccess: () => {
+          setUsername("");
+          setEmail("");
+          onClose();
+        },
+      },
+    );
   };
 
   const handleCancel = () => {

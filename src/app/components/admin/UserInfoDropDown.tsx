@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import PasswordChangeDialog from "@/app/components/admin/PasswordChangeDialog";
 import UserInfoEditor from "@/app/components/admin/UserInfoEditor";
 import { Button } from "@/app/components/common/Button";
 import {
@@ -11,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/components/common/DropdownMenu";
-import PasswordChangeDialog from "@/app/components/common/PasswordChangeDialog";
 
 export default function UserInfoDropDown({ userid }: { userid: string }) {
   const tHeader = useTranslations("header");
