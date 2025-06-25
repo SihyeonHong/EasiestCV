@@ -14,7 +14,10 @@
     "loading": "Loading...",
     "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
     "passwordMismatch": "Passwords do not match.",
-    "networkError": "Please check your network connection."
+    "networkError": "Please check your network connection.",
+    "unknownError": "An unknown error occurred. Please try again.",
+    "serverError": "Server error occurred. Please contact the administrator.",
+    "missingFields": "Please fill in all fields."
   },
   "label": {
     "name": "Name",
@@ -48,7 +51,8 @@
     "login": "Log In",
     "signup": "Sign Up",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
-    "signupEmailDescription": "If you forget your password, you will receive email here."
+    "signupEmailDescription": "If you forget your password, you will receive email here.",
+    "loginFail": "Login failed. Please try again."
   },
   "usageGuide": {
     "try": "Want to try it out?",

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
+import { ApiErrorResponse } from "@/models/api";
 import { LoginForm, SignupRequest } from "@/models/user.model";
 import { get, post } from "@/util/http";
 
@@ -18,7 +19,8 @@ interface LoginResponse {
 export default function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const t = useTranslations("message");
+  const tMessage = useTranslations("message");
+  const tInitPage = useTranslations("initPage");
 
   const { data: me, isLoading } = useQuery({
     queryKey: queryKeys.auth(),
@@ -40,14 +42,46 @@ export default function useAuth() {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
       router.push(`/${response.user.userid}/admin`);
     },
-    onError: (error: Error) => {
-      console.log("Login Failed: ", error);
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      console.log("로그인 실패: ", error);
+
+      // 네트워크 에러 (서버에 연결 불가)
+      if (!error.response) {
+        alert(tMessage("networkError"));
+        console.error("네트워크 에러:", error.message);
+        return;
+      }
+
+      // 서버에서 응답은 왔지만 에러인 경우
+      const { status, data } = error.response;
+      const errorType = data.errorType;
+      const message = data.message || tMessage("unknownError");
+
+      switch (errorType) {
+        case "MISSING_FIELDS":
+          alert(tMessage("missingFields"));
+          break;
+        case "USER_NOT_FOUND":
+          alert(tMessage("noUser"));
+          break;
+        case "WRONG_PASSWORD":
+          alert(tMessage("passwordMismatch"));
+          break;
+        case "SERVER_ERROR":
+          alert(tMessage("serverError"));
+          break;
+        default:
+          alert(tInitPage("loginFail"));
+          break;
+      }
+
+      console.error(`${errorType || "UNKNOWN"} (HTTP ${status}):`, message);
     },
   });
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
-      if (!confirm(t("confirmLogout"))) {
+      if (!confirm(tMessage("confirmLogout"))) {
         throw new Error("Logout cancelled");
       }
       const currentUserId = me?.userid;
