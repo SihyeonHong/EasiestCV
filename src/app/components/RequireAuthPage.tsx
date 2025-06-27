@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import LoadingPage from "@/app/components/LoadingPage";
 import useAuth from "@/hooks/useAuth";
+import { Link } from "@/i18n/routing";
 
 interface Props {
   url: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function RequireAuth({ url, children }: Props) {
+  const t = useTranslations("requireAuth");
   const { me, isLoading } = useAuth();
 
   if (isLoading) return <LoadingPage />;
@@ -19,8 +21,8 @@ export default function RequireAuth({ url, children }: Props) {
   if (!me || me.userid !== url) {
     return (
       <div>
-        You cannot access this page without logging in.
-        <Link href="/">Go to Log in Page</Link>
+        {t("cannotAccess")}
+        <Link href="/">{t("goToLogIn")}</Link>
       </div>
     );
   }

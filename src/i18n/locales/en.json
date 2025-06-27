@@ -118,5 +118,9 @@
     "changeFail": "An error occurred while changing the password. Please try again.",
     "invalidCurrent": "The current password is incorrect.",
     "samePassword": "The new password is the same as the current one."
+  },
+  "requireAuth": {
+    "cannotAccess": "You cannot access this page without logging in.",
+    "goToLogIn": "Go to Log in Page →"
   }
 }
