@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
+import { useRouter } from "@/i18n/routing";
 import { ApiErrorResponse } from "@/models/api";
 import { LoginForm, SignupRequest } from "@/models/user.model";
 import { get, post } from "@/util/http";
