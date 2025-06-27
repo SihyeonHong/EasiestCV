@@ -44,7 +44,6 @@
   "header": {
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
-    "switchLanguage": "한국어로 변경",
     "dropdown": "Edit Profile",
     "resetPW": "Change Password"
   },

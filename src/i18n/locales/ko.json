@@ -44,7 +44,6 @@
   "header": {
     "loginOrSignup": "로그인 / 회원가입",
     "logout": "로그아웃",
-    "switchLanguage": "Switch to English",
     "dropdown": "회원정보 수정",
     "resetPW": "비밀번호 변경"
   },
