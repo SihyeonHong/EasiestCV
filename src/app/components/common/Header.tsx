@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import AdminHeader from "@/app/components/admin/AdminHeader";
 import { Button } from "@/app/components/common/Button";
 import DisplayMode from "@/app/components/common/DisplayMode";
 import LocaleSwitcher from "@/app/components/common/LocaleSwitcher";
+import { Link } from "@/i18n/routing";
 
 interface HeaderProps {
   params: {
@@ -31,7 +31,7 @@ export default function Header({ params, isAdmin }: HeaderProps) {
           <AdminHeader userid={params.userid} />
         ) : (
           <Button asChild>
-            <Link href={`/${params.locale}`}>{t("loginOrSignup")}</Link>
+            <Link href={`/`}>{t("loginOrSignup")}</Link>
           </Button>
         ))}
     </div>
