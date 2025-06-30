@@ -14,7 +14,6 @@ import {
   CardFooter,
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
-import { Label } from "@/app/components/common/Label";
 import {
   Tabs,
   TabsContent,
@@ -25,12 +24,12 @@ import UsageGuide from "@/app/components/UsageGuide";
 import useAuth from "@/hooks/useAuth";
 import { useResetPassword } from "@/hooks/useResetPW";
 
+import SignUpCard from "./SignUpCard";
+
 export default function InitPage() {
   const tInitPage = useTranslations("initpage");
   const tPlaceholder = useTranslations("placeholder");
   const tResetPW = useTranslations("resetPassword");
-  const tMessage = useTranslations("message");
-  const tLabel = useTranslations("label");
   const tButton = useTranslations("button");
 
   const [showResetForm, setShowResetForm] = useState(false);
@@ -42,37 +41,14 @@ export default function InitPage() {
     userid: "",
     email: "",
   });
-  const [signupData, setSignupData] = useState({
-    userid: "",
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
 
-  const passwordsMatch = () => {
-    return signupData.password && signupData.confirmPassword
-      ? signupData.password === signupData.confirmPassword
-      : null;
-  };
-
-  const { login, signup, isLoggingIn } = useAuth();
+  const { login, isLoggingIn } = useAuth();
   const { resetPassword } = useResetPassword();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     sessionStorage.setItem("login_start", String(performance.now()));
     e.preventDefault();
     login(loginData);
-  };
-
-  const handleSignup = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (signupData.password !== signupData.confirmPassword) {
-      alert(tMessage("passwordMismatch"));
-      return;
-    }
-    signup(signupData);
   };
 
   const handleReset = (e: FormEvent<HTMLFormElement>) => {
@@ -193,127 +169,7 @@ export default function InitPage() {
           </Card>
         </TabsContent>
         <TabsContent value="signup">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">{tInitPage("signup")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSignup}>
-                <div className="flex flex-col gap-6">
-                  <div className="space-y-1">
-                    <Label htmlFor="userid">Your ID</Label>
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap text-sm">
-                        https://easiest-cv.com/
-                      </span>
-                      <Input
-                        id="userid"
-                        type="text"
-                        placeholder={tPlaceholder("idPlaceholder")}
-                        className="ml-2"
-                        required
-                        value={signupData.userid}
-                        onChange={(e) =>
-                          setSignupData((prev) => ({
-                            ...prev,
-                            userid: e.target.value,
-                          }))
-                        }
-                      />
-                    </div>
-                    <CardDescription>
-                      {tInitPage("signupIdDescription")}
-                    </CardDescription>
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="username">{tLabel("name")}</Label>
-                    <Input
-                      id="username"
-                      type="text"
-                      placeholder={tPlaceholder("namePlaceholder")}
-                      required
-                      value={signupData.username}
-                      onChange={(e) =>
-                        setSignupData((prev) => ({
-                          ...prev,
-                          username: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="email">{tLabel("email")}</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder={tPlaceholder("emailPlaceholder")}
-                      required
-                      value={signupData.email}
-                      onChange={(e) =>
-                        setSignupData((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
-                      }
-                    />
-                    <CardDescription>
-                      {tInitPage("signupEmailDescription")}
-                    </CardDescription>
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="password">{tLabel("password")}</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder={tPlaceholder("passwordPlaceholder")}
-                      required
-                      value={signupData.password}
-                      onChange={(e) =>
-                        setSignupData((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="confirmPassword">
-                      {tLabel("confirmPassword")}
-                    </Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      placeholder={tPlaceholder("comfirmPasswordPlaceholder")}
-                      required
-                      value={signupData.confirmPassword}
-                      onChange={(e) =>
-                        setSignupData((prev) => ({
-                          ...prev,
-                          confirmPassword: e.target.value,
-                        }))
-                      }
-                      className={`${
-                        signupData.confirmPassword
-                          ? passwordsMatch()
-                            ? "border-green-500 focus-visible:ring-green-500" // 일치할 때 초록색
-                            : "border-red-500 focus-visible:ring-red-500" // 불일치할 때 빨간색
-                          : ""
-                      }`}
-                    />
-                    {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
-                    {signupData.confirmPassword && !passwordsMatch() && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {tMessage("passwordMismatch")}
-                      </p>
-                    )}
-                  </div>
-                  <Button type="submit" className="w-full">
-                    {tInitPage("signup")}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+          <SignUpCard />
         </TabsContent>
       </Tabs>
       <UsageGuide />
