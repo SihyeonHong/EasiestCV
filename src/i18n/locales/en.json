@@ -122,5 +122,10 @@
   "requireAuth": {
     "cannotAccess": "You cannot access this page without logging in.",
     "goToLogIn": "Go to Log in Page →"
+  },
+  "invalidId": {
+    "reservedWords": "Words like 'admin', 'user' cannot be used.",
+    "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
+    "lengthError": "ID must be between 3 and 20 characters long."
   }
 }

@@ -20,7 +20,7 @@ export default function RequireAuth({ url, children }: Props) {
   // 비로그인 상태이거나 다른 사용자의 admin 페이지 접근 시도
   if (!me || me.userid !== url) {
     return (
-      <div>
+      <div className="flex items-center gap-1">
         {t("cannotAccess")}
         <Link href="/">{t("goToLogIn")}</Link>
       </div>
