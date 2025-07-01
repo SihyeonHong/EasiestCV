@@ -1,8 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useTranslations } from "next-intl";
+export default async function NoUserPage() {
+  const t = await getTranslations("message");
 
-export default function NoUserPage() {
-  const t = useTranslations("message");
-  return <h2 className="text-center">{t("noUser")}</h2>;
+  return <h2 className="text-center text-2xl font-medium">{t("noUser")}</h2>;
 }
