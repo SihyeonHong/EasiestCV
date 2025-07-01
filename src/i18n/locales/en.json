@@ -8,6 +8,7 @@
   },
   "message": {
     "noUser": "No Such User",
+    "noPdf": "No PDF file",
     "confirmLogout": "Are you sure you want to log out?",
     "saveSuccess": "Saved successfully.",
     "saveFail": "An error occurred while saving. Please try again.",
@@ -70,7 +71,6 @@
     "pdfAttach": "Attach PDF",
     "pdfOpen": "Open current PDF",
     "pdfPending": "Uploading PDF. Please wait...",
-    "noPdf": "No PDF file",
     "profileImgAttach": "Attach Profile Image",
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
@@ -127,5 +127,14 @@
     "reservedWords": "Words like 'admin', 'user' cannot be used.",
     "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
     "lengthError": "ID must be between 3 and 20 characters long."
+  },
+  "file": {
+    "file": "File",
+    "openBtn": "Open File",
+    "noFile": "No file has been uploaded.",
+    "mobileNotSupported": "PDF preview is not supported on mobile.",
+    "openPreview": "Open Preview",
+    "closePreview": "Close Preview",
+    "preview": "Preview"
   }
 }
