@@ -42,10 +42,14 @@ export default function PublicFile({ pdf }: Props) {
     <Card>
       <CardContent className="flex flex-col gap-5">
         {pdf ? (
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-center gap-3 md:flex-row">
             <Button onClick={openPDF}>{tPdf("openBtn")}</Button>
 
-            {!isMobile && (
+            {isMobile ? (
+              <p className="text-sm text-gray-600">
+                {tPdf("mobileNotSupported")}
+              </p>
+            ) : (
               <Button variant="secondary" onClick={handlePreview}>
                 {showPreview ? tPdf("closePreview") : tPdf("openPreview")}
               </Button>
@@ -61,7 +65,7 @@ export default function PublicFile({ pdf }: Props) {
             <iframe
               src={pdf}
               onLoad={() => setIsLoading(false)}
-              className="h-[600px] w-full"
+              className="h-[100vh] w-full"
               title={tPdf("preview")}
             />
           </div>
