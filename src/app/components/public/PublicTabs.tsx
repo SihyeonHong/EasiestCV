@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import {
   Tabs,
   TabsContent,
@@ -5,25 +7,21 @@ import {
   TabsTrigger,
 } from "@/app/components/common/Tabs";
 import PublicContents from "@/app/components/public/PublicContents";
+import PublicFile from "@/app/components/public/PublicFile";
 import PublicHome from "@/app/components/public/PublicHome";
-import { useHome } from "@/hooks/useHome";
-import { useTabs } from "@/hooks/useTabs";
+import { HomeData } from "@/models/home.model";
+import { Tab } from "@/models/tab.model";
+import { get } from "@/util/http";
 
 interface Props {
   userid: string;
 }
 
-export default function PublicTabs({ userid }: Props) {
-  const { tabs } = useTabs(userid);
-  const { homeData } = useHome(userid);
+export default async function PublicTabs({ userid }: Props) {
+  const tFile = await getTranslations("file");
 
-  const openPDF = async () => {
-    if (homeData && homeData.pdf) {
-      window.open(homeData.pdf, "_blank");
-    } else {
-      alert("PDF 파일이 없습니다.");
-    }
-  };
+  const homeData = await getHomeData(userid);
+  const tabs = await getTabs(userid);
 
   return (
     <Tabs defaultValue="home">
@@ -35,9 +33,7 @@ export default function PublicTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        <TabsTrigger value="pdf" onClick={openPDF}>
-          PDF
-        </TabsTrigger>
+        <TabsTrigger value="file">{tFile("file")}</TabsTrigger>
       </TabsList>
       <TabsContent value="home">
         {homeData && <PublicHome homeData={homeData} />}
@@ -48,6 +44,35 @@ export default function PublicTabs({ userid }: Props) {
             <PublicContents userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
+      <TabsContent value="file">
+        <PublicFile pdf={homeData?.pdf} />
+      </TabsContent>
     </Tabs>
   );
+}
+
+async function getHomeData(userid: string): Promise<HomeData | null> {
+  try {
+    const response = await get<HomeData>(`/home?userid=${userid}`);
+    if (!response) {
+      return null;
+    }
+    return response;
+  } catch (error) {
+    console.error("getHomeData 실패:", error);
+    return null;
+  }
+}
+
+async function getTabs(userid: string): Promise<Tab[] | null> {
+  try {
+    const response = await get<Tab[]>(`/tabs?userid=${userid}`);
+    if (!response) {
+      return null;
+    }
+    return response;
+  } catch (error) {
+    console.error("getTabs 실패:", error);
+    return null;
+  }
 }
