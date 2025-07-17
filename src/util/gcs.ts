@@ -30,17 +30,32 @@ export const uploadFile = async (
   stream.end(buffer);
 };
 
-export const downloadFile = async (filename: string) => {
+export const downloadFile = async (filename: string): Promise<Buffer> => {
   const file = bucket.file(filename);
 
   return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
+    const chunks: Uint8Array[] = [];
 
     file
       .createReadStream()
-      .on("data", (chunk) => chunks.push(chunk))
+      .on("data", (chunk: Uint8Array) => chunks.push(chunk))
       .on("error", (err) => reject(err))
-      .on("end", () => resolve(Buffer.concat(chunks)));
+      .on("end", () => {
+        // Uint8Array를 Buffer로 변환
+        const totalLength = chunks.reduce(
+          (sum, chunk) => sum + chunk.length,
+          0,
+        );
+        const result = new Uint8Array(totalLength);
+        let offset = 0;
+
+        for (const chunk of chunks) {
+          result.set(chunk, offset);
+          offset += chunk.length;
+        }
+
+        resolve(Buffer.from(result));
+      });
   });
 };
 
