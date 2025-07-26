@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import { useHome } from "@/hooks/useHome";
@@ -11,6 +11,7 @@ import useDebounce from "@/util/useDebounce";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
+import ImageUploader from "./ImageUploader";
 
 type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 
@@ -29,6 +30,8 @@ export default function AdminEditor({ userid, tid }: Props) {
     tabs.find((t) => t.tid === tid) || null,
   );
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
+
+  const [isImageUploaderOpen, setIsImageUploaderOpen] = useState(false);
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
@@ -112,6 +115,32 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   const statusDisplay = getStatusDisplay();
 
+  const handleClickImage = () => {
+    setIsImageUploaderOpen(true);
+  };
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, false] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          [
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+          ],
+          ["image"],
+          [{ align: [] }, { color: [] }, { background: [] }],
+        ],
+        handlers: {
+          image: handleClickImage,
+        },
+      },
+    };
+  }, []);
+
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-end justify-between gap-1">
@@ -140,25 +169,14 @@ export default function AdminEditor({ userid, tid }: Props) {
         value={value}
         onChange={handleValueChange}
       />
+      <ImageUploader
+        isOpen={isImageUploaderOpen}
+        onClose={() => setIsImageUploaderOpen(false)}
+      />
     </div>
   );
 }
 
-const modules = {
-  toolbar: [
-    [{ header: [1, 2, 3, 4, 5, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link"],
-    [{ align: [] }, { color: [] }, { background: [] }],
-    ["clean"],
-  ],
-};
 const formats = [
   "header",
   "bold",
@@ -168,9 +186,8 @@ const formats = [
   "list",
   "bullet",
   "indent",
-  "link",
+  "image",
   "align",
   "color",
   "background",
-  "clean",
 ];
