@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import {
@@ -17,26 +19,50 @@ interface ImageUploaderProps {
 
 export default function ImageUploader({ isOpen, onClose }: ImageUploaderProps) {
   const tButton = useTranslations("button");
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
-    alert(`Selected file: ${file.name}`);
-    console.log("Selected file:", file);
+
+    const fileUrl = URL.createObjectURL(file);
+    setPreviewImage(fileUrl);
+
+    // 메모리 누수 방지를 위해 기존 URL 해제 (옵션)
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="mx-auto max-w-[calc(100vw-2rem)] rounded-lg md:max-w-lg">
         <DialogHeader>
           <DialogTitle>Image Uploader</DialogTitle>
         </DialogHeader>
 
-        <Input
-          id="imageUpload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
+        <div className="flex flex-col items-center space-y-4">
+          <Input
+            id="imageUpload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageInput}
+          />
+
+          {previewImage && (
+            <Image
+              src={previewImage}
+              alt="preview image"
+              width={0}
+              height={0}
+              className="max-h-64 w-auto rounded-lg object-contain"
+              unoptimized
+            />
+          )}
+        </div>
 
         <DialogFooter>
           <Button variant="secondary" onClick={onClose}>
