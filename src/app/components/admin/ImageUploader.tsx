@@ -11,14 +11,25 @@ import {
   DialogTitle,
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
+import { useTabs } from "@/hooks/useTabs";
 
 interface ImageUploaderProps {
+  userid: string;
+  tid: number;
   isOpen: boolean;
   onClose: () => void;
+  onImageInsert: (imgTag: string) => void;
 }
 
-export default function ImageUploader({ isOpen, onClose }: ImageUploaderProps) {
+export default function ImageUploader({
+  userid,
+  isOpen,
+  onClose,
+  onImageInsert,
+}: ImageUploaderProps) {
   const tButton = useTranslations("button");
+
+  const { uploadImgToGCS } = useTabs(userid);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -35,6 +46,29 @@ export default function ImageUploader({ isOpen, onClose }: ImageUploaderProps) {
         URL.revokeObjectURL(previewImage);
       }
     };
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!previewImage) return;
+    const formData = new FormData();
+    const fileInput = document.getElementById(
+      "imageUpload",
+    ) as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      formData.append("file", fileInput.files[0]);
+    }
+    formData.append("userid", userid);
+
+    try {
+      const result = await uploadImgToGCS(formData);
+      onImageInsert(result.imageUrl);
+    } catch (error) {
+      alert("이미지 업로드에 실패했습니다.");
+      console.error("Error uploading image:", error);
+    } finally {
+      onClose();
+    }
   };
 
   return (
@@ -75,7 +109,7 @@ export default function ImageUploader({ isOpen, onClose }: ImageUploaderProps) {
                   {tButton("pending")}
                 </Button>
               ) : ( */}
-          <Button type="submit">{tButton("confirm")}</Button>
+          <Button onClick={handleSubmit}>{tButton("confirm")}</Button>
           {/* )} */}
         </DialogFooter>
       </DialogContent>

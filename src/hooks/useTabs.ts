@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import { useState, useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
 import { Tab } from "@/models/tab.model";
-import { get, put } from "@/util/http";
+import { get, post, put } from "@/util/http";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();
@@ -23,6 +24,7 @@ export const useTabs = (userid: string) => {
 
   const tabs = localTabs ?? serverTabs;
 
+  // 탭 전체 업데이트
   const { mutate: updateTabsMutation } = useMutation({
     mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
     onSuccess: () => {
@@ -36,6 +38,7 @@ export const useTabs = (userid: string) => {
     },
   });
 
+  // 탭 내용만 업데이트
   const { mutate: updateContentsMutation } = useMutation({
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
@@ -44,6 +47,20 @@ export const useTabs = (userid: string) => {
     },
     onError: (error) => {
       console.error("내용 저장 오류:", error);
+    },
+  });
+
+  // GCS에 이미지 업로드
+  const { mutateAsync: uploadImgToGCS } = useMutation({
+    mutationFn: (formData: FormData) =>
+      post<{ imageUrl: string }>(`/tabs/img`, formData),
+    onError: (error: AxiosError<{ error: string }>) => {
+      const errorMessage =
+        error?.response?.data?.error ||
+        error?.message ||
+        "이미지 업로드에 실패했습니다.";
+      alert(errorMessage);
+      console.error("이미지 업로드 오류:", error);
     },
   });
 
@@ -166,6 +183,7 @@ export const useTabs = (userid: string) => {
     currentTab,
     setCurrentTab,
     revertContents,
+    uploadImgToGCS,
   };
 };
 

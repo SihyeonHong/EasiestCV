@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { query } from "@/util/database";
 import { uploadFile } from "@/util/gcs";
 
 export async function POST(request: Request) {
@@ -15,6 +14,15 @@ export async function POST(request: Request) {
     if (!file || !userId) {
       return NextResponse.json(
         { error: "이미지 파일 혹은 userId가 누락되었습니다." },
+        { status: 400 },
+      );
+    }
+
+    // 파일 크기 검증 추가
+    const maxSize = 20 * 1024 * 1024; // 20MB
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: "파일 크기는 20MB를 초과할 수 없습니다." },
         { status: 400 },
       );
     }
@@ -50,13 +58,7 @@ export async function POST(request: Request) {
 
     await uploadFile(uniqueFilename, buffer, "image");
 
-    // DB에 GCS 링크 저장????????????
-    await query("UPDATE tabs SET img = $1 WHERE userid = $2", [
-      imageUrl,
-      userId,
-    ]);
-
-    // 업로드 결과 반환
+    // GCS 링크 전달
     return NextResponse.json({ imageUrl }, { status: 200 });
   } catch (error) {
     console.error("이미지 업로드 실패:", error);
