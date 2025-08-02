@@ -130,7 +130,6 @@ export const useTabs = (userid: string) => {
   };
 
   // 내용 되돌리기
-
   const backUpTabsRef = useRef<Tab[] | null>(null);
   useEffect(() => {
     if (serverTabs.length > 0 && !backUpTabsRef.current) {

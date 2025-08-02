@@ -2,16 +2,17 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 
+import ImageUploader from "@/app/components/admin/ImageUploader";
 import { Button } from "@/app/components/common/Button";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 import { Tab } from "@/models/tab.model";
 import { cn } from "@/util/classname";
+import extractFileName from "@/util/extractFileName";
 import useDebounce from "@/util/useDebounce";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
-import ImageUploader from "./ImageUploader";
 
 type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 
@@ -125,6 +126,19 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   const quillInstanceRef = useRef<QuillWrapper | null>(null);
 
+  const refreshImages = () => {
+    const quillInstance = quillInstanceRef.current?.quill;
+    if (quillInstance) {
+      const images = quillInstance.root.querySelectorAll("img");
+      images.forEach((img) => {
+        const src = img.src;
+        img.src = "";
+        img.src = src;
+        img.alt = extractFileName(src);
+      });
+    }
+  };
+
   const insertImage = (imageUrl: string) => {
     const quillInstance = quillInstanceRef.current?.quill;
 
@@ -140,6 +154,10 @@ export default function AdminEditor({ userid, tid }: Props) {
         quillInstance.insertEmbed(index, "image", imageUrl);
         // 5. 커서를 이미지 다음 위치로 이동
         quillInstance.setSelection(index + 1);
+
+        setTimeout(() => {
+          refreshImages();
+        }, 700); // 500까지 엑박이다가 700은 되네?
       } catch (error) {
         console.error("Error inserting image:", error);
       }
