@@ -50,12 +50,12 @@ export const useHome = (userid: string) => {
   } = useMutation({
     mutationFn: uploadImg,
     onSuccess: () => {
-      alert(tMessage("saveSuccess"));
+      alert(tMessage("imgUploadSuccess"));
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
     onError: (err) => {
-      alert(tMessage("saveFail"));
+      alert(tMessage("imgUploadFail"));
       console.error("이미지 업로드 에러:", err);
     },
   });

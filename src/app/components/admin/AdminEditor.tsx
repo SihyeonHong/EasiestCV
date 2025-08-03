@@ -31,6 +31,7 @@ interface Props {
 
 export default function AdminEditor({ userid, tid }: Props) {
   const tEditor = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabs(userid);
@@ -157,8 +158,9 @@ export default function AdminEditor({ userid, tid }: Props) {
 
         setTimeout(() => {
           refreshImages();
-        }, 700); // 500까지 엑박이다가 700은 되네?
+        }, 1000);
       } catch (error) {
+        alert(tError("imgInsertFail"));
         console.error("Error inserting image:", error);
       }
     } else {

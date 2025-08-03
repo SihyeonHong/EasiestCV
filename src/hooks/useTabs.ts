@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
+import { ApiErrorResponse } from "@/models/api";
 import { Tab } from "@/models/tab.model";
 import { get, post, put } from "@/util/http";
 
@@ -13,6 +14,7 @@ export const useTabs = (userid: string) => {
   const tMessage = useTranslations("message");
   const tAdmin = useTranslations("admin");
   const tEditor = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
   const [currentTab, setCurrentTab] = useState<Tab | null>(null);
@@ -54,13 +56,37 @@ export const useTabs = (userid: string) => {
   const { mutateAsync: uploadImgToGCS } = useMutation({
     mutationFn: (formData: FormData) =>
       post<{ imageUrl: string }>(`/tabs/img`, formData),
-    onError: (error: AxiosError<{ error: string }>) => {
-      const errorMessage =
-        error?.response?.data?.error ||
-        error?.message ||
-        "이미지 업로드에 실패했습니다.";
-      alert(errorMessage);
+    onError: (error: AxiosError) => {
       console.error("이미지 업로드 오류:", error);
+
+      // 네트워크 에러
+      if (!error.response) {
+        alert(
+          error.code === "ECONNABORTED"
+            ? tError("timeout")
+            : tError("networkError"),
+        );
+        return;
+      }
+
+      // 서버 에러
+      const errorData = error.response.data as ApiErrorResponse;
+      const status = error.response.status;
+
+      if (status === 400) {
+        switch (errorData?.errorType) {
+          case "FILE_SIZE_ERROR":
+            alert(tError("fileSizeError"));
+            break;
+          case "INVALID_IMAGE_TYPE":
+            alert(tError("invalidImageType"));
+            break;
+          default:
+            alert(tError("imgUploadFail"));
+        }
+      } else {
+        alert(tError("imgUploadFail"));
+      }
     },
   });
 

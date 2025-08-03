@@ -11,9 +11,8 @@ import {
   DialogTitle,
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
+import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useUser } from "@/hooks/useUser";
-
-import { LoadingIcon } from "../common/LoadingIcon";
 
 interface UserInfoEditorProps {
   userid: string;

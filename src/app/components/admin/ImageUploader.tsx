@@ -28,6 +28,8 @@ export default function ImageUploader({
   onImageInsert,
 }: ImageUploaderProps) {
   const tButton = useTranslations("button");
+  const tEditor = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const { uploadImgToGCS } = useTabs(userid);
 
@@ -50,7 +52,12 @@ export default function ImageUploader({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!previewImage) return;
+
+    if (!previewImage) {
+      alert(tError("noImgToUpload"));
+      return;
+    }
+
     const formData = new FormData();
     const fileInput = document.getElementById(
       "imageUpload",
@@ -64,7 +71,7 @@ export default function ImageUploader({
       const result = await uploadImgToGCS(formData);
       onImageInsert(result.imageUrl);
     } catch (error) {
-      alert("이미지 업로드에 실패했습니다.");
+      // alert는 위 로직 안에 다 있음
       console.error("Error uploading image:", error);
     } finally {
       onClose();
@@ -75,7 +82,7 @@ export default function ImageUploader({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="mx-auto max-w-[calc(100vw-2rem)] rounded-lg md:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Image Uploader</DialogTitle>
+          <DialogTitle>{tEditor("imgUploader")}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col items-center space-y-4">

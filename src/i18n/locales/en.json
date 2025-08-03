@@ -19,7 +19,18 @@
     "unknownError": "An unknown error occurred. Please try again.",
     "serverError": "Server error occurred. Please contact the administrator.",
     "missingFields": "Please fill in all fields correctly.",
-    "timeout": "Request timed out. Please try again."
+    "timeout": "Request timed out. Please try again.",
+    "imgUploadSuccess": "Image upload completed successfully.",
+    "imgUploadFail": "An error occurred while uploading the image. Please try again."
+  },
+  "error": {
+    "timeout": "Request timed out. Please try again.",
+    "networkError": "Please check your network connection.",
+    "fileSizeError": "The maximum file size allowed is 20MB.",
+    "noImgToUpload": "Select an image file to insert.",
+    "imgInsertFail": "Failed to insert image. Please try again.",
+    "imgUploadFail": "An error occurred while uploading the image. Please try again.",
+    "invalidImageType": "Unsupported image format. Only JPG, PNG, BMP, WebP, and GIF are allowed."
   },
   "label": {
     "name": "Name",
@@ -94,7 +105,8 @@
     "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
     "revertError": "An error occurred while reverting. Please try again.",
     "revertNoBackup": "No backup data available.",
-    "revertNoBackupForTab": "No backup data found for this tab."
+    "revertNoBackupForTab": "No backup data found for this tab.",
+    "imgUploader": "Image Uploader"
   },
   "editUserInfo": {
     "editUserInfoBtn": "Edit Name/Email",
