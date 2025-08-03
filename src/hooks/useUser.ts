@@ -10,6 +10,7 @@ import { get, patch, put } from "@/util/http";
 export const useUser = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
+  const tError = useTranslations("error");
   const tChangePW = useTranslations("changePassword");
 
   const {
@@ -45,8 +46,8 @@ export const useUser = (userid: string) => {
       if (!error.response) {
         alert(
           error.code === "ECONNABORTED"
-            ? tMessage("timeout")
-            : tMessage("networkError"),
+            ? tError("timeout")
+            : tError("networkError"),
         );
         return;
       }
@@ -58,10 +59,10 @@ export const useUser = (userid: string) => {
       // 주요 케이스만 처리
       if (status === 400 && errorData?.errorType === "VALIDATION_ERROR") {
         console.log(errorData.message);
-        alert(tMessage("missingFields"));
+        alert(tError("missingFields"));
       } else {
         console.log(status, errorData.message);
-        alert(tMessage("saveFail"));
+        alert(tError("saveFail"));
       }
     },
   });
@@ -77,7 +78,7 @@ export const useUser = (userid: string) => {
       // 네트워크 에러
       if (!error.response || error.request?.status === 0) {
         console.log("네트워크 에러");
-        alert(tMessage("networkError"));
+        alert(tError("networkError"));
         return;
       }
 

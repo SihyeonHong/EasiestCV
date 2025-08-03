@@ -166,7 +166,7 @@ export const useTabs = (userid: string) => {
   const revertContents = (tid: number): null | void => {
     try {
       if (!backUpTabsRef.current) {
-        alert(tEditor("revertNoBackup"));
+        alert(tError("revertNoBackup"));
         return null;
       }
 
@@ -177,7 +177,7 @@ export const useTabs = (userid: string) => {
         backupTab.contents === undefined ||
         backupTab.contents === null
       ) {
-        alert(tEditor("revertNoBackupForTab"));
+        alert(tError("revertNoBackupForTab"));
         console.error(`탭 ID ${tid}에 대한 백업 데이터를 찾을 수 없습니다.`);
         return null;
       }
@@ -191,7 +191,7 @@ export const useTabs = (userid: string) => {
         contents: backupTab.contents,
       });
     } catch (error) {
-      alert(tEditor("revertError"));
+      alert(tError("revertError"));
       console.error("revertContents", error);
     }
   };

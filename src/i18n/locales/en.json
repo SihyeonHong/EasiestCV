@@ -11,26 +11,26 @@
     "noPdf": "No PDF file",
     "confirmLogout": "Are you sure you want to log out?",
     "saveSuccess": "Saved successfully.",
-    "saveFail": "An error occurred while saving. Please try again.",
     "loading": "Loading...",
     "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
     "passwordMismatch": "Passwords do not match.",
+    "imgUploadSuccess": "Image upload completed successfully."
+  },
+  "error": {
+    "saveFail": "An error occurred while saving. Please try again.",
+    "timeout": "Request timed out. Please try again.",
     "networkError": "Please check your network connection.",
     "unknownError": "An unknown error occurred. Please try again.",
     "serverError": "Server error occurred. Please contact the administrator.",
     "missingFields": "Please fill in all fields correctly.",
-    "timeout": "Request timed out. Please try again.",
-    "imgUploadSuccess": "Image upload completed successfully.",
-    "imgUploadFail": "An error occurred while uploading the image. Please try again."
-  },
-  "error": {
-    "timeout": "Request timed out. Please try again.",
-    "networkError": "Please check your network connection.",
     "fileSizeError": "The maximum file size allowed is 20MB.",
     "noImgToUpload": "Select an image file to insert.",
     "imgInsertFail": "Failed to insert image. Please try again.",
     "imgUploadFail": "An error occurred while uploading the image. Please try again.",
-    "invalidImageType": "Unsupported image format. Only JPG, PNG, BMP, WebP, and GIF are allowed."
+    "invalidImageType": "Unsupported image format. Only JPG, PNG, BMP, WebP, and GIF are allowed.",
+    "revertError": "An error occurred while reverting. Please try again.",
+    "revertNoBackup": "No backup data available.",
+    "revertNoBackupForTab": "No backup data found for this tab."
   },
   "label": {
     "name": "Name",
@@ -103,9 +103,6 @@
     "autoSaveInfo": "Changes are saved automatically.",
     "revert": "Revert",
     "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
-    "revertError": "An error occurred while reverting. Please try again.",
-    "revertNoBackup": "No backup data available.",
-    "revertNoBackupForTab": "No backup data found for this tab.",
     "imgUploader": "Image Uploader"
   },
   "editUserInfo": {

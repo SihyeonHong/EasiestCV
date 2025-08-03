@@ -20,6 +20,7 @@ export default function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
+  const tError = useTranslations("error");
   const tInitPage = useTranslations("initpage");
 
   const { data: me, isLoading } = useQuery({
@@ -47,7 +48,7 @@ export default function useAuth() {
 
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
-        alert(tMessage("networkError"));
+        alert(tError("networkError"));
         console.error("네트워크 에러:", error.message);
         return;
       }
@@ -55,11 +56,11 @@ export default function useAuth() {
       // 서버에서 응답은 왔지만 에러인 경우
       const { status, data } = error.response;
       const errorType = data.errorType;
-      const message = data.message || tMessage("unknownError");
+      const message = data.message || tError("unknownError");
 
       switch (errorType) {
         case "MISSING_FIELDS":
-          alert(tMessage("missingFields"));
+          alert(tError("missingFields"));
           break;
         case "USER_NOT_FOUND":
           alert(tMessage("noUser"));
@@ -68,7 +69,7 @@ export default function useAuth() {
           alert(tMessage("passwordMismatch"));
           break;
         case "SERVER_ERROR":
-          alert(tMessage("serverError"));
+          alert(tError("serverError"));
           break;
         default:
           alert(tInitPage("loginFail"));
@@ -104,17 +105,17 @@ export default function useAuth() {
 
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
-        alert(tMessage("networkError"));
+        alert(tError("networkError"));
         console.error("네트워크 에러:", error.message);
         return;
       }
 
       // 서버에서 응답은 왔지만 에러인 경우
       const { status, data } = error.response;
-      const message = data.message || tMessage("unknownError");
+      const message = data.message || tError("unknownError");
 
       if (status === 500) {
-        alert(tMessage("networkError"));
+        alert(tError("networkError"));
       } else {
         alert(message);
       }
@@ -136,7 +137,7 @@ export default function useAuth() {
 
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
-        alert(tMessage("networkError"));
+        alert(tError("networkError"));
         console.error("네트워크 에러:", error.message);
         return;
       }
@@ -147,13 +148,13 @@ export default function useAuth() {
 
       switch (status) {
         case 400:
-          alert(tMessage("missingFields"));
+          alert(tError("missingFields"));
           break;
         case 409:
           alert(tInitPage("duplicateId"));
           break;
         case 500:
-          alert(tMessage("serverError"));
+          alert(tError("serverError"));
           break;
         default:
           alert(message);
