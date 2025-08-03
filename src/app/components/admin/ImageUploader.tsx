@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import {
@@ -35,19 +35,21 @@ export default function ImageUploader({
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+  useEffect(() => {
+    // cleanup function: previewImage가 변경되기 전 URL 정리
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
+  }, [previewImage]);
+
   const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
 
     const fileUrl = URL.createObjectURL(file);
     setPreviewImage(fileUrl);
-
-    // 메모리 누수 방지를 위해 기존 URL 해제 (옵션)
-    return () => {
-      if (previewImage) {
-        URL.revokeObjectURL(previewImage);
-      }
-    };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
