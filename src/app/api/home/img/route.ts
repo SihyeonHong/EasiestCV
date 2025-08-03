@@ -26,7 +26,6 @@ export async function POST(req: Request) {
       "image/png",
       "image/gif",
       "image/webp",
-      "image/svg+xml",
       "image/bmp",
     ];
 
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error:
-            "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, SVG, BMP만 업로드 가능합니다.",
+            "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
         },
         { status: 400 },
       );

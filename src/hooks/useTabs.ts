@@ -1,17 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import { useState, useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
+import { ApiErrorResponse } from "@/models/api";
 import { Tab } from "@/models/tab.model";
-import { get, put } from "@/util/http";
+import { get, post, put } from "@/util/http";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
   const tAdmin = useTranslations("admin");
   const tEditor = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const [localTabs, setLocalTabs] = useState<Tab[] | null>(null);
   const [currentTab, setCurrentTab] = useState<Tab | null>(null);
@@ -23,6 +26,7 @@ export const useTabs = (userid: string) => {
 
   const tabs = localTabs ?? serverTabs;
 
+  // 탭 전체 업데이트
   const { mutate: updateTabsMutation } = useMutation({
     mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
     onSuccess: () => {
@@ -36,6 +40,7 @@ export const useTabs = (userid: string) => {
     },
   });
 
+  // 탭 내용만 업데이트
   const { mutate: updateContentsMutation } = useMutation({
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
@@ -44,6 +49,44 @@ export const useTabs = (userid: string) => {
     },
     onError: (error) => {
       console.error("내용 저장 오류:", error);
+    },
+  });
+
+  // GCS에 이미지 업로드
+  const { mutateAsync: uploadImgToGCS } = useMutation({
+    mutationFn: (formData: FormData) =>
+      post<{ imageUrl: string }>(`/tabs/img`, formData),
+    onError: (error: AxiosError) => {
+      console.error("이미지 업로드 오류:", error);
+
+      // 네트워크 에러
+      if (!error.response) {
+        alert(
+          error.code === "ECONNABORTED"
+            ? tError("timeout")
+            : tError("networkError"),
+        );
+        return;
+      }
+
+      // 서버 에러
+      const errorData = error.response.data as ApiErrorResponse;
+      const status = error.response.status;
+
+      if (status === 400) {
+        switch (errorData?.errorType) {
+          case "FILE_SIZE_ERROR":
+            alert(tError("fileSizeError"));
+            break;
+          case "INVALID_IMAGE_TYPE":
+            alert(tError("invalidImageType"));
+            break;
+          default:
+            alert(tError("imgUploadFail"));
+        }
+      } else {
+        alert(tError("imgUploadFail"));
+      }
     },
   });
 
@@ -113,7 +156,6 @@ export const useTabs = (userid: string) => {
   };
 
   // 내용 되돌리기
-
   const backUpTabsRef = useRef<Tab[] | null>(null);
   useEffect(() => {
     if (serverTabs.length > 0 && !backUpTabsRef.current) {
@@ -124,7 +166,7 @@ export const useTabs = (userid: string) => {
   const revertContents = (tid: number): null | void => {
     try {
       if (!backUpTabsRef.current) {
-        alert(tEditor("revertNoBackup"));
+        alert(tError("revertNoBackup"));
         return null;
       }
 
@@ -135,7 +177,7 @@ export const useTabs = (userid: string) => {
         backupTab.contents === undefined ||
         backupTab.contents === null
       ) {
-        alert(tEditor("revertNoBackupForTab"));
+        alert(tError("revertNoBackupForTab"));
         console.error(`탭 ID ${tid}에 대한 백업 데이터를 찾을 수 없습니다.`);
         return null;
       }
@@ -149,7 +191,7 @@ export const useTabs = (userid: string) => {
         contents: backupTab.contents,
       });
     } catch (error) {
-      alert(tEditor("revertError"));
+      alert(tError("revertError"));
       console.error("revertContents", error);
     }
   };
@@ -166,6 +208,7 @@ export const useTabs = (userid: string) => {
     currentTab,
     setCurrentTab,
     revertContents,
+    uploadImgToGCS,
   };
 };
 

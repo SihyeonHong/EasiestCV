@@ -10,6 +10,7 @@ export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
   const tEditor = useTranslations("editor");
+  const tError = useTranslations("error");
 
   // 1) 홈 데이터 조회
   const {
@@ -37,7 +38,7 @@ export const useHome = (userid: string) => {
       refetch();
     },
     onError: (err) => {
-      alert(tMessage("saveFail"));
+      alert(tError("saveFail"));
       console.error("PDF 업로드 에러:", err);
     },
   });
@@ -50,12 +51,12 @@ export const useHome = (userid: string) => {
   } = useMutation({
     mutationFn: uploadImg,
     onSuccess: () => {
-      alert(tMessage("saveSuccess"));
+      alert(tMessage("imgUploadSuccess"));
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
     onError: (err) => {
-      alert(tMessage("saveFail"));
+      alert(tError("imgUploadFail"));
       console.error("이미지 업로드 에러:", err);
     },
   });
@@ -75,7 +76,7 @@ export const useHome = (userid: string) => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
     },
     onError: (error) => {
-      alert(tMessage("saveFail"));
+      alert(tError("saveFail"));
       console.error("intro 업로드 에러:", error);
     },
   });
@@ -92,7 +93,7 @@ export const useHome = (userid: string) => {
   const revertIntro = (): null | void => {
     try {
       if (!backUpIntroRef.current || backUpIntroRef.current.length === 0) {
-        alert(tEditor("revertNoBackup"));
+        alert(tError("revertNoBackup"));
         return null;
       }
 
