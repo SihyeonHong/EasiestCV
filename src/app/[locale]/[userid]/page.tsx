@@ -7,7 +7,7 @@ import Title from "@/app/components/common/Title";
 import NoUserPage from "@/app/components/NoUserPage";
 import PublicTabs from "@/app/components/public/PublicTabs";
 import { User } from "@/models/user.model";
-import { get } from "@/util/http";
+import { get } from "@/utils/http";
 
 interface Props {
   params: {

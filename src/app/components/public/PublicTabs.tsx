@@ -11,7 +11,7 @@ import PublicFile from "@/app/components/public/PublicFile";
 import PublicHome from "@/app/components/public/PublicHome";
 import { HomeData } from "@/models/home.model";
 import { Tab } from "@/models/tab.model";
-import { get } from "@/util/http";
+import { get } from "@/utils/http";
 
 interface Props {
   userid: string;

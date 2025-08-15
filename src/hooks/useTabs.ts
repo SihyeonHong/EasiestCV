@@ -7,7 +7,7 @@ import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/models/api";
 import { Tab } from "@/models/tab.model";
-import { get, post, put } from "@/util/http";
+import { get, post, put } from "@/utils/http";
 
 export const useTabs = (userid: string) => {
   const queryClient = useQueryClient();

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { HomeData } from "@/models/home.model";
-import { get, patch, post } from "@/util/http";
+import { get, patch, post } from "@/utils/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ApiErrorResponse, DBError } from "@/models/api";
-import { query } from "@/util/database";
+import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
   try {

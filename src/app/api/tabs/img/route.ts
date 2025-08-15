@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ApiErrorResponse } from "@/models/api";
-import { uploadFile } from "@/util/gcs";
+import { uploadFile } from "@/utils/gcs";
 
 export async function POST(request: Request) {
   try {

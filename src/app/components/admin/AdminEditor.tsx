@@ -7,9 +7,9 @@ import { Button } from "@/app/components/common/Button";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 import { Tab } from "@/models/tab.model";
-import { cn } from "@/util/classname";
-import extractFileName from "@/util/extractFileName";
-import useDebounce from "@/util/useDebounce";
+import { cn } from "@/utils/classname";
+import extractFileName from "@/utils/extractFileName";
+import useDebounce from "@/utils/useDebounce";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";

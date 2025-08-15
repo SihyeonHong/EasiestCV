@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-import { query } from "@/util/database";
+import { query } from "@/utils/database";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://easiest-cv.vercel.app";
