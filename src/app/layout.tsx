@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   title: "Easiest CV",
   description: "Easiest way to make your CV",
   verification: {
-    google:
-      "google-site-verification=MrXMvtxqxYirVsEo1s_0kadHZja0G6_3nFjHGw79Dgc",
+    google: "MrXMvtxqxYirVsEo1s_0kadHZja0G6_3nFjHGw79Dgc",
   },
 };
 
