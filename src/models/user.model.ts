@@ -2,6 +2,8 @@ export interface User {
   userid: string;
   username?: string;
   email?: string;
+  title?: string;
+  description?: string;
 }
 
 export interface LoginForm {
