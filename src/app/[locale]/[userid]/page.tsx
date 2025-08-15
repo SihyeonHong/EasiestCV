@@ -1,9 +1,13 @@
-import { Suspense } from "react";
+import { isAxiosError } from "axios";
+import { Metadata } from "next";
 
 import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
-import LoadingPage from "@/app/components/LoadingPage";
-import PublicContainer from "@/app/components/public/PublicContainer";
+import Title from "@/app/components/common/Title";
+import NoUserPage from "@/app/components/NoUserPage";
+import PublicTabs from "@/app/components/public/PublicTabs";
+import { User } from "@/models/user.model";
+import { get } from "@/util/http";
 
 interface Props {
   params: {
@@ -12,14 +16,62 @@ interface Props {
   };
 }
 
-export default function Page({ params }: Props) {
+export default async function Page({ params }: Props) {
+  const user = await getUser(params.userid);
+
   return (
     <div className="flex flex-col items-center">
-      <Header params={params} />
-      <Suspense fallback={<LoadingPage />}>
-        <PublicContainer userid={params.userid} />
-      </Suspense>
+      <Header userid={params?.userid || ""} isAdmin={false} />
+      <div className="flex w-full justify-center px-4">
+        <div className="w-full max-w-[1024px]">
+          <Title title={user?.username || params.userid} />
+          {!user ? <NoUserPage /> : <PublicTabs userid={params.userid} />}
+        </div>
+      </div>
       <Footer />
     </div>
   );
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const user = await getUser(params.userid);
+
+  // 유저가 없는 경우, 메타데이터를 기본값으로 반환
+  if (!user) {
+    return {
+      title: "User Not Found - Easiest CV",
+      description: "The requested user profile does not exist.",
+      robots: "noindex, nofollow",
+    };
+  }
+
+  return {
+    title: user.title || `${user?.username}'s CV - Easiest CV`,
+    description: user.description || `${user?.username}'s CV`,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
+  };
+}
+
+async function getUser(userid: string): Promise<User | null> {
+  try {
+    const response = await get<User>(`/users/user?userid=${userid}`);
+    if (!response) {
+      return null;
+    }
+    return response;
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 404) {
+      console.warn("사용자 없음 (404)");
+      return null;
+    }
+    console.error("사용자 정보 가져오기 실패:", error);
+    return null;
+  }
 }

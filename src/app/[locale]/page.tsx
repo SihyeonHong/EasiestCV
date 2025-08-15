@@ -13,7 +13,7 @@ interface Props {
 export default function page({ params }: Props) {
   return (
     <div className="flex flex-col items-center">
-      <Header params={params} />
+      <Header userid={params.userid || ""} isAdmin={false} />
       <Title />
       <InitPage />
       <Footer />

@@ -20,6 +20,16 @@ export function validateUserId(userId: string): UserIdValidationResult {
     "user",
     "static",
     "public",
+    "notice",
+    "dev",
+    "faq",
+    "qna",
+    "changelog",
+    "changelogs",
+    "log",
+    "logs",
+    "tab",
+    "tabs",
   ];
 
   if (reservedWords.includes(userId)) {

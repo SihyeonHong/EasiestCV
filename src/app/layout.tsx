@@ -11,6 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Easiest CV",
   description: "Easiest way to make your CV",
+  verification: {
+    google:
+      "google-site-verification=AjQF0M_w-bW5x9uFEKAz0JJSDnp9Tm7-EHWo9W2szIE",
+  },
 };
 
 interface RootLayoutProps {
