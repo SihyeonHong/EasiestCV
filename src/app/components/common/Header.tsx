@@ -9,14 +9,11 @@ import LocaleSwitcher from "@/app/components/common/LocaleSwitcher";
 import { Link } from "@/i18n/routing";
 
 interface HeaderProps {
-  params: {
-    locale: string;
-    userid?: string;
-  };
+  userid?: string;
   isAdmin?: boolean;
 }
 
-export default function Header({ params, isAdmin }: HeaderProps) {
+export default function Header({ userid, isAdmin }: HeaderProps) {
   const t = useTranslations("header");
 
   return (
@@ -26,14 +23,13 @@ export default function Header({ params, isAdmin }: HeaderProps) {
         <LocaleSwitcher />
       </div>
 
-      {params.userid &&
-        (isAdmin ? (
-          <AdminHeader userid={params.userid} />
-        ) : (
-          <Button asChild>
-            <Link href={`/`}>{t("loginOrSignup")}</Link>
-          </Button>
-        ))}
+      {userid && isAdmin ? (
+        <AdminHeader userid={userid} />
+      ) : (
+        <Button asChild>
+          <Link href={`/`}>{t("loginOrSignup")}</Link>
+        </Button>
+      )}
     </div>
   );
 }
