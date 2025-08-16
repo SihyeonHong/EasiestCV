@@ -105,6 +105,26 @@
     "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
     "imgUploader": "Image Uploader"
   },
+  "quillTooltips": {
+    "header": "Heading style",
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike": "Strikethrough",
+    "blockquote": "Blockquote",
+    "listOrdered": "Numbered list",
+    "listBullet": "Bulleted list",
+    "indentDecrease": "Decrease indent",
+    "indentIncrease": "Increase indent",
+    "image": "Insert image",
+    "align": "Text alignment",
+    "alignLeft": "Align left",
+    "alignCenter": "Align center",
+    "alignRight": "Align right",
+    "alignJustify": "Justify",
+    "color": "Text color",
+    "background": "Background color"
+  },
   "editUserInfo": {
     "editUserInfoBtn": "Edit Name/Email",
     "title": "Edit User Information",

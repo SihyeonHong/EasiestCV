@@ -23,6 +23,7 @@ interface Props {
 
 export default function AdminEditor({ userid, tid }: Props) {
   const tError = useTranslations("error");
+  const tQuillTooltips = useTranslations("quillTooltips");
 
   const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabs(userid);
@@ -44,6 +45,7 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   const { wrapperRef, modules, formats, insertImage } = useEditor({
     onImageClick: () => setIsImageUploaderOpen(true),
+    tQuillTooltips,
   });
 
   useEffect(() => {

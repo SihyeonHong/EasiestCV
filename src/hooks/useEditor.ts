@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo } from "react";
 
 import extractFileName from "@/utils/extractFileName";
-import { addTooltips } from "@/utils/quillTooltips";
+import { addTooltips, TQuillTooltipsFunction } from "@/utils/quillTooltips";
 
 interface QuillWrapper {
   quill: import("quill").default;
@@ -13,14 +13,18 @@ interface QuillWrapper {
 
 interface UseEditorProps {
   onImageClick: (quillInstance: QuillWrapper) => void;
+  tQuillTooltips: TQuillTooltipsFunction;
 }
 
-export function useEditor({ onImageClick }: UseEditorProps) {
+export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const quillInstanceRef = useRef<QuillWrapper | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => addTooltips(wrapperRef), 100);
+    const timer = setTimeout(
+      () => addTooltips(wrapperRef, tQuillTooltips),
+      100,
+    );
     return () => clearTimeout(timer);
   }, []);
 

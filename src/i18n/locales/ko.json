@@ -104,6 +104,26 @@
     "revertConfirm": "수정하기 전으로 되돌리시겠습니까? 현재 입력한 내용은 모두 사라집니다.",
     "imgUploader": "사진 올리기"
   },
+  "quillTooltips": {
+    "header": "제목 스타일",
+    "bold": "굵게",
+    "italic": "기울임",
+    "underline": "밑줄",
+    "strike": "취소선",
+    "blockquote": "인용문",
+    "listOrdered": "번호 목록",
+    "listBullet": "글머리 기호",
+    "indentDecrease": "들여쓰기 줄이기",
+    "indentIncrease": "들여쓰기 늘리기",
+    "image": "이미지 삽입",
+    "align": "텍스트 정렬",
+    "alignLeft": "왼쪽 정렬",
+    "alignCenter": "가운데 정렬",
+    "alignRight": "오른쪽 정렬",
+    "alignJustify": "양쪽 정렬",
+    "color": "글자 색상",
+    "background": "배경 색상"
+  },
   "editUserInfo": {
     "editUserInfoBtn": "이름/이메일 변경",
     "title": "회원정보 수정",

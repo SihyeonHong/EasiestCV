@@ -1,29 +1,10 @@
 import { RefObject } from "react";
 
-// 툴바 버튼별 tooltip 텍스트 정의
-export const tooltipTexts = {
-  ".ql-header .ql-picker-label": "제목 스타일",
-  ".ql-bold": "굵게",
-  ".ql-italic": "기울임",
-  ".ql-underline": "밑줄",
-  ".ql-strike": "취소선",
-  ".ql-blockquote": "인용문",
-  '.ql-list[value="ordered"]': "번호 목록",
-  '.ql-list[value="bullet"]': "글머리 기호",
-  '.ql-indent[value="-1"]': "들여쓰기 줄이기",
-  '.ql-indent[value="+1"]': "들여쓰기 늘리기",
-  ".ql-image": "이미지 삽입",
-  ".ql-align .ql-picker-label": "텍스트 정렬",
-  ".ql-align .ql-picker-item:not([data-value])": "왼쪽 정렬",
-  '.ql-align .ql-picker-item[data-value="center"]': "가운데 정렬",
-  '.ql-align .ql-picker-item[data-value="right"]': "오른쪽 정렬",
-  '.ql-align .ql-picker-item[data-value="justify"]': "양쪽 정렬",
-  ".ql-color .ql-picker-label": "글자 색상",
-  ".ql-background .ql-picker-label": "배경 색상",
-};
-
 // ReactQuill 툴바에 tooltip 추가하는 함수
-export const addTooltips = (wrapperRef: RefObject<HTMLDivElement>): void => {
+export const addTooltips = (
+  wrapperRef: RefObject<HTMLDivElement>,
+  t: TQuillTooltipsFunction,
+): void => {
   if (!wrapperRef.current) return;
 
   // div wrapper에서 ReactQuill 툴바 찾기
@@ -36,7 +17,8 @@ export const addTooltips = (wrapperRef: RefObject<HTMLDivElement>): void => {
   toolbar.classList.add("relative", "overflow-visible");
 
   // 모든 툴바 버튼에 tooltip 추가
-  Object.entries(tooltipTexts).forEach(([selector, tooltipText]) => {
+  Object.entries(tooltipSelectors).forEach(([key, selector]) => {
+    const tooltipText = t(key as keyof typeof tooltipSelectors);
     const elements = toolbar.querySelectorAll(
       selector,
     ) as NodeListOf<HTMLElement>;
@@ -87,7 +69,6 @@ export const addTooltips = (wrapperRef: RefObject<HTMLDivElement>): void => {
           arrow.className =
             "absolute right-full top-1/2 transform -translate-y-1/2 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-900";
         } else {
-          const rect = element.getBoundingClientRect();
           tooltip.style.left = `${rect.left + rect.width / 2}px`;
           tooltip.style.top = `${rect.top - tooltip.offsetHeight - 8}px`;
           tooltip.style.transform = "translateX(-50%)";
@@ -118,3 +99,30 @@ export const addTooltips = (wrapperRef: RefObject<HTMLDivElement>): void => {
     });
   });
 };
+
+// 툴바 버튼 셀렉터 키 정의
+const tooltipSelectors = {
+  header: ".ql-header .ql-picker-label",
+  bold: ".ql-bold",
+  italic: ".ql-italic",
+  underline: ".ql-underline",
+  strike: ".ql-strike",
+  blockquote: ".ql-blockquote",
+  listOrdered: '.ql-list[value="ordered"]',
+  listBullet: '.ql-list[value="bullet"]',
+  indentDecrease: '.ql-indent[value="-1"]',
+  indentIncrease: '.ql-indent[value="+1"]',
+  image: ".ql-image",
+  align: ".ql-align .ql-picker-label",
+  alignLeft: ".ql-align .ql-picker-item:not([data-value])",
+  alignCenter: '.ql-align .ql-picker-item[data-value="center"]',
+  alignRight: '.ql-align .ql-picker-item[data-value="right"]',
+  alignJustify: '.ql-align .ql-picker-item[data-value="justify"]',
+  color: ".ql-color .ql-picker-label",
+  background: ".ql-background .ql-picker-label",
+} as const;
+
+// 번역 함수 타입 정의
+export type TQuillTooltipsFunction = (
+  key: keyof typeof tooltipSelectors,
+) => string;
