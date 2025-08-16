@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { query } from "@/util/database";
-import { uploadFile, deleteFile } from "@/util/gcs";
+import { query } from "@/utils/database";
+import { uploadFile, deleteFile } from "@/utils/gcs";
 
 export async function POST(req: Request) {
   try {

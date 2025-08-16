@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { put } from "@/util/http";
+import { put } from "@/utils/http";
 
 interface ResetPasswordData {
   userid: string;

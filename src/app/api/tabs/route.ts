@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { Tab } from "@/models/tab.model";
-import { query } from "@/util/database";
+import { query } from "@/utils/database";
 
 export async function PUT(request: Request) {
   try {

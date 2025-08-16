@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 import { User } from "@/models/user.model";
-import { query } from "@/util/database";
+import { query } from "@/utils/database";
 
 // 환경변수 확인
 const { email_service, user, pass } = process.env;

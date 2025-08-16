@@ -15,8 +15,8 @@ import {
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
 import useAuth from "@/hooks/useAuth";
-import { cn } from "@/util/classname";
-import { validateUserId } from "@/util/validateUserId";
+import { cn } from "@/utils/classname";
+import { validateUserId } from "@/utils/validateUserId";
 
 export default function SignUpCard() {
   const tInitPage = useTranslations("initpage");

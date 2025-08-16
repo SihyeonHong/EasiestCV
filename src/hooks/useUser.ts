@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/models/api";
 import { ChangePWRequest, User } from "@/models/user.model";
-import { get, patch, put } from "@/util/http";
+import { get, patch, put } from "@/utils/http";
 
 export const useUser = (userid: string) => {
   const queryClient = useQueryClient();

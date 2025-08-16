@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
 import { SignupRequest } from "@/models/user.model";
-import { query } from "@/util/database";
+import { query } from "@/utils/database";
 
 export async function POST(request: NextRequest) {
   const startAll = Date.now();

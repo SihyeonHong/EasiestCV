@@ -7,7 +7,7 @@ import { queryKeys } from "@/constants/queryKeys";
 import { useRouter } from "@/i18n/routing";
 import { ApiErrorResponse } from "@/models/api";
 import { LoginForm, SignupRequest } from "@/models/user.model";
-import { get, post } from "@/util/http";
+import { get, post } from "@/utils/http";
 
 interface LoginResponse {
   message: string;
