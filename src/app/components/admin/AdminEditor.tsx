@@ -9,10 +9,14 @@ import { useTabs } from "@/hooks/useTabs";
 import { Tab } from "@/models/tab.model";
 import { cn } from "@/utils/classname";
 import extractFileName from "@/utils/extractFileName";
+import { addTooltips } from "@/utils/quillTooltips";
 import useDebounce from "@/utils/useDebounce";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
+
+const ReactQuillComponent = dynamic(() => import("react-quill"), {
+  ssr: false,
+});
 
 type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 
@@ -30,6 +34,8 @@ interface Props {
 }
 
 export default function AdminEditor({ userid, tid }: Props) {
+  const quillRef = useRef<HTMLDivElement>(null);
+
   const tEditor = useTranslations("editor");
   const tError = useTranslations("error");
 
@@ -55,6 +61,11 @@ export default function AdminEditor({ userid, tid }: Props) {
     }
     setSaveStatus("saved");
   }, [tid, homeData, currentTab]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => addTooltips(quillRef), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const autoSave = useDebounce(async (content: string) => {
     setSaveStatus("saving");
@@ -216,14 +227,18 @@ export default function AdminEditor({ userid, tid }: Props) {
           <span>{statusDisplay.text}</span>
         </div>
       </div>
-      <ReactQuill
-        className="bg-white dark:bg-[hsl(var(--background))]"
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={value}
-        onChange={handleValueChange}
-      />
+
+      <div ref={quillRef}>
+        <ReactQuillComponent
+          className="bg-white dark:bg-[hsl(var(--background))]"
+          theme="snow"
+          modules={modules}
+          formats={formats}
+          value={value}
+          onChange={handleValueChange}
+        />
+      </div>
+
       <ImageUploader
         userid={userid}
         tid={tid}

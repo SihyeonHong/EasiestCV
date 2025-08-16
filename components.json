@@ -12,9 +12,9 @@
   },
   "aliases": {
     "components": "@/app/components",
-    "utils": "@/util/classname",
+    "utils": "@/utils/classname",
     "ui": "@/app/components/common",
-    "lib": "@/util",
+    "lib": "@/utils",
     "hooks": "@/hooks"
   },
   "iconLibrary": "lucide"
