@@ -7,6 +7,9 @@ const storage = new Storage({
 
 const bucket = storage.bucket("easiest-cv");
 
+// 이하 함수들에서 parameter로 받는 filename은 모두
+// `${file.name}-${Date.now()}` 형식
+
 export const uploadFile = async (
   filename: string,
   buffer: Buffer,

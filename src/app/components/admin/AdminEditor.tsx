@@ -36,6 +36,7 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   const { saveStatus, setSaveStatus, handleRevert, handleContentChange } =
     useAutoSave({
+      userid,
       tid,
       mutateUploadIntro,
       updateContents,
@@ -89,7 +90,6 @@ export default function AdminEditor({ userid, tid }: Props) {
 
       <ImageUploader
         userid={userid}
-        tid={tid}
         isOpen={isImageUploaderOpen}
         onClose={() => setIsImageUploaderOpen(false)}
         onImageInsert={handleImageInsert}

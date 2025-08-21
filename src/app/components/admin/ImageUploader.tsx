@@ -15,7 +15,6 @@ import { useTabs } from "@/hooks/useTabs";
 
 interface ImageUploaderProps {
   userid: string;
-  tid: number;
   isOpen: boolean;
   onClose: () => void;
   onImageInsert: (imgTag: string) => void;
