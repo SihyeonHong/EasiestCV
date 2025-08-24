@@ -7,7 +7,7 @@ import { ApiErrorResponse } from "@/models/api";
 import { ChangePWRequest, User } from "@/models/user.model";
 import { get, patch, put } from "@/utils/http";
 
-export const useUser = (userid: string) => {
+export const useUserInfo = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
   const tError = useTranslations("error");

@@ -6,7 +6,7 @@ import AdminTabs from "@/app/components/admin/AdminTabs";
 import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
-import { useUser } from "@/hooks/useUser";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 interface Props {
   params: {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function AdminContainer({ params }: Props) {
-  const { user } = useUser(params.userid);
+  const { user } = useUserInfo(params.userid);
 
   // 로그인 시간 측정
   useEffect(() => {

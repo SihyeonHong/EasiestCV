@@ -13,7 +13,7 @@ import {
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
-import { useUser } from "@/hooks/useUser";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 interface UserInfoEditorProps {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export default function UserInfoEditor({
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const { user, isUserLoading, updateUserInfo } = useUser(userid);
+  const { user, isUserLoading, updateUserInfo } = useUserInfo(userid);
 
   useEffect(() => {
     if (user) {

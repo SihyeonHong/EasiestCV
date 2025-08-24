@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
-import { useUser } from "@/hooks/useUser";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 interface PasswordChangeDialogProps {
   isOpen: boolean;
@@ -34,7 +34,7 @@ export default function PasswordChangeDialog({
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
 
-  const { changePWMutation, changePWStatus } = useUser(userid);
+  const { changePWMutation, changePWStatus } = useUserInfo(userid);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
