@@ -14,7 +14,7 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
-import useSignUp from "@/hooks/useSignup";
+import useSignUp from "@/hooks/useSignUp";
 import { cn } from "@/utils/classname";
 import { validateUserId } from "@/utils/validateUserId";
 
