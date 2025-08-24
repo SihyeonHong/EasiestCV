@@ -30,7 +30,8 @@
     "invalidImageType": "Unsupported image format. Only JPG, PNG, BMP, WebP, and GIF are allowed.",
     "revertError": "An error occurred while reverting. Please try again.",
     "revertNoBackup": "No backup data available.",
-    "revertNoBackupForTab": "No backup data found for this tab."
+    "revertNoBackupForTab": "No backup data found for this tab.",
+    "loginFail": "Login failed. Please try again."
   },
   "label": {
     "name": "Name",
@@ -63,8 +64,9 @@
     "login": "Log In",
     "signup": "Sign Up",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
-    "signupEmailDescription": "If you forget your password, you will receive email here.",
-    "loginFail": "Login failed. Please try again.",
+    "signupEmailDescription": "If you forget your password, you will receive email here."
+  },
+  "signup": {
     "signupSuccess": "Sign up successful. Please log in.",
     "signupFail": "An error occurred during sign up.",
     "duplicateId": "This ID is already in use by another user."
