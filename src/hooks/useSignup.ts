@@ -6,7 +6,7 @@ import { ApiErrorResponse } from "@/models/api";
 import { SignupRequest } from "@/models/user.model";
 import { post } from "@/utils/http";
 
-export default function useAuth() {
+export default function useSignUp() {
   const tSignup = useTranslations("signup");
   const tError = useTranslations("error");
 

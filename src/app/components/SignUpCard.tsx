@@ -14,7 +14,7 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
-import useAuth from "@/hooks/useAuth";
+import useSignUp from "@/hooks/useSignup";
 import { cn } from "@/utils/classname";
 import { validateUserId } from "@/utils/validateUserId";
 
@@ -25,7 +25,7 @@ export default function SignUpCard() {
   const tMessage = useTranslations("message");
   const tInvalidId = useTranslations("invalidId");
 
-  const { signup } = useAuth();
+  const { signup } = useSignUp();
 
   const passwordsMatch = () => {
     return signupData.password && signupData.confirmPassword
