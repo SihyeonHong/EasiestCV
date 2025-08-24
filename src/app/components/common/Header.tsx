@@ -8,12 +8,13 @@ import DisplayMode from "@/app/components/common/DisplayMode";
 import LocaleSwitcher from "@/app/components/common/LocaleSwitcher";
 import { Link } from "@/i18n/routing";
 
+type HeaderType = "admin" | "public" | "root";
+
 interface HeaderProps {
-  userid?: string;
-  isAdmin?: boolean;
+  type: HeaderType;
 }
 
-export default function Header({ userid, isAdmin }: HeaderProps) {
+export default function Header({ type }: HeaderProps) {
   const t = useTranslations("header");
 
   return (
@@ -23,13 +24,12 @@ export default function Header({ userid, isAdmin }: HeaderProps) {
         <LocaleSwitcher />
       </div>
 
-      {userid && isAdmin ? (
-        <AdminHeader userid={userid} />
-      ) : (
+      {type === "public" && (
         <Button asChild>
           <Link href={`/`}>{t("loginOrSignup")}</Link>
         </Button>
       )}
+      {type === "admin" && <AdminHeader />}
     </div>
   );
 }

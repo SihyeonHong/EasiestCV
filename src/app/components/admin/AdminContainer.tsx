@@ -31,7 +31,7 @@ export default function AdminContainer({ params }: Props) {
 
   return (
     <div>
-      <Header userid={params.userid || ""} isAdmin={true} />
+      <Header type="admin" />
       <Title title={user?.username || params.userid} />
       <AdminTabs userid={params.userid} />
       <Footer />

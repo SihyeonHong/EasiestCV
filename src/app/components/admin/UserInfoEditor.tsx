@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 
@@ -15,16 +16,16 @@ import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useUser } from "@/hooks/useUser";
 
 interface UserInfoEditorProps {
-  userid: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function UserInfoEditor({
-  userid,
   isOpen,
   onClose,
 }: UserInfoEditorProps) {
+  const userid = useParams().userid as string;
+
   const t = useTranslations("editUserInfo");
   const tLabel = useTranslations("label");
   const tPlaceholder = useTranslations("placeholder");
