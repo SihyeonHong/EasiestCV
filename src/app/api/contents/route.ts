@@ -37,22 +37,10 @@ export async function PUT(request: Request) {
     const body: UpdateContentsRequest = await request.json();
     const { userid, tid, contents } = body;
 
-    const result1 = await query(
-      `SELECT contents FROM tabs WHERE userid = $1 and tid = $2`,
-      [userid, tid],
+    await query(
+      "UPDATE tabs SET contents = $1 WHERE userid = $2 and tid = $3",
+      [contents, userid, tid],
     );
-
-    if (result1.length) {
-      await query(
-        "UPDATE tabs SET contents = $1 WHERE userid = $2 and tid = $3",
-        [contents, userid, tid],
-      );
-    } else {
-      await query(
-        "INSERT INTO tabs (userid, tid, contents) VALUES ($1, $2, $3)",
-        [userid, tid, contents],
-      );
-    }
 
     return NextResponse.json({ message: "ok" });
   } catch (error: unknown) {

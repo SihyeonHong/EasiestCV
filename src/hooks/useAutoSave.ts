@@ -1,10 +1,14 @@
 import { useState, useCallback } from "react";
 
+import { GCSRefreshRequest } from "@/models/tab.model";
+import { del } from "@/utils/http";
+import { parseImgSrc } from "@/utils/parseImgSrc";
 import useDebounce from "@/utils/useDebounce";
 
 export type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 
 interface UseAutoSaveProps {
+  userid: string;
   tid: number;
   mutateUploadIntro: (content: string) => void;
   updateContents: (params: { tid: number; newContent: string }) => void;
@@ -13,6 +17,7 @@ interface UseAutoSaveProps {
 }
 
 export function useAutoSave({
+  userid,
   tid,
   mutateUploadIntro,
   updateContents,
@@ -24,6 +29,7 @@ export function useAutoSave({
   const autoSave = useDebounce(async (content: string) => {
     setSaveStatus("saving");
 
+    // 텍스트 업로드
     try {
       if (tid === 0) {
         mutateUploadIntro(content);
@@ -33,11 +39,25 @@ export function useAutoSave({
           newContent: content,
         });
       }
-      setSaveStatus("saved");
     } catch (error) {
       setSaveStatus("error");
       console.error("자동저장 실패:", error);
     }
+
+    // 업로드 후, 파일 리스트 refresh
+    try {
+      const data: GCSRefreshRequest = {
+        userid,
+        tid,
+        newList: parseImgSrc(content),
+      };
+      del(`/files`, { data });
+    } catch (error) {
+      console.warn(error);
+    }
+
+    // 저장 상태 변경
+    setSaveStatus("saved");
   }, 2000);
 
   const handleRevert = useCallback(() => {

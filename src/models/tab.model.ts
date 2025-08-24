@@ -5,3 +5,9 @@ export interface Tab {
   torder: number;
   contents: string | null;
 }
+
+export interface GCSRefreshRequest {
+  userid: string;
+  tid: number;
+  newList: string[];
+}
