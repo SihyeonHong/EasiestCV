@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
-import useAuth from "@/hooks/useAuth";
+import useLogin from "@/hooks/useLogin";
 
 export default function LoginCard() {
   const tInitPage = useTranslations("initpage");
@@ -21,7 +21,7 @@ export default function LoginCard() {
     password: "",
   });
 
-  const { login, isLoggingIn } = useAuth();
+  const { login, isLoggingIn } = useLogin();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     sessionStorage.setItem("login_start", String(performance.now()));

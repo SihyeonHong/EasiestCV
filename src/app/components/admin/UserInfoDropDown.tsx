@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/common/DropdownMenu";
 
-export default function UserInfoDropDown({ userid }: { userid: string }) {
+export default function UserInfoDropDown() {
   const tHeader = useTranslations("header");
   const tChangePW = useTranslations("changePassword");
   const t = useTranslations("editUserInfo");
@@ -39,12 +39,10 @@ export default function UserInfoDropDown({ userid }: { userid: string }) {
         </DropdownMenuContent>
       </DropdownMenu>
       <UserInfoEditor
-        userid={userid}
         isOpen={isUserInfoEditorOpen}
         onClose={() => setIsUserInfoEditorOpen(false)}
       />
       <PasswordChangeDialog
-        userid={userid}
         isOpen={isResetPWDialogOpen}
         onClose={() => setIsResetPWDialogOpen(false)}
       />

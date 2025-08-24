@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 
@@ -12,19 +13,19 @@ import {
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
-import { useUser } from "@/hooks/useUser";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 interface UserInfoEditorProps {
-  userid: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function UserInfoEditor({
-  userid,
   isOpen,
   onClose,
 }: UserInfoEditorProps) {
+  const userid = useParams().userid as string;
+
   const t = useTranslations("editUserInfo");
   const tLabel = useTranslations("label");
   const tPlaceholder = useTranslations("placeholder");
@@ -32,7 +33,7 @@ export default function UserInfoEditor({
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const { user, isUserLoading, updateUserInfo } = useUser(userid);
+  const { user, isUserLoading, updateUserInfo } = useUserInfo(userid);
 
   useEffect(() => {
     if (user) {

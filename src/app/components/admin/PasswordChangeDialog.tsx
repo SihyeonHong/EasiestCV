@@ -1,4 +1,5 @@
 import { Loader2Icon } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -12,19 +13,19 @@ import {
   DialogTitle,
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
-import { useUser } from "@/hooks/useUser";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 interface PasswordChangeDialogProps {
-  userid: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function PasswordChangeDialog({
-  userid,
   isOpen,
   onClose,
 }: PasswordChangeDialogProps) {
+  const userid = useParams().userid as string;
+
   const tchangePW = useTranslations("changePassword");
   const tButton = useTranslations("button");
   const tMessage = useTranslations("message");
@@ -33,7 +34,7 @@ export default function PasswordChangeDialog({
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
 
-  const { changePWMutation, changePWStatus } = useUser(userid);
+  const { changePWMutation, changePWStatus } = useUserInfo(userid);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
