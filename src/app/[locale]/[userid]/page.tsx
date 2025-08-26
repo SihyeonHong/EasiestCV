@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { Metadata } from "next";
 
+import LogoutHandler from "@/app/components/admin/LogoutHandler";
 import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
@@ -21,6 +22,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="flex flex-col items-center">
+      <LogoutHandler />
       <Header type="public" />
       <div className="flex w-full justify-center px-4">
         <div className="w-full max-w-[1024px]">
@@ -39,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // 유저가 없는 경우, 메타데이터를 기본값으로 반환
   if (!user) {
     return {
-      title: "User Not Found - Easiest CV",
+      title: "Easiest CV - User Not Found",
       description: "The requested user profile does not exist.",
       robots: "noindex, nofollow",
     };

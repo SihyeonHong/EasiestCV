@@ -1,17 +1,34 @@
-import AdminContainer from "@/app/components/admin/AdminContainer";
-import RequireAuth from "@/app/components/RequireAuthPage";
+"use client";
 
-interface Props {
-  params: {
-    locale: string;
-    userid: string;
-  };
-}
+import { useParams } from "next/navigation";
 
-export default function Page({ params }: Props) {
+import AdminTabs from "@/app/components/admin/AdminTabs";
+import CannotAccess from "@/app/components/admin/CannotAccess";
+import Footer from "@/app/components/common/Footer";
+import Header from "@/app/components/common/Header";
+import Title from "@/app/components/common/Title";
+import LoadingPage from "@/app/components/LoadingPage";
+import useAuth from "@/hooks/useAuth";
+import { useUserInfo } from "@/hooks/useUserInfo";
+
+export default function Page() {
+  const userid = useParams().userid as string;
+
+  const { me, isLoggingOut } = useAuth();
+  const { user } = useUserInfo(userid);
+
+  if (isLoggingOut) return <LoadingPage />;
+
+  if (!me || me.userid !== userid) {
+    return <CannotAccess />;
+  }
+
   return (
-    <RequireAuth url={params.userid}>
-      <AdminContainer params={params} />
-    </RequireAuth>
+    <div>
+      <Header type="admin" />
+      <Title title={user?.username || userid} />
+      <AdminTabs userid={userid} />
+      <Footer />
+    </div>
   );
 }

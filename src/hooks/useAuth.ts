@@ -4,22 +4,18 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { useRouter } from "@/i18n/routing";
 import { ApiErrorResponse } from "@/models/api";
 import { get, post } from "@/utils/http";
 
 export default function useAuth() {
-  const router = useRouter();
   const queryClient = useQueryClient();
-  const tMessage = useTranslations("message");
   const tError = useTranslations("error");
 
-  const { data: me, isLoading } = useQuery({
+  const { data: me } = useQuery({
     queryKey: queryKeys.auth(),
     queryFn: async () => {
       try {
-        const response = await get<{ userid: string }>(`/users/me`);
-        return response;
+        return await get<{ userid: string }>(`/users/me`);
       } catch {
         return null;
       }
@@ -28,22 +24,9 @@ export default function useAuth() {
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
-      if (!confirm(tMessage("confirmLogout"))) {
-        return null; // 취소된 경우 null 반환
-      }
-      const currentUserId = me?.userid;
-      const response = await post<{ message: string }>(`/users/logout`);
-      return { response, currentUserId };
+      await post<{ message: string }>(`/users/logout`);
     },
-    onSuccess: (data) => {
-      if (!data) return; // confirm 취소된 경우 아무것도 하지 않음
-
-      const { currentUserId } = data;
-      if (currentUserId) {
-        router.push(`/${currentUserId}`);
-      } else {
-        router.push("/");
-      }
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
@@ -72,7 +55,6 @@ export default function useAuth() {
 
   return {
     me,
-    isLoading,
     logout,
     isLoggingOut,
   };
