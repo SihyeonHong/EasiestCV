@@ -27,8 +27,10 @@ export default function useLogin() {
       return await post<LoginResponse>(`/users/login`, data);
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
-      router.push(`/${response.user.userid}/admin`);
+      queryClient.setQueryData(queryKeys.auth(), response.user);
+      setTimeout(() => {
+        router.push(`/${response.user.userid}/admin`);
+      }, 50);
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
       console.log("로그인 실패: ", error);
