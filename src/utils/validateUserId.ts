@@ -11,25 +11,30 @@ export function validateUserId(userId: string): UserIdValidationResult {
     return "invalidCharacters";
   }
 
-  // 예약어 금지
+  // 예약어 (알파벳 순)
   const reservedWords = [
-    "login",
-    "signup",
     "admin",
     "api",
-    "user",
-    "static",
-    "public",
-    "notice",
-    "dev",
-    "faq",
-    "qna",
     "changelog",
     "changelogs",
+    "community",
+    "dev",
+    "faq",
+    "help",
+    "info",
+    "login",
     "log",
     "logs",
+    "notice",
+    "public",
+    "qna",
+    "service",
+    "signup",
+    "static",
+    "support",
     "tab",
     "tabs",
+    "user",
   ];
 
   if (reservedWords.includes(userId)) {
