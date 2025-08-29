@@ -10,8 +10,6 @@ import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
 import { Tab } from "@/models/tab.model";
 
-import "react-quill/dist/quill.snow.css";
-
 const ReactQuillComponent = dynamic(() => import("react-quill"), {
   ssr: false,
 });

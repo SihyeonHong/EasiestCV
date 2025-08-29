@@ -19,7 +19,9 @@ export default function TabCancel({ resetTabs }: { resetTabs: () => void }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button variant="secondary">{tButton("cancel")}</Button>
+        <Button variant="secondary" className="w-full">
+          {tButton("cancel")}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>{tMessage("cancelConfirm")}</AlertDialogHeader>

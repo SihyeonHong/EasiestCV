@@ -1,4 +1,7 @@
 import "@/app/globals.css";
+import "react-quill/dist/quill.snow.css";
+import "@/style/quill.css";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";

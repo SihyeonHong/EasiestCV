@@ -161,7 +161,7 @@ export default function TabManager({ userid }: TabManagerProps) {
           </Button>
         </form>
 
-        <DialogFooter>
+        <DialogFooter className="gap-2">
           <TabCancel resetTabs={resetTabs} />
           <Button variant="default" onClick={() => saveTabs()}>
             {tButton("save")}

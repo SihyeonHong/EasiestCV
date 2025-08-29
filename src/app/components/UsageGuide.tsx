@@ -7,12 +7,12 @@ export default function UsageGuide() {
     <div className="flex flex-col gap-1">
       <h5 className="text-lg font-bold">{t("try")}</h5>
       <span className="inline-flex items-center gap-1">
-        <p className="text-sm">{t("checkOut")}</p>
+        <p className="text-nowrap text-sm">{t("checkOut")}</p>
         <a
-          href="https://easiest-cv.vercel.app/tutorial"
+          href="https://easiest-cv.com/tutorial"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-blue-500 hover:underline"
+          className="text-nowrap text-sm text-blue-500 hover:underline"
         >
           {t("professorCV")}
         </a>

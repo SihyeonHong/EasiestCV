@@ -24,7 +24,7 @@ export default async function Page({ params }: Props) {
     <div className="flex flex-col items-center">
       <LogoutHandler />
       <Header type="public" />
-      <div className="flex w-full justify-center px-4">
+      <div className="flex w-full">
         <div className="w-full max-w-[1024px]">
           <Title title={user?.username || params.userid} />
           {!user ? <NoUserPage /> : <PublicTabs userid={params.userid} />}
