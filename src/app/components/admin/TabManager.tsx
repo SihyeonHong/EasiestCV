@@ -75,6 +75,51 @@ export default function TabManager({ userid }: TabManagerProps) {
     setLocalTabs(_tabs);
   };
 
+  // 모바일 터치 지원을 위한 핸들러들
+  const handleTouchStart = (index: number) => {
+    dragItem.current = index;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault(); // 스크롤 방지
+
+    const touch = e.touches[0];
+    const elementBelow = document.elementFromPoint(
+      touch.clientX,
+      touch.clientY,
+    );
+
+    // 드래그 오버 중인 아이템 찾기
+    const dragOverElement = elementBelow?.closest("[data-drag-index]");
+    if (dragOverElement) {
+      const overIndex = parseInt(
+        dragOverElement.getAttribute("data-drag-index") || "0",
+      );
+      dragOverItem.current = overIndex;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    handleSort();
+  };
+
+  const getDragHandlers = (index: number) => ({
+    // 마우스 이벤트 (기존)
+    draggable: true,
+    onDragStart: () => (dragItem.current = index),
+    onDragEnter: () => (dragOverItem.current = index),
+    onDragEnd: handleSort,
+    onDragOver: (e: React.DragEvent) => e.preventDefault(),
+
+    // 터치 이벤트 (모바일)
+    onTouchStart: () => handleTouchStart(index),
+    onTouchMove: (e: React.TouchEvent) => handleTouchMove(e),
+    onTouchEnd: handleTouchEnd,
+
+    // 데이터 속성 (터치 이벤트에서 사용)
+    "data-drag-index": index,
+  });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -103,18 +148,7 @@ export default function TabManager({ userid }: TabManagerProps) {
           </TableHeader>
           <TableBody>
             {tabs.map((tab, idx) => (
-              <TableRow
-                key={idx}
-                draggable
-                onDragStart={() => {
-                  dragItem.current = idx;
-                }}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  dragOverItem.current = idx;
-                }}
-                onDragEnd={handleSort}
-              >
+              <TableRow key={idx} {...getDragHandlers(idx)}>
                 <TableCell>
                   <MdDragIndicator />
                 </TableCell>
