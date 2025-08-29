@@ -1,0 +1,40 @@
+@tailwind components;
+@tailwind utilities;
+
+.ql-editor h1 {
+  @apply mb-4 mt-6 text-2xl font-bold;
+}
+
+.ql-editor h2 {
+  @apply mb-3 mt-5 text-xl font-semibold;
+}
+
+.ql-editor h3 {
+  @apply mb-3 mt-4 text-lg font-semibold;
+}
+
+.ql-editor h4 {
+  @apply mb-2 mt-3 text-base font-semibold;
+}
+
+.ql-editor ul {
+  @apply my-2 pl-0;
+  list-style-type: disc;
+}
+
+.ql-editor ol {
+  @apply my-2 pl-0;
+  list-style-type: decimal;
+}
+
+.ql-editor li {
+  @apply pl-0 leading-6;
+}
+
+/* 중첩된 리스트의 들여쓰기도 조정 */
+.ql-editor ul ul,
+.ql-editor ol ol,
+.ql-editor ul ol,
+.ql-editor ol ul {
+  @apply pl-0;
+}

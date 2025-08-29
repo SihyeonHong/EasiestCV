@@ -27,22 +27,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-.ql-editor h1 {
-  @apply text-2xl font-semibold;
-}
-.ql-editor h2 {
-  @apply text-xl font-semibold;
-}
-.ql-editor h3 {
-  @apply text-lg font-semibold;
-}
-.ql-editor h4 {
-  @apply text-base font-semibold;
-}
-.ql-editor h5 {
-  @apply text-sm font-semibold;
-}
-.ql-editor h6 {
-  @apply text-xs font-semibold;
-}

@@ -76,7 +76,7 @@ export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
     return {
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, false] }],
+          [{ header: [1, 2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [
             { list: "ordered" },

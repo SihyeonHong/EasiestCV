@@ -14,10 +14,10 @@ export default function PublicContents({ userid, tid }: Props) {
 
   return (
     <Card className="w-full">
-      <CardContent className="prose w-full dark:prose-invert">
+      <CardContent className="w-full">
         {content && (
           <div
-            className="ql-editor prose-headings:!text-inherit prose-p:!text-inherit"
+            className="ql-editor"
             dangerouslySetInnerHTML={{
               __html: content,
             }}
@@ -27,8 +27,3 @@ export default function PublicContents({ userid, tid }: Props) {
     </Card>
   );
 }
-
-//   <CardContent className="prose max-w-none dark:prose-invert">
-//     {content && (
-//       <div
-//         className="ql-editor prose-headings:!text-inherit prose-p:!text-inherit"
