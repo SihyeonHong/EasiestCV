@@ -167,5 +167,9 @@
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview"
+  },
+  "support": {
+    "linkDescription": "Need help?",
+    "linkText": "Support Page"
   }
 }

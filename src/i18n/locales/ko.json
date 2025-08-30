@@ -166,5 +166,9 @@
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기"
+  },
+  "support": {
+    "linkDescription": "도움이 필요하신가요?",
+    "linkText": "고객지원 페이지"
   }
 }
