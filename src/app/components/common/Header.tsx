@@ -10,8 +10,6 @@ import HomeLogo from "@/app/components/HomeLogo";
 import SupportLink from "@/app/components/SupportLink";
 import { Link } from "@/i18n/routing";
 
-import SupportLink from "../SupportLink";
-
 type HeaderType = "admin" | "public" | "root";
 
 interface HeaderProps {
