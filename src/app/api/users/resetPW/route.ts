@@ -6,9 +6,9 @@ import { User } from "@/models/user.model";
 import { query } from "@/utils/database";
 
 // 환경변수 확인
-const { email_service, user, pass } = process.env;
+const { email_host, email_port, email_user, email_pass } = process.env;
 
-if (!email_service || !user || !pass) {
+if (!email_host || !email_port || !email_user || !email_pass) {
   throw new Error("Missing email configuration in environment variables");
 }
 
@@ -27,12 +27,14 @@ function generateRandomPW(): string {
 
 // 트랜스포터 전역 설정
 const transporter = nodemailer.createTransport({
-  service: email_service,
+  host: email_host,
+  port: email_port,
+  secure: true,
   auth: {
-    user: user,
-    pass: pass,
+    user: email_user,
+    pass: email_pass,
   },
-});
+} as nodemailer.TransportOptions);
 
 interface ResetPasswordRequest {
   userid: string;
@@ -67,7 +69,7 @@ export async function PUT(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
     const mailOptions = {
-      from: user,
+      from: email_user,
       to: email,
       subject: "Easiest CV : Your Temporary Password",
       text: "Your Temporary Password: " + tempPassword,
