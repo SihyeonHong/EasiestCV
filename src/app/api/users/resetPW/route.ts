@@ -3,28 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 import { Locale } from "@/i18n/routing";
-import { User } from "@/models/user.model";
+import { ResetPasswordRequest, User } from "@/models/user.model";
 import { query } from "@/utils/database";
+import { generateRandomPW } from "@/utils/generateRandomPW";
 import { tempPWTemplate } from "@/utils/tempPWTemplate";
 
 // 환경변수 확인
 const { email_host, email_port, email_user, email_pass } = process.env;
 
 if (!email_host || !email_port || !email_user || !email_pass) {
-  throw new Error("Missing email configuration in environment variables");
-}
-
-function generateRandomPW(): string {
-  const charset =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let password = "";
-
-  for (let i = 0; i < 10; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    password += charset[randomIndex];
-  }
-
-  return password;
+  throw new Error("Environment Variables");
 }
 
 // 트랜스포터 전역 설정
@@ -38,12 +26,6 @@ const transporter = nodemailer.createTransport({
   },
 } as nodemailer.TransportOptions);
 
-interface ResetPasswordRequest {
-  userid: string;
-  locale: Locale;
-  email: string;
-}
-
 export async function PUT(request: NextRequest) {
   try {
     const { userid, email, locale } =
@@ -51,7 +33,10 @@ export async function PUT(request: NextRequest) {
 
     if (!userid || !email) {
       return NextResponse.json(
-        { message: "아이디와 이메일을 입력해주세요." },
+        {
+          message: "아이디와 이메일을 입력해주세요.",
+          errorType: "MISSING_FIELDS",
+        },
         { status: 400 },
       );
     }
@@ -63,7 +48,7 @@ export async function PUT(request: NextRequest) {
 
     if (result.length === 0 || email !== result[0].email) {
       return NextResponse.json(
-        { message: "일치하는 사용자가 없습니다." },
+        { message: "일치하는 사용자가 없습니다.", errorType: "USER_NOT_FOUND" },
         { status: 404 },
       );
     }
@@ -101,13 +86,27 @@ export async function PUT(request: NextRequest) {
     }
   } catch (error) {
     console.error("Password reset error:", error);
-    return NextResponse.json(
-      {
-        message: "비밀번호 재설정 중 오류가 발생했습니다.",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
-    );
+
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          message: error.message,
+          errorType:
+            error.message === "Environment Variables"
+              ? "ENVIRONMENT_VARIABLES"
+              : "SERVER_ERROR",
+        },
+        { status: 500 },
+      );
+    } else {
+      return NextResponse.json(
+        {
+          message: "비밀번호 재설정 중 오류가 발생했습니다.",
+          errorType: "SERVER_ERROR",
+        },
+        { status: 500 },
+      );
+    }
   }
 }
 

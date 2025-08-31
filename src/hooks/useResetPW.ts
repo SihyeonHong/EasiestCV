@@ -14,7 +14,8 @@ export const useResetPassword = () => {
       alert(tMessage("resetPWEmailSent"));
     },
     onError: (error: Error) => {
-      alert(error.message || tError("resetPWFail"));
+      console.error(error);
+      alert(tError("resetPWFail"));
     },
   });
 
