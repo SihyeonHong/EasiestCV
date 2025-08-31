@@ -10,9 +10,13 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { useResetPassword } from "@/hooks/useResetPW";
+import { Locale } from "@/i18n/routing";
 
 export default function PWResetCard() {
-  const locale = useParams().locale as string;
+  const localeParams = useParams().locale as string;
+  const locale: Locale = ["ko", "en"].includes(localeParams)
+    ? (localeParams as Locale)
+    : "en";
   const tPlaceholder = useTranslations("placeholder");
   const tResetPW = useTranslations("resetPassword");
 
