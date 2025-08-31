@@ -14,7 +14,8 @@
     "loading": "Loading...",
     "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
     "passwordMismatch": "Passwords do not match.",
-    "imgUploadSuccess": "Image upload completed successfully."
+    "imgUploadSuccess": "Image upload completed successfully.",
+    "resetPWEmailSent": "A temporary password has been sent to your email."
   },
   "error": {
     "saveFail": "An error occurred while saving. Please try again.",
@@ -31,7 +32,8 @@
     "revertError": "An error occurred while reverting. Please try again.",
     "revertNoBackup": "No backup data available.",
     "revertNoBackupForTab": "No backup data found for this tab.",
-    "loginFail": "Login failed. Please try again."
+    "loginFail": "Login failed. Please try again.",
+    "resetPWFail": "An error occurred while resetting the password. Please try again."
   },
   "label": {
     "name": "Name",

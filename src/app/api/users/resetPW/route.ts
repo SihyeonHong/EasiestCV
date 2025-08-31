@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+import { Locale } from "@/i18n/routing";
 import { User } from "@/models/user.model";
 import { query } from "@/utils/database";
+import { tempPWTemplate } from "@/utils/tempPWTemplate";
 
 // 환경변수 확인
 const { email_host, email_port, email_user, email_pass } = process.env;
@@ -38,12 +40,14 @@ const transporter = nodemailer.createTransport({
 
 interface ResetPasswordRequest {
   userid: string;
+  locale: Locale;
   email: string;
 }
 
 export async function PUT(request: NextRequest) {
   try {
-    const { userid, email } = (await request.json()) as ResetPasswordRequest;
+    const { userid, email, locale } =
+      (await request.json()) as ResetPasswordRequest;
 
     if (!userid || !email) {
       return NextResponse.json(
@@ -68,11 +72,13 @@ export async function PUT(request: NextRequest) {
     const tempPassword = generateRandomPW();
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
+    // 이메일 내용 생성
+    const t = translations[locale as Locale] || translations.en;
     const mailOptions = {
       from: email_user,
       to: email,
-      subject: "Easiest CV : Your Temporary Password",
-      text: "Your Temporary Password: " + tempPassword,
+      subject: t.subject,
+      html: tempPWTemplate({ tempPassword, locale }),
     };
 
     // 이메일 전송 및 DB 업데이트
@@ -104,3 +110,14 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
+
+const translations = {
+  en: {
+    subject: "Easiest CV: Your Temporary Password",
+    text: (temp: string) => `Your Temporary Password: ${temp}`,
+  },
+  ko: {
+    subject: "Easiest CV: 임시 비밀번호 안내",
+    text: (temp: string) => `임시 비밀번호: ${temp}`,
+  },
+};

@@ -1,20 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
+import { ResetPasswordRequest } from "@/models/user.model";
 import { put } from "@/utils/http";
 
-interface ResetPasswordData {
-  userid: string;
-  email: string;
-}
-
 export const useResetPassword = () => {
+  const tMessage = useTranslations("message");
+  const tError = useTranslations("error");
+
   const resetPasswordMutation = useMutation({
-    mutationFn: (data: ResetPasswordData) => put("/users/resetPW", data),
+    mutationFn: (data: ResetPasswordRequest) => put("/users/resetPW", data),
     onSuccess: () => {
-      alert("임시 비밀번호가 이메일로 전송되었습니다.");
+      alert(tMessage("resetPWEmailSent"));
     },
     onError: (error: Error) => {
-      alert(error.message || "비밀번호 재설정 중 오류가 발생했습니다.");
+      alert(error.message || tError("resetPWFail"));
     },
   });
 

@@ -23,3 +23,9 @@ export interface ChangePWRequest {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface ResetPasswordRequest {
+  userid: string;
+  email: string;
+  locale: string;
+}

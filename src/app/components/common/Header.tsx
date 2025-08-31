@@ -28,7 +28,7 @@ export default function Header({ type }: HeaderProps) {
       </div>
 
       {/* 오른쪽 */}
-      <div className="ml-auto flex w-full flex-col items-end sm:w-auto sm:flex-row">
+      <div className="ml-auto flex w-full flex-col items-end sm:w-auto sm:flex-row sm:gap-2">
         <div className="flex">
           <LocaleSwitcher />
           <DisplayMode />
