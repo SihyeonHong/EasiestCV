@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
@@ -9,8 +10,13 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { useResetPassword } from "@/hooks/useResetPW";
+import { Locale } from "@/i18n/routing";
 
 export default function PWResetCard() {
+  const localeParams = useParams().locale as string;
+  const locale: Locale = ["ko", "en"].includes(localeParams)
+    ? (localeParams as Locale)
+    : "en";
   const tPlaceholder = useTranslations("placeholder");
   const tResetPW = useTranslations("resetPassword");
 
@@ -25,7 +31,7 @@ export default function PWResetCard() {
   const handleReset = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetPassword(
-      { userid: resetData.userid, email: resetData.email },
+      { userid: resetData.userid, email: resetData.email, locale: locale },
       {
         onSuccess: () => {
           setResetData({ userid: "", email: "" });

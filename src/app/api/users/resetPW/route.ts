@@ -2,50 +2,41 @@ import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-import { User } from "@/models/user.model";
+import { Locale } from "@/i18n/routing";
+import { ResetPasswordRequest, User } from "@/models/user.model";
 import { query } from "@/utils/database";
+import { generateRandomPW } from "@/utils/generateRandomPW";
+import { tempPWTemplate } from "@/utils/tempPWTemplate";
 
 // 환경변수 확인
-const { email_service, user, pass } = process.env;
+const { email_host, email_port, email_user, email_pass } = process.env;
 
-if (!email_service || !user || !pass) {
-  throw new Error("Missing email configuration in environment variables");
-}
-
-function generateRandomPW(): string {
-  const charset =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let password = "";
-
-  for (let i = 0; i < 10; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    password += charset[randomIndex];
-  }
-
-  return password;
+if (!email_host || !email_port || !email_user || !email_pass) {
+  throw new Error("Environment Variables");
 }
 
 // 트랜스포터 전역 설정
 const transporter = nodemailer.createTransport({
-  service: email_service,
+  host: email_host,
+  port: email_port,
+  secure: true,
   auth: {
-    user: user,
-    pass: pass,
+    user: email_user,
+    pass: email_pass,
   },
-});
-
-interface ResetPasswordRequest {
-  userid: string;
-  email: string;
-}
+} as nodemailer.TransportOptions);
 
 export async function PUT(request: NextRequest) {
   try {
-    const { userid, email } = (await request.json()) as ResetPasswordRequest;
+    const { userid, email, locale } =
+      (await request.json()) as ResetPasswordRequest;
 
     if (!userid || !email) {
       return NextResponse.json(
-        { message: "아이디와 이메일을 입력해주세요." },
+        {
+          message: "아이디와 이메일을 입력해주세요.",
+          errorType: "MISSING_FIELDS",
+        },
         { status: 400 },
       );
     }
@@ -57,7 +48,7 @@ export async function PUT(request: NextRequest) {
 
     if (result.length === 0 || email !== result[0].email) {
       return NextResponse.json(
-        { message: "일치하는 사용자가 없습니다." },
+        { message: "일치하는 사용자가 없습니다.", errorType: "USER_NOT_FOUND" },
         { status: 404 },
       );
     }
@@ -66,11 +57,13 @@ export async function PUT(request: NextRequest) {
     const tempPassword = generateRandomPW();
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
+    // 이메일 내용 생성
+    const t = translations[locale as Locale] || translations.en;
     const mailOptions = {
-      from: user,
+      from: email_user,
       to: email,
-      subject: "Easiest CV : Your Temporary Password",
-      text: "Your Temporary Password: " + tempPassword,
+      subject: t.subject,
+      html: tempPWTemplate({ tempPassword, locale }),
     };
 
     // 이메일 전송 및 DB 업데이트
@@ -93,12 +86,37 @@ export async function PUT(request: NextRequest) {
     }
   } catch (error) {
     console.error("Password reset error:", error);
-    return NextResponse.json(
-      {
-        message: "비밀번호 재설정 중 오류가 발생했습니다.",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
-    );
+
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          message: error.message,
+          errorType:
+            error.message === "Environment Variables"
+              ? "ENVIRONMENT_VARIABLES"
+              : "SERVER_ERROR",
+        },
+        { status: 500 },
+      );
+    } else {
+      return NextResponse.json(
+        {
+          message: "비밀번호 재설정 중 오류가 발생했습니다.",
+          errorType: "SERVER_ERROR",
+        },
+        { status: 500 },
+      );
+    }
   }
 }
+
+const translations = {
+  en: {
+    subject: "Easiest CV: Your Temporary Password",
+    text: (temp: string) => `Your Temporary Password: ${temp}`,
+  },
+  ko: {
+    subject: "Easiest CV: 임시 비밀번호 안내",
+    text: (temp: string) => `임시 비밀번호: ${temp}`,
+  },
+};

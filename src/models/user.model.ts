@@ -1,3 +1,5 @@
+import { Locale } from "@/i18n/routing";
+
 export interface User {
   userid: string;
   username?: string;
@@ -22,4 +24,10 @@ export interface ChangePWRequest {
   userid: string;
   currentPassword: string;
   newPassword: string;
+}
+
+export interface ResetPasswordRequest {
+  userid: string;
+  email: string;
+  locale: Locale;
 }
