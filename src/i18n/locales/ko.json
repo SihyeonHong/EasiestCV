@@ -171,6 +171,15 @@
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",
-    "linkText": "고객지원 페이지"
+    "linkText": "고객지원 페이지",
+    "title": "지원 센터",
+    "infoTitle": "운영자 정보"
+  },
+  "info": {
+    "developer": "개발자",
+    "contact": "연락처",
+    "me": "홍시현",
+    "my": "홍시현의",
+    "profile": "프로필"
   }
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import {
   Table,
@@ -8,17 +9,19 @@ import {
   TableRow,
 } from "@/app/components/common/Table";
 
-export default function InfoCard() {
+export default async function InfoCard() {
+  const t = await getTranslations("info");
+
   return (
     <div id="infoCard">
       <Table>
         <TableBody>
           <TableRow>
-            <TableCell className="font-medium">개발자</TableCell>
-            <TableCell>홍시현</TableCell>
+            <TableCell className="font-medium">{t("developer")}</TableCell>
+            <TableCell>{t("me")}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className="font-medium">연락처</TableCell>
+            <TableCell className="font-medium">{t("contact")}</TableCell>
             <TableCell>admin@easiest-cv.com</TableCell>
           </TableRow>
           <TableRow>
@@ -30,7 +33,7 @@ export default function InfoCard() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span>SihyeonHong의 </span>
+                <span>{t("my")}</span>
                 <Image
                   src="/GitHub-Logos/GitHub_Logo.png"
                   alt="github logo"
@@ -38,7 +41,7 @@ export default function InfoCard() {
                   height={20}
                   className="inline-block"
                 />
-                <span>프로필</span>
+                <span>{t("profile")}</span>
               </Link>
             </TableCell>
           </TableRow>
