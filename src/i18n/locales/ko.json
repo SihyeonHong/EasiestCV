@@ -173,7 +173,8 @@
     "linkDescription": "도움이 필요하신가요?",
     "linkText": "고객지원 페이지",
     "title": "지원 센터",
-    "infoTitle": "운영자 정보"
+    "infoTitle": "운영자 정보",
+    "contactTitle": "문의하기"
   },
   "info": {
     "developer": "개발자",
@@ -181,5 +182,14 @@
     "me": "홍시현",
     "my": "홍시현의",
     "profile": "프로필"
+  },
+  "contact": {
+    "name": "이름",
+    "email": "이메일",
+    "subject": "제목",
+    "content": "내용",
+    "send": "보내기",
+    "sendSuccess": "성공적으로 전송되었습니다. 기재해 주신 이메일로 답변을 드리겠습니다.",
+    "sendFail": "전송 중 오류가 발생했습니다. 다시 시도해 주세요."
   }
 }

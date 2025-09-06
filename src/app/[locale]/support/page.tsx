@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import Title from "@/app/components/common/Title";
+import Contact from "@/app/components/support/contact";
 import InfoCard from "@/app/components/support/infoCard";
 // import NoticeSummary from "@/app/components/support/noticeSummary";
 import SupportCard from "@/app/components/support/supportCard";
@@ -20,9 +21,9 @@ export default async function Page() {
         <SupportCard title={t("infoTitle")}>
           <InfoCard />
         </SupportCard>
-        {/* <SupportCard link="qna" title="문의게시판">
-          <p>추가예정</p>
-        </SupportCard> */}
+        <SupportCard title={t("contactTitle")}>
+          <Contact />
+        </SupportCard>
       </SupportContainer>
     </div>
   );

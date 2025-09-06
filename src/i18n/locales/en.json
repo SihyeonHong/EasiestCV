@@ -174,7 +174,8 @@
     "linkDescription": "Need help?",
     "linkText": "Support Page",
     "title": "Support Center",
-    "infoTitle": "Developer Information"
+    "infoTitle": "Developer Information",
+    "contactTitle": "Contact Us"
   },
   "info": {
     "developer": "Developer",
@@ -182,5 +183,14 @@
     "me": "Hong Si Hyeon",
     "my": "SiHyeon Hong's",
     "profile": "Profile"
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "content": "Content",
+    "send": "Send",
+    "sendSuccess": "Sent successfully. We will reply to your email.",
+    "sendFail": "An error occurred while sending. Please try again."
   }
 }

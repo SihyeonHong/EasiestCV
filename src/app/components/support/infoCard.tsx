@@ -39,7 +39,14 @@ export default async function InfoCard() {
                   alt="github logo"
                   width={48}
                   height={20}
-                  className="inline-block"
+                  className="inline-block, dark:hidden"
+                />
+                <Image
+                  src="/GitHub-Logos/GitHub_Logo_White.png"
+                  alt="github logo"
+                  width={48}
+                  height={20}
+                  className="hidden dark:inline-block"
                 />
                 <span>{t("profile")}</span>
               </Link>
@@ -59,6 +66,14 @@ export default async function InfoCard() {
                   alt="github mark"
                   width={16}
                   height={16}
+                  className="dark:hidden"
+                />
+                <Image
+                  src="/github-mark/github-mark-white.png"
+                  alt="github mark"
+                  width={16}
+                  height={16}
+                  className="hidden dark:block"
                 />
                 <span className="mt-0.5">Easiest CV Repository</span>
               </Link>
