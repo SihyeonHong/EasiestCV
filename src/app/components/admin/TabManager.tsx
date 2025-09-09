@@ -135,6 +135,9 @@ export default function TabManager({ userid }: TabManagerProps) {
           <DialogDescription>
             {tAdmin("tabManagerDescription")}
           </DialogDescription>
+          <DialogDescription>
+            {tAdmin("tabManagerDescriptionMobile")}
+          </DialogDescription>
         </DialogHeader>
 
         <Table>

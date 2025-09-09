@@ -89,6 +89,7 @@
     "imgPending": "이미지 업로드 중입니다. 잠시만 기다려 주세요.",
     "tabManager": "탭 관리",
     "tabManagerDescription": "위아래로 드래그하면 탭의 순서를 바꿀 수 있습니다.",
+    "tabManagerDescriptionMobile": "모바일에서는 탭을 꾹 누른 후 위아래로 움직이면 됩니다.",
     "tabName": "탭 이름",
     "tabOrder": "순서",
     "actions": "관리",

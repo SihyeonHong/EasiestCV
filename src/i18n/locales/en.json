@@ -90,6 +90,7 @@
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
     "tabManagerDescription": "Drag up and down to change the order of tabs.",
+    "tabManagerDescriptionMobile": "On mobile, press and hold a tab, then move it up or down.",
     "tabName": "Tab Name",
     "tabOrder": "Index",
     "actions": "Action",
