@@ -116,6 +116,8 @@
     "underline": "밑줄",
     "strike": "취소선",
     "blockquote": "인용문",
+    "code": "인라인 코드",
+    "codeblock": "코드 블록",
     "listOrdered": "번호 목록",
     "listBullet": "글머리 기호",
     "indentDecrease": "들여쓰기 줄이기",

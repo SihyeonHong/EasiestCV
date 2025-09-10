@@ -108,6 +108,8 @@ const tooltipSelectors = {
   underline: ".ql-underline",
   strike: ".ql-strike",
   blockquote: ".ql-blockquote",
+  code: ".ql-code",
+  codeblock: ".ql-code-block",
   listOrdered: '.ql-list[value="ordered"]',
   listBullet: '.ql-list[value="bullet"]',
   indentDecrease: '.ql-indent[value="-1"]',

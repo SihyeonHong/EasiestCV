@@ -117,6 +117,8 @@
     "underline": "Underline",
     "strike": "Strikethrough",
     "blockquote": "Blockquote",
+    "code": "Inline code",
+    "codeblock": "Code block",
     "listOrdered": "Numbered list",
     "listBullet": "Bulleted list",
     "indentDecrease": "Decrease indent",

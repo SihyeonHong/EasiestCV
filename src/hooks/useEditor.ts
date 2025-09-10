@@ -1,7 +1,8 @@
+import { useTranslations } from "next-intl";
 import { useRef, useEffect, useMemo } from "react";
 
 import extractFileName from "@/utils/extractFileName";
-import { addTooltips, TQuillTooltipsFunction } from "@/utils/quillTooltips";
+import { addTooltips } from "@/utils/quillTooltips";
 
 interface QuillWrapper {
   quill: import("quill").default;
@@ -12,11 +13,11 @@ interface QuillWrapper {
 }
 
 interface UseEditorProps {
-  onImageClick: (quillInstance: QuillWrapper) => void;
-  tQuillTooltips: TQuillTooltipsFunction;
+  onImageClick?: (quillInstance: QuillWrapper) => void;
 }
 
-export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
+export function useEditor({ onImageClick }: UseEditorProps) {
+  const tQuillTooltips = useTranslations("quillTooltips");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const quillInstanceRef = useRef<QuillWrapper | null>(null);
 
@@ -68,6 +69,7 @@ export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
   };
 
   const handleClickImage = function (this: QuillWrapper) {
+    if (!onImageClick) return;
     quillInstanceRef.current = this;
     onImageClick(this);
   };
@@ -78,6 +80,7 @@ export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
         container: [
           [{ header: [1, 2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
+          ["code", "code-block"],
           [
             { list: "ordered" },
             { list: "bullet" },
@@ -100,6 +103,9 @@ export function useEditor({ onImageClick, tQuillTooltips }: UseEditorProps) {
     "italic",
     "underline",
     "strike",
+    "blockquote",
+    "code",
+    "code-block",
     "list",
     "bullet",
     "indent",
