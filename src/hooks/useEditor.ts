@@ -29,6 +29,20 @@ export function useEditor({ onImageClick }: UseEditorProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  const getCurrentSelection = () => {
+    const quillInstance = quillInstanceRef.current?.quill;
+    if (quillInstance && typeof quillInstance.getSelection === "function") {
+      return quillInstance.getSelection(true);
+    } else return null;
+  };
+
+  const setCurrentSelection = (
+    selection: { index: number; length: number } | null,
+  ) => {
+    const quillInstance = quillInstanceRef.current?.quill;
+    if (quillInstance) quillInstance.setSelection(selection);
+  };
+
   const refreshImages = () => {
     const quillInstance = quillInstanceRef.current?.quill;
     if (quillInstance) {
@@ -120,6 +134,8 @@ export function useEditor({ onImageClick }: UseEditorProps) {
     quillInstanceRef,
     modules,
     formats,
+    getCurrentSelection,
+    setCurrentSelection,
     insertImage,
     refreshImages,
   };

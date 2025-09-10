@@ -31,6 +31,17 @@ export default function AdminEditor({ userid, tid }: Props) {
   );
   const [isImageUploaderOpen, setIsImageUploaderOpen] = useState(false);
 
+  const {
+    wrapperRef,
+    modules,
+    formats,
+    insertImage,
+    getCurrentSelection,
+    setCurrentSelection,
+  } = useEditor({
+    onImageClick: () => setIsImageUploaderOpen(true),
+  });
+
   const { saveStatus, setSaveStatus, handleRevert, handleContentChange } =
     useAutoSave({
       userid,
@@ -39,11 +50,9 @@ export default function AdminEditor({ userid, tid }: Props) {
       updateContents,
       revertIntro,
       revertContents,
+      getCurrentSelection,
+      setCurrentSelection,
     });
-
-  const { wrapperRef, modules, formats, insertImage } = useEditor({
-    onImageClick: () => setIsImageUploaderOpen(true),
-  });
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
@@ -68,6 +77,37 @@ export default function AdminEditor({ userid, tid }: Props) {
       alert(tError(errorKey));
     });
   };
+
+  // 디버깅용
+  // 아니 해봤는데 어느 키인지는 중요하지 않은 것 같은데
+  document
+    .querySelector(".ql-editor")
+    ?.addEventListener("keydown", function (e) {
+      console.log("Key down event:", (e as KeyboardEvent).key);
+      if ((e as KeyboardEvent).key === "Enter") {
+        setTimeout(() => {
+          const codeBlocks = document.querySelectorAll("pre.ql-syntax");
+          console.log("코드블록 개수:", codeBlocks.length);
+          // 100ms 후 체크
+          setTimeout(() => {
+            const codeBlocks = document.querySelectorAll("pre.ql-syntax");
+            console.log("100ms후 - 코드블록 개수:", codeBlocks.length);
+            codeBlocks.forEach((block, i) => {
+              console.log(
+                `코드블록 ${i} 길이:`,
+                block.textContent?.length || 0,
+              );
+              if (block.textContent && block.textContent.length > 50) {
+                console.log(
+                  `코드블록 ${i} 내용:`,
+                  block.textContent.substring(0, 50),
+                );
+              }
+            });
+          }, 100);
+        }, 10);
+      }
+    });
 
   return (
     <div className="flex flex-1 flex-col gap-4">

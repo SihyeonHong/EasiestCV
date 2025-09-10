@@ -14,6 +14,10 @@ interface UseAutoSaveProps {
   updateContents: (params: { tid: number; newContent: string }) => void;
   revertIntro: () => void;
   revertContents: (tid: number) => void;
+  getCurrentSelection: () => { index: number; length: number } | null;
+  setCurrentSelection: (
+    selection: { index: number; length: number } | null,
+  ) => void;
 }
 
 export function useAutoSave({
@@ -23,10 +27,13 @@ export function useAutoSave({
   updateContents,
   revertIntro,
   revertContents,
+  getCurrentSelection,
+  setCurrentSelection,
 }: UseAutoSaveProps) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
 
   const autoSave = useDebounce(async (content: string) => {
+    const selection = getCurrentSelection();
     setSaveStatus("saving");
 
     // 텍스트 업로드
@@ -55,6 +62,8 @@ export function useAutoSave({
     } catch (error) {
       console.warn(error);
     }
+
+    setCurrentSelection(selection);
 
     // 저장 상태 변경
     setSaveStatus("saved");
