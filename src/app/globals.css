@@ -27,3 +27,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Code Block Styles */
+/* .ql-code-block-container {
+  @apply my-4 overflow-hidden rounded-lg;
+}
+
+.ql-code-block {
+  @apply bg-zinc-100 p-4 font-mono text-sm text-zinc-900;
+  @apply dark:bg-zinc-800 dark:text-zinc-100;
+  @apply border border-zinc-200 dark:border-zinc-700;
+  @apply overflow-x-auto;
+}
+
+.ql-code-block::before {
+  content: none !important;
+} */

@@ -8,7 +8,6 @@ export const formats = [
   "code",
   "code-block",
   "list",
-  "bullet",
   "indent",
   "image",
   "align",

@@ -1,3 +1,5 @@
+"use client";
+
 import AdminEditor from "@/app/components/admin/AdminEditor";
 import AdminHome from "@/app/components/admin/AdminHome";
 import AdminPDF from "@/app/components/admin/AdminPDF";

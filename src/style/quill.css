@@ -38,3 +38,9 @@
 .ql-editor ol ul {
   @apply pl-0;
 }
+
+.hljs,
+.hljs * {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace !important;
+}

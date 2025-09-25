@@ -1,7 +1,4 @@
 import "@/app/globals.css";
-import "@/style/quill.css";
-import "react-quill/dist/quill.snow.css";
-import "highlight.js/styles/github-dark.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

@@ -1,3 +1,11 @@
+import TestEditor from "@/app/components/admin/TestEditor";
+import TestViewer from "@/app/components/admin/TestViewer";
+
 export default function Page() {
-  return <div>문의게시판 추가 예정</div>;
+  return (
+    <div>
+      <TestEditor />
+      <TestViewer />
+    </div>
+  );
 }
