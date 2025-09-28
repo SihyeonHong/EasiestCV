@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-import AdminEditor from "@/app/components/admin/AdminEditor";
+import EditorContainer from "@/app/components/admin/EditorContainer";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
 import { useHome } from "@/hooks/useHome";
@@ -41,7 +41,7 @@ export default function AdminHome({ userid }: Props) {
           />
         )}
       </div>
-      <AdminEditor userid={userid} tid={0} />
+      <EditorContainer userid={userid} tid={0} />
     </div>
   );
 }

@@ -67,10 +67,10 @@ export const useHome = (userid: string) => {
     status: introUploadStatus,
     isPending: isIntroPending,
   } = useMutation({
-    mutationFn: (newIntro: string) =>
+    mutationFn: ({ newContent }: { tid: number; newContent: string }) =>
       patch<UploadIntroResponse>(`/home/intro`, {
         userid: userid,
-        intro: newIntro,
+        intro: newContent,
       }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
@@ -90,7 +90,8 @@ export const useHome = (userid: string) => {
     }
   }, [homeData]);
 
-  const revertIntro = (): null | void => {
+  const revertIntro = (tid: number): null | void => {
+    if (tid !== 0) return;
     try {
       if (!backUpIntroRef.current || backUpIntroRef.current.length === 0) {
         alert(tError("revertNoBackup"));
@@ -100,7 +101,7 @@ export const useHome = (userid: string) => {
       const confirm = window.confirm(tEditor("revertConfirm"));
       if (!confirm) return null;
 
-      mutateUploadIntro(backUpIntroRef.current);
+      mutateUploadIntro({ tid: 0, newContent: backUpIntroRef.current });
     } catch (error) {
       console.error("revertIntro: ", error);
     }
