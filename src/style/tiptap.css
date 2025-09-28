@@ -1,0 +1,59 @@
+.tiptap {
+  /* 기본 스타일 */
+  @apply min-h-[200px] w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950;
+}
+
+/* 제목 스타일 */
+.tiptap h1 {
+  @apply mb-4 mt-6 text-4xl font-bold;
+}
+
+.tiptap h2 {
+  @apply mb-3 mt-5 text-3xl font-bold;
+}
+
+.tiptap h3 {
+  @apply mb-2 mt-4 text-2xl font-bold;
+}
+
+/* 단락 스타일 */
+.tiptap p {
+  @apply my-2 leading-7;
+}
+
+/* 리스트 스타일 */
+.tiptap ul {
+  @apply my-4 ml-4 list-outside list-disc pl-2;
+}
+
+.tiptap ol {
+  @apply my-4 ml-4 list-outside list-decimal pl-2;
+}
+
+.tiptap li {
+  @apply my-1;
+}
+
+/* 인용구 스타일 */
+.tiptap blockquote {
+  @apply my-4 border-l-4 border-zinc-300 pl-4 italic dark:border-zinc-700;
+}
+
+/* 코드 블록 스타일 */
+.tiptap pre {
+  @apply my-4 overflow-x-auto rounded-md bg-zinc-100 p-4 dark:bg-zinc-800;
+}
+
+.tiptap code {
+  @apply rounded bg-zinc-100 px-1 dark:bg-zinc-800;
+}
+
+/* 수평선 스타일 */
+.tiptap hr {
+  @apply my-8 border-t border-zinc-300 dark:border-zinc-700;
+}
+
+/* 링크 스타일 */
+.tiptap a {
+  @apply text-blue-600 hover:underline dark:text-blue-400;
+}
