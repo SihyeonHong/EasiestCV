@@ -3,6 +3,11 @@
   @apply min-h-[200px] w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950;
 }
 
+/* 모든 텍스트 요소의 기본 색상 */
+.tiptap * {
+  @apply text-zinc-900 dark:text-zinc-200;
+}
+
 /* 제목 스타일 */
 .tiptap h1 {
   @apply mb-4 mt-6 text-4xl font-bold;
