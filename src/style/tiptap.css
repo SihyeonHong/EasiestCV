@@ -1,6 +1,7 @@
 .tiptap {
   /* 기본 스타일 */
   @apply min-h-[200px] w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950;
+  box-sizing: border-box;
 }
 
 /* 모든 텍스트 요소의 기본 색상 */
@@ -44,6 +45,11 @@
   @apply my-4 border-l-4 border-zinc-300 pl-4 italic dark:border-zinc-700;
 }
 
+.tiptap blockquote::before,
+.tiptap blockquote::after {
+  content: none;
+}
+
 /* 코드 블록 스타일 */
 .tiptap pre {
   @apply my-4 overflow-x-auto rounded-md bg-zinc-100 p-4 dark:bg-zinc-800;
@@ -51,6 +57,11 @@
 
 .tiptap code {
   @apply rounded bg-zinc-100 px-1 dark:bg-zinc-800;
+}
+
+.tiptap code::before,
+.tiptap code::after {
+  content: none;
 }
 
 /* 수평선 스타일 */
@@ -61,4 +72,10 @@
 /* 링크 스타일 */
 .tiptap a {
   @apply text-blue-600 hover:underline dark:text-blue-400;
+}
+
+/* Tailwind Typography 인용구 따옴표 제거 */
+.prose blockquote p::before,
+.prose blockquote p::after {
+  content: none !important;
 }

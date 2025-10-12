@@ -20,6 +20,7 @@ import {
   Link as LinkIcon,
   Image as ImageIcon,
 } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import {
@@ -50,16 +51,23 @@ function ToolbarButton({
   shortcut,
   children,
 }: ToolbarButtonProps) {
+  const [isActiveState, setIsActiveState] = useState(isActive);
+
+  const handleClick = () => {
+    setIsActiveState(!isActiveState);
+    onClick();
+  };
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          onClick={onClick}
-          data-active={isActive}
+          onClick={handleClick}
+          data-active={isActiveState}
           disabled={disabled}
-          className="data-[active=true]:bg-accent"
+          className="data-[active=true]:bg-zinc-200 dark:data-[active=true]:bg-zinc-700"
         >
           {children}
         </Button>
