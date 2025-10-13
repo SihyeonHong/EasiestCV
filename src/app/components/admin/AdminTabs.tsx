@@ -1,6 +1,6 @@
-import AdminEditor from "@/app/components/admin/AdminEditor";
 import AdminHome from "@/app/components/admin/AdminHome";
 import AdminPDF from "@/app/components/admin/AdminPDF";
+import Editor from "@/app/components/admin/Editor";
 import TabManager from "@/app/components/admin/TabManager";
 import {
   Tabs,
@@ -36,7 +36,7 @@ export default function AdminTabs({ userid }: Props) {
       {tabs &&
         tabs.map((tab) => (
           <TabsContent key={tab.tid} value={tab.tname}>
-            <AdminEditor userid={userid} tid={tab.tid} />
+            <Editor userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
       <TabsContent value="pdf">
