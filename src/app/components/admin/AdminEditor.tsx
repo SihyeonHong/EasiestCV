@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
-import EditorToolbar from "@/app/components/admin/EditorToolbar";
+import EditorPanel from "@/app/components/admin/EditorPanel";
 import ImageUploader from "@/app/components/admin/ImageUploader";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useEditor } from "@/hooks/useEditor";
@@ -73,7 +73,7 @@ export default function AdminEditor({ userid, tid }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <EditorToolbar saveStatus={saveStatus} onRevert={handleRevert} />
+      <EditorPanel saveStatus={saveStatus} onRevert={handleRevert} />
 
       <div ref={wrapperRef}>
         <ReactQuillComponent

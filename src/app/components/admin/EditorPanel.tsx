@@ -4,15 +4,15 @@ import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { SaveStatus } from "@/hooks/useAutoSave";
 
-interface EditorToolbarProps {
+interface EditorPanelProps {
   saveStatus: SaveStatus;
   onRevert: () => void;
 }
 
-export default function EditorToolbar({
+export default function EditorPanel({
   saveStatus,
   onRevert,
-}: EditorToolbarProps) {
+}: EditorPanelProps) {
   const tEditor = useTranslations("editor");
 
   return (
