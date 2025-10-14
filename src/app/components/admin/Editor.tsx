@@ -41,6 +41,14 @@ interface Props {
   tid: number;
 }
 
+export default function Editor({ userid, tid }: Props) {
+  return (
+    <ToolbarProvider>
+      <EditorContent userid={userid} tid={tid} />
+    </ToolbarProvider>
+  );
+}
+
 function EditorContent({ userid, tid }: Props) {
   const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabs(userid);
@@ -145,7 +153,7 @@ function EditorContent({ userid, tid }: Props) {
         <TiptapEditorContent
           editor={editor}
           role="presentation"
-          className="mx-auto flex w-full flex-1 flex-col bg-white p-3 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 dark:bg-[hsl(var(--background))]"
+          className="mx-auto flex w-full flex-1 flex-col bg-white p-4 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 dark:bg-[hsl(var(--background))]"
         />
       </div>
 
@@ -156,13 +164,5 @@ function EditorContent({ userid, tid }: Props) {
         onImageInsert={handleImageInsert}
       />
     </div>
-  );
-}
-
-export default function Editor({ userid, tid }: Props) {
-  return (
-    <ToolbarProvider>
-      <EditorContent userid={userid} tid={tid} />
-    </ToolbarProvider>
   );
 }
