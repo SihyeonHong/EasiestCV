@@ -2,6 +2,138 @@
    TIPTAP UI PRIMITIVE STYLES
    ===================== */
 
+/* Button Color Variables */
+:root {
+  /* Button - Default state */
+  --tt-button-default-bg-color: transparent;
+  --tt-button-default-text-color: #3f3f46; /* zinc-700 */
+  --tt-button-default-icon-color: #52525b; /* zinc-600 */
+  --tt-button-default-icon-sub-color: #71717a; /* zinc-500 */
+  --tt-button-default-dropdown-arrows-color: #71717a; /* zinc-500 */
+
+  /* Button - Hover state */
+  --tt-button-hover-bg-color: #f4f4f5; /* zinc-100 */
+  --tt-button-hover-text-color: #18181b; /* zinc-900 */
+  --tt-button-hover-icon-color: #3f3f46; /* zinc-700 */
+  --tt-button-hover-icon-sub-color: #52525b; /* zinc-600 */
+  --tt-button-hover-dropdown-arrows-color: #52525b; /* zinc-600 */
+
+  /* Button - Active state */
+  --tt-button-active-bg-color: #e4e4e7; /* zinc-200 */
+  --tt-button-active-text-color: #18181b; /* zinc-900 */
+  --tt-button-active-icon-color: #3f3f46; /* zinc-700 */
+  --tt-button-active-icon-sub-color: #52525b; /* zinc-600 */
+  --tt-button-active-dropdown-arrows-color: #52525b; /* zinc-600 */
+  --tt-button-active-hover-bg-color: #d4d4d8; /* zinc-300 */
+
+  /* Button - Active emphasized */
+  --tt-button-active-bg-color-emphasized: #a1a1aa; /* zinc-400 */
+  --tt-button-active-text-color-emphasized: #ffffff;
+  --tt-button-active-icon-color-emphasized: #ffffff;
+  --tt-button-active-icon-sub-color-emphasized: #ffffff;
+  --tt-button-active-dropdown-arrows-color-emphasized: #ffffff;
+  --tt-button-active-hover-bg-color-emphasized: #71717a; /* zinc-500 */
+
+  /* Button - Active subdued */
+  --tt-button-active-bg-color-subdued: #f4f4f5; /* zinc-100 */
+  --tt-button-active-text-color-subdued: #3f3f46; /* zinc-700 */
+  --tt-button-active-icon-color-subdued: #52525b; /* zinc-600 */
+  --tt-button-active-icon-sub-color-subdued: #71717a; /* zinc-500 */
+  --tt-button-active-dropdown-arrows-color-subdued: #71717a; /* zinc-500 */
+  --tt-button-active-hover-bg-color-subdued: #e4e4e7; /* zinc-200 */
+
+  /* Button - Disabled state */
+  --tt-button-disabled-bg-color: transparent;
+  --tt-button-disabled-text-color: #a1a1aa; /* zinc-400 */
+  --tt-button-disabled-icon-color: #a1a1aa; /* zinc-400 */
+}
+
+.dark {
+  /* Button - Default state (dark) */
+  --tt-button-default-bg-color: transparent;
+  --tt-button-default-text-color: #d4d4d8; /* zinc-300 */
+  --tt-button-default-icon-color: #a1a1aa; /* zinc-400 */
+  --tt-button-default-icon-sub-color: #71717a; /* zinc-500 */
+  --tt-button-default-dropdown-arrows-color: #71717a; /* zinc-500 */
+
+  /* Button - Hover state (dark) */
+  --tt-button-hover-bg-color: #27272a; /* zinc-800 */
+  --tt-button-hover-text-color: #fafafa; /* zinc-50 */
+  --tt-button-hover-icon-color: #d4d4d8; /* zinc-300 */
+  --tt-button-hover-icon-sub-color: #a1a1aa; /* zinc-400 */
+  --tt-button-hover-dropdown-arrows-color: #a1a1aa; /* zinc-400 */
+
+  /* Button - Active state (dark) */
+  --tt-button-active-bg-color: #3f3f46; /* zinc-700 */
+  --tt-button-active-text-color: #fafafa; /* zinc-50 */
+  --tt-button-active-icon-color: #d4d4d8; /* zinc-300 */
+  --tt-button-active-icon-sub-color: #a1a1aa; /* zinc-400 */
+  --tt-button-active-dropdown-arrows-color: #a1a1aa; /* zinc-400 */
+  --tt-button-active-hover-bg-color: #52525b; /* zinc-600 */
+
+  /* Button - Active emphasized (dark) */
+  --tt-button-active-bg-color-emphasized: #71717a; /* zinc-500 */
+  --tt-button-active-text-color-emphasized: #ffffff;
+  --tt-button-active-icon-color-emphasized: #ffffff;
+  --tt-button-active-icon-sub-color-emphasized: #ffffff;
+  --tt-button-active-dropdown-arrows-color-emphasized: #ffffff;
+  --tt-button-active-hover-bg-color-emphasized: #52525b; /* zinc-600 */
+
+  /* Button - Active subdued (dark) */
+  --tt-button-active-bg-color-subdued: #27272a; /* zinc-800 */
+  --tt-button-active-text-color-subdued: #d4d4d8; /* zinc-300 */
+  --tt-button-active-icon-color-subdued: #a1a1aa; /* zinc-400 */
+  --tt-button-active-icon-sub-color-subdued: #71717a; /* zinc-500 */
+  --tt-button-active-dropdown-arrows-color-subdued: #71717a; /* zinc-500 */
+  --tt-button-active-hover-bg-color-subdued: #3f3f46; /* zinc-700 */
+
+  /* Button - Disabled state (dark) */
+  --tt-button-disabled-bg-color: transparent;
+  --tt-button-disabled-text-color: #52525b; /* zinc-600 */
+  --tt-button-disabled-icon-color: #52525b; /* zinc-600 */
+}
+
+/* Badge Color Variables */
+:root {
+  /* Badge - Default state */
+  --tt-badge-bg-color: #f4f4f5; /* zinc-100 */
+  --tt-badge-border-color: #d4d4d8; /* zinc-300 */
+  --tt-badge-text-color: #3f3f46; /* zinc-700 */
+  --tt-badge-icon-color: #52525b; /* zinc-600 */
+
+  /* Badge - Emphasized state */
+  --tt-badge-bg-color-emphasized: #3f3f46; /* zinc-700 */
+  --tt-badge-border-color-emphasized: #18181b; /* zinc-900 */
+  --tt-badge-text-color-emphasized: #fafafa; /* zinc-50 */
+  --tt-badge-icon-color-emphasized: #d4d4d8; /* zinc-300 */
+
+  /* Badge - Subdued state */
+  --tt-badge-bg-color-subdued: #e4e4e7; /* zinc-200 */
+  --tt-badge-border-color-subdued: #a1a1aa; /* zinc-400 */
+  --tt-badge-text-color-subdued: #52525b; /* zinc-600 */
+  --tt-badge-icon-color-subdued: #71717a; /* zinc-500 */
+}
+
+.dark {
+  /* Badge - Default state (dark) */
+  --tt-badge-bg-color: #27272a; /* zinc-800 */
+  --tt-badge-border-color: #3f3f46; /* zinc-700 */
+  --tt-badge-text-color: #d4d4d8; /* zinc-300 */
+  --tt-badge-icon-color: #a1a1aa; /* zinc-400 */
+
+  /* Badge - Emphasized state (dark) */
+  --tt-badge-bg-color-emphasized: #d4d4d8; /* zinc-300 */
+  --tt-badge-border-color-emphasized: #fafafa; /* zinc-50 */
+  --tt-badge-text-color-emphasized: #18181b; /* zinc-900 */
+  --tt-badge-icon-color-emphasized: #3f3f46; /* zinc-700 */
+
+  /* Badge - Subdued state (dark) */
+  --tt-badge-bg-color-subdued: #3f3f46; /* zinc-700 */
+  --tt-badge-border-color-subdued: #52525b; /* zinc-600 */
+  --tt-badge-text-color-subdued: #a1a1aa; /* zinc-400 */
+  --tt-badge-icon-color-subdued: #71717a; /* zinc-500 */
+}
+
 /* Button Styles */
 .tiptap-button {
   font-size: 0.875rem;
@@ -522,14 +654,14 @@
 /* Card Styles */
 :root {
   --tiptap-card-bg-color: rgba(255, 255, 255, 1);
-  --tiptap-card-border-color: var(--tt-gray-light-a-100);
-  --tiptap-card-group-label-color: var(--tt-gray-light-a-800);
+  --tiptap-card-border-color: var(--tt-alpha-border-subtle);
+  --tiptap-card-group-label-color: #3f3f46; /* zinc-700 */
 }
 
 .dark {
-  --tiptap-card-bg-color: var(--tt-gray-dark-50);
-  --tiptap-card-border-color: var(--tt-gray-dark-a-100);
-  --tiptap-card-group-label-color: var(--tt-gray-dark-a-800);
+  --tiptap-card-bg-color: #18181b; /* zinc-900 */
+  --tiptap-card-border-color: var(--tt-alpha-border-subtle);
+  --tiptap-card-group-label-color: #d4d4d8; /* zinc-300 */
 }
 
 .tiptap-card {
@@ -601,14 +733,14 @@
 /* Dropdown Menu Styles */
 .tiptap-dropdown-menu {
   --tt-dropdown-menu-bg-color: rgba(255, 255, 255, 1);
-  --tt-dropdown-menu-border-color: var(--tt-gray-light-a-100);
-  --tt-dropdown-menu-text-color: var(--tt-gray-light-a-600);
+  --tt-dropdown-menu-border-color: var(--tt-alpha-border-subtle);
+  --tt-dropdown-menu-text-color: #3f3f46; /* zinc-700 */
 }
 
 .dark .tiptap-dropdown-menu {
-  --tt-dropdown-menu-border-color: var(--tt-gray-dark-a-50);
-  --tt-dropdown-menu-bg-color: var(--tt-gray-dark-50);
-  --tt-dropdown-menu-text-color: var(--tt-gray-dark-a-600);
+  --tt-dropdown-menu-border-color: var(--tt-alpha-border-subtle);
+  --tt-dropdown-menu-bg-color: #18181b; /* zinc-900 */
+  --tt-dropdown-menu-text-color: #d4d4d8; /* zinc-300 */
 }
 
 .tiptap-dropdown-menu {
@@ -660,11 +792,11 @@
 
 /* Input Styles */
 :root {
-  --tiptap-input-placeholder: var(--tt-gray-light-a-400);
+  --tiptap-input-placeholder: var(--tt-alpha-muted);
 }
 
 .dark {
-  --tiptap-input-placeholder: var(--tt-gray-dark-a-400);
+  --tiptap-input-placeholder: var(--tt-alpha-muted);
 }
 
 .tiptap-input {
@@ -707,14 +839,14 @@
 /* Popover Styles */
 .tiptap-popover {
   --tt-popover-bg-color: rgba(255, 255, 255, 1);
-  --tt-popover-border-color: var(--tt-gray-light-a-100);
-  --tt-popover-text-color: var(--tt-gray-light-a-600);
+  --tt-popover-border-color: var(--tt-alpha-border-subtle);
+  --tt-popover-text-color: #3f3f46; /* zinc-700 */
 }
 
 .dark .tiptap-popover {
-  --tt-popover-border-color: var(--tt-gray-dark-a-50);
-  --tt-popover-bg-color: var(--tt-gray-dark-50);
-  --tt-popover-text-color: var(--tt-gray-dark-a-600);
+  --tt-popover-border-color: var(--tt-alpha-border-subtle);
+  --tt-popover-bg-color: #18181b; /* zinc-900 */
+  --tt-popover-text-color: #d4d4d8; /* zinc-300 */
 }
 
 .tiptap-popover {
@@ -766,11 +898,11 @@
 
 /* Separator Styles */
 .tiptap-separator {
-  --tt-link-border-color: var(--tt-gray-light-a-200);
+  --tt-link-border-color: var(--tt-alpha-border);
 }
 
 .dark .tiptap-separator {
-  --tt-link-border-color: var(--tt-gray-dark-a-200);
+  --tt-link-border-color: var(--tt-alpha-border);
 }
 
 .tiptap-separator {
@@ -794,12 +926,12 @@
   --tt-toolbar-height: 2.75rem;
   --tt-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --tt-toolbar-bg-color: rgba(255, 255, 255, 1);
-  --tt-toolbar-border-color: var(--tt-gray-light-a-100);
+  --tt-toolbar-border-color: var(--tt-alpha-border-subtle);
 }
 
 .dark {
   --tt-toolbar-bg-color: rgba(14, 14, 17, 1);
-  --tt-toolbar-border-color: var(--tt-gray-dark-a-50);
+  --tt-toolbar-border-color: var(--tt-alpha-border-subtle);
 }
 
 .tiptap-toolbar {
@@ -895,15 +1027,15 @@
 
 /* Tooltip Styles */
 .tiptap-tooltip {
-  --tt-tooltip-bg: var(--tt-gray-light-900);
+  --tt-tooltip-bg: #18181b; /* zinc-900 */
   --tt-tooltip-text: rgba(255, 255, 255, 1);
-  --tt-kbd: var(--tt-gray-dark-a-400);
+  --tt-kbd: var(--tt-alpha-muted);
 }
 
 .dark .tiptap-tooltip {
   --tt-tooltip-bg: rgba(255, 255, 255, 1);
-  --tt-tooltip-text: var(--tt-gray-light-600);
-  --tt-kbd: var(--tt-gray-light-a-400);
+  --tt-tooltip-text: #3f3f46; /* zinc-700 */
+  --tt-kbd: var(--tt-alpha-muted);
 }
 
 .tiptap-tooltip {

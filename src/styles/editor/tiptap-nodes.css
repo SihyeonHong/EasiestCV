@@ -4,11 +4,11 @@
 
 /* Blockquote Node */
 .tiptap.ProseMirror {
-  --blockquote-bg-color: var(--tt-gray-light-900);
+  --blockquote-bg-color: #18181b; /* zinc-900 */
 }
 
 .dark .tiptap.ProseMirror {
-  --blockquote-bg-color: var(--tt-gray-dark-900);
+  --blockquote-bg-color: #fafafa; /* zinc-50 */
 }
 
 .tiptap.ProseMirror blockquote {
@@ -38,21 +38,21 @@
 
 /* Code Block Node */
 .tiptap.ProseMirror {
-  --tt-inline-code-bg-color: var(--tt-gray-light-a-100);
-  --tt-inline-code-text-color: var(--tt-gray-light-a-700);
-  --tt-inline-code-border-color: var(--tt-gray-light-a-200);
-  --tt-codeblock-bg: var(--tt-gray-light-a-50);
-  --tt-codeblock-text: var(--tt-gray-light-a-800);
-  --tt-codeblock-border: var(--tt-gray-light-a-200);
+  --tt-inline-code-bg-color: var(--tt-alpha-border-subtle);
+  --tt-inline-code-text-color: #3f3f46; /* zinc-700 */
+  --tt-inline-code-border-color: var(--tt-alpha-border);
+  --tt-codeblock-bg: #fafafa; /* zinc-50 */
+  --tt-codeblock-text: #18181b; /* zinc-900 */
+  --tt-codeblock-border: var(--tt-alpha-border);
 }
 
 .dark .tiptap.ProseMirror {
-  --tt-inline-code-bg-color: var(--tt-gray-dark-a-100);
-  --tt-inline-code-text-color: var(--tt-gray-dark-a-700);
-  --tt-inline-code-border-color: var(--tt-gray-dark-a-200);
-  --tt-codeblock-bg: var(--tt-gray-dark-a-50);
-  --tt-codeblock-text: var(--tt-gray-dark-a-800);
-  --tt-codeblock-border: var(--tt-gray-dark-a-200);
+  --tt-inline-code-bg-color: var(--tt-alpha-border-subtle);
+  --tt-inline-code-text-color: #d4d4d8; /* zinc-300 */
+  --tt-inline-code-border-color: var(--tt-alpha-border);
+  --tt-codeblock-bg: #18181b; /* zinc-900 */
+  --tt-codeblock-text: #fafafa; /* zinc-50 */
+  --tt-codeblock-border: var(--tt-alpha-border);
 }
 
 .tiptap.ProseMirror code {
@@ -104,11 +104,11 @@
 
 /* Horizontal Rule Node */
 .tiptap.ProseMirror {
-  --horizontal-rule-color: var(--tt-gray-light-a-200);
+  --horizontal-rule-color: var(--tt-alpha-border);
 }
 
 .dark .tiptap.ProseMirror {
-  --horizontal-rule-color: var(--tt-gray-dark-a-200);
+  --horizontal-rule-color: var(--tt-alpha-border);
 }
 
 .tiptap.ProseMirror hr {
@@ -160,14 +160,14 @@
   --tiptap-image-upload-progress-bg: var(--tt-brand-color-50);
   --tiptap-image-upload-icon-bg: var(--tt-brand-color-500);
 
-  --tiptap-image-upload-text-color: var(--tt-gray-light-a-700);
-  --tiptap-image-upload-subtext-color: var(--tt-gray-light-a-400);
-  --tiptap-image-upload-border: var(--tt-gray-light-a-300);
-  --tiptap-image-upload-border-hover: var(--tt-gray-light-a-400);
+  --tiptap-image-upload-text-color: #3f3f46; /* zinc-700 */
+  --tiptap-image-upload-subtext-color: var(--tt-alpha-muted);
+  --tiptap-image-upload-border: var(--tt-alpha-border);
+  --tiptap-image-upload-border-hover: var(--tt-alpha-muted);
   --tiptap-image-upload-border-active: var(--tt-brand-color-500);
 
-  --tiptap-image-upload-icon-doc-bg: var(--tt-gray-light-a-200);
-  --tiptap-image-upload-icon-doc-border: var(--tt-gray-light-300);
+  --tiptap-image-upload-icon-doc-bg: var(--tt-alpha-border);
+  --tiptap-image-upload-icon-doc-border: #d4d4d8; /* zinc-300 */
   --tiptap-image-upload-icon-color: rgba(255, 255, 255, 1);
 }
 
@@ -176,14 +176,14 @@
   --tiptap-image-upload-progress-bg: var(--tt-brand-color-900);
   --tiptap-image-upload-icon-bg: var(--tt-brand-color-400);
 
-  --tiptap-image-upload-text-color: var(--tt-gray-dark-a-700);
-  --tiptap-image-upload-subtext-color: var(--tt-gray-dark-a-400);
-  --tiptap-image-upload-border: var(--tt-gray-dark-a-300);
-  --tiptap-image-upload-border-hover: var(--tt-gray-dark-a-400);
+  --tiptap-image-upload-text-color: #d4d4d8; /* zinc-300 */
+  --tiptap-image-upload-subtext-color: var(--tt-alpha-muted);
+  --tiptap-image-upload-border: var(--tt-alpha-border);
+  --tiptap-image-upload-border-hover: var(--tt-alpha-muted);
   --tiptap-image-upload-border-active: var(--tt-brand-color-400);
 
-  --tiptap-image-upload-icon-doc-bg: var(--tt-gray-dark-a-200);
-  --tiptap-image-upload-icon-doc-border: var(--tt-gray-dark-300);
+  --tiptap-image-upload-icon-doc-bg: var(--tt-alpha-border);
+  --tiptap-image-upload-icon-doc-border: #3f3f46; /* zinc-700 */
   --tiptap-image-upload-icon-color: rgba(14, 14, 17, 1);
 }
 
@@ -420,21 +420,21 @@
 
 /* List Node */
 .tiptap.ProseMirror {
-  --tt-checklist-bg-color: var(--tt-gray-light-a-100);
-  --tt-checklist-bg-active-color: var(--tt-gray-light-a-900);
-  --tt-checklist-border-color: var(--tt-gray-light-a-200);
-  --tt-checklist-border-active-color: var(--tt-gray-light-a-900);
+  --tt-checklist-bg-color: var(--tt-alpha-border-subtle);
+  --tt-checklist-bg-active-color: #18181b; /* zinc-900 */
+  --tt-checklist-border-color: var(--tt-alpha-border);
+  --tt-checklist-border-active-color: #18181b; /* zinc-900 */
   --tt-checklist-check-icon-color: rgba(255, 255, 255, 1);
-  --tt-checklist-text-active: var(--tt-gray-light-a-500);
+  --tt-checklist-text-active: #71717a; /* zinc-500 */
 }
 
 .dark .tiptap.ProseMirror {
-  --tt-checklist-bg-color: var(--tt-gray-dark-a-100);
-  --tt-checklist-bg-active-color: var(--tt-gray-dark-a-900);
-  --tt-checklist-border-color: var(--tt-gray-dark-a-200);
-  --tt-checklist-border-active-color: var(--tt-gray-dark-a-900);
+  --tt-checklist-bg-color: var(--tt-alpha-border-subtle);
+  --tt-checklist-bg-active-color: #fafafa; /* zinc-50 */
+  --tt-checklist-border-color: var(--tt-alpha-border);
+  --tt-checklist-border-active-color: #fafafa; /* zinc-50 */
   --tt-checklist-check-icon-color: rgba(14, 14, 17, 1);
-  --tt-checklist-text-active: var(--tt-gray-dark-a-500);
+  --tt-checklist-text-active: #71717a; /* zinc-500 */
 }
 
 .tiptap.ProseMirror ol,
@@ -588,19 +588,19 @@
 
 /* Paragraph Node */
 .tiptap.ProseMirror {
-  --tt-collaboration-carets-label: var(--tt-gray-light-900);
+  --tt-collaboration-carets-label: #18181b; /* zinc-900 */
   --link-text-color: var(--tt-brand-color-500);
-  --thread-text: var(--tt-gray-light-900);
-  --placeholder-color: var(--tt-gray-light-a-400);
+  --thread-text: #18181b; /* zinc-900 */
+  --placeholder-color: var(--tt-alpha-muted);
   --thread-bg-color: var(--tt-color-yellow-inc-2);
   --tiptap-ai-insertion-color: var(--tt-brand-color-600);
 }
 
 .dark .tiptap.ProseMirror {
-  --tt-collaboration-carets-label: var(--tt-gray-dark-100);
+  --tt-collaboration-carets-label: #27272a; /* zinc-800 */
   --link-text-color: var(--tt-brand-color-400);
-  --thread-text: var(--tt-gray-dark-900);
-  --placeholder-color: var(--tt-gray-dark-a-400);
+  --thread-text: #fafafa; /* zinc-50 */
+  --placeholder-color: var(--tt-alpha-muted);
   --thread-bg-color: var(--tt-color-yellow-dec-2);
   --tiptap-ai-insertion-color: var(--tt-brand-color-400);
 }
