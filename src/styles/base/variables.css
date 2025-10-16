@@ -33,19 +33,6 @@
     0.4
   ); /* placeholder, 비활성 상태 (zinc-500 기반, ~40% opacity) */
 
-  /* Brand colors */
-  --tt-brand-color-50: rgba(239, 238, 255, 1);
-  --tt-brand-color-100: rgba(222, 219, 255, 1);
-  --tt-brand-color-200: rgba(195, 189, 255, 1);
-  --tt-brand-color-300: rgba(157, 138, 255, 1);
-  --tt-brand-color-400: rgba(122, 82, 255, 1);
-  --tt-brand-color-500: rgba(98, 41, 255, 1);
-  --tt-brand-color-600: rgba(84, 0, 229, 1);
-  --tt-brand-color-700: rgba(75, 0, 204, 1);
-  --tt-brand-color-800: rgba(56, 0, 153, 1);
-  --tt-brand-color-900: rgba(43, 25, 102, 1);
-  --tt-brand-color-950: hsla(257, 100%, 9%, 1);
-
   /* Green */
   --tt-color-green-inc-5: hsla(129, 100%, 97%, 1);
   --tt-color-green-inc-4: hsla(129, 100%, 92%, 1);
@@ -142,8 +129,8 @@
   --tt-border-color-tint: var(--tt-alpha-border-subtle);
   --tt-sidebar-bg-color: #f4f4f5; /* zinc-100 */
   --tt-scrollbar-color: var(--tt-alpha-border);
-  --tt-cursor-color: var(--tt-brand-color-500);
-  --tt-selection-color: rgba(157, 138, 255, 0.2);
+  --tt-cursor-color: #3f3f46; /* zinc-700 */
+  --tt-selection-color: rgba(82, 82, 91, 0.2); /* zinc-600 with 20% opacity */
   --tt-card-bg-color: rgba(255, 255, 255, 1);
   --tt-card-border-color: var(--tt-alpha-border-subtle);
 }
@@ -170,8 +157,13 @@
   --tt-border-color-tint: var(--tt-alpha-border-subtle);
   --tt-sidebar-bg-color: #27272a; /* zinc-800 */
   --tt-scrollbar-color: var(--tt-alpha-border);
-  --tt-cursor-color: var(--tt-brand-color-400);
-  --tt-selection-color: rgba(122, 82, 255, 0.2);
+  --tt-cursor-color: #a1a1aa; /* zinc-400 */
+  --tt-selection-color: rgba(
+    161,
+    161,
+    170,
+    0.2
+  ); /* zinc-400 with 20% opacity */
   --tt-card-bg-color: #18181b; /* zinc-900 */
   --tt-card-border-color: var(--tt-alpha-border-subtle);
 

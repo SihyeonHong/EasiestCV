@@ -1,4 +1,4 @@
-export type ColorKey = "primary" | "background" | "border" | "text" | "warning";
+export type ColorKey = "background" | "border" | "text" | "warning";
 
 interface Theme {
   color: Record<ColorKey, string>;
@@ -9,7 +9,6 @@ interface Theme {
 
 export const theme: Theme = {
   color: {
-    primary: "#8d7824",
     background: "#f9f9f9",
     border: "rgba(0, 0, 0, 0.1)",
     text: "#333",

@@ -133,12 +133,18 @@
 
 .tiptap.ProseMirror > img:not([data-type="emoji"] img) {
   margin: 2rem 0;
-  outline: 0.125rem solid transparent;
+  outline: 0.1875rem solid transparent;
   border-radius: var(--tt-radius-xs, 0.25rem);
 }
 
 .tiptap.ProseMirror img:not([data-type="emoji"] img).ProseMirror-selectednode {
-  outline-color: var(--tt-brand-color-500);
+  outline-color: #2563eb; /* blue-600 */
+}
+
+.dark
+  .tiptap.ProseMirror
+  img:not([data-type="emoji"] img).ProseMirror-selectednode {
+  outline-color: #60a5fa; /* blue-400 */
 }
 
 .tiptap.ProseMirror .tiptap-thread:has(> img) {
@@ -152,270 +158,6 @@
 
 .tiptap.ProseMirror .tiptap-thread img {
   margin: 0;
-}
-
-/* Image Upload Node */
-:root {
-  --tiptap-image-upload-active: var(--tt-brand-color-500);
-  --tiptap-image-upload-progress-bg: var(--tt-brand-color-50);
-  --tiptap-image-upload-icon-bg: var(--tt-brand-color-500);
-
-  --tiptap-image-upload-text-color: #3f3f46; /* zinc-700 */
-  --tiptap-image-upload-subtext-color: var(--tt-alpha-muted);
-  --tiptap-image-upload-border: var(--tt-alpha-border);
-  --tiptap-image-upload-border-hover: var(--tt-alpha-muted);
-  --tiptap-image-upload-border-active: var(--tt-brand-color-500);
-
-  --tiptap-image-upload-icon-doc-bg: var(--tt-alpha-border);
-  --tiptap-image-upload-icon-doc-border: #d4d4d8; /* zinc-300 */
-  --tiptap-image-upload-icon-color: rgba(255, 255, 255, 1);
-}
-
-.dark {
-  --tiptap-image-upload-active: var(--tt-brand-color-400);
-  --tiptap-image-upload-progress-bg: var(--tt-brand-color-900);
-  --tiptap-image-upload-icon-bg: var(--tt-brand-color-400);
-
-  --tiptap-image-upload-text-color: #d4d4d8; /* zinc-300 */
-  --tiptap-image-upload-subtext-color: var(--tt-alpha-muted);
-  --tiptap-image-upload-border: var(--tt-alpha-border);
-  --tiptap-image-upload-border-hover: var(--tt-alpha-muted);
-  --tiptap-image-upload-border-active: var(--tt-brand-color-400);
-
-  --tiptap-image-upload-icon-doc-bg: var(--tt-alpha-border);
-  --tiptap-image-upload-icon-doc-border: #3f3f46; /* zinc-700 */
-  --tiptap-image-upload-icon-color: rgba(14, 14, 17, 1);
-}
-
-.tiptap-image-upload {
-  margin: 2rem 0;
-}
-
-.tiptap-image-upload input[type="file"] {
-  display: none;
-}
-
-.tiptap-image-upload .tiptap-image-upload-dropzone {
-  position: relative;
-  width: 3.125rem;
-  height: 3.75rem;
-  display: inline-flex;
-  align-items: flex-start;
-  justify-content: center;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.tiptap-image-upload .tiptap-image-upload-icon-container {
-  position: absolute;
-  width: 1.75rem;
-  height: 1.75rem;
-  bottom: 0;
-  right: 0;
-  background-color: var(--tiptap-image-upload-icon-bg);
-  border-radius: var(--tt-radius-lg, 0.75rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tiptap-image-upload .tiptap-image-upload-icon {
-  width: 0.875rem;
-  height: 0.875rem;
-  color: var(--tiptap-image-upload-icon-color);
-}
-
-.tiptap-image-upload .tiptap-image-upload-dropzone-rect-primary {
-  color: var(--tiptap-image-upload-icon-doc-bg);
-  position: absolute;
-}
-
-.tiptap-image-upload .tiptap-image-upload-dropzone-rect-secondary {
-  position: absolute;
-  top: 0;
-  right: 0.25rem;
-  bottom: 0;
-  color: var(--tiptap-image-upload-icon-doc-border);
-}
-
-.tiptap-image-upload .tiptap-image-upload-text {
-  color: var(--tiptap-image-upload-text-color);
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: normal;
-}
-
-.tiptap-image-upload .tiptap-image-upload-text em {
-  font-style: normal;
-  text-decoration: underline;
-}
-
-.tiptap-image-upload .tiptap-image-upload-subtext {
-  color: var(--tiptap-image-upload-subtext-color);
-  font-weight: 600;
-  line-height: normal;
-  font-size: 0.75rem;
-}
-
-.tiptap-image-upload .tiptap-image-upload-drag-area {
-  padding: 2rem 1.5rem;
-  border: 1.5px dashed var(--tiptap-image-upload-border);
-  border-radius: var(--tt-radius-md, 0.5rem);
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s ease;
-}
-
-.tiptap-image-upload .tiptap-image-upload-drag-area:hover {
-  border-color: var(--tiptap-image-upload-border-hover);
-}
-
-.tiptap-image-upload .tiptap-image-upload-drag-area.drag-active {
-  border-color: var(--tiptap-image-upload-border-active);
-  background-color: rgba(
-    var(--tiptap-image-upload-active-rgb, 0, 123, 255),
-    0.05
-  );
-}
-
-.tiptap-image-upload .tiptap-image-upload-drag-area.drag-over {
-  border-color: var(--tiptap-image-upload-border-active);
-  background-color: rgba(
-    var(--tiptap-image-upload-active-rgb, 0, 123, 255),
-    0.1
-  );
-}
-
-.tiptap-image-upload .tiptap-image-upload-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.25rem;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.tiptap-image-upload .tiptap-image-upload-previews {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.tiptap-image-upload .tiptap-image-upload-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--tiptap-image-upload-border);
-  margin-bottom: 0.5rem;
-}
-
-.tiptap-image-upload .tiptap-image-upload-header span {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--tiptap-image-upload-text-color);
-}
-
-.tiptap-image-upload .tiptap-image-upload-preview {
-  position: relative;
-  border-radius: var(--tt-radius-md, 0.5rem);
-  overflow: hidden;
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-progress {
-  position: absolute;
-  inset: 0;
-  background-color: var(--tiptap-image-upload-progress-bg);
-  transition: all 300ms ease-out;
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-preview-content {
-  position: relative;
-  border: 1px solid var(--tiptap-image-upload-border);
-  border-radius: var(--tt-radius-md, 0.5rem);
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-file-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  height: 2rem;
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-file-info
-  .tiptap-image-upload-file-icon {
-  padding: 0.5rem;
-  background-color: var(--tiptap-image-upload-icon-bg);
-  border-radius: var(--tt-radius-lg, 0.75rem);
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-file-info
-  .tiptap-image-upload-file-icon
-  svg {
-  width: 0.875rem;
-  height: 0.875rem;
-  color: var(--tiptap-image-upload-icon-color);
-}
-
-.tiptap-image-upload .tiptap-image-upload-preview .tiptap-image-upload-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.tiptap-image-upload .tiptap-image-upload-preview .tiptap-image-upload-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.tiptap-image-upload
-  .tiptap-image-upload-preview
-  .tiptap-image-upload-actions
-  .tiptap-image-upload-progress-text {
-  font-size: 0.75rem;
-  color: var(--tiptap-image-upload-border-active);
-  font-weight: 600;
-}
-
-.tiptap.ProseMirror.ProseMirror-focused
-  .ProseMirror-selectednode
-  .tiptap-image-upload-drag-area {
-  border-color: var(--tiptap-image-upload-active);
-}
-
-@media (max-width: 480px) {
-  .tiptap-image-upload .tiptap-image-upload-drag-area {
-    padding: 1.5rem 1rem;
-  }
-
-  .tiptap-image-upload .tiptap-image-upload-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .tiptap-image-upload .tiptap-image-upload-preview-content {
-    padding: 0.75rem;
-  }
 }
 
 /* List Node */
@@ -589,20 +331,18 @@
 /* Paragraph Node */
 .tiptap.ProseMirror {
   --tt-collaboration-carets-label: #18181b; /* zinc-900 */
-  --link-text-color: var(--tt-brand-color-500);
+  --link-text-color: #2563eb; /* blue-600 */
   --thread-text: #18181b; /* zinc-900 */
   --placeholder-color: var(--tt-alpha-muted);
   --thread-bg-color: var(--tt-color-yellow-inc-2);
-  --tiptap-ai-insertion-color: var(--tt-brand-color-600);
 }
 
 .dark .tiptap.ProseMirror {
   --tt-collaboration-carets-label: #27272a; /* zinc-800 */
-  --link-text-color: var(--tt-brand-color-400);
+  --link-text-color: #60a5fa; /* blue-400 */
   --thread-text: #fafafa; /* zinc-50 */
   --placeholder-color: var(--tt-alpha-muted);
   --thread-bg-color: var(--tt-color-yellow-dec-2);
-  --tiptap-ai-insertion-color: var(--tt-brand-color-400);
 }
 
 .tiptap.ProseMirror > * {
@@ -702,11 +442,6 @@
 .tiptap.ProseMirror a {
   color: var(--link-text-color);
   text-decoration: underline;
-}
-
-.tiptap.ProseMirror [data-type="mention"] {
-  display: inline-block;
-  color: var(--tt-brand-color-500);
 }
 
 .tiptap.ProseMirror
@@ -813,11 +548,16 @@
 
 .prosemirror-dropcursor-block,
 .prosemirror-dropcursor-inline {
-  background: var(--tt-brand-color-400) !important;
+  background: #52525b !important; /* zinc-600 */
   border-radius: 0.25rem;
   margin-left: -1px;
   margin-right: -1px;
   width: 100%;
   height: 0.188rem;
   cursor: grabbing;
+}
+
+.dark .prosemirror-dropcursor-block,
+.dark .prosemirror-dropcursor-inline {
+  background: #a1a1aa !important; /* zinc-400 */
 }
