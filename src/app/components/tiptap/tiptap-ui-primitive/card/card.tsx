@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { cn } from "@/utils/tiptap-utils";
-import "@/app/components/tiptap/tiptap-ui-primitive/card/card.css";
 
 const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   ({ className, ...props }, ref) => {

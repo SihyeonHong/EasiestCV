@@ -1,5 +1,9 @@
+/* =====================
+   TIPTAP BASE STYLES
+   ===================== */
+
 .tiptap {
-  /* 기본 스타일 */
+  /* 기본 스타일 - Tailwind로 대체 가능한 부분은 제거하고 핵심만 유지 */
   @apply min-h-[200px] w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950;
   box-sizing: border-box;
 }
@@ -9,7 +13,7 @@
   @apply text-zinc-900 dark:text-zinc-200;
 }
 
-/* 제목 스타일 */
+/* 제목 스타일 - Tailwind Typography로 대체 가능하지만 일관성을 위해 유지 */
 .tiptap h1 {
   @apply mb-4 mt-6 text-2xl font-bold;
 }
@@ -28,7 +32,7 @@
 
 /* 단락 스타일 */
 .tiptap p {
-  /*  */
+  /* 기본 단락 스타일은 Tailwind Typography가 처리 */
 }
 
 .tiptap.ProseMirror p:not(:first-child) {

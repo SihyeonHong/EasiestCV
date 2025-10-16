@@ -1,9 +1,6 @@
 "use client";
 
 import * as React from "react";
-import "@/app/components/tiptap/tiptap-ui-primitive/badge/badge-colors.css";
-import "@/app/components/tiptap/tiptap-ui-primitive/badge/badge-group.css";
-import "@/app/components/tiptap/tiptap-ui-primitive/badge/badge.css";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "ghost" | "white" | "gray" | "green" | "default";

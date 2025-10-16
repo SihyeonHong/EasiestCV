@@ -12,10 +12,6 @@ import {
 // --- Lib ---
 import { cn, parseShortcutKeys } from "@/utils/tiptap-utils";
 
-import "@/app/components/tiptap/tiptap-ui-primitive/button/button-colors.css";
-import "@/app/components/tiptap/tiptap-ui-primitive/button/button-group.css";
-import "@/app/components/tiptap/tiptap-ui-primitive/button/button.css";
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;

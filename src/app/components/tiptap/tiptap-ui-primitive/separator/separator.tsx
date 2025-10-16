@@ -2,7 +2,6 @@
 
 import * as React from "react";
 
-import "@/app/components/tiptap/tiptap-ui-primitive/separator/separator.css";
 import { cn } from "@/utils/tiptap-utils";
 
 export type Orientation = "horizontal" | "vertical";

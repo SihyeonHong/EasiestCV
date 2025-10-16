@@ -21,7 +21,6 @@ import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 // --- Styles ---
-import "@/app/components/tiptap/tiptap-ui/color-highlight-button/color-highlight-button.css";
 
 export interface ColorHighlightButtonProps
   extends Omit<ButtonProps, "type">,

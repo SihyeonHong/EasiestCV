@@ -13,13 +13,6 @@ import { StarterKit } from "@tiptap/starter-kit";
 import React, { useEffect, useState } from "react";
 
 // --- Tiptap Node ---
-import "@/app/components/tiptap/tiptap-node/blockquote-node/blockquote-node.css";
-import "@/app/components/tiptap/tiptap-node/code-block-node/code-block-node.css";
-import "@/app/components/tiptap/tiptap-node/horizontal-rule-node/horizontal-rule-node.css";
-import "@/app/components/tiptap/tiptap-node/list-node/list-node.css";
-import "@/app/components/tiptap/tiptap-node/image-node/image-node.css";
-import "@/app/components/tiptap/tiptap-node/heading-node/heading-node.css";
-import "@/app/components/tiptap/tiptap-node/paragraph-node/paragraph-node.css";
 
 // --- UI Components ---
 import EditorPanel from "@/app/components/admin/EditorPanel";
@@ -29,7 +22,7 @@ import {
   ToolbarProvider,
   useToolbar,
 } from "@/app/components/admin/ToolbarProvider";
-import { HorizontalRule } from "@/app/components/tiptap/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
+import { HorizontalRule } from "@/app/components/tiptap/tiptap-node/horizontal-rule-node";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";

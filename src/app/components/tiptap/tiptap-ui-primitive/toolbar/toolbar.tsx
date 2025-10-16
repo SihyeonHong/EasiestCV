@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { Separator } from "@/app/components/tiptap/tiptap-ui-primitive/separator";
-import "@/app/components/tiptap/tiptap-ui-primitive/toolbar/toolbar.css";
 import { useComposedRef } from "@/hooks/tiptap/use-composed-ref";
 import { useMenuNavigation } from "@/hooks/tiptap/use-menu-navigation";
 import { cn } from "@/utils/tiptap-utils";

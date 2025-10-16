@@ -19,7 +19,6 @@ import {
   FloatingDelayGroup,
 } from "@floating-ui/react";
 import * as React from "react";
-import "@/app/components/tiptap/tiptap-ui-primitive/tooltip/tooltip.css";
 
 interface TooltipProviderProps {
   children: React.ReactNode;
