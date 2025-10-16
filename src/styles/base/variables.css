@@ -114,8 +114,6 @@
   --tt-color-red-dec-5: hsla(1, 100%, 9%, 1);
 
   /* Basic colors */
-  --white: rgba(255, 255, 255, 1);
-  --black: rgba(14, 14, 17, 1);
   --transparent: rgba(255, 255, 255, 0);
 
   /****************** 
@@ -167,20 +165,20 @@
   **************************************************/
 
   /* Global colors - Light mode */
-  --tt-bg-color: var(--white);
+  --tt-bg-color: rgba(255, 255, 255, 1);
   --tt-border-color: var(--tt-gray-light-a-200);
   --tt-border-color-tint: var(--tt-gray-light-a-100);
   --tt-sidebar-bg-color: var(--tt-gray-light-100);
   --tt-scrollbar-color: var(--tt-gray-light-a-200);
   --tt-cursor-color: var(--tt-brand-color-500);
   --tt-selection-color: rgba(157, 138, 255, 0.2);
-  --tt-card-bg-color: var(--white);
+  --tt-card-bg-color: rgba(255, 255, 255, 1);
   --tt-card-border-color: var(--tt-gray-light-a-100);
 }
 
 /* Global colors - Dark mode */
 .dark {
-  --tt-bg-color: var(--black);
+  --tt-bg-color: rgba(14, 14, 17, 1);
   --tt-border-color: var(--tt-gray-dark-a-200);
   --tt-border-color-tint: var(--tt-gray-dark-a-100);
   --tt-sidebar-bg-color: var(--tt-gray-dark-100);

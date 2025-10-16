@@ -521,7 +521,7 @@
 
 /* Card Styles */
 :root {
-  --tiptap-card-bg-color: var(--white);
+  --tiptap-card-bg-color: rgba(255, 255, 255, 1);
   --tiptap-card-border-color: var(--tt-gray-light-a-100);
   --tiptap-card-group-label-color: var(--tt-gray-light-a-800);
 }
@@ -600,7 +600,7 @@
 
 /* Dropdown Menu Styles */
 .tiptap-dropdown-menu {
-  --tt-dropdown-menu-bg-color: var(--white);
+  --tt-dropdown-menu-bg-color: rgba(255, 255, 255, 1);
   --tt-dropdown-menu-border-color: var(--tt-gray-light-a-100);
   --tt-dropdown-menu-text-color: var(--tt-gray-light-a-600);
 }
@@ -706,7 +706,7 @@
 
 /* Popover Styles */
 .tiptap-popover {
-  --tt-popover-bg-color: var(--white);
+  --tt-popover-bg-color: rgba(255, 255, 255, 1);
   --tt-popover-border-color: var(--tt-gray-light-a-100);
   --tt-popover-text-color: var(--tt-gray-light-a-600);
 }
@@ -793,12 +793,12 @@
 :root {
   --tt-toolbar-height: 2.75rem;
   --tt-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --tt-toolbar-bg-color: var(--white);
+  --tt-toolbar-bg-color: rgba(255, 255, 255, 1);
   --tt-toolbar-border-color: var(--tt-gray-light-a-100);
 }
 
 .dark {
-  --tt-toolbar-bg-color: var(--black);
+  --tt-toolbar-bg-color: rgba(14, 14, 17, 1);
   --tt-toolbar-border-color: var(--tt-gray-dark-a-50);
 }
 
@@ -896,12 +896,12 @@
 /* Tooltip Styles */
 .tiptap-tooltip {
   --tt-tooltip-bg: var(--tt-gray-light-900);
-  --tt-tooltip-text: var(--white);
+  --tt-tooltip-text: rgba(255, 255, 255, 1);
   --tt-kbd: var(--tt-gray-dark-a-400);
 }
 
 .dark .tiptap-tooltip {
-  --tt-tooltip-bg: var(--white);
+  --tt-tooltip-bg: rgba(255, 255, 255, 1);
   --tt-tooltip-text: var(--tt-gray-light-600);
   --tt-kbd: var(--tt-gray-light-a-400);
 }
@@ -975,5 +975,3 @@
 .dark .tiptap-button[data-active-state="on"] .tiptap-button-highlight::after {
   filter: brightness(180%);
 }
-
-

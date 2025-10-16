@@ -168,7 +168,7 @@
 
   --tiptap-image-upload-icon-doc-bg: var(--tt-gray-light-a-200);
   --tiptap-image-upload-icon-doc-border: var(--tt-gray-light-300);
-  --tiptap-image-upload-icon-color: var(--white);
+  --tiptap-image-upload-icon-color: rgba(255, 255, 255, 1);
 }
 
 .dark {
@@ -184,7 +184,7 @@
 
   --tiptap-image-upload-icon-doc-bg: var(--tt-gray-dark-a-200);
   --tiptap-image-upload-icon-doc-border: var(--tt-gray-dark-300);
-  --tiptap-image-upload-icon-color: var(--black);
+  --tiptap-image-upload-icon-color: rgba(14, 14, 17, 1);
 }
 
 .tiptap-image-upload {
@@ -424,7 +424,7 @@
   --tt-checklist-bg-active-color: var(--tt-gray-light-a-900);
   --tt-checklist-border-color: var(--tt-gray-light-a-200);
   --tt-checklist-border-active-color: var(--tt-gray-light-a-900);
-  --tt-checklist-check-icon-color: var(--white);
+  --tt-checklist-check-icon-color: rgba(255, 255, 255, 1);
   --tt-checklist-text-active: var(--tt-gray-light-a-500);
 }
 
@@ -433,7 +433,7 @@
   --tt-checklist-bg-active-color: var(--tt-gray-dark-a-900);
   --tt-checklist-border-color: var(--tt-gray-dark-a-200);
   --tt-checklist-border-active-color: var(--tt-gray-dark-a-900);
-  --tt-checklist-check-icon-color: var(--black);
+  --tt-checklist-check-icon-color: rgba(14, 14, 17, 1);
   --tt-checklist-text-active: var(--tt-gray-dark-a-500);
 }
 
