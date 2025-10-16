@@ -85,7 +85,7 @@
   color: inherit;
 }
 
-/* Heading Node */
+/* Heading Node - 기본 스타일만 유지 (상세 스타일은 tiptap-base.css에서 처리) */
 .tiptap.ProseMirror h1,
 .tiptap.ProseMirror h2,
 .tiptap.ProseMirror h3,
@@ -100,30 +100,6 @@
 .tiptap.ProseMirror h3:first-child,
 .tiptap.ProseMirror h4:first-child {
   margin-top: 0;
-}
-
-.tiptap.ProseMirror h1 {
-  font-size: 1.5em;
-  font-weight: 700;
-  margin-top: 3em;
-}
-
-.tiptap.ProseMirror h2 {
-  font-size: 1.25em;
-  font-weight: 700;
-  margin-top: 2.5em;
-}
-
-.tiptap.ProseMirror h3 {
-  font-size: 1.125em;
-  font-weight: 600;
-  margin-top: 2em;
-}
-
-.tiptap.ProseMirror h4 {
-  font-size: 1em;
-  font-weight: 600;
-  margin-top: 2em;
 }
 
 /* Horizontal Rule Node */
@@ -845,5 +821,3 @@
   height: 0.188rem;
   cursor: grabbing;
 }
-
-
