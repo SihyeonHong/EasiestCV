@@ -28,7 +28,7 @@ export default function PublicHome({ homeData }: Props) {
           </CardContent>
         )}
         <CardContent
-          className="ql-editor max-w-none flex-1 p-0"
+          className="tiptap max-w-none flex-1 p-0"
           dangerouslySetInnerHTML={{ __html: homeData.intro ?? "" }}
         />
       </CardContent>

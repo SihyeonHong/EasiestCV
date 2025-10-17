@@ -17,7 +17,7 @@ export default function PublicContents({ userid, tid }: Props) {
       <CardContent className="w-full">
         {content && (
           <div
-            className="ql-editor"
+            className="tiptap"
             dangerouslySetInnerHTML={{
               __html: content,
             }}

@@ -5,9 +5,48 @@
 .tiptap {
   /* 기본 스타일 - Tailwind로 대체 가능한 부분은 제거하고 핵심만 유지 */
   box-sizing: border-box;
+
+  /* CSS 변수들 */
+  --blockquote-bg-color: #18181b; /* zinc-900 */
+  --tt-inline-code-bg-color: var(--tt-alpha-border-subtle);
+  --tt-inline-code-text-color: #3f3f46; /* zinc-700 */
+  --tt-inline-code-border-color: var(--tt-alpha-border);
+  --tt-codeblock-bg: #fafafa; /* zinc-50 */
+  --tt-codeblock-text: #18181b; /* zinc-900 */
+  --tt-codeblock-border: var(--tt-alpha-border);
+  --horizontal-rule-color: var(--tt-alpha-border);
+  --link-text-color: #2563eb; /* blue-600 */
+}
+
+.dark .tiptap {
+  --blockquote-bg-color: #fafafa; /* zinc-50 */
+  --tt-inline-code-bg-color: var(--tt-alpha-border-subtle);
+  --tt-inline-code-text-color: #d4d4d8; /* zinc-300 */
+  --tt-inline-code-border-color: var(--tt-alpha-border);
+  --tt-codeblock-bg: #18181b; /* zinc-900 */
+  --tt-codeblock-text: #fafafa; /* zinc-50 */
+  --tt-codeblock-border: var(--tt-alpha-border);
+  --horizontal-rule-color: var(--tt-alpha-border);
+  --link-text-color: #60a5fa; /* blue-400 */
 }
 
 /* 제목 스타일 - Title보다 작게 유지하기 위해 내가 커스텀 */
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4 {
+  position: relative;
+  color: inherit;
+  font-style: inherit;
+}
+
+.tiptap h1:first-child,
+.tiptap h2:first-child,
+.tiptap h3:first-child,
+.tiptap h4:first-child {
+  margin-top: 0;
+}
+
 .tiptap h1 {
   @apply mb-4 mt-6 text-2xl font-bold;
 }
@@ -28,35 +67,119 @@
 /* 기본 단락 스타일은 Tailwind Typography가 처리 */
 
 /* 리스트 스타일 */
+.tiptap ol,
 .tiptap ul {
-  @apply my-3 ml-4 list-outside list-disc pl-2;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.tiptap ol:first-child,
+.tiptap ul:first-child {
+  margin-top: 0;
+}
+
+.tiptap ol:last-child,
+.tiptap ul:last-child {
+  margin-bottom: 0;
+}
+
+.tiptap ol ol,
+.tiptap ol ul,
+.tiptap ul ol,
+.tiptap ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tiptap li p {
+  margin-top: 0;
+  line-height: 1.6;
 }
 
 .tiptap ol {
-  @apply my-3 ml-4 list-outside list-decimal pl-2;
+  list-style: decimal;
 }
 
-.tiptap li {
-  @apply my-1;
+.tiptap ol ol {
+  list-style: lower-alpha;
+}
+
+.tiptap ol ol ol {
+  list-style: lower-roman;
+}
+
+.tiptap ul:not([data-type="taskList"]) {
+  list-style: disc;
+}
+
+.tiptap ul:not([data-type="taskList"]) ul {
+  list-style: circle;
+}
+
+.tiptap ul:not([data-type="taskList"]) ul ul {
+  list-style: square;
 }
 
 /* 인용구 스타일 */
 .tiptap blockquote {
-  @apply my-2 border-l-4 border-zinc-300 pl-4 italic dark:border-zinc-700;
+  position: relative;
+  padding-left: 1em;
+  padding-top: 0.375em;
+  padding-bottom: 0.375em;
+  margin: 1.5rem 0;
+}
+
+.tiptap blockquote p {
+  margin-top: 0;
 }
 
 .tiptap blockquote::before,
+.tiptap blockquote.is-empty::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0.25em;
+  background-color: var(--blockquote-bg-color);
+  content: "";
+  border-radius: 0;
+}
+
 .tiptap blockquote::after {
   content: none;
 }
 
 /* 코드 블록 스타일 */
-.tiptap pre {
-  @apply my-2 overflow-x-auto rounded-md bg-zinc-100 p-4 dark:bg-zinc-800;
+.tiptap code {
+  background-color: var(--tt-inline-code-bg-color);
+  color: var(--tt-inline-code-text-color);
+  border: 1px solid var(--tt-inline-code-border-color);
+  font-family: "JetBrains Mono NL", monospace;
+  font-size: 0.875em;
+  line-height: 1.4;
+  border-radius: 6px/0.375rem;
+  padding: 0.1em 0.2em;
 }
 
-.tiptap code {
-  @apply rounded bg-zinc-100 px-1 dark:bg-zinc-800;
+.tiptap pre {
+  background-color: var(--tt-codeblock-bg);
+  color: var(--tt-codeblock-text);
+  border: 1px solid var(--tt-codeblock-border);
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding: 1em;
+  font-size: 1rem;
+  border-radius: 6px/0.375rem;
+}
+
+.tiptap pre code {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
 }
 
 .tiptap code::before,
@@ -66,12 +189,46 @@
 
 /* 수평선 스타일 */
 .tiptap hr {
-  @apply my-4 border-t border-zinc-300 dark:border-zinc-700;
+  border: none;
+  height: 1px;
+  background-color: var(--horizontal-rule-color);
+}
+
+.tiptap [data-type="horizontalRule"] {
+  margin-top: 2.25em;
+  margin-bottom: 2.25em;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* 이미지 스타일 */
+.tiptap img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.tiptap > img:not([data-type="emoji"] img) {
+  margin: 2rem 0;
+  outline: 0.1875rem solid transparent;
+  border-radius: var(--tt-radius-xs, 0.25rem);
+}
+
+.tiptap [data-type="emoji"] img {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  cursor: text;
 }
 
 /* 링크 스타일 */
 .tiptap a {
-  @apply text-blue-600 hover:underline dark:text-blue-400;
+  color: var(--link-text-color);
+  text-decoration: underline;
+}
+
+.tiptap a span {
+  text-decoration: underline;
 }
 
 /* Tailwind Typography 인용구 따옴표 제거 */
