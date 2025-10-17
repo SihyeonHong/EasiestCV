@@ -532,18 +532,19 @@
 
 /* Button Group */
 .tiptap-button-group {
-  align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
 }
 
-.tiptap-button-group [data-orientation="vertical"] {
+.tiptap-button-group[data-orientation="vertical"] {
   flex-direction: column;
+  align-items: stretch; /* active 시에 선택 너비 맞추려고 일부러 늘림 */
 }
 
-.tiptap-button-group [data-orientation="horizontal"] {
+.tiptap-button-group[data-orientation="horizontal"] {
   flex-direction: row;
+  align-items: center;
 }
 
 /* Badge Styles */
