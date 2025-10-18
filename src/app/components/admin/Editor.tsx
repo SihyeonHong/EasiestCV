@@ -109,6 +109,7 @@ function EditorContent({ userid, tid }: Props) {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
   }, [tid, tabs]);
 
+  // 에디터 초기 로드 or 탭 변경시 콘텐츠 동기화
   useEffect(() => {
     if (!editor) return;
 
@@ -116,7 +117,9 @@ function EditorContent({ userid, tid }: Props) {
       tid === 0 ? homeData?.intro || "" : currentTab?.contents || "";
     editor.commands.setContent(content);
     setSaveStatus("saved");
-  }, [tid, homeData, currentTab, setSaveStatus, editor]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tid, editor]);
 
   const handleImageInsert = (imageUrl: string) => {
     if (editor) {
