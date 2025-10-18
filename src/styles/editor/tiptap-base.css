@@ -5,6 +5,7 @@
 .tiptap {
   /* 기본 스타일 - Tailwind로 대체 가능한 부분은 제거하고 핵심만 유지 */
   box-sizing: border-box;
+  white-space: pre-wrap; /* 연속된 공백과 줄바꿈 보존 */
 
   /* CSS 변수들 */
   --blockquote-bg-color: #18181b; /* zinc-900 */

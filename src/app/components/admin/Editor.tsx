@@ -8,7 +8,11 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { Selection } from "@tiptap/extensions";
-import { EditorContent as TiptapEditorContent, useEditor } from "@tiptap/react";
+import {
+  EditorContent as TiptapEditorContent,
+  useEditor,
+  Editor as TiptapEditorType,
+} from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import React, { useEffect, useState } from "react";
 
@@ -68,7 +72,7 @@ function EditorContent({ userid, tid }: Props) {
 
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
-  const editor = useEditor({
+  const editor: TiptapEditorType | null = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
     editorProps: {
@@ -77,6 +81,96 @@ function EditorContent({ userid, tid }: Props) {
         autocorrect: "off",
         autocapitalize: "off",
         "aria-label": "Main content area, start typing to enter text.",
+      },
+      handleKeyDown: (view, event): boolean => {
+        // Tab 키를 눌렀을 때 에디터 내에서 들여쓰기 처리
+        if (event.key === "Tab") {
+          event.preventDefault();
+
+          // Shift + Tab: 내어쓰기
+          if (event.shiftKey) {
+            return (
+              editor?.chain().focus().liftListItem("listItem").run() || false
+            );
+          }
+
+          // Tab: 들여쓰기 (리스트 아이템이면 리스트 들여쓰기, 아니면 일반 들여쓰기)
+          const { state } = view;
+          const { selection } = state;
+          const { $from } = selection;
+
+          // 현재 위치가 리스트 아이템인지 확인
+          const isInListItem = $from.node(-1)?.type.name === "listItem";
+
+          if (isInListItem) {
+            return (
+              editor?.chain().focus().sinkListItem("listItem").run() || false
+            );
+          } else {
+            // 일반 텍스트에서 Tab 키를 눌렀을 때는 들여쓰기 문자 삽입
+            // 유니코드 &emsp; (em space)를 사용하여 실제 들여쓰기 효과 생성
+            return (
+              editor?.chain().focus().insertContent("\u2003\u2003").run() ||
+              false
+            );
+          }
+        }
+
+        // Enter 키를 눌렀을 때 코드 블록에서 들여쓰기 유지
+        if (event.key === "Enter") {
+          const { state } = view;
+          const { selection } = state;
+          const { $from } = selection;
+
+          // 현재 위치가 코드 블록인지 확인 (Tiptap의 isActive 메서드 사용)
+          const isInCodeBlock = editor?.isActive("codeBlock") || false;
+          console.log("Is in code block (isActive):", isInCodeBlock);
+
+          if (isInCodeBlock) {
+            // 현재 줄의 시작 위치 찾기 (줄바꿈을 기준으로)
+            const currentPos = $from.pos;
+            const doc = state.doc;
+
+            // 현재 위치에서 앞으로 가면서 줄바꿈을 찾기
+            let lineStart = currentPos;
+            for (let i = currentPos - 1; i >= 0; i--) {
+              const char = doc.textBetween(i, i + 1);
+              if (char === "\n") {
+                lineStart = i + 1;
+                break;
+              }
+            }
+
+            // 현재 줄의 텍스트 추출
+            const currentLine = doc.textBetween(lineStart, currentPos);
+
+            console.log("Current line text:", JSON.stringify(currentLine));
+            console.log("Current line length:", currentLine.length);
+            console.log("Line start position:", lineStart);
+            console.log("Current position:", currentPos);
+
+            // 현재 줄의 앞쪽 공백/들여쓰기 추출 (모든 종류의 공백 포함)
+            const indentMatch = currentLine.match(/^(\s*)/);
+            const indent = indentMatch ? indentMatch[1] : "";
+
+            console.log("Extracted indent:", JSON.stringify(indent));
+            console.log("Indent length:", indent.length);
+
+            // Enter 키 기본 동작 실행 후 들여쓰기 삽입
+            setTimeout(() => {
+              if (indent && indent.length > 0) {
+                console.log("Inserting indent:", JSON.stringify(indent));
+                editor?.chain().focus().insertContent(indent).run();
+              } else {
+                console.log("No indent to insert");
+              }
+            }, 10);
+
+            return false; // 기본 Enter 동작 허용
+          }
+        }
+
+        return false;
       },
     },
     extensions: [
