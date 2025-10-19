@@ -1,22 +1,11 @@
 "use client";
 
-import { Highlight } from "@tiptap/extension-highlight";
-import { Image } from "@tiptap/extension-image";
-import { TaskItem, TaskList } from "@tiptap/extension-list";
-import { Subscript } from "@tiptap/extension-subscript";
-import { Superscript } from "@tiptap/extension-superscript";
-import { TextAlign } from "@tiptap/extension-text-align";
-import { Typography } from "@tiptap/extension-typography";
-import { Selection } from "@tiptap/extensions";
 import {
   EditorContent as TiptapEditorContent,
   useEditor,
   Editor as TiptapEditorType,
 } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
 import React, { useEffect, useState } from "react";
-
-// --- Tiptap Node ---
 
 // --- UI Components ---
 import EditorPanel from "@/app/components/admin/EditorPanel";
@@ -26,12 +15,16 @@ import {
   ToolbarProvider,
   useToolbar,
 } from "@/app/components/admin/ToolbarProvider";
-import { HorizontalRule } from "@/app/components/tiptap/tiptap-node/horizontal-rule-node";
 // --- Hooks ---
+import LoadingPage from "@/app/components/LoadingPage";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
 import { useTabs } from "@/hooks/useTabs";
+// --- Models ---
 import { Tab } from "@/models/tab.model";
+// --- Utils ---
+import { createEditorProps } from "@/utils/tiptap-editor-config";
+import { getTiptapExtensions } from "@/utils/tiptap-extensions";
 
 interface Props {
   userid: string;
@@ -75,123 +68,97 @@ function EditorContent({ userid, tid }: Props) {
   const editor: TiptapEditorType | null = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-      },
-      handleKeyDown: (view, event): boolean => {
-        // Tab 키를 눌렀을 때 에디터 내에서 들여쓰기 처리
-        if (event.key === "Tab") {
-          event.preventDefault();
+    editorProps: createEditorProps((view, event) => {
+      // Tab 키를 눌렀을 때 에디터 내에서 들여쓰기 처리
+      if (event.key === "Tab") {
+        event.preventDefault();
 
-          // Shift + Tab: 내어쓰기
-          if (event.shiftKey) {
-            return (
-              editor?.chain().focus().liftListItem("listItem").run() || false
-            );
-          }
-
-          // Tab: 들여쓰기 (리스트 아이템이면 리스트 들여쓰기, 아니면 일반 들여쓰기)
-          const { state } = view;
-          const { selection } = state;
-          const { $from } = selection;
-
-          // 현재 위치가 리스트 아이템인지 확인
-          const isInListItem = $from.node(-1)?.type.name === "listItem";
-
-          if (isInListItem) {
-            return (
-              editor?.chain().focus().sinkListItem("listItem").run() || false
-            );
-          } else {
-            // 일반 텍스트에서 Tab 키를 눌렀을 때는 들여쓰기 문자 삽입
-            // 유니코드 &emsp; (em space)를 사용하여 실제 들여쓰기 효과 생성
-            return (
-              editor?.chain().focus().insertContent("\u2003\u2003").run() ||
-              false
-            );
-          }
+        // Shift + Tab: 내어쓰기
+        if (event.shiftKey) {
+          return (
+            editor?.chain().focus().liftListItem("listItem").run() || false
+          );
         }
 
-        // Enter 키를 눌렀을 때 코드 블록에서 들여쓰기 유지
-        if (event.key === "Enter") {
-          const { state } = view;
-          const { selection } = state;
-          const { $from } = selection;
+        // Tab: 들여쓰기 (리스트 아이템이면 리스트 들여쓰기, 아니면 일반 들여쓰기)
+        const { state } = view as {
+          state: {
+            selection: {
+              $from: {
+                node: (depth: number) => { type: { name: string } } | null;
+                pos: number;
+              };
+            };
+          };
+        };
+        const { selection } = state;
+        const { $from } = selection;
 
-          // 현재 위치가 코드 블록인지 확인 (Tiptap의 isActive 메서드 사용)
-          const isInCodeBlock = editor?.isActive("codeBlock") || false;
-          console.log("Is in code block (isActive):", isInCodeBlock);
+        // 현재 위치가 리스트 아이템인지 확인
+        const isInListItem = $from.node(-1)?.type.name === "listItem";
 
-          if (isInCodeBlock) {
-            // 현재 줄의 시작 위치 찾기 (줄바꿈을 기준으로)
-            const currentPos = $from.pos;
-            const doc = state.doc;
+        if (isInListItem) {
+          return (
+            editor?.chain().focus().sinkListItem("listItem").run() || false
+          );
+        } else {
+          // 일반 텍스트: 들여쓰기 문자 삽입
+          return (
+            editor?.chain().focus().insertContent("\u2003\u2003").run() || false
+          );
+        }
+      }
 
-            // 현재 위치에서 앞으로 가면서 줄바꿈을 찾기
-            let lineStart = currentPos;
-            for (let i = currentPos - 1; i >= 0; i--) {
-              const char = doc.textBetween(i, i + 1);
-              if (char === "\n") {
-                lineStart = i + 1;
-                break;
-              }
+      // 코드 블록에서 Enter 키 눌렀을 때 들여쓰기 유지
+      if (event.key === "Enter") {
+        const { state } = view as {
+          state: {
+            selection: { $from: { pos: number } };
+            doc: { textBetween: (from: number, to: number) => string };
+          };
+        };
+        const { selection } = state;
+        const { $from } = selection;
+
+        // 현재 위치가 코드 블록인지 확인 (Tiptap의 isActive 메서드 사용)
+        const isInCodeBlock = editor?.isActive("codeBlock") || false;
+
+        if (isInCodeBlock) {
+          // 현재 줄의 시작 위치 찾기 (줄바꿈을 기준으로)
+          const currentPos = $from.pos;
+          const doc = state.doc;
+
+          // 현재 위치에서 앞으로 가면서 줄바꿈을 찾기
+          let lineStart = currentPos;
+          for (let i = currentPos - 1; i >= 0; i--) {
+            const char = doc.textBetween(i, i + 1);
+            if (char === "\n") {
+              lineStart = i + 1;
+              break;
             }
-
-            // 현재 줄의 텍스트 추출
-            const currentLine = doc.textBetween(lineStart, currentPos);
-
-            console.log("Current line text:", JSON.stringify(currentLine));
-            console.log("Current line length:", currentLine.length);
-            console.log("Line start position:", lineStart);
-            console.log("Current position:", currentPos);
-
-            // 현재 줄의 앞쪽 공백/들여쓰기 추출 (모든 종류의 공백 포함)
-            const indentMatch = currentLine.match(/^(\s*)/);
-            const indent = indentMatch ? indentMatch[1] : "";
-
-            console.log("Extracted indent:", JSON.stringify(indent));
-            console.log("Indent length:", indent.length);
-
-            // Enter 키 기본 동작 실행 후 들여쓰기 삽입
-            setTimeout(() => {
-              if (indent && indent.length > 0) {
-                console.log("Inserting indent:", JSON.stringify(indent));
-                editor?.chain().focus().insertContent(indent).run();
-              } else {
-                console.log("No indent to insert");
-              }
-            }, 10);
-
-            return false; // 기본 Enter 동작 허용
           }
-        }
 
-        return false;
-      },
-    },
-    extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
-        },
-      }),
-      HorizontalRule,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
-    ],
+          // 현재 줄의 텍스트 추출
+          const currentLine = doc.textBetween(lineStart, currentPos);
+
+          // 현재 줄의 앞쪽 공백/들여쓰기 추출 (모든 종류의 공백 포함)
+          const indentMatch = currentLine.match(/^(\s*)/);
+          const indent = indentMatch ? indentMatch[1] : "";
+
+          // Enter 키 기본 동작 실행 후 들여쓰기 삽입
+          setTimeout(() => {
+            if (indent && indent.length > 0) {
+              editor?.chain().focus().insertContent(indent).run();
+            }
+          }, 10);
+
+          return false; // 기본 Enter 동작 허용
+        }
+      }
+
+      return false;
+    }),
+    extensions: getTiptapExtensions(),
     content: "",
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
@@ -206,10 +173,17 @@ function EditorContent({ userid, tid }: Props) {
   // 에디터 초기 로드 or 탭 변경시 콘텐츠 동기화
   useEffect(() => {
     if (!editor) return;
+    let content;
 
-    const content =
-      tid === 0 ? homeData?.intro || "" : currentTab?.contents || "";
+    if (tid === 0 && homeData) {
+      content = homeData.intro || "";
+    } else if (tid !== 0 && currentTab) {
+      content = currentTab.contents || "";
+    }
+
+    if (content === undefined) return; // 빈 문자열은 인정
     editor.commands.setContent(content);
+
     setSaveStatus("saved");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -222,7 +196,7 @@ function EditorContent({ userid, tid }: Props) {
   };
 
   if (!editor) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (
