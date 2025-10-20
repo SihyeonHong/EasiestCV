@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base styles */
+@import "../styles/base/animations.css";
+@import "../styles/base/variables.css";
+
+/* Editor styles */
+@import "../styles/editor/tiptap-base.css";
+@import "../styles/editor/tiptap-nodes.css";
+@import "../styles/editor/tiptap-ui.css";
+
+/* Legacy styles */
+@import "../styles/legacy/quill.css";
+
+/* Font */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 * {

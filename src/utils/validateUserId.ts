@@ -34,6 +34,7 @@ export function validateUserId(userId: string): UserIdValidationResult {
     "support",
     "tab",
     "tabs",
+    "tester",
     "user",
   ];
 
