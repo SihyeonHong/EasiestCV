@@ -6,7 +6,15 @@ import { MdDragIndicator } from "react-icons/md";
 
 import TabCancel from "@/app/components/admin/TabCancel";
 import { Button } from "@/app/components/common/Button";
-import { CardContent } from "@/app/components/common/Card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
 import {
   Table,
@@ -111,73 +119,92 @@ export default function TabManager({ userid }: TabManagerProps) {
     // 데이터 속성 (터치 이벤트에서 사용)
     "data-drag-index": index,
   });
+
   return (
-    <CardContent className="flex flex-col gap-2">
-      <h1 className="mb-2 text-2xl font-bold">{tAdmin("tabManager")}</h1>
-      <p>{tAdmin("tabManagerDescription")}</p>
-      <p>{tAdmin("tabManagerDescriptionMobile")}</p>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost">{tAdmin("tabManager")}</Button>
+      </DialogTrigger>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead></TableHead>
-            <TableHead>{tAdmin("tabOrder")}</TableHead>
-            <TableHead>{tAdmin("tabName")}</TableHead>
-            <TableHead>{tAdmin("actions")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tabs.map((tab, idx) => (
-            <TableRow key={idx} {...getDragHandlers(idx)}>
-              <TableCell>
-                <MdDragIndicator />
-              </TableCell>
-              <TableCell>{tab.torder + 1}</TableCell>
-              <TableCell>{tab.tname}</TableCell>
-              <TableCell className="inline-flex items-center gap-1">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => renameTab(tab.tid)}
-                >
-                  {tAdmin("rename")}
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={() => deleteTab(tab.tid)}
-                >
-                  {tButton("delete")}
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      <form
-        className="flex flex-row gap-1"
-        onSubmit={(e) => {
-          e.preventDefault();
-          addTab(newTabName);
-          setNewTabName("");
-        }}
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()} // 외부 클릭 시 닫힘 방지
+        onEscapeKeyDown={() => {}} // ESC 키 눌렀을 때 닫힘 방지
       >
-        <Input
-          type="text"
-          value={newTabName}
-          required
-          onChange={(e) => setNewTabName(e.target.value)}
-          placeholder={tAdmin("newTabNamePlaceholder")}
-        />
-        <Button variant="default" type="submit">
-          {tAdmin("addTab")}
-        </Button>
-      </form>
-      <TabCancel resetTabs={resetTabs} />
-      <Button variant="default" onClick={() => saveTabs()}>
-        {tButton("save")}
-      </Button>
-    </CardContent>
+        <DialogHeader>
+          <DialogTitle>{tAdmin("tabManager")}</DialogTitle>
+          <DialogDescription>
+            {tAdmin("tabManagerDescription")}
+          </DialogDescription>
+          <DialogDescription>
+            {tAdmin("tabManagerDescriptionMobile")}
+          </DialogDescription>
+        </DialogHeader>
+
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead></TableHead>
+              <TableHead>{tAdmin("tabOrder")}</TableHead>
+              <TableHead>{tAdmin("tabName")}</TableHead>
+              <TableHead>{tAdmin("actions")}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tabs.map((tab, idx) => (
+              <TableRow key={idx} {...getDragHandlers(idx)}>
+                <TableCell>
+                  <MdDragIndicator />
+                </TableCell>
+                <TableCell>{tab.torder + 1}</TableCell>
+                <TableCell>{tab.tname}</TableCell>
+                <TableCell className="inline-flex items-center gap-1">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => renameTab(tab.tid)}
+                  >
+                    {tAdmin("rename")}
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => deleteTab(tab.tid)}
+                  >
+                    {tButton("delete")}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        <form
+          className="flex flex-row gap-1"
+          onSubmit={(e) => {
+            e.preventDefault();
+            addTab(newTabName);
+            setNewTabName("");
+          }}
+        >
+          <Input
+            type="text"
+            value={newTabName}
+            required
+            onChange={(e) => setNewTabName(e.target.value)}
+            placeholder={tAdmin("newTabNamePlaceholder")}
+          />
+          <Button variant="default" type="submit">
+            {tAdmin("addTab")}
+          </Button>
+        </form>
+
+        <DialogFooter className="gap-2">
+          <TabCancel resetTabs={resetTabs} />
+          <Button variant="default" onClick={() => saveTabs()}>
+            {tButton("save")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

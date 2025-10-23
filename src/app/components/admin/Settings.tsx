@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 
 import AdminPDF from "@/app/components/admin/AdminPDF";
+import TabManager from "@/app/components/admin/TabManager";
 import { Card, CardHeader, CardTitle } from "@/app/components/common/Card";
 
 interface Props {
@@ -23,6 +24,7 @@ export default function Settings({ userid }: Props) {
         </CardHeader>
         <p>{userid}</p>
         <AdminPDF userid={userid} />
+        <TabManager userid={userid} />
       </Card>
     </div>
   );

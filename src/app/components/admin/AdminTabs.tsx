@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import AdminHome from "@/app/components/admin/AdminHome";
 import Editor from "@/app/components/admin/Editor";
 import Settings from "@/app/components/admin/Settings";
-import TabManager from "@/app/components/admin/TabManager";
 import {
   Tabs,
   TabsContent,
@@ -31,7 +30,6 @@ export default function AdminTabs({ userid }: Props) {
             </TabsTrigger>
           ))}
         <TabsTrigger value="settings">{t("title")}</TabsTrigger>
-        <TabManager userid={userid} />
       </TabsList>
       <TabsContent value="home">
         <AdminHome userid={userid} />
