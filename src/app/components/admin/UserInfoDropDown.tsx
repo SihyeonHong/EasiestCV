@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import UserInfoEditor from "@/app/components/admin/_UserInfoEditor";
 import PasswordChangeDialog from "@/app/components/admin/PasswordChangeDialog";
-import UserInfoEditor from "@/app/components/admin/UserInfoEditor";
 import { Button } from "@/app/components/common/Button";
 import {
   DropdownMenu,
