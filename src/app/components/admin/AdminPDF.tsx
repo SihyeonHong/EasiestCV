@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 
-import { CardContent } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { useHome } from "@/hooks/useHome";
 
@@ -14,7 +13,7 @@ export default function AdminPDF({ userid }: Props) {
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
 
   return (
-    <CardContent className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <h1 className="mb-2 text-2xl font-bold">PDF</h1>
       <Input
         id="pdf"
@@ -35,6 +34,6 @@ export default function AdminPDF({ userid }: Props) {
       ) : (
         <p>{tMessage("noPdf")}</p>
       )}
-    </CardContent>
+    </div>
   );
 }

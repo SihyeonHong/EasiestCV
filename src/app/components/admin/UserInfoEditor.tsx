@@ -2,7 +2,6 @@ import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 
 import { Button } from "@/app/components/common/Button";
-import { CardContent } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useUserInfo } from "@/hooks/useUserInfo";
@@ -53,7 +52,7 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
   };
 
   return (
-    <CardContent>
+    <div>
       <h1 className="mb-2 text-2xl font-bold">{t("title")}</h1>
       <p>{t("description")}</p>
 
@@ -85,7 +84,7 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
           />
         </div>
 
-        <div>
+        <div className="flex gap-2">
           <Button variant="secondary" type="button" onClick={handleCancel}>
             {tButton("cancel")}
           </Button>
@@ -94,6 +93,6 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
           </Button>
         </div>
       </form>
-    </CardContent>
+    </div>
   );
 }

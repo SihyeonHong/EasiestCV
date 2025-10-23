@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Button } from "@/app/components/common/Button";
-import { CardContent } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { useUserInfo } from "@/hooks/useUserInfo";
 
@@ -46,7 +45,7 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
     );
   };
   return (
-    <CardContent>
+    <div>
       <h1 className="mb-2 text-2xl font-bold">{tchangePW("changePassword")}</h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">
@@ -104,18 +103,20 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
             </div>
           </div>
 
-          <Button variant="secondary">{tButton("cancel")}</Button>
+          <div className="flex gap-2">
+            <Button variant="secondary">{tButton("cancel")}</Button>
 
-          {changePWStatus === "pending" ? (
-            <Button disabled>
-              <Loader2Icon className="animate-spin" />
-              {tButton("pending")}
-            </Button>
-          ) : (
-            <Button type="submit">{tButton("confirm")}</Button>
-          )}
+            {changePWStatus === "pending" ? (
+              <Button disabled>
+                <Loader2Icon className="animate-spin" />
+                {tButton("pending")}
+              </Button>
+            ) : (
+              <Button type="submit">{tButton("confirm")}</Button>
+            )}
+          </div>
         </div>
       </form>
-    </CardContent>
+    </div>
   );
 }

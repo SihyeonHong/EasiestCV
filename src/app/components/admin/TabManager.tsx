@@ -6,7 +6,6 @@ import { MdDragIndicator } from "react-icons/md";
 
 import TabCancel from "@/app/components/admin/TabCancel";
 import { Button } from "@/app/components/common/Button";
-import { CardContent } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import {
   Table,
@@ -112,7 +111,7 @@ export default function TabManager({ userid }: TabManagerProps) {
     "data-drag-index": index,
   });
   return (
-    <CardContent className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
       <h1 className="mb-2 text-2xl font-bold">{tAdmin("tabManager")}</h1>
       <p>{tAdmin("tabManagerDescription")}</p>
       <p>{tAdmin("tabManagerDescriptionMobile")}</p>
@@ -178,6 +177,6 @@ export default function TabManager({ userid }: TabManagerProps) {
       <Button variant="default" onClick={() => saveTabs()}>
         {tButton("save")}
       </Button>
-    </CardContent>
+    </div>
   );
 }
