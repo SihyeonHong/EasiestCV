@@ -1,6 +1,8 @@
+import { useTranslations } from "next-intl";
+
 import AdminHome from "@/app/components/admin/AdminHome";
-import AdminPDF from "@/app/components/admin/AdminPDF";
 import Editor from "@/app/components/admin/Editor";
+import Settings from "@/app/components/admin/Settings";
 import TabManager from "@/app/components/admin/TabManager";
 import {
   Tabs,
@@ -16,6 +18,7 @@ interface Props {
 
 export default function AdminTabs({ userid }: Props) {
   const { tabs } = useTabs(userid);
+  const t = useTranslations("settings");
 
   return (
     <Tabs defaultValue="home">
@@ -27,7 +30,7 @@ export default function AdminTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        <TabsTrigger value="pdf">PDF</TabsTrigger>
+        <TabsTrigger value="settings">{t("title")}</TabsTrigger>
         <TabManager userid={userid} />
       </TabsList>
       <TabsContent value="home">
@@ -39,8 +42,8 @@ export default function AdminTabs({ userid }: Props) {
             <Editor userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
-      <TabsContent value="pdf">
-        <AdminPDF userid={userid} />
+      <TabsContent value="settings">
+        <Settings userid={userid} />
       </TabsContent>
     </Tabs>
   );

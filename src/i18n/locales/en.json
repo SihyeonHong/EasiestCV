@@ -171,6 +171,10 @@
     "closePreview": "Close Preview",
     "preview": "Preview"
   },
+  "settings": {
+    "title": "Settings",
+    "shortcut": "Shortcut"
+  },
   "support": {
     "linkDescription": "Need help?",
     "linkText": "Support Page",

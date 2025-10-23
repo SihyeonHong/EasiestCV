@@ -8,6 +8,7 @@
   },
   "message": {
     "noUser": "존재하지 않는 사용자입니다",
+    "noPdf": "PDF 파일이 없습니다",
     "confirmLogout": "로그아웃 하시겠습니까?",
     "saveSuccess": "저장되었습니다.",
     "loading": "불러오는 중...",
@@ -169,6 +170,10 @@
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기"
+  },
+  "settings": {
+    "title": "설정",
+    "shortcut": "바로가기"
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",
