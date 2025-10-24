@@ -26,15 +26,17 @@ export default function Settings({ userid }: Props) {
               <li>회원정보</li>
             </ul>
           </div>
-          <div className="hidden h-px w-full bg-zinc-200 dark:bg-zinc-800 sm:block" />
+          <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
 
           <AdminPDF userid={userid} />
-          <div className="hidden h-px w-full bg-zinc-200 dark:bg-zinc-800 sm:block" />
+          <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
           <TabManager userid={userid} />
-          <div className="hidden h-px w-full bg-zinc-200 dark:bg-zinc-800 sm:block" />
-          <UserInfoEditor userid={userid} />
-          <div className="hidden h-px w-full bg-zinc-200 dark:bg-zinc-800 sm:block" />
-          <PasswordChanger userid={userid} />
+          <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+          <div className="flex flex-col gap-12 sm:flex-row">
+            <UserInfoEditor userid={userid} />
+            <div className="w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
+            <PasswordChanger userid={userid} />
+          </div>
         </CardContent>
       </Card>
     </div>

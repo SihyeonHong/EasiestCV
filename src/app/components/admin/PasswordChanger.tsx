@@ -53,7 +53,7 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <h1 className="mb-4 text-2xl font-bold">{tchangePW("changePassword")}</h1>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
