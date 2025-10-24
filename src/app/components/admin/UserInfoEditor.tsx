@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
+import { Label } from "@/app/components/common/Label";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useUserInfo } from "@/hooks/useUserInfo";
 
@@ -32,35 +33,27 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    updateUserInfo(
-      {
-        userid,
-        username: username.trim(),
-        email: email.trim(),
-      },
-      {
-        onSuccess: () => {
-          setUsername("");
-          setEmail("");
-        },
-      },
-    );
+    updateUserInfo({
+      userid,
+      username: username.trim(),
+      email: email.trim(),
+    });
   };
 
-  const handleCancel = () => {
-    // 취소
+  const handleReset = () => {
+    setUsername(user?.username || "");
+    setEmail(user?.email || "");
   };
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold">{t("title")}</h1>
-      <p>{t("description")}</p>
+      <h1 className="mb-4 text-2xl font-bold">{t("title")}</h1>
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-3">
-          <label htmlFor="username" className="text-sm">
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="username" className="text-sm">
             {tLabel("name")}
-          </label>
+          </Label>
           <Input
             id="username"
             type="text"
@@ -70,10 +63,10 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
             required
           />
         </div>
-        <div className="flex flex-col gap-3">
-          <label htmlFor="email" className="text-sm">
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="email" className="text-sm">
             {tLabel("email")}
-          </label>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -83,10 +76,9 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
             required
           />
         </div>
-
-        <div className="flex gap-2">
-          <Button variant="secondary" type="button" onClick={handleCancel}>
-            {tButton("cancel")}
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+          <Button variant="secondary" type="button" onClick={handleReset}>
+            {tButton("reset")}
           </Button>
           <Button variant="default" type="submit">
             {tButton("confirm")}

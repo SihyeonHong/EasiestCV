@@ -1,3 +1,4 @@
+import { SettingsIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import AdminHome from "@/app/components/admin/AdminHome";
@@ -29,7 +30,9 @@ export default function AdminTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        <TabsTrigger value="settings">{t("title")}</TabsTrigger>
+        <TabsTrigger value="settings">
+          <SettingsIcon className="mr-1 size-4" /> {t("title")}
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="home">
         <AdminHome userid={userid} />

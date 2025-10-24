@@ -4,6 +4,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "delete": "Delete",
+    "reset": "Reset",
     "pending": "Please wait..."
   },
   "message": {
@@ -132,8 +133,7 @@
   },
   "editUserInfo": {
     "editUserInfoBtn": "Edit Name/Email",
-    "title": "Edit User Information",
-    "description": "You can update your username and email. Changes will not be saved if you click Cancel."
+    "title": "Edit User Information"
   },
   "resetPassword": {
     "resetPW": "Reset Password",

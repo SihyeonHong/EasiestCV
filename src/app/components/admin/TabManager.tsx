@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 
-import TabCancel from "@/app/components/admin/TabCancel";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import {
@@ -173,10 +172,15 @@ export default function TabManager({ userid }: TabManagerProps) {
           {tAdmin("addTab")}
         </Button>
       </form>
-      <TabCancel resetTabs={resetTabs} />
-      <Button variant="default" onClick={() => saveTabs()}>
-        {tButton("save")}
-      </Button>
+
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Button variant="secondary" onClick={() => resetTabs()}>
+          {tButton("reset")}
+        </Button>
+        <Button variant="default" onClick={() => saveTabs()}>
+          {tButton("save")}
+        </Button>
+      </div>
     </div>
   );
 }
