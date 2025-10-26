@@ -13,7 +13,7 @@ export default function AdminPDF({ userid }: Props) {
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div id="pdf-section" className="flex flex-col gap-4">
       <h1 className="mb-2 text-2xl font-bold">PDF</h1>
       <Input
         id="pdf"

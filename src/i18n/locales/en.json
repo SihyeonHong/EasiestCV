@@ -175,6 +175,10 @@
   "settings": {
     "title": "Settings",
     "shortcut": "Shortcut",
+    "pdf": "PDF",
+    "tabs": "Manage Tabs",
+    "userInfo": "Edit User Info",
+    "password": "Change Password",
     "saveStatus": {
       "saved": "Saved",
       "unsaved": "Unsaved",

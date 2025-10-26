@@ -139,7 +139,7 @@ export default function TabManager({ userid }: TabManagerProps) {
   });
 
   return (
-    <section className="flex flex-col gap-2">
+    <section id="tab-section" className="flex flex-col gap-2">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{tAdmin("tabManager")}</h1>
       </header>

@@ -46,7 +46,7 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
   };
 
   return (
-    <div className="w-full">
+    <div id="userinfo-section" className="w-full">
       <h1 className="mb-4 text-2xl font-bold">{t("title")}</h1>
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
