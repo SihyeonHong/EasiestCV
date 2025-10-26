@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
@@ -109,63 +110,19 @@ export default function TabManager({ userid }: TabManagerProps) {
     // 데이터 속성 (터치 이벤트에서 사용)
     "data-drag-index": index,
   });
+
   return (
     <div className="flex flex-col gap-2">
       <h1 className="mb-2 text-2xl font-bold">{tAdmin("tabManager")}</h1>
-      <p>{tAdmin("tabManagerDescription")}</p>
-      <p>{tAdmin("tabManagerDescriptionMobile")}</p>
 
       <div className="flex flex-col gap-4 sm:flex-row">
-        {/* 테이블 섹션 */}
-        <div className="sm:w-1/2">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-8"></TableHead>
-                <TableHead className="whitespace-nowrap">
-                  {tAdmin("tabOrder")}
-                </TableHead>
-                <TableHead className="w-full">{tAdmin("tabName")}</TableHead>
-                <TableHead className="w-auto">{tAdmin("actions")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {tabs.map((tab, idx) => (
-                <TableRow key={idx} {...getDragHandlers(idx)}>
-                  <TableCell className="w-8">
-                    <MdDragIndicator />
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap">
-                    {tab.torder + 1}
-                  </TableCell>
-                  <TableCell className="w-full">{tab.tname}</TableCell>
-                  <TableCell className="inline-flex w-auto items-center gap-1">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => renameTab(tab.tid)}
-                    >
-                      {tAdmin("rename")}
-                    </Button>
-                    <Button
-                      variant="default"
-                      size="sm"
-                      onClick={() => deleteTab(tab.tid)}
-                    >
-                      {tButton("delete")}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* 세로 구분선 */}
-        <div className="hidden w-px self-stretch bg-zinc-200 dark:bg-zinc-800 sm:block" />
-
         {/* 컨트롤 패널 섹션 */}
-        <div className="flex flex-col gap-2 sm:w-1/2">
+        <div className="flex flex-col gap-4 sm:w-1/2">
+          <div className="text-muted text-sm">
+            <p>{tAdmin("tabManagerDescription")}</p>
+            <p>{tAdmin("tabManagerDescriptionMobile")}</p>
+          </div>
+
           <form
             className="flex flex-row gap-1"
             onSubmit={(e) => {
@@ -194,6 +151,57 @@ export default function TabManager({ userid }: TabManagerProps) {
               {tButton("save")}
             </Button>
           </div>
+        </div>
+
+        {/* 세로 구분선 */}
+        <div className="hidden w-px self-stretch bg-zinc-200 dark:bg-zinc-800 sm:block" />
+
+        {/* 테이블 섹션 */}
+        <div className="sm:w-1/2">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-8"></TableHead>
+                <TableHead className="whitespace-nowrap">
+                  {tAdmin("tabOrder")}
+                </TableHead>
+                <TableHead className="w-full">{tAdmin("tabName")}</TableHead>
+                <TableHead className="w-auto">{tAdmin("actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tabs.map((tab, idx) => (
+                <TableRow key={idx} {...getDragHandlers(idx)}>
+                  <TableCell className="w-8">
+                    <MdDragIndicator />
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {tab.torder + 1}
+                  </TableCell>
+                  <TableCell className="w-full">
+                    <Input value={tab.tname} />
+                  </TableCell>
+                  <TableCell className="inline-flex w-auto items-center gap-1">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => renameTab(tab.tid)}
+                    >
+                      {tAdmin("rename")}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => deleteTab(tab.tid)}
+                    >
+                      <X />
+                      {tButton("delete")}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
