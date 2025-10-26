@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { InfoIcon, PlusIcon, RotateCcwIcon, SaveIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
@@ -145,49 +145,8 @@ export default function TabManager({ userid }: TabManagerProps) {
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row">
-        {/* 컨트롤 패널 섹션 */}
-        <div className="flex flex-col gap-4 sm:w-1/2">
-          <div className="text-muted text-sm">
-            <p>{tAdmin("tabManagerDescription")}</p>
-            <p>{tAdmin("tabManagerDescriptionMobile")}</p>
-          </div>
-
-          <form
-            className="flex flex-row gap-1"
-            onSubmit={(e) => {
-              e.preventDefault();
-              addTab(newTabName);
-              setNewTabName("");
-            }}
-          >
-            <Input
-              type="text"
-              value={newTabName}
-              required
-              onChange={(e) => setNewTabName(e.target.value)}
-              placeholder={tAdmin("newTabNamePlaceholder")}
-            />
-            <Button variant="default" type="submit">
-              {tAdmin("addTab")}
-            </Button>
-          </form>
-
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="secondary" onClick={() => resetTabs()}>
-              {tButton("reset")}
-            </Button>
-            <Button variant="default" onClick={() => saveTabs()}>
-              {tButton("save")}
-            </Button>
-            <SaveStatusIndicator status={saveStatus} />
-          </div>
-        </div>
-
-        {/* 세로 구분선 */}
-        <div className="hidden w-px self-stretch bg-zinc-200 dark:bg-zinc-800 sm:block" />
-
         {/* 테이블 섹션 */}
-        <div className="sm:w-1/2">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 sm:w-2/3 sm:border-b-0">
           <Table>
             <TableHeader>
               <TableRow>
@@ -231,6 +190,62 @@ export default function TabManager({ userid }: TabManagerProps) {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* 세로 구분선 */}
+        <div className="hidden w-px self-stretch bg-zinc-200 dark:bg-zinc-800 sm:block" />
+
+        {/* 컨트롤 패널 섹션 */}
+        <div className="flex flex-col items-end justify-between gap-4 sm:w-1/3 sm:flex-col-reverse">
+          {/* 새 탭 추가 */}
+          <form
+            className="mb-2 flex w-full flex-row gap-1"
+            onSubmit={(e) => {
+              e.preventDefault();
+              addTab(newTabName);
+              setNewTabName("");
+            }}
+          >
+            <Input
+              type="text"
+              value={newTabName}
+              required
+              onChange={(e) => setNewTabName(e.target.value)}
+              placeholder={tAdmin("newTabNamePlaceholder")}
+              className="flex-1"
+            />
+            <Button variant="default" type="submit">
+              <PlusIcon className="size-4" />
+              {tAdmin("addTab")}
+            </Button>
+          </form>
+
+          {/* 팁 */}
+          <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
+            <div className="inline-flex items-center gap-1">
+              <InfoIcon className="size-4" />
+              <h3 className="text-md font-semibold">Tips</h3>
+            </div>
+            <p>{tAdmin("tabManagerDescription")}</p>
+            <p className="sm:hidden">{tAdmin("tabManagerDescriptionMobile")}</p>
+            <p>
+              저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이
+              사라집니다.
+            </p>
+          </div>
+
+          {/* 저장 */}
+          <div className="flex gap-2">
+            <SaveStatusIndicator status={saveStatus} />
+            <Button variant="secondary" onClick={() => resetTabs()}>
+              <RotateCcwIcon className="size-4" />
+              {tButton("reset")}
+            </Button>
+            <Button variant="default" onClick={() => saveTabs()}>
+              <SaveIcon className="size-4" />
+              {tButton("save")}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
