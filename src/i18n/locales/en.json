@@ -173,7 +173,12 @@
   },
   "settings": {
     "title": "Settings",
-    "shortcut": "Shortcut"
+    "shortcut": "Shortcut",
+    "saveStatus": {
+      "saved": "Saved",
+      "unsaved": "Unsaved",
+      "saving": "Saving"
+    }
   },
   "support": {
     "linkDescription": "Need help?",
@@ -197,5 +202,11 @@
     "send": "Send",
     "sendSuccess": "Sent successfully. We will reply to your email.",
     "sendFail": "An error occurred while sending. Please try again."
+  },
+  "saveStatus": {
+    "saved": "Saved",
+    "unsaved": "Unsaved",
+    "saving": "Saving",
+    "error": "Save failed"
   }
 }

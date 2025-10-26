@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 
+import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import {
@@ -33,6 +34,7 @@ export default function TabManager({ userid }: TabManagerProps) {
     renameTab,
     saveTabs,
     resetTabs,
+    saveStatus,
   } = useTabManager(userid);
   const [newTabName, setNewTabName] = useState<string>("");
   const [editingTabNames, setEditingTabNames] = useState<
@@ -138,7 +140,9 @@ export default function TabManager({ userid }: TabManagerProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="mb-2 text-2xl font-bold">{tAdmin("tabManager")}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{tAdmin("tabManager")}</h1>
+      </div>
 
       <div className="flex flex-col gap-4 sm:flex-row">
         {/* 컨트롤 패널 섹션 */}
@@ -175,6 +179,7 @@ export default function TabManager({ userid }: TabManagerProps) {
             <Button variant="default" onClick={() => saveTabs()}>
               {tButton("save")}
             </Button>
+            <SaveStatusIndicator status={saveStatus} />
           </div>
         </div>
 

@@ -11,3 +11,5 @@ export interface GCSRefreshRequest {
   tid: number;
   newList: string[];
 }
+
+export type SaveStatus = "saved" | "unsaved" | "saving" | "error";

@@ -173,7 +173,12 @@
   },
   "settings": {
     "title": "설정",
-    "shortcut": "바로가기"
+    "shortcut": "바로가기",
+    "saveStatus": {
+      "saved": "저장 완료",
+      "unsaved": "저장 필요",
+      "saving": "저장 중"
+    }
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",
@@ -197,5 +202,11 @@
     "send": "보내기",
     "sendSuccess": "성공적으로 전송되었습니다. 기재해 주신 이메일로 답변을 드리겠습니다.",
     "sendFail": "전송 중 오류가 발생했습니다. 다시 시도해 주세요."
+  },
+  "saveStatus": {
+    "saved": "저장 완료",
+    "unsaved": "변경됨",
+    "saving": "저장 중",
+    "error": "저장 실패"
   }
 }

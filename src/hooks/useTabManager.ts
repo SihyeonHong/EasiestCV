@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { useTabs } from "@/hooks/useTabs";
-import { Tab } from "@/models/tab.model";
+import { Tab, SaveStatus } from "@/models/tab.model";
 import { put } from "@/utils/http";
 
 export const useTabManager = (userid: string) => {
@@ -18,7 +18,7 @@ export const useTabManager = (userid: string) => {
   const tabs = localTabs ?? serverTabs;
 
   // 탭 전체 업데이트
-  const { mutate: updateTabsMutation } = useMutation({
+  const { mutate: updateTabsMutation, isPending: isSaving } = useMutation({
     mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: queryKeys.tabs({ userid }) });
@@ -30,6 +30,21 @@ export const useTabManager = (userid: string) => {
       console.error("탭 저장 오류:", error);
     },
   });
+
+  // 저장 상태 계산
+  const getSaveStatus = (): SaveStatus => {
+    if (isSaving) return "saving";
+    if (!localTabs) return "saved";
+
+    // 서버 데이터와 로컬 데이터 비교
+    const isDataEqual =
+      JSON.stringify(serverTabs) === JSON.stringify(localTabs);
+    if (isDataEqual) return "saved";
+
+    return "unsaved";
+  };
+
+  const saveStatus = getSaveStatus();
 
   const addTab = (newTabName: string) => {
     if (!newTabName || newTabName.trim() === "") {
@@ -88,6 +103,7 @@ export const useTabManager = (userid: string) => {
     renameTab,
     saveTabs,
     resetTabs,
+    saveStatus,
   };
 };
 

@@ -1,6 +1,7 @@
+import { Check, Clock, Save, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { SaveStatus } from "@/hooks/useAutoSave";
+import { SaveStatus } from "@/models/tab.model";
 import { cn } from "@/utils/classname";
 
 interface SaveStatusIndicatorProps {
@@ -10,45 +11,48 @@ interface SaveStatusIndicatorProps {
 export default function SaveStatusIndicator({
   status,
 }: SaveStatusIndicatorProps) {
-  const tEditor = useTranslations("editor");
+  const tSaveStatus = useTranslations("saveStatus");
 
-  const getStatusDisplay = () => {
+  const getStatusConfig = () => {
     switch (status) {
-      case "saving":
-        return {
-          text: tEditor("saving"),
-          className: "text-blue-600",
-          icon: "⏳",
-        };
       case "saved":
         return {
-          text: tEditor("saved"),
-          className: "text-green-600",
-          icon: "✓",
+          icon: <Check className="h-4 w-4" />,
+          text: tSaveStatus("saved"),
+          className: "text-green-600 dark:text-green-400",
         };
       case "unsaved":
         return {
-          text: tEditor("unsaved"),
-          className: "text-orange-600",
-          icon: "○",
+          icon: <Save className="h-4 w-4" />,
+          text: tSaveStatus("unsaved"),
+          className: "text-orange-600 dark:text-orange-400",
+        };
+      case "saving":
+        return {
+          icon: <Clock className="h-4 w-4 animate-spin" />,
+          text: tSaveStatus("saving"),
+          className: "text-blue-600 dark:text-blue-400",
         };
       case "error":
         return {
-          text: tEditor("error"),
-          className: "text-red-600",
-          icon: "✗",
+          icon: <X className="h-4 w-4" />,
+          text: tSaveStatus("error"),
+          className: "text-red-600 dark:text-red-400",
         };
     }
   };
 
-  const statusDisplay = getStatusDisplay();
+  const config = getStatusConfig();
 
   return (
     <div
-      className={cn("flex items-center gap-2 text-sm", statusDisplay.className)}
+      className={cn(
+        "flex items-center gap-2 text-sm font-medium",
+        config.className,
+      )}
     >
-      <span>{statusDisplay.icon}</span>
-      <span>{statusDisplay.text}</span>
+      {config.icon}
+      <span>{config.text}</span>
     </div>
   );
 }
