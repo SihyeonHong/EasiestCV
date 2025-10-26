@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
-import { useTabs } from "@/hooks/useTabs";
+import { useTabContents } from "@/hooks/useTabContents";
 
 interface ImageUploaderProps {
   userid: string;
@@ -30,7 +30,7 @@ export default function ImageUploader({
   const tEditor = useTranslations("editor");
   const tError = useTranslations("error");
 
-  const { uploadImgToGCS } = useTabs(userid);
+  const { uploadImgToGCS } = useTabContents(userid);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 

@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/common/Table";
-import { useTabs } from "@/hooks/useTabs";
+import { useTabManager } from "@/hooks/useTabManager";
 
 interface TabManagerProps {
   userid: string;
@@ -33,7 +33,7 @@ export default function TabManager({ userid }: TabManagerProps) {
     renameTab,
     saveTabs,
     resetTabs,
-  } = useTabs(userid);
+  } = useTabManager(userid);
   const [newTabName, setNewTabName] = useState<string>("");
   const [editingTabNames, setEditingTabNames] = useState<
     Record<number, string>
