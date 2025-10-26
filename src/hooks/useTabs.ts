@@ -120,9 +120,7 @@ export const useTabs = (userid: string) => {
     setLocalTabs(reindexed);
   };
 
-  const renameTab = (tid: number) => {
-    const newTabName = window.prompt(tAdmin("newTabNamePlaceholder"));
-    if (!newTabName) return;
+  const renameTab = (tid: number, newTabName: string) => {
     setLocalTabs(
       tabs.map((tab) =>
         tab.tid === tid ? { ...tab, tname: newTabName } : tab,

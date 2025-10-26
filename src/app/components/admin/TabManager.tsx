@@ -35,6 +35,9 @@ export default function TabManager({ userid }: TabManagerProps) {
     resetTabs,
   } = useTabs(userid);
   const [newTabName, setNewTabName] = useState<string>("");
+  const [editingTabNames, setEditingTabNames] = useState<
+    Record<number, string>
+  >({});
 
   // save reference for dragItem and dragOverItem
   const dragItem = useRef<number | null>(null); // 내가 드래그중인 아이템
@@ -92,6 +95,28 @@ export default function TabManager({ userid }: TabManagerProps) {
 
   const handleTouchEnd = () => {
     handleSort();
+  };
+
+  const handleTabNameChange = (tid: number, value: string) => {
+    setEditingTabNames((prev) => ({
+      ...prev,
+      [tid]: value,
+    }));
+  };
+
+  const handleTabNameBlur = (tid: number) => {
+    const newName = editingTabNames[tid];
+    const currentTab = tabs.find((tab) => tab.tid === tid);
+
+    if (newName !== undefined && newName !== currentTab?.tname) {
+      renameTab(tid, newName);
+    }
+
+    setEditingTabNames((prev) => {
+      const updated = { ...prev };
+      delete updated[tid];
+      return updated;
+    });
   };
 
   const getDragHandlers = (index: number) => ({
@@ -179,16 +204,15 @@ export default function TabManager({ userid }: TabManagerProps) {
                     {tab.torder + 1}
                   </TableCell>
                   <TableCell className="w-full">
-                    <Input value={tab.tname} />
+                    <Input
+                      value={editingTabNames[tab.tid] ?? tab.tname}
+                      onChange={(e) =>
+                        handleTabNameChange(tab.tid, e.target.value)
+                      }
+                      onBlur={() => handleTabNameBlur(tab.tid)}
+                    />
                   </TableCell>
                   <TableCell className="inline-flex w-auto items-center gap-1">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => renameTab(tab.tid)}
-                    >
-                      {tAdmin("rename")}
-                    </Button>
                     <Button
                       variant="destructive"
                       size="sm"
