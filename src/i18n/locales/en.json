@@ -99,7 +99,8 @@
     "noTabName": "Tab name cannot be empty.",
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?",
     "rename": "Rename",
-    "addTab": "Add New Tab"
+    "addTab": "Add New Tab",
+    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving."
   },
   "editor": {
     "saving": "Saving...",
