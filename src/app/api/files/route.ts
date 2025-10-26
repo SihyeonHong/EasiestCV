@@ -4,6 +4,42 @@ import { ApiErrorResponse } from "@/models/api";
 import { query } from "@/utils/database";
 import { deleteFile } from "@/utils/gcs";
 
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userid");
+
+    if (!userId) {
+      return NextResponse.json(
+        { message: "userid is required" },
+        { status: 400 },
+      );
+    }
+
+    const result = await query<{ pdf?: string }>(
+      "SELECT pdf FROM userinfo WHERE userid = $1",
+      [userId],
+    );
+
+    if (result.length === 0) {
+      return NextResponse.json({ pdf: undefined }, { status: 200 });
+    }
+
+    return NextResponse.json(result[0]);
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.log("server error: ", e);
+      return NextResponse.json({ message: e.message }, { status: 500 });
+    } else {
+      console.log("unexpected error: ", e);
+      return NextResponse.json(
+        { message: "An unexpected error occurred" },
+        { status: 500 },
+      );
+    }
+  }
+}
+
 export async function DELETE(request: Request) {
   const { userid, tid, newList } = await request.json();
 

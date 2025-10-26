@@ -28,7 +28,7 @@ export default function Settings({ userid }: Props) {
       <CardContent className="flex flex-col gap-12">
         <div>
           <h1 className="mb-2 text-2xl font-bold">{t("shortcut")}</h1>
-          <ul className="flex gap-2">
+          <ul className="flex flex-wrap gap-2">
             <li>
               <Button
                 variant="secondary"
