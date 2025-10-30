@@ -43,7 +43,7 @@ export default async function PublicTabs({ userid }: Props) {
       {tabs &&
         tabs.map((tab) => (
           <TabsContent key={tab.tid} value={tab.tname}>
-            <PublicContents userid={userid} tid={tab.tid} />
+            <PublicContents content={tab.contents} />
           </TabsContent>
         ))}
       <TabsContent value="file">
