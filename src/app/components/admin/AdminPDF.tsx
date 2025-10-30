@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
-import { Switch } from "@/app/components/common/switch";
+import { Switch } from "@/app/components/common/Switch";
 import { useHome } from "@/hooks/useHome";
 import { cn } from "@/utils/classname";
 
