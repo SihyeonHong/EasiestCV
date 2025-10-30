@@ -17,14 +17,14 @@ export async function DELETE(request: Request) {
 
   try {
     const oldListResult = await query<{ files: string[] }>(
-      "SELECT files FROM files WHERE userid = $1 and tid = $2",
+      "SELECT files FROM attachments WHERE userid = $1 and tid = $2",
       [userid, tid],
     );
 
     if (!oldListResult || oldListResult.length === 0) {
       // 파일 리스트가 없음
       await query(
-        "INSERT INTO files (userid, tid, files) VALUES ($1, $2, $3)",
+        "INSERT INTO attachments (userid, tid, files) VALUES ($1, $2, $3)",
         [userid, tid, newList],
       );
 
@@ -41,7 +41,7 @@ export async function DELETE(request: Request) {
       if (filesToDelete.length === 0) {
         // 삭제할 파일이 없는 경우
         await query(
-          "UPDATE files SET files = $1 WHERE userid = $2 and tid = $3",
+          "UPDATE attachments SET files = $1 WHERE userid = $2 and tid = $3",
           [newList, userid, tid],
         );
 
@@ -78,7 +78,7 @@ export async function DELETE(request: Request) {
         failedList.length > 0 ? [...newList, ...failedList] : newList;
 
       await query(
-        "UPDATE files SET files = $1 WHERE userid = $2 and tid = $3",
+        "UPDATE attachments SET files = $1 WHERE userid = $2 and tid = $3",
         [finalList, userid, tid],
       );
 

@@ -19,7 +19,7 @@ import {
 import LoadingPage from "@/app/components/LoadingPage";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
-import { useTabs } from "@/hooks/useTabs";
+import { useTabContents } from "@/hooks/useTabContents";
 // --- Models ---
 import { Tab } from "@/models/tab.model";
 // --- Utils ---
@@ -41,7 +41,7 @@ export default function Editor({ userid, tid }: Props) {
 
 function EditorContent({ userid, tid }: Props) {
   const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
-  const { tabs, updateContents, revertContents } = useTabs(userid);
+  const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
     mobileView,
     setMobileView,
