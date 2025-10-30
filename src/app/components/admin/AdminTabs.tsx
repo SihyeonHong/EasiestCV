@@ -1,7 +1,9 @@
+import { SettingsIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 import AdminHome from "@/app/components/admin/AdminHome";
-import AdminPDF from "@/app/components/admin/AdminPDF";
 import Editor from "@/app/components/admin/Editor";
-import TabManager from "@/app/components/admin/TabManager";
+import Settings from "@/app/components/admin/Settings";
 import {
   Tabs,
   TabsContent,
@@ -16,6 +18,7 @@ interface Props {
 
 export default function AdminTabs({ userid }: Props) {
   const { tabs } = useTabs(userid);
+  const t = useTranslations("settings");
 
   return (
     <Tabs defaultValue="home">
@@ -27,8 +30,9 @@ export default function AdminTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        <TabsTrigger value="pdf">PDF</TabsTrigger>
-        <TabManager userid={userid} />
+        <TabsTrigger value="settings">
+          <SettingsIcon className="mr-1 size-4" /> {t("title")}
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="home">
         <AdminHome userid={userid} />
@@ -39,8 +43,8 @@ export default function AdminTabs({ userid }: Props) {
             <Editor userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
-      <TabsContent value="pdf">
-        <AdminPDF userid={userid} />
+      <TabsContent value="settings">
+        <Settings userid={userid} />
       </TabsContent>
     </Tabs>
   );

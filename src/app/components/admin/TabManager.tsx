@@ -1,20 +1,12 @@
 "use client";
 
+import { InfoIcon, PlusIcon, RotateCcwIcon, SaveIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 
-import TabCancel from "@/app/components/admin/TabCancel";
+import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/app/components/common/Dialog";
 import { Input } from "@/app/components/common/Input";
 import {
   Table,
@@ -24,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/common/Table";
-import { useTabs } from "@/hooks/useTabs";
+import { useTabManager } from "@/hooks/useTabManager";
 
 interface TabManagerProps {
   userid: string;
@@ -42,8 +34,12 @@ export default function TabManager({ userid }: TabManagerProps) {
     renameTab,
     saveTabs,
     resetTabs,
-  } = useTabs(userid);
+    saveStatus,
+  } = useTabManager(userid);
   const [newTabName, setNewTabName] = useState<string>("");
+  const [editingTabNames, setEditingTabNames] = useState<
+    Record<number, string>
+  >({});
 
   // save reference for dragItem and dragOverItem
   const dragItem = useRef<number | null>(null); // 내가 드래그중인 아이템
@@ -103,6 +99,28 @@ export default function TabManager({ userid }: TabManagerProps) {
     handleSort();
   };
 
+  const handleTabNameChange = (tid: number, value: string) => {
+    setEditingTabNames((prev) => ({
+      ...prev,
+      [tid]: value,
+    }));
+  };
+
+  const handleTabNameBlur = (tid: number) => {
+    const newName = editingTabNames[tid];
+    const currentTab = tabs.find((tab) => tab.tid === tid);
+
+    if (newName !== undefined && newName !== currentTab?.tname) {
+      renameTab(tid, newName);
+    }
+
+    setEditingTabNames((prev) => {
+      const updated = { ...prev };
+      delete updated[tid];
+      return updated;
+    });
+  };
+
   const getDragHandlers = (index: number) => ({
     // 마우스 이벤트 (기존)
     draggable: true,
@@ -121,90 +139,113 @@ export default function TabManager({ userid }: TabManagerProps) {
   });
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost">{tAdmin("tabManager")}</Button>
-      </DialogTrigger>
+    <section id="tab-section" className="flex flex-col gap-2">
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{tAdmin("tabManager")}</h1>
+      </header>
 
-      <DialogContent
-        onPointerDownOutside={(e) => e.preventDefault()} // 외부 클릭 시 닫힘 방지
-        onEscapeKeyDown={() => {}} // ESC 키 눌렀을 때 닫힘 방지
-      >
-        <DialogHeader>
-          <DialogTitle>{tAdmin("tabManager")}</DialogTitle>
-          <DialogDescription>
-            {tAdmin("tabManagerDescription")}
-          </DialogDescription>
-          <DialogDescription>
-            {tAdmin("tabManagerDescriptionMobile")}
-          </DialogDescription>
-        </DialogHeader>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead></TableHead>
-              <TableHead>{tAdmin("tabOrder")}</TableHead>
-              <TableHead>{tAdmin("tabName")}</TableHead>
-              <TableHead>{tAdmin("actions")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tabs.map((tab, idx) => (
-              <TableRow key={idx} {...getDragHandlers(idx)}>
-                <TableCell>
-                  <MdDragIndicator />
-                </TableCell>
-                <TableCell>{tab.torder + 1}</TableCell>
-                <TableCell>{tab.tname}</TableCell>
-                <TableCell className="inline-flex items-center gap-1">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => renameTab(tab.tid)}
-                  >
-                    {tAdmin("rename")}
-                  </Button>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => deleteTab(tab.tid)}
-                  >
-                    {tButton("delete")}
-                  </Button>
-                </TableCell>
+      <div className="flex flex-col gap-8 sm:flex-row">
+        {/* 테이블 섹션 */}
+        <div className="border-b border-zinc-200 dark:border-zinc-800 sm:w-2/3 sm:border-b-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-8"></TableHead>
+                <TableHead className="whitespace-nowrap">
+                  {tAdmin("tabOrder")}
+                </TableHead>
+                <TableHead className="w-full">{tAdmin("tabName")}</TableHead>
+                <TableHead className="w-auto">{tAdmin("actions")}</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {tabs.map((tab, idx) => (
+                <TableRow key={idx} {...getDragHandlers(idx)}>
+                  <TableCell className="w-8">
+                    <MdDragIndicator />
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {tab.torder + 1}
+                  </TableCell>
+                  <TableCell className="w-full">
+                    <Input
+                      value={editingTabNames[tab.tid] ?? tab.tname}
+                      onChange={(e) =>
+                        handleTabNameChange(tab.tid, e.target.value)
+                      }
+                      onBlur={() => handleTabNameBlur(tab.tid)}
+                    />
+                  </TableCell>
+                  <TableCell className="inline-flex w-auto items-center gap-1">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => deleteTab(tab.tid)}
+                    >
+                      <X />
+                      {tButton("delete")}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
 
-        <form
-          className="flex flex-row gap-1"
-          onSubmit={(e) => {
-            e.preventDefault();
-            addTab(newTabName);
-            setNewTabName("");
-          }}
-        >
-          <Input
-            type="text"
-            value={newTabName}
-            required
-            onChange={(e) => setNewTabName(e.target.value)}
-            placeholder={tAdmin("newTabNamePlaceholder")}
-          />
-          <Button variant="default" type="submit">
-            {tAdmin("addTab")}
-          </Button>
-        </form>
+        {/* 컨트롤 패널 섹션 */}
+        <aside className="flex flex-col items-end justify-between gap-4 sm:w-1/3 sm:flex-col-reverse">
+          {/* 새 탭 추가 */}
+          <form
+            className="mb-2 flex w-full flex-row gap-1"
+            onSubmit={(e) => {
+              e.preventDefault();
+              addTab(newTabName);
+              setNewTabName("");
+            }}
+          >
+            <Input
+              type="text"
+              value={newTabName}
+              required
+              onChange={(e) => setNewTabName(e.target.value)}
+              placeholder={tAdmin("newTabNamePlaceholder")}
+              className="flex-1"
+            />
+            <Button variant="default" type="submit">
+              <PlusIcon className="size-4" />
+              {tAdmin("addTab")}
+            </Button>
+          </form>
 
-        <DialogFooter className="gap-2">
-          <TabCancel resetTabs={resetTabs} />
-          <Button variant="default" onClick={() => saveTabs()}>
-            {tButton("save")}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          {/* 팁 */}
+          <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
+            <header className="inline-flex items-center gap-1">
+              <InfoIcon className="size-4" />
+              <h3 className="text-md font-semibold">Tips</h3>
+            </header>
+            <ul className="list-inside list-disc">
+              <li>{tAdmin("tabManagerDescription")}</li>
+              <li className="sm:hidden">
+                {tAdmin("tabManagerDescriptionMobile")}
+              </li>
+              <li>{tAdmin("saveWarning")}</li>
+            </ul>
+          </div>
+
+          {/* 저장 */}
+          <div className="flex gap-2">
+            <SaveStatusIndicator status={saveStatus} />
+            <Button variant="secondary" onClick={() => resetTabs()}>
+              <RotateCcwIcon className="size-4" />
+              {tButton("reset")}
+            </Button>
+            <Button variant="default" onClick={() => saveTabs()}>
+              <SaveIcon className="size-4" />
+              {tButton("save")}
+            </Button>
+          </div>
+        </aside>
+      </div>
+    </section>
   );
 }

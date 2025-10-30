@@ -1,22 +1,29 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 
-import { Card, CardContent } from "@/app/components/common/Card";
+import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
-import { Label } from "@/app/components/common/Label";
+import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useHome } from "@/hooks/useHome";
+import { cn } from "@/utils/classname";
 
 interface Props {
   userid: string;
 }
 
 export default function AdminPDF({ userid }: Props) {
-  const t = useTranslations("admin");
+  const t = useTranslations("file");
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
 
   return (
-    <Card>
-      <CardContent className="prose dark:prose-invert">
-        <Label htmlFor="pdf">{t("pdfAttach")}</Label>
+    <div id="pdf-section" className="flex flex-col gap-4">
+      <h1 className="mb-2 text-2xl font-bold">{t("file")}</h1>
+      <div
+        className={cn(
+          "space-y-2 sm:inline-flex sm:flex-row sm:gap-4 sm:space-y-0",
+        )}
+      >
         <Input
           id="pdf"
           type="file"
@@ -28,15 +35,19 @@ export default function AdminPDF({ userid }: Props) {
           }}
         />
         {isPdfPending ? (
-          <p>{t("pdfPending")}</p>
+          <Button variant="secondary" disabled>
+            {t("filePending")} <LoadingIcon />
+          </Button>
         ) : homeData?.pdf ? (
-          <a href={homeData.pdf} target="_blank" rel="noreferrer">
-            {t("pdfOpen")}
-          </a>
+          <Button onClick={() => window.open(homeData.pdf, "_blank")}>
+            {t("fileOpen")}
+          </Button>
         ) : (
-          <p>{t("noPdf")}</p>
+          <Button variant="secondary" disabled>
+            {t("noFile")}
+          </Button>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

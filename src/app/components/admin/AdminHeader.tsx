@@ -1,7 +1,6 @@
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import UserInfoDropDown from "@/app/components/admin/UserInfoDropDown";
 import { Button } from "@/app/components/common/Button";
 import { useRouter } from "@/i18n/routing";
 
@@ -21,7 +20,6 @@ export default function AdminHeader() {
 
   return (
     <div className="flex gap-2">
-      <UserInfoDropDown />
       <Button onClick={handleLogout}>{t("logout")}</Button>
     </div>
   );

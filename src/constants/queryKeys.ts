@@ -3,4 +3,5 @@ export const queryKeys = {
   auth: () => ["auth", "me"],
   user: (params: { userid: string }) => ["user", params],
   home: ({ userid }: { userid: string }) => ["home", userid],
+  files: ({ userid }: { userid: string }) => ["files", userid],
 } as const;

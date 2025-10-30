@@ -1,11 +1,9 @@
 import { useState, useCallback } from "react";
 
-import { GCSRefreshRequest } from "@/models/tab.model";
+import { GCSRefreshRequest, SaveStatus } from "@/models/tab.model";
 import { del } from "@/utils/http";
 import { parseImgSrc } from "@/utils/parseImgSrc";
 import useDebounce from "@/utils/useDebounce";
-
-export type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 
 interface UseAutoSaveProps {
   userid: string;

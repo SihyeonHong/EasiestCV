@@ -4,6 +4,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "delete": "Delete",
+    "reset": "Reset",
     "pending": "Please wait..."
   },
   "message": {
@@ -83,9 +84,6 @@
     "professorCV": "Professor John Doe's CV →"
   },
   "admin": {
-    "pdfAttach": "Attach PDF",
-    "pdfOpen": "Open current PDF",
-    "pdfPending": "Uploading PDF. Please wait...",
     "profileImgAttach": "Attach Profile Image",
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
@@ -98,7 +96,8 @@
     "noTabName": "Tab name cannot be empty.",
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?",
     "rename": "Rename",
-    "addTab": "Add New Tab"
+    "addTab": "Add New Tab",
+    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving."
   },
   "editor": {
     "saving": "Saving...",
@@ -132,8 +131,7 @@
   },
   "editUserInfo": {
     "editUserInfoBtn": "Edit Name/Email",
-    "title": "Edit User Information",
-    "description": "You can update your username and email. Changes will not be saved if you click Cancel."
+    "title": "Edit User Information"
   },
   "resetPassword": {
     "resetPW": "Reset Password",
@@ -164,12 +162,22 @@
   },
   "file": {
     "file": "File",
-    "openBtn": "Open File",
+    "fileAttach": "Attach File",
+    "fileOpen": "Open Current File",
+    "filePending": "Uploading file. Please wait...",
     "noFile": "No file has been uploaded.",
-    "mobileNotSupported": "PDF preview is not supported on mobile.",
+    "mobileNotSupported": "File preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview"
+  },
+  "settings": {
+    "title": "Settings",
+    "shortcut": "Shortcut",
+    "pdf": "PDF",
+    "tabs": "Manage Tabs",
+    "userInfo": "Edit User Info",
+    "password": "Change Password"
   },
   "support": {
     "linkDescription": "Need help?",
@@ -193,5 +201,11 @@
     "send": "Send",
     "sendSuccess": "Sent successfully. We will reply to your email.",
     "sendFail": "An error occurred while sending. Please try again."
+  },
+  "saveStatus": {
+    "saved": "Saved",
+    "unsaved": "Unsaved",
+    "saving": "Saving",
+    "error": "Save failed"
   }
 }
