@@ -17,10 +17,10 @@ ID: tutorial / PW: easiestcv
 
 ```mermaid
 erDiagram
-    users ||--o{ tabs : "owns"
-    users ||--|| userinfo : "has"
-    tabs ||--o{ contents : "contains"
-    tabs ||--o{ attachments : "has"
+    users ||--|| userinfo : has
+    users ||--o{ documents : owns
+    users ||--o{ tabs : owns
+    tabs ||--o| attachments : contains
 
     users {
         varchar userid PK
