@@ -15,16 +15,16 @@ interface Props {
 }
 
 export default function AdminPDF({ userid }: Props) {
-  const t = useTranslations("admin");
+  const t = useTranslations("settings");
   const tMessage = useTranslations("message");
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
   const [showFileTab, setShowFileTab] = useState(true);
 
   return (
     <div id="pdf-section" className="flex flex-col gap-4">
-      <h1 className="mb-2 text-2xl font-bold">PDF</h1>
+      <h1 className="mb-2 text-2xl font-bold">{t("pdf")}</h1>
       <div className="inline-flex gap-4">
-        <Label htmlFor="pdf">파일 탭 사용하기</Label>
+        <Label htmlFor="pdf">{t("useFileTab")}</Label>
         <Switch checked={showFileTab} onCheckedChange={setShowFileTab} />
       </div>
       <div

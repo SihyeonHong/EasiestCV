@@ -176,6 +176,7 @@
     "title": "설정",
     "shortcut": "바로가기",
     "pdf": "PDF",
+    "useFileTab": "파일 탭 사용하기",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
     "password": "비밀번호 변경",

@@ -176,6 +176,7 @@
     "title": "Settings",
     "shortcut": "Shortcut",
     "pdf": "PDF",
+    "useFileTab": "Use File Tab",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
     "password": "Change Password",
