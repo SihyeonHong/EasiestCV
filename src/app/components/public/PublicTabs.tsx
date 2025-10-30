@@ -33,7 +33,9 @@ export default async function PublicTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        <TabsTrigger value="file">{tFile("file")}</TabsTrigger>
+        {homeData?.pdf && (
+          <TabsTrigger value="file">{tFile("file")}</TabsTrigger>
+        )}
       </TabsList>
       <TabsContent value="home">
         {homeData && <PublicHome homeData={homeData} />}
