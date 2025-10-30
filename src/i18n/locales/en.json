@@ -84,9 +84,6 @@
     "professorCV": "Professor John Doe's CV →"
   },
   "admin": {
-    "pdfAttach": "Attach PDF",
-    "pdfOpen": "Open current PDF",
-    "pdfPending": "Uploading PDF. Please wait...",
     "profileImgAttach": "Attach Profile Image",
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
@@ -165,9 +162,11 @@
   },
   "file": {
     "file": "File",
-    "openBtn": "Open File",
+    "fileAttach": "Attach File",
+    "fileOpen": "Open Current File",
+    "filePending": "Uploading file. Please wait...",
     "noFile": "No file has been uploaded.",
-    "mobileNotSupported": "PDF preview is not supported on mobile.",
+    "mobileNotSupported": "File preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview"
@@ -176,15 +175,9 @@
     "title": "Settings",
     "shortcut": "Shortcut",
     "pdf": "PDF",
-    "useFileTab": "Use File Tab",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
-    "password": "Change Password",
-    "saveStatus": {
-      "saved": "Saved",
-      "unsaved": "Unsaved",
-      "saving": "Saving"
-    }
+    "password": "Change Password"
   },
   "support": {
     "linkDescription": "Need help?",

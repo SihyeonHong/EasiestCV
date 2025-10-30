@@ -5,15 +5,14 @@ import { useState, useEffect } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import { Card, CardContent } from "@/app/components/common/Card";
-
-import { LoadingIcon } from "../common/LoadingIcon";
+import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 
 interface Props {
   pdf?: string;
 }
 
 export default function PublicFile({ pdf }: Props) {
-  const tPdf = useTranslations("file");
+  const t = useTranslations("file");
 
   const [isMobile, setIsMobile] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -43,20 +42,18 @@ export default function PublicFile({ pdf }: Props) {
       <CardContent className="flex flex-col gap-5">
         {pdf ? (
           <div className="flex flex-col items-center gap-3 md:flex-row">
-            <Button onClick={openPDF}>{tPdf("openBtn")}</Button>
+            <Button onClick={openPDF}>{t("fileOpen")}</Button>
 
             {isMobile ? (
-              <p className="text-sm text-gray-600">
-                {tPdf("mobileNotSupported")}
-              </p>
+              <p className="text-sm text-gray-600">{t("mobileNotSupported")}</p>
             ) : (
               <Button variant="secondary" onClick={handlePreview}>
-                {showPreview ? tPdf("closePreview") : tPdf("openPreview")}
+                {showPreview ? t("closePreview") : t("openPreview")}
               </Button>
             )}
           </div>
         ) : (
-          <p>{tPdf("noFile")}</p>
+          <p>{t("noFile")}</p>
         )}
 
         {!isMobile && showPreview && pdf && (
@@ -66,7 +63,7 @@ export default function PublicFile({ pdf }: Props) {
               src={pdf}
               onLoad={() => setIsLoading(false)}
               className="h-[100vh] w-full"
-              title={tPdf("preview")}
+              title={t("preview")}
             />
           </div>
         )}

@@ -84,9 +84,6 @@
     "professorCV": "John Doe 교수님의 이력서 →"
   },
   "admin": {
-    "pdfAttach": "PDF 첨부",
-    "pdfOpen": "현재 PDF 보기",
-    "pdfPending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
     "profileImgAttach": "프로필 사진 첨부",
     "imgPending": "이미지 업로드 중입니다. 잠시만 기다려 주세요.",
     "tabManager": "탭 관리",
@@ -165,9 +162,11 @@
   },
   "file": {
     "file": "파일",
-    "openBtn": "파일 열기",
+    "fileAttach": "파일 첨부",
+    "fileOpen": "현재 파일 보기",
+    "filePending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
     "noFile": "업로드된 파일이 없습니다.",
-    "mobileNotSupported": "모바일에서는 PDF 미리보기가 지원되지 않습니다.",
+    "mobileNotSupported": "모바일에서는 파일 미리보기가 지원되지 않습니다.",
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기"
@@ -176,15 +175,9 @@
     "title": "설정",
     "shortcut": "바로가기",
     "pdf": "PDF",
-    "useFileTab": "파일 탭 사용하기",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
-    "password": "비밀번호 변경",
-    "saveStatus": {
-      "saved": "저장 완료",
-      "unsaved": "저장 필요",
-      "saving": "저장 중"
-    }
+    "password": "비밀번호 변경"
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",

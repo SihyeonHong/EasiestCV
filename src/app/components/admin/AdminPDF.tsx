@@ -1,12 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
-import { Label } from "@/app/components/common/Label";
-import { Switch } from "@/app/components/common/Switch";
+import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 import { useHome } from "@/hooks/useHome";
 import { cn } from "@/utils/classname";
 
@@ -15,22 +13,15 @@ interface Props {
 }
 
 export default function AdminPDF({ userid }: Props) {
-  const t = useTranslations("settings");
-  const tMessage = useTranslations("message");
+  const t = useTranslations("file");
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
-  const [showFileTab, setShowFileTab] = useState(true);
 
   return (
     <div id="pdf-section" className="flex flex-col gap-4">
-      <h1 className="mb-2 text-2xl font-bold">{t("pdf")}</h1>
-      <div className="inline-flex gap-4">
-        <Label htmlFor="pdf">{t("useFileTab")}</Label>
-        <Switch checked={showFileTab} onCheckedChange={setShowFileTab} />
-      </div>
+      <h1 className="mb-2 text-2xl font-bold">{t("file")}</h1>
       <div
         className={cn(
           "space-y-2 sm:inline-flex sm:flex-row sm:gap-4 sm:space-y-0",
-          !showFileTab && "hidden sm:hidden",
         )}
       >
         <Input
@@ -44,13 +35,17 @@ export default function AdminPDF({ userid }: Props) {
           }}
         />
         {isPdfPending ? (
-          <p>{t("pdfPending")}</p>
+          <Button variant="secondary" disabled>
+            {t("filePending")} <LoadingIcon />
+          </Button>
         ) : homeData?.pdf ? (
           <Button onClick={() => window.open(homeData.pdf, "_blank")}>
-            {t("pdfOpen")}
+            {t("fileOpen")}
           </Button>
         ) : (
-          <p>{tMessage("noPdf")}</p>
+          <Button variant="secondary" disabled>
+            {t("noFile")}
+          </Button>
         )}
       </div>
     </div>
