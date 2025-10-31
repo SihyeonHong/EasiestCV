@@ -23,8 +23,8 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
 
   useEffect(() => {
     if (user) {
-      setUsername(user.username || "");
-      setEmail(user.email || "");
+      setUsername(user.username);
+      setEmail(user.email);
     }
   }, [user]);
 
@@ -41,8 +41,10 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
   };
 
   const handleReset = () => {
-    setUsername(user?.username || "");
-    setEmail(user?.email || "");
+    if (user) {
+      setUsername(user.username);
+      setEmail(user.email);
+    }
   };
 
   return (

@@ -2,16 +2,18 @@ import { Locale } from "@/i18n/routing";
 
 export interface User {
   userid: string;
-  username?: string;
-  email?: string;
-  title?: string;
-  description?: string;
+  username: string;
+  email: string;
 }
+
+// Form Types
 
 export interface LoginForm {
   userid: string;
   password: string;
 }
+
+// API Request & Response
 
 export interface SignupRequest {
   userid: string;

@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
       <Header type="public" />
       <div className="flex w-full justify-center">
         <div className="w-full max-w-[1024px]">
-          <Title title={user?.username || params.userid} />
+          <Title title={user ? user.username : params.userid} />
           {!user ? <NoUserPage /> : <PublicTabs userid={params.userid} />}
         </div>
       </div>
@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: user.title || `${user?.username}'s CV - Easiest CV`,
-    description: user.description || `${user?.username}'s CV`,
+    title: `${user.username}'s CV - Easiest CV`,
+    description: `${user.username}'s CV`,
     robots: {
       index: true,
       follow: true,
