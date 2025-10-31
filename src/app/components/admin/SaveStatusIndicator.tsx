@@ -1,7 +1,7 @@
 import { Check, Clock, Save, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { SaveStatus } from "@/models/tab.model";
+import { SaveStatus } from "@/types/tab";
 import { cn } from "@/utils/classname";
 
 interface SaveStatusIndicatorProps {

@@ -2,11 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import {
-  FileData,
-  UploadPdfVariables,
-  UploadPdfResponse,
-} from "@/models/file.model";
+import { FileData, UploadPdfVariables, UploadPdfResponse } from "@/types/file";
 import { get, post } from "@/utils/http";
 
 export const useFile = (userid: string) => {

@@ -7,7 +7,7 @@ import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import NoUserPage from "@/app/components/NoUserPage";
 import PublicTabs from "@/app/components/public/PublicTabs";
-import { User } from "@/models/user.model";
+import { User } from "@/types/user-account";
 import { get } from "@/utils/http";
 
 interface Props {

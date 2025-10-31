@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 import { Locale } from "@/i18n/routing";
-import { ResetPasswordRequest, User } from "@/models/user.model";
+import { ResetPasswordRequest, User } from "@/types/user-account";
 import { query } from "@/utils/database";
 import { generateRandomPW } from "@/utils/generateRandomPW";
 import { tempPWTemplate } from "@/utils/tempPWTemplate";

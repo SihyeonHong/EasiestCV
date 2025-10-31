@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { HomeData } from "@/models/home.model";
+import { HomeData } from "@/types/user-data";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {

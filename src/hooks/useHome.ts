@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { HomeData } from "@/models/home.model";
+import { HomeData } from "@/types/user-data";
 import { get, patch, post } from "@/utils/http";
 
 export const useHome = (userid: string) => {

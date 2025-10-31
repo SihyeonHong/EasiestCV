@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { useTabs } from "@/hooks/useTabs";
-import { Tab, SaveStatus } from "@/models/tab.model";
+import { Tab, SaveStatus } from "@/types/tab";
 import { put } from "@/utils/http";
 
 export const useTabManager = (userid: string) => {

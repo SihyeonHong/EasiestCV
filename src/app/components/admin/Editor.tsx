@@ -21,7 +21,7 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
 import { useTabContents } from "@/hooks/useTabContents";
 // --- Models ---
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
 // --- Utils ---
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";

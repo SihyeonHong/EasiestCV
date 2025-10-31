@@ -3,8 +3,8 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { ApiErrorResponse } from "@/models/api";
-import { ChangePWRequest, User } from "@/models/user.model";
+import { ApiErrorResponse } from "@/types/error";
+import { ChangePWRequest, User } from "@/types/user-account";
 import { get, patch, put } from "@/utils/http";
 
 export const useUserInfo = (userid: string) => {

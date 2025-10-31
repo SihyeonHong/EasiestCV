@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { Card, CardContent } from "@/app/components/common/Card";
 import LoadingPage from "@/app/components/LoadingPage";
-import { HomeData } from "@/models/home.model";
+import { HomeData } from "@/types/user-data";
 
 interface Props {
   homeData: HomeData;

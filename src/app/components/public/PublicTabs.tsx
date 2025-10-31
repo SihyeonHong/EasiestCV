@@ -9,8 +9,8 @@ import {
 import PublicContents from "@/app/components/public/PublicContents";
 import PublicFile from "@/app/components/public/PublicFile";
 import PublicHome from "@/app/components/public/PublicHome";
-import { HomeData } from "@/models/home.model";
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
+import { HomeData } from "@/types/user-data";
 import { get } from "@/utils/http";
 
 interface Props {
@@ -22,6 +22,7 @@ export default async function PublicTabs({ userid }: Props) {
 
   const homeData = await getHomeData(userid);
   const tabs = await getTabs(userid);
+  const file = homeData?.pdf ?? null;
 
   return (
     <Tabs defaultValue="home">
@@ -33,9 +34,7 @@ export default async function PublicTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        {homeData?.pdf && (
-          <TabsTrigger value="file">{tFile("file")}</TabsTrigger>
-        )}
+        {file && <TabsTrigger value="file">{tFile("file")}</TabsTrigger>}
       </TabsList>
       <TabsContent value="home">
         {homeData && <PublicHome homeData={homeData} />}
@@ -47,7 +46,7 @@ export default async function PublicTabs({ userid }: Props) {
           </TabsContent>
         ))}
       <TabsContent value="file">
-        <PublicFile pdf={homeData?.pdf} />
+        {file && <PublicFile pdf={file} />}
       </TabsContent>
     </Tabs>
   );
