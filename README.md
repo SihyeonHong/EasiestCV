@@ -17,10 +17,10 @@ ID: tutorial / PW: easiestcv
 
 ```mermaid
 erDiagram
-    users ||--o{ tabs : "owns"
-    users ||--|| userinfo : "has"
-    tabs ||--o{ contents : "contains"
-    tabs ||--o{ attachments : "has"
+    users ||--|| userinfo : has
+    users ||--o{ documents : owns
+    users ||--o{ tabs : owns
+    tabs ||--o| attachments : contains
 
     users {
         varchar userid PK
@@ -30,11 +30,11 @@ erDiagram
     }
 
     userinfo {
-        varchar userid PK // FK to users
+        varchar userid PK 
         text intro
         varchar img
-        varchar meta_title  // 신규 추가 반영
-        varchar meta_description // 신규 추가 반영
+        varchar meta_title  
+        varchar meta_description 
     }
 
     documents {
@@ -52,8 +52,8 @@ erDiagram
     }
 
     attachments {
-        varchar userid PK, FK // Composite PK (FK to users)
-        int tid PK, FK // Composite PK (FK to tabs)
+        varchar userid PK, FK 
+        int tid PK, FK 
         array files
     }
 
