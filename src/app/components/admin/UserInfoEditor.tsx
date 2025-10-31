@@ -31,6 +31,13 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (userSiteMeta) {
+      setTitle(userSiteMeta.title);
+      setDescription(userSiteMeta.description);
+    }
+  }, [userSiteMeta]);
+
   if (isUserLoading || !user) return <LoadingIcon />;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,7 +78,7 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
 
   return (
     <div id="userinfo-section" className="w-full">
-      <h1 className="mb-4 text-2xl font-bold">{t("title")}</h1>
+      <h1 className="mb-4 text-2xl font-bold">{t("editUserInfo")}</h1>
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
@@ -110,36 +117,41 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
         </div>
       </form>
 
+      <div className="my-6 w-full border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+
       {userSiteMeta && (
         <form className="mt-4 flex flex-col gap-2" onSubmit={handleMetaSubmit}>
+          <h2 className="mb-4 text-xl font-bold">{t("editMetadata")}</h2>
           <Label htmlFor="title" className="text-sm">
-            {tLabel("title")}
+            {t("metadataTitleLabel")}
           </Label>
           <Input
             id="title"
             type="text"
-            placeholder={tPlaceholder("titlePlaceholder")}
-            value={userSiteMeta.title}
+            placeholder={t("metadataTitlePlaceholder")}
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
           <Label htmlFor="description" className="text-sm">
-            {tLabel("description")}
+            {t("metadataDescriptionLabel")}
           </Label>
           <Input
             id="description"
             type="text"
-            placeholder={tPlaceholder("descriptionPlaceholder")}
-            value={userSiteMeta.description}
+            placeholder={t("metadataDescriptionPlaceholder")}
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-          <Button variant="secondary" type="button" onClick={handleMetaReset}>
-            {tButton("reset")}
-          </Button>
-          <Button variant="default" type="submit">
-            {tButton("confirm")}
-          </Button>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            <Button variant="secondary" type="button" onClick={handleMetaReset}>
+              {tButton("reset")}
+            </Button>
+            <Button variant="default" type="submit">
+              {tButton("confirm")}
+            </Button>
+          </div>
         </form>
       )}
     </div>

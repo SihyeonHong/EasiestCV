@@ -129,10 +129,6 @@
     "color": "글자 색상",
     "background": "배경 색상"
   },
-  "editUserInfo": {
-    "editUserInfoBtn": "이름/이메일 변경",
-    "title": "회원정보 수정"
-  },
   "resetPassword": {
     "resetPW": "비밀번호 초기화",
     "showResetForm": "비밀번호를 잊으셨나요?",
@@ -178,6 +174,14 @@
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
     "password": "비밀번호 변경"
+  },
+  "editUserInfo": {
+    "editUserInfo": "회원정보 수정",
+    "editMetadata": "메타데이터 수정",
+    "metadataTitleLabel": "사이트 이름",
+    "metadataTitlePlaceholder": "브라우저 탭에 표시될 제목을 입력하세요.",
+    "metadataDescriptionLabel": "사이트 설명",
+    "metadataDescriptionPlaceholder": "이 사이트에 대한 간단한 설명을 입력하세요. (검색 엔진에 노출될 수 있음)"
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",

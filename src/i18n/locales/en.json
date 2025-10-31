@@ -129,10 +129,6 @@
     "color": "Text color",
     "background": "Background color"
   },
-  "editUserInfo": {
-    "editUserInfoBtn": "Edit Name/Email",
-    "title": "Edit User Information"
-  },
   "resetPassword": {
     "resetPW": "Reset Password",
     "showResetForm": "Forgot your password?",
@@ -178,6 +174,14 @@
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
     "password": "Change Password"
+  },
+  "editUserInfo": {
+    "editUserInfo": "Edit User Information",
+    "editMetadata": "Edit Metadata",
+    "metadataTitleLabel": "Site Title",
+    "metadataTitlePlaceholder": "Enter the title to be displayed in the browser tab.",
+    "metadataDescriptionLabel": "Site Description",
+    "metadataDescriptionPlaceholder": "Enter a brief description of this site. (May be shown in search results)"
   },
   "support": {
     "linkDescription": "Need help?",
