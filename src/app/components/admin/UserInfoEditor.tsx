@@ -19,7 +19,10 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const { user, isUserLoading, updateUserInfo } = useUserInfo(userid);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const { user, isUserLoading, updateUserInfo, userSiteMeta, updateMeta } =
+    useUserInfo(userid);
 
   useEffect(() => {
     if (user) {
@@ -44,6 +47,25 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
     if (user) {
       setUsername(user.username);
       setEmail(user.email);
+    }
+  };
+
+  const handleMetaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateMeta({
+      userid,
+      title: title.trim(),
+      description: description.trim(),
+    });
+  };
+
+  const handleMetaReset = () => {
+    if (userSiteMeta) {
+      setTitle(userSiteMeta.title);
+      setDescription(userSiteMeta.description);
+    } else {
+      setTitle(`${user.username}'s CV - Easiest CV`);
+      setDescription(`${user.username}'s CV`);
     }
   };
 
@@ -87,6 +109,39 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
           </Button>
         </div>
       </form>
+
+      {userSiteMeta && (
+        <form className="mt-4 flex flex-col gap-2" onSubmit={handleMetaSubmit}>
+          <Label htmlFor="title" className="text-sm">
+            {tLabel("title")}
+          </Label>
+          <Input
+            id="title"
+            type="text"
+            placeholder={tPlaceholder("titlePlaceholder")}
+            value={userSiteMeta.title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <Label htmlFor="description" className="text-sm">
+            {tLabel("description")}
+          </Label>
+          <Input
+            id="description"
+            type="text"
+            placeholder={tPlaceholder("descriptionPlaceholder")}
+            value={userSiteMeta.description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <Button variant="secondary" type="button" onClick={handleMetaReset}>
+            {tButton("reset")}
+          </Button>
+          <Button variant="default" type="submit">
+            {tButton("confirm")}
+          </Button>
+        </form>
+      )}
     </div>
   );
 }

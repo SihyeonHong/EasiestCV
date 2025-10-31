@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/types/error";
 import { ChangePWRequest, User } from "@/types/user-account";
+import { UserSiteMeta } from "@/types/user-data";
 import { get, patch, put } from "@/utils/http";
 
 export const useUserInfo = (userid: string) => {
@@ -27,6 +28,13 @@ export const useUserInfo = (userid: string) => {
       return response;
     },
     retry: false,
+  });
+
+  const { data: userSiteMeta } = useQuery({
+    queryKey: queryKeys.meta({ userid }),
+    queryFn: async () => {
+      return await get<UserSiteMeta>(`/meta/?userid=${userid}`);
+    },
   });
 
   const {
@@ -95,6 +103,13 @@ export const useUserInfo = (userid: string) => {
     },
   });
 
+  const { mutate: updateMeta } = useMutation({
+    mutationFn: (payload: UserSiteMeta) => put(`/meta`, payload),
+    onSuccess: () => {
+      alert("메타데이터 성공");
+    },
+  });
+
   return {
     user,
     isUserLoading,
@@ -104,5 +119,7 @@ export const useUserInfo = (userid: string) => {
     updateError,
     changePWMutation,
     changePWStatus,
+    userSiteMeta,
+    updateMeta,
   };
 };

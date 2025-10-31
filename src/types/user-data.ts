@@ -6,8 +6,8 @@ export interface UserHome {
 
 export interface UserSiteMeta {
   userid: string;
-  title: string | null; // 사이트 이름 (ex. "홍시현의 포트폴리오")
-  description: string | null; // 사이트 설명 (검색엔진 메타디스크립션 등)
+  title: string; // 사이트 이름 (ex. "홍시현의 포트폴리오")
+  description: string; // 사이트 설명 (검색엔진 메타디스크립션 등)
 }
 
 // legacy

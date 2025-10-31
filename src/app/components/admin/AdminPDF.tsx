@@ -15,6 +15,7 @@ interface Props {
 export default function AdminPDF({ userid }: Props) {
   const t = useTranslations("file");
   const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
+  const file = homeData?.pdf ?? null;
 
   return (
     <div id="pdf-section" className="flex flex-col gap-4">
@@ -38,8 +39,8 @@ export default function AdminPDF({ userid }: Props) {
           <Button variant="secondary" disabled>
             {t("filePending")} <LoadingIcon />
           </Button>
-        ) : homeData?.pdf ? (
-          <Button onClick={() => window.open(homeData.pdf, "_blank")}>
+        ) : file ? (
+          <Button onClick={() => window.open(file, "_blank")}>
             {t("fileOpen")}
           </Button>
         ) : (
