@@ -40,7 +40,7 @@ export default function Editor({ userid, tid }: Props) {
 }
 
 function EditorContent({ userid, tid }: Props) {
-  const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
+  const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
     mobileView,
@@ -175,8 +175,8 @@ function EditorContent({ userid, tid }: Props) {
     if (!editor) return;
     let content;
 
-    if (tid === 0 && homeData) {
-      content = homeData.intro || "";
+    if (tid === 0 && userHome) {
+      content = userHome.intro_html || "";
     } else if (tid !== 0 && currentTab) {
       content = currentTab.contents || "";
     }

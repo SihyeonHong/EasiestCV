@@ -9,6 +9,7 @@ import { NextResponse } from "next/server";
  * 단순히 데이터를 그대로 반환
  */
 export function createSuccessResponse<T>(data: T): NextResponse<T> {
+  // data가 null이어도 되는데 undefined는 직렬화 안 됨
   return NextResponse.json(data, { status: 200 });
 }
 
@@ -62,7 +63,7 @@ export const ApiSuccess = {
   /**
    * 데이터 조회 성공 (GET)
    */
-  ok: <T>(data: T) => createSuccessResponse(data),
+  data: <T>(data: T) => createSuccessResponse(data),
 
   /**
    * 생성 성공 (POST 201)

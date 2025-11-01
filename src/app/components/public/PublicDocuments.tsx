@@ -13,7 +13,7 @@ interface Props {
 
 // 우선 파일이 하나인 경우만 반영합니다.
 export default function PublicDocuments({ documents }: Props) {
-  const t = useTranslations("file");
+  const t = useTranslations("documents");
 
   const [isMobile, setIsMobile] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -31,7 +31,9 @@ export default function PublicDocuments({ documents }: Props) {
   }, []);
 
   const openPDF = () => {
-    window.open(documents[0], "_blank");
+    if (documents.length > 0) {
+      window.open(documents[0], "_blank");
+    }
   };
 
   const handlePreview = () => {
@@ -42,7 +44,7 @@ export default function PublicDocuments({ documents }: Props) {
     <Card>
       <CardContent className="flex flex-col gap-5">
         <div className="flex flex-col items-center gap-3 md:flex-row">
-          <Button onClick={openPDF}>{t("fileOpen")}</Button>
+          <Button onClick={openPDF}>{t("documentsOpen")}</Button>
 
           {isMobile ? (
             <p className="text-sm text-gray-600">{t("mobileNotSupported")}</p>

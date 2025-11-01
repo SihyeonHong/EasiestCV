@@ -10,6 +10,7 @@ import { put } from "@/utils/http";
 export const useTabManager = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
+  const tError = useTranslations("error");
   const tAdmin = useTranslations("admin");
 
   const { tabs: serverTabs } = useTabs(userid);
@@ -26,7 +27,7 @@ export const useTabManager = (userid: string) => {
       alert(tMessage("saveSuccess"));
     },
     onError: (error) => {
-      alert(tMessage("saveFail"));
+      alert(tError("saveFail"));
       console.error("탭 저장 오류:", error);
     },
   });

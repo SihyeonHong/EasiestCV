@@ -157,7 +157,7 @@
     "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
   "documents": {
-    "documents": "문서서",
+    "documents": "문서",
     "documentsAttach": "문서 첨부",
     "documentsOpen": "현재 문서 보기",
     "documentsPending": "문서 업로드 중입니다. 잠시만 기다려 주세요.",
@@ -170,7 +170,7 @@
   "settings": {
     "title": "설정",
     "shortcut": "바로가기",
-    "pdf": "PDF",
+    "documents": "문서",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
     "password": "비밀번호 변경"

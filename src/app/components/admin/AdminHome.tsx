@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import Editor from "@/app/components/admin/Editor";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
+import LoadingPage from "@/app/components/LoadingPage";
 import { useHome } from "@/hooks/useHome";
 
 interface Props {
@@ -11,12 +12,11 @@ interface Props {
 }
 export default function AdminHome({ userid }: Props) {
   const tAdmin = useTranslations("admin");
-  const { homeData, mutateUploadImg } = useHome(userid);
+  const { userHome, mutateUploadImg, isHomeLoading } = useHome(userid);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
-    mutateUploadImg({ userid, file });
+    mutateUploadImg(e.target.files[0] as File);
   };
 
   return (
@@ -29,9 +29,12 @@ export default function AdminHome({ userid }: Props) {
           accept="image/*"
           onChange={handleImageChange}
         />
-        {homeData?.img && (
+
+        {(!userHome || isHomeLoading) && <LoadingPage />}
+
+        {userHome && (
           <Image
-            src={homeData.img}
+            src={userHome.img_url ?? "/icon.png"}
             alt="profile-img"
             width={0}
             height={0}

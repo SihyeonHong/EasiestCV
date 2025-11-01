@@ -46,10 +46,10 @@ export async function POST(req: Request) {
     const formData = await req.formData();
 
     // formData에서 파일과 userid 가져오기
-    const file = formData.get("file") as File | null;
+    const document = formData.get("document") as File | null;
     const userId = formData.get("userid") as string | null;
 
-    if (!file || !userId) {
+    if (!document || !userId) {
       return NextResponse.json(
         { error: "PDF 파일 혹은 userId가 누락되었습니다." },
         { status: 400 },
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     }
 
     // PDF 파일인지 체크
-    if (file.type !== "application/pdf") {
+    if (document.type !== "application/pdf") {
       return NextResponse.json(
         { error: "잘못된 파일 형식입니다. PDF만 업로드 가능합니다." },
         { status: 400 },
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
     // 1) 기존에 DB에 저장된 PDF 경로가 있으면 GCS에서 삭제
     const existing = await query<{ pdf: string | null }>(
-      "SELECT pdf FROM userinfo WHERE userid = $1",
+      "SELECT url FROM documents WHERE userid = $1",
       [userId],
     );
     if (existing.length > 0 && existing[0]?.pdf) {
@@ -79,17 +79,17 @@ export async function POST(req: Request) {
     }
 
     // 2) 새로운 PDF 업로드
-    const arrayBuffer = await file.arrayBuffer();
+    const arrayBuffer = await document.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uniqueFilename = `${file.name}-${Date.now()}`;
+    const uniqueFilename = `${document.name}-${Date.now()}`;
     const pdfUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
 
     // GCS에 업로드
     await uploadFile(uniqueFilename, buffer, "pdf");
 
     // 3) DB에 새 PDF URL 업데이트
-    await query("UPDATE userinfo SET pdf = $1 WHERE userid = $2", [
+    await query("UPDATE documents SET url = $1 WHERE userid = $2", [
       pdfUrl,
       userId,
     ]);

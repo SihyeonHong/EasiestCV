@@ -170,7 +170,7 @@
   "settings": {
     "title": "Settings",
     "shortcut": "Shortcut",
-    "pdf": "PDF",
+    "documents": "Documents",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
     "password": "Change Password"

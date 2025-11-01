@@ -106,7 +106,11 @@ export const useUserInfo = (userid: string) => {
   const { mutate: updateMeta } = useMutation({
     mutationFn: (payload: UserSiteMeta) => put(`/meta`, payload),
     onSuccess: () => {
-      alert("메타데이터 성공");
+      alert(tMessage("saveSuccess"));
+    },
+    onError: (error: unknown) => {
+      alert(tError("saveFail"));
+      console.error(error);
     },
   });
 

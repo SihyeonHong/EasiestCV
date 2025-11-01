@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-
 import { UserSiteMeta } from "@/types/user-data";
 import { ApiError, validateRequiredFields } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
@@ -14,7 +13,7 @@ export async function GET(request: Request) {
       [userid],
     );
 
-    return NextResponse.json(result[0], { status: 200 });
+    return ApiSuccess.data<UserSiteMeta | null>(result[0] ?? null);
   } catch (error) {
     console.error(error);
     return ApiError.server("메타데이터 조회 중 오류가 발생했습니다.");
@@ -45,7 +44,7 @@ export async function PUT(request: Request) {
       [userid, title, description],
     );
 
-    return NextResponse.json({ status: 200 });
+    return ApiSuccess.updated();
   } catch (error) {
     console.error("Meta update error:", error);
     return ApiError.server("메타데이터 저장 중 오류가 발생했습니다.");
