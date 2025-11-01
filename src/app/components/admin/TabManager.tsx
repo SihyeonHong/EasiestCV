@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 
+import NeedSaveDescription from "@/app/components/admin/NeedSaveDescription";
 import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
@@ -139,9 +140,10 @@ export default function TabManager({ userid }: TabManagerProps) {
   });
 
   return (
-    <section id="tab-section" className="flex flex-col gap-2">
-      <header className="flex items-center justify-between">
+    <section id="tab-section" className="space-y-3">
+      <header className="space-y-1">
         <h1 className="text-2xl font-bold">{tAdmin("tabManager")}</h1>
+        <NeedSaveDescription />
       </header>
 
       <div className="flex flex-col gap-8 sm:flex-row">
@@ -220,15 +222,14 @@ export default function TabManager({ userid }: TabManagerProps) {
           {/* 팁 */}
           <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
             <header className="inline-flex items-center gap-1">
-              <InfoIcon className="size-4" />
-              <h3 className="text-md font-semibold">Tips</h3>
+              <InfoIcon className="text-muted size-4" />
+              <h3 className="text-md text-muted font-semibold">Tips</h3>
             </header>
             <ul className="list-inside list-disc">
-              <li>{tAdmin("tabManagerDescription")}</li>
-              <li className="sm:hidden">
+              <li className="text-muted">{tAdmin("tabManagerDescription")}</li>
+              <li className="text-muted sm:hidden">
                 {tAdmin("tabManagerDescriptionMobile")}
               </li>
-              <li>{tAdmin("saveWarning")}</li>
             </ul>
           </div>
 

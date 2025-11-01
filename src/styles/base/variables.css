@@ -86,6 +86,7 @@
   --tt-scrollbar-color: var(--tt-alpha-border);
   --tt-cursor-color: #3f3f46; /* zinc-700 */
   --tt-selection-color: rgba(82, 82, 91, 0.2); /* zinc-600 with 20% opacity */
+  --tt-text-muted: #71717a; /* zinc-500 - 보조 텍스트, muted 텍스트 */
   --tt-card-bg-color: rgba(255, 255, 255, 1);
   --tt-card-border-color: var(--tt-alpha-border-subtle);
 }
@@ -119,6 +120,7 @@
     170,
     0.2
   ); /* zinc-400 with 20% opacity */
+  --tt-text-muted: #a1a1aa; /* zinc-400 - 보조 텍스트, muted 텍스트 */
   --tt-card-bg-color: #18181b; /* zinc-900 */
   --tt-card-border-color: var(--tt-alpha-border-subtle);
 

@@ -17,7 +17,8 @@ ID: tutorial / PW: easiestcv
 
 ```mermaid
 erDiagram
-    users ||--|| userinfo : has
+    users ||--|| user_home : has
+    users ||--|| user_site_meta : has
     users ||--o{ documents : owns
     users ||--o{ tabs : owns
     tabs ||--o| attachments : contains
@@ -28,13 +29,12 @@ erDiagram
         varchar password
         varchar email
     }
-
-    userinfo {
-        varchar userid PK 
+    user_home {
+        varchar userid PK
         text intro
         varchar img
-        varchar meta_title  
-        varchar meta_description 
+        varchar meta_title
+        varchar meta_description
     }
 
     documents {
@@ -52,8 +52,8 @@ erDiagram
     }
 
     attachments {
-        varchar userid PK, FK 
-        int tid PK, FK 
+        varchar userid PK, FK
+        int tid PK, FK
         array files
     }
 
@@ -71,15 +71,21 @@ erDiagram
 - password: 암호화된 비밀번호
 - email: 이메일 주소
 
-### userinfo
+### user_home
 
 사용자 프로필 정보를 저장합니다.
 
 - userid: 사용자 식별자 (Primary Key, Foreign Key → users)
-- home_intro: home 탭의 자기소개
-- home_img: home 탭 이미지의 GCS URL
-- meta_title: 웹페이지 제목
-- meta_description: 웹페이지 설명
+- intro_html: home 탭의 자기소개
+- img_url: home 탭 이미지의 GCS URL
+
+### user_site_meta
+
+사용자 페이지의 메타데이터를 저장합니다.
+
+- userid: 사용자 식별자 (Primary Key, Foreign Key → users)
+- title: 브라우저 탭 제목
+- description: 사이트 설명
 
 ### documents
 

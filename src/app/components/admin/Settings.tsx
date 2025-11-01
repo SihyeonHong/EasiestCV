@@ -68,11 +68,9 @@ export default function Settings({ userid }: Props) {
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
         <TabManager userid={userid} />
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
-        <div className="flex flex-col gap-12 sm:flex-row">
-          <UserInfoEditor userid={userid} />
-          <div className="w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
-          <PasswordChanger userid={userid} />
-        </div>
+        <UserInfoEditor userid={userid} />
+        <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+        <PasswordChanger userid={userid} />
       </CardContent>
     </Card>
   );
