@@ -173,7 +173,8 @@
     "documents": "문서",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
-    "password": "비밀번호 변경"
+    "password": "비밀번호 변경",
+    "metadata": "메타데이터 수정"
   },
   "editUserInfo": {
     "editUserInfo": "회원정보 수정",

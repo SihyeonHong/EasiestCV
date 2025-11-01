@@ -173,7 +173,8 @@
     "documents": "Documents",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
-    "password": "Change Password"
+    "password": "Change Password",
+    "metadata": "Edit Metadata"
   },
   "editUserInfo": {
     "editUserInfo": "Edit User Information",

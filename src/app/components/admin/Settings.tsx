@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import AdminDocuments from "@/app/components/admin/AdminDocuments";
+import MetadataEditor from "@/app/components/admin/MetadataEditor";
 import PasswordChanger from "@/app/components/admin/PasswordChanger";
 import TabManager from "@/app/components/admin/TabManager";
 import UserInfoEditor from "@/app/components/admin/UserInfoEditor";
@@ -61,6 +62,14 @@ export default function Settings({ userid }: Props) {
                 {t("password")}
               </Button>
             </li>
+            <li>
+              <Button
+                onClick={() => handleScrollTo("metadata-section")}
+                variant="secondary"
+              >
+                {t("metadata")}
+              </Button>
+            </li>
           </ul>
         </div>
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
@@ -71,6 +80,8 @@ export default function Settings({ userid }: Props) {
         <UserInfoEditor userid={userid} />
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
         <PasswordChanger userid={userid} />
+        <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+        <MetadataEditor userid={userid} />
       </CardContent>
     </Card>
   );

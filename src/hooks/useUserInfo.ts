@@ -6,7 +6,6 @@ import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/types/error";
 import { SaveStatus } from "@/types/tab";
 import { ChangePWRequest, User } from "@/types/user-account";
-import { UserSiteMeta } from "@/types/user-data";
 import { get, patch, put } from "@/utils/http";
 
 export const useUserInfo = (userid: string) => {
@@ -29,13 +28,6 @@ export const useUserInfo = (userid: string) => {
       return response;
     },
     retry: false,
-  });
-
-  const { data: userSiteMeta } = useQuery({
-    queryKey: queryKeys.meta({ userid }),
-    queryFn: async () => {
-      return await get<UserSiteMeta>(`/meta/?userid=${userid}`);
-    },
   });
 
   const {
@@ -105,22 +97,6 @@ export const useUserInfo = (userid: string) => {
     },
   });
 
-  const {
-    mutate: updateMeta,
-    isPending: isUpdatingMeta,
-    error: updateMetaError,
-  } = useMutation({
-    mutationFn: (payload: UserSiteMeta) => put(`/meta`, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.meta({ userid }) });
-      alert(tMessage("saveSuccess"));
-    },
-    onError: (error: unknown) => {
-      alert(tError("saveFail"));
-      console.error(error);
-    },
-  });
-
   // 이름/이메일 변경 저장 상태 계산
   const getUserInfoSaveStatus = (
     localUsername: string,
@@ -138,25 +114,6 @@ export const useUserInfo = (userid: string) => {
     return isDataEqual ? "saved" : "unsaved";
   };
 
-  // 메타데이터 수정 저장 상태 계산
-  const getMetaSaveStatus = (
-    localTitle: string,
-    localDescription: string,
-  ): SaveStatus => {
-    if (isUpdatingMeta) return "saving";
-    if (updateMetaError) return "error";
-
-    // 서버 데이터와 로컬 데이터 비교
-    const serverTitle = userSiteMeta?.title || "";
-    const serverDescription = userSiteMeta?.description || "";
-
-    const isDataEqual =
-      serverTitle.trim() === localTitle.trim() &&
-      serverDescription.trim() === localDescription.trim();
-
-    return isDataEqual ? "saved" : "unsaved";
-  };
-
   return {
     user,
     isUserLoading,
@@ -166,9 +123,6 @@ export const useUserInfo = (userid: string) => {
     updateError,
     changePWMutation,
     changePWStatus,
-    userSiteMeta,
-    updateMeta,
     getUserInfoSaveStatus,
-    getMetaSaveStatus,
   };
 };
