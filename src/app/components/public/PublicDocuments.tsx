@@ -8,10 +8,11 @@ import { Card, CardContent } from "@/app/components/common/Card";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
 
 interface Props {
-  pdf?: string;
+  documents: string[];
 }
 
-export default function PublicFile({ pdf }: Props) {
+// 우선 파일이 하나인 경우만 반영합니다.
+export default function PublicDocuments({ documents }: Props) {
   const t = useTranslations("file");
 
   const [isMobile, setIsMobile] = useState(false);
@@ -30,7 +31,7 @@ export default function PublicFile({ pdf }: Props) {
   }, []);
 
   const openPDF = () => {
-    window.open(pdf, "_blank");
+    window.open(documents[0], "_blank");
   };
 
   const handlePreview = () => {
@@ -40,27 +41,24 @@ export default function PublicFile({ pdf }: Props) {
   return (
     <Card>
       <CardContent className="flex flex-col gap-5">
-        {pdf ? (
-          <div className="flex flex-col items-center gap-3 md:flex-row">
-            <Button onClick={openPDF}>{t("fileOpen")}</Button>
+        <div className="flex flex-col items-center gap-3 md:flex-row">
+          <Button onClick={openPDF}>{t("fileOpen")}</Button>
 
-            {isMobile ? (
-              <p className="text-sm text-gray-600">{t("mobileNotSupported")}</p>
-            ) : (
-              <Button variant="secondary" onClick={handlePreview}>
-                {showPreview ? t("closePreview") : t("openPreview")}
-              </Button>
-            )}
-          </div>
-        ) : (
-          <p>{t("noFile")}</p>
-        )}
+          {isMobile ? (
+            <p className="text-sm text-gray-600">{t("mobileNotSupported")}</p>
+          ) : (
+            <Button variant="secondary" onClick={handlePreview}>
+              {showPreview ? t("closePreview") : t("openPreview")}
+            </Button>
+          )}
+        </div>
 
-        {!isMobile && showPreview && pdf && (
+        {!isMobile && showPreview && (
           <div className="w-full rounded border">
             {isLoading && <LoadingIcon />}
+
             <iframe
-              src={pdf}
+              src={documents[0]}
               onLoad={() => setIsLoading(false)}
               className="h-[100vh] w-full"
               title={t("preview")}

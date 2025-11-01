@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { createSuccessResponse } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { uploadFile, deleteFile } from "@/utils/gcs";
 
@@ -18,13 +19,13 @@ export async function GET(request: Request) {
     const result = await query<{ url?: string }>(
       "SELECT url FROM documents WHERE userid = $1",
       [userId],
-    );
+    ); // [{ url: "url1" }, { url: "url2" }, { url: "url3" }]
 
-    if (result.length === 0) {
-      return NextResponse.json({ url: undefined }, { status: 200 });
-    }
+    const urls = result
+      .map((row) => row.url)
+      .filter((url): url is string => url !== undefined);
 
-    return NextResponse.json({ url: result[0] }, { status: 200 });
+    return createSuccessResponse(urls);
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.log("server error: ", e);

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { HomeData } from "@/types/user-data";
+import { createSuccessResponse } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
@@ -8,11 +9,11 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userid");
 
-    const result = await query("SELECT * FROM userinfo WHERE userid = $1", [
+    const result = await query("SELECT * FROM user_home WHERE userid = $1", [
       userId,
     ]);
 
-    return NextResponse.json(result[0]);
+    return createSuccessResponse(result[0]);
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.log("server error: ", e);
