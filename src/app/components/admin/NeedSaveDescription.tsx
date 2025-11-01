@@ -9,7 +9,7 @@ export default function NeedSaveDescription({
 }) {
   const tAdmin = useTranslations("admin");
   return (
-    <p className={cn("text-muted text-sm", className)}>
+    <p className={cn("text-sm text-muted", className)}>
       {tAdmin("saveWarning")}
     </p>
   );

@@ -30,7 +30,7 @@ export default function SupportCard({
             className="flex items-center justify-between"
           >
             {titleElement}
-            <div className="text-muted flex items-center gap-1 text-sm">
+            <div className="flex items-center gap-1 text-sm text-muted">
               <span className="mr-1 hidden text-nowrap sm:block">상세보기</span>
               <ArrowRight className="h-4 w-5 font-bold" />
             </div>

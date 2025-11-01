@@ -222,8 +222,8 @@ export default function TabManager({ userid }: TabManagerProps) {
           {/* 팁 */}
           <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
             <header className="inline-flex items-center gap-1">
-              <InfoIcon className="text-muted size-4" />
-              <h3 className="text-md text-muted font-semibold">Tips</h3>
+              <InfoIcon className="size-4 text-muted" />
+              <h3 className="text-md font-semibold text-muted">Tips</h3>
             </header>
             <ul className="list-inside list-disc">
               <li className="text-muted">{tAdmin("tabManagerDescription")}</li>
