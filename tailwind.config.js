@@ -15,6 +15,7 @@ const tailwindConfig = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        muted: "var(--muted)",
       },
     },
   },

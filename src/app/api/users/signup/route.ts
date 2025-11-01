@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 
-import { SignupRequest } from "@/models/user.model";
+import { SignupRequest } from "@/types/user-account";
 import { query } from "@/utils/database";
 
 export async function POST(request: NextRequest) {

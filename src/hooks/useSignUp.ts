@@ -2,8 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
-import { ApiErrorResponse } from "@/models/api";
-import { SignupRequest } from "@/models/user.model";
+import { ApiErrorResponse } from "@/types/error";
+import { SignupRequest } from "@/types/user-account";
 import { post } from "@/utils/http";
 
 export default function useSignUp() {

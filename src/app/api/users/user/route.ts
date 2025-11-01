@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { ApiErrorResponse, DBError } from "@/models/api";
+import { ApiErrorResponse, DBError } from "@/types/error";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {

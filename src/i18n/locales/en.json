@@ -129,10 +129,6 @@
     "color": "Text color",
     "background": "Background color"
   },
-  "editUserInfo": {
-    "editUserInfoBtn": "Edit Name/Email",
-    "title": "Edit User Information"
-  },
   "resetPassword": {
     "resetPW": "Reset Password",
     "showResetForm": "Forgot your password?",
@@ -160,13 +156,13 @@
     "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
     "lengthError": "ID must be between 3 and 20 characters long."
   },
-  "file": {
-    "file": "File",
-    "fileAttach": "Attach File",
-    "fileOpen": "Open Current File",
-    "filePending": "Uploading file. Please wait...",
-    "noFile": "No file has been uploaded.",
-    "mobileNotSupported": "File preview is not supported on mobile.",
+  "documents": {
+    "documents": "Documents",
+    "documentsAttach": "Attach Documents",
+    "documentsOpen": "Open Current Documents",
+    "documentsPending": "Uploading documents. Please wait...",
+    "noDocuments": "No documents have been uploaded.",
+    "mobileNotSupported": "Documents preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview"
@@ -174,10 +170,19 @@
   "settings": {
     "title": "Settings",
     "shortcut": "Shortcut",
-    "pdf": "PDF",
+    "documents": "Documents",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
-    "password": "Change Password"
+    "password": "Change Password",
+    "metadata": "Edit Metadata"
+  },
+  "editUserInfo": {
+    "editUserInfo": "Edit User Information",
+    "editMetadata": "Edit Metadata",
+    "metadataTitleLabel": "Site Title",
+    "metadataTitlePlaceholder": "Enter the title to be displayed in the browser tab.",
+    "metadataDescriptionLabel": "Site Description",
+    "metadataDescriptionPlaceholder": "Enter a brief description of this site. (May be shown in search results)"
   },
   "support": {
     "linkDescription": "Need help?",

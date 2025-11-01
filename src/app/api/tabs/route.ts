@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
 import { query } from "@/utils/database";
 
 export async function PUT(request: Request) {

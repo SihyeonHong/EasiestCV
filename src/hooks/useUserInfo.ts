@@ -3,8 +3,9 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { ApiErrorResponse } from "@/models/api";
-import { ChangePWRequest, User } from "@/models/user.model";
+import { ApiErrorResponse } from "@/types/error";
+import { SaveStatus } from "@/types/tab";
+import { ChangePWRequest, User } from "@/types/user-account";
 import { get, patch, put } from "@/utils/http";
 
 export const useUserInfo = (userid: string) => {
@@ -33,6 +34,7 @@ export const useUserInfo = (userid: string) => {
     mutate: updateUserInfo,
     status: updateStatus,
     error: updateError,
+    isPending: isUpdatingUserInfo,
   } = useMutation({
     mutationFn: (payload: User) => put(`/users/user`, payload),
     onSuccess: () => {
@@ -95,6 +97,23 @@ export const useUserInfo = (userid: string) => {
     },
   });
 
+  // 이름/이메일 변경 저장 상태 계산
+  const getUserInfoSaveStatus = (
+    localUsername: string,
+    localEmail: string,
+  ): SaveStatus => {
+    if (isUpdatingUserInfo) return "saving";
+    if (updateError) return "error";
+    if (!user) return "saved";
+
+    // 서버 데이터와 로컬 데이터 비교
+    const isDataEqual =
+      user.username.trim() === localUsername.trim() &&
+      user.email.trim() === localEmail.trim();
+
+    return isDataEqual ? "saved" : "unsaved";
+  };
+
   return {
     user,
     isUserLoading,
@@ -104,5 +123,6 @@ export const useUserInfo = (userid: string) => {
     updateError,
     changePWMutation,
     changePWStatus,
+    getUserInfoSaveStatus,
   };
 };

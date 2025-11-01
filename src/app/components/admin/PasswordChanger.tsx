@@ -1,4 +1,4 @@
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, RotateCcwIcon, SaveIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -110,8 +110,9 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="flex justify-end gap-2">
           <Button variant="secondary" onClick={handleReset}>
+            <RotateCcwIcon className="size-4" />
             {tButton("reset")}
           </Button>
 
@@ -121,7 +122,10 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
               {tButton("pending")}
             </Button>
           ) : (
-            <Button type="submit">{tButton("confirm")}</Button>
+            <Button type="submit">
+              <SaveIcon className="size-4" />
+              {tButton("save")}
+            </Button>
           )}
         </div>
       </form>

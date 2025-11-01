@@ -6,14 +6,10 @@ export interface User {
   email: string;
 }
 
-// Form Types
-
 export interface LoginForm {
   userid: string;
   password: string;
 }
-
-// API Request & Response
 
 export interface SignupRequest {
   userid: string;

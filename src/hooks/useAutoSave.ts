@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-import { GCSRefreshRequest, SaveStatus } from "@/models/tab.model";
+import { GCSRefreshRequest, SaveStatus } from "@/types/tab";
 import { del } from "@/utils/http";
 import { parseImgSrc } from "@/utils/parseImgSrc";
 import useDebounce from "@/utils/useDebounce";

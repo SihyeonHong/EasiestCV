@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
-import { ResetPasswordRequest } from "@/models/user.model";
+import { ResetPasswordRequest } from "@/types/user-account";
 import { put } from "@/utils/http";
 
 export const useResetPassword = () => {
