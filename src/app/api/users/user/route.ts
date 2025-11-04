@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { ApiErrorResponse, DBError } from "@/types/error";
 import { query } from "@/utils/database";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 
 export async function GET(request: Request) {
   try {
@@ -38,17 +39,13 @@ export async function PUT(request: Request) {
   try {
     const { userid, username, email } = await request.json();
 
-    const missingFields: string[] = [];
-    if (!userid) missingFields.push("userid");
-    if (!username) missingFields.push("username");
-    if (!email) missingFields.push("email");
-
-    if (missingFields.length > 0) {
-      const response: ApiErrorResponse = {
-        message: `필수 필드가 누락되었습니다: ${missingFields.join(", ")}`,
-        errorType: "VALIDATION_ERROR",
-      };
-      return NextResponse.json(response, { status: 400 });
+    const errorResponse = validateMissingFields({
+      userid,
+      username,
+      email,
+    });
+    if (errorResponse) {
+      return errorResponse;
     }
 
     // 이메일 형식 검증

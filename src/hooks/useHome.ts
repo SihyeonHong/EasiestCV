@@ -3,8 +3,8 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { UserHome } from "@/types/user-data";
-import { get, patch, post } from "@/utils/http";
+import { HomeImgDeleteRequest, UserHome } from "@/types/user-data";
+import { get, patch, post, put } from "@/utils/http";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const useHome = (userid: string) => {
   const tEditor = useTranslations("editor");
   const tError = useTranslations("error");
 
-  // 1) 홈 데이터 조회
+  // 홈 데이터 조회
   const {
     data: userHome,
     isLoading: isHomeLoading,
@@ -25,25 +25,7 @@ export const useHome = (userid: string) => {
     enabled: !!userid, // userid가 있어야만 요청
   });
 
-  // 2) PDF 업로드 Mutation
-  const {
-    mutate: mutateUploadPdf,
-    status: pdfUploadStatus,
-    isPending: isPdfPending,
-  } = useMutation({
-    mutationFn: uploadPdf,
-    onSuccess: () => {
-      alert(tMessage("saveSuccess"));
-      queryClient.invalidateQueries({ queryKey: queryKeys.home({ userid }) });
-      refetch();
-    },
-    onError: (err) => {
-      alert(tError("saveFail"));
-      console.error("PDF 업로드 에러:", err);
-    },
-  });
-
-  // 3) 이미지 업로드 Mutation
+  // 이미지 GCS 업로드 Mutation
   const {
     mutate: mutateUploadImg,
     status: imgUploadStatus,
@@ -66,7 +48,23 @@ export const useHome = (userid: string) => {
     },
   });
 
-  // 4) 프로필 소개 업로드 Mutation
+  // 기본 이미지 or 프로필 이미지 없애기
+  const { mutate: deleteImg } = useMutation({
+    mutationFn: (imgUrl: string | null, oldFileName?: string) => {
+      const data: HomeImgDeleteRequest = { userid, imgUrl, oldFileName };
+      return put("/home/img", data);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
+      refetch();
+    },
+    onError: (error) => {
+      alert(tError("saveFail"));
+      console.error("Reset Img Error:", error);
+    },
+  });
+
+  // 프로필 소개 업로드 Mutation
   const {
     mutate: mutateUploadIntro,
     status: introUploadStatus,
@@ -116,15 +114,13 @@ export const useHome = (userid: string) => {
     isHomeError,
     homeError,
 
-    // PDF 업로드
-    mutateUploadPdf,
-    pdfUploadStatus,
-    isPdfPending,
-
     // 이미지 업로드
     mutateUploadImg,
     imgUploadStatus,
     isImgPending,
+
+    // 이미지 탭 삭제 or 기본 이미지로 변경
+    deleteImg,
 
     // intro 업로드
     mutateUploadIntro,
@@ -135,22 +131,3 @@ export const useHome = (userid: string) => {
     revertIntro,
   };
 };
-
-// ---------- PDF 업로드 ----------
-type UploadPdfVariables = {
-  userid: string;
-  file: File;
-};
-
-type UploadPdfResponse = {
-  pdfUrl?: string; // 성공 시 서버에서 pdfUrl을 내려줌
-  error?: string;
-};
-
-async function uploadPdf({ userid, file }: UploadPdfVariables) {
-  const formData = new FormData();
-  formData.append("userid", userid);
-  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
-
-  return await post<UploadPdfResponse>("/home/pdf", formData);
-}

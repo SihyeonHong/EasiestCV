@@ -97,7 +97,12 @@
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?",
     "rename": "Rename",
     "addTab": "Add New Tab",
-    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving."
+    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving.",
+    "imageToDefault": "Change to Default Image",
+    "imageTabHide": "Hide Image Tab",
+    "currentImageDelete": "The current set image will be deleted.",
+    "imageToDefaultConfirm": "Are you sure you want to change to the default image?",
+    "imageTabHideConfirm": "Hiding the image tab will make the home tab look like other tabs."
   },
   "editor": {
     "saving": "Saving...",

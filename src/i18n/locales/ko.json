@@ -97,7 +97,12 @@
     "deleteConfirm": "탭 속 내용도 함께 삭제됩니다. 정말로 삭제하시겠습니까?",
     "rename": "이름 변경",
     "addTab": "탭 추가",
-    "saveWarning": "저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이 사라집니다."
+    "saveWarning": "저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이 사라집니다.",
+    "imageToDefault": "기본 이미지로 변경",
+    "imageTabHide": "이미지 탭 숨기기",
+    "currentImageDelete": "현재 설정된 이미지는 삭제됩니다.",
+    "imageToDefaultConfirm": "정말 기본 이미지로 변경하시겠습니까?",
+    "imageTabHideConfirm": "이미지 탭을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
   },
   "editor": {
     "saving": "저장 중...",

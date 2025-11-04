@@ -4,6 +4,12 @@ export interface UserHome {
   img_url: string | null;
 }
 
+export interface HomeImgDeleteRequest {
+  userid: string;
+  imgUrl: string | null;
+  oldFileName?: string;
+}
+
 export interface UserSiteMeta {
   userid: string;
   title: string; // 사이트 이름 (ex. "홍시현의 포트폴리오")

@@ -2,9 +2,11 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import Editor from "@/app/components/admin/Editor";
+import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
 import LoadingPage from "@/app/components/LoadingPage";
+import { DEFAULT_IMG } from "@/constants/constants";
 import { useHome } from "@/hooks/useHome";
 
 interface Props {
@@ -12,11 +14,33 @@ interface Props {
 }
 export default function AdminHome({ userid }: Props) {
   const tAdmin = useTranslations("admin");
-  const { userHome, mutateUploadImg, isHomeLoading } = useHome(userid);
+  const { userHome, mutateUploadImg, isHomeLoading, deleteImg } =
+    useHome(userid);
+
+  const hasCustomImage =
+    userHome?.img_url !== null && userHome?.img_url !== DEFAULT_IMG;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     mutateUploadImg(e.target.files[0] as File);
+  };
+
+  const handleImageToDefault = () => {
+    const confirmMessage = hasCustomImage
+      ? tAdmin("currentImageDelete") + "\n" + tAdmin("imageToDefaultConfirm")
+      : tAdmin("imageToDefaultConfirm");
+    const confirm = window.confirm(confirmMessage);
+    if (!confirm) return;
+    deleteImg(DEFAULT_IMG);
+  };
+
+  const handleImageTabHide = () => {
+    const confirmMessage = hasCustomImage
+      ? tAdmin("currentImageDelete") + "\n" + tAdmin("imageTabHideConfirm")
+      : tAdmin("imageTabHideConfirm");
+    const confirm = window.confirm(confirmMessage);
+    if (!confirm) return;
+    deleteImg(null);
   };
 
   return (
@@ -32,9 +56,9 @@ export default function AdminHome({ userid }: Props) {
 
         {(!userHome || isHomeLoading) && <LoadingPage />}
 
-        {userHome && (
+        {userHome && userHome.img_url && (
           <Image
-            src={userHome.img_url ?? "/icon.png"}
+            src={userHome.img_url}
             alt="profile-img"
             width={0}
             height={0}
@@ -43,6 +67,12 @@ export default function AdminHome({ userid }: Props) {
             priority
           />
         )}
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" onClick={handleImageToDefault}>
+            {tAdmin("imageToDefault")}
+          </Button>
+          <Button onClick={handleImageTabHide}>{tAdmin("imageTabHide")}</Button>
+        </div>
       </div>
       <Editor userid={userid} tid={0} />
     </div>
