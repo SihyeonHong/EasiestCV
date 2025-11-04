@@ -1,18 +1,16 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
-import { queryKeys } from "@/constants/queryKeys";
-import { ApiErrorResponse } from "@/models/api";
-import { Tab } from "@/models/tab.model";
+import { ApiErrorResponse } from "@/types/error";
+import { Tab } from "@/types/tab";
 import { post, put } from "@/utils/http";
 
 import { useTabs } from "./useTabs";
 
 export const useTabContents = (userid: string) => {
-  const queryClient = useQueryClient();
   const tEditor = useTranslations("editor");
   const tError = useTranslations("error");
 
@@ -22,9 +20,7 @@ export const useTabContents = (userid: string) => {
   const { mutate: updateContentsMutation } = useMutation({
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: queryKeys.tabs({ userid }) });
-    },
+    // onSuccess 제거: 자동저장이라 캐시 업데이트 안 해도 됨
     onError: (error) => {
       console.error("내용 저장 오류:", error);
     },

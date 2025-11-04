@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { HomeData } from "@/models/home.model";
+import { UserHome } from "@/types/user-data";
 import { get, patch, post } from "@/utils/http";
 
 export const useHome = (userid: string) => {
@@ -14,14 +14,14 @@ export const useHome = (userid: string) => {
 
   // 1) 홈 데이터 조회
   const {
-    data: homeData,
+    data: userHome,
     isLoading: isHomeLoading,
     isError: isHomeError,
     error: homeError,
     refetch,
-  } = useQuery<HomeData>({
+  } = useQuery<UserHome>({
     queryKey: queryKeys.home({ userid }),
-    queryFn: () => get<HomeData>(`/home?userid=${userid}`),
+    queryFn: () => get<UserHome>(`/home?userid=${userid}`),
     enabled: !!userid, // userid가 있어야만 요청
   });
 
@@ -49,15 +49,20 @@ export const useHome = (userid: string) => {
     status: imgUploadStatus,
     isPending: isImgPending,
   } = useMutation({
-    mutationFn: uploadImg,
+    mutationFn: (imgFile: File) => {
+      const formData = new FormData();
+      formData.append("userid", userid);
+      formData.append("imgFile", imgFile);
+      return post("/home/img", formData);
+    },
     onSuccess: () => {
       alert(tMessage("imgUploadSuccess"));
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
-    onError: (err) => {
+    onError: (error) => {
       alert(tError("imgUploadFail"));
-      console.error("이미지 업로드 에러:", err);
+      console.error("이미지 업로드 에러:", error);
     },
   });
 
@@ -68,13 +73,11 @@ export const useHome = (userid: string) => {
     isPending: isIntroPending,
   } = useMutation({
     mutationFn: (newIntro: string) =>
-      patch<UploadIntroResponse>(`/home/intro`, {
+      patch(`/home/intro`, {
         userid: userid,
         intro: newIntro,
       }),
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
-    },
+    // onSuccess 제거: 자동저장이라 캐시 업데이트 안 해도 됨
     onError: (error) => {
       alert(tError("saveFail"));
       console.error("intro 업로드 에러:", error);
@@ -85,10 +88,10 @@ export const useHome = (userid: string) => {
   const backUpIntroRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!backUpIntroRef.current && homeData && homeData.intro) {
-      backUpIntroRef.current = homeData.intro;
+    if (!backUpIntroRef.current && userHome && userHome.intro_html) {
+      backUpIntroRef.current = userHome.intro_html;
     }
-  }, [homeData]);
+  }, [userHome]);
 
   const revertIntro = (): null | void => {
     try {
@@ -108,7 +111,7 @@ export const useHome = (userid: string) => {
 
   return {
     // 홈 데이터 관련
-    homeData,
+    userHome,
     isHomeLoading,
     isHomeError,
     homeError,
@@ -150,29 +153,4 @@ async function uploadPdf({ userid, file }: UploadPdfVariables) {
   formData.append("file", file); // 서버에서 "file"이 key로 사용됨
 
   return await post<UploadPdfResponse>("/home/pdf", formData);
-}
-
-// ---------- 이미지 업로드 ----------
-interface UploadImgVariables {
-  userid: string;
-  file: File;
-}
-
-interface UploadImgResponse {
-  imageUrl?: string; // 성공 시 서버에서 imageUrl을 내려줌
-  error?: string;
-}
-
-async function uploadImg({ userid, file }: UploadImgVariables) {
-  const formData = new FormData();
-  formData.append("userid", userid);
-  formData.append("file", file); // 서버에서 "file"이 key로 사용됨
-
-  return await post<UploadImgResponse>("/home/img", formData);
-}
-
-// ---------- 인트로 업로드 ----------
-interface UploadIntroResponse {
-  success: boolean;
-  intro: string;
 }

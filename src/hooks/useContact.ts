@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
-import { ContactRequest } from "@/models/support.model";
+import { ContactRequest } from "@/types/support";
 import { post } from "@/utils/http";
 
 export default function useContact() {

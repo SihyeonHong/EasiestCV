@@ -7,8 +7,10 @@ import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import NoUserPage from "@/app/components/NoUserPage";
 import PublicTabs from "@/app/components/public/PublicTabs";
-import { User } from "@/models/user.model";
-import { get } from "@/utils/http";
+import { User } from "@/types/user-account";
+import { UserSiteMeta } from "@/types/user-data";
+import { get, put } from "@/utils/http";
+import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 
 interface Props {
   params: {
@@ -38,36 +40,48 @@ export default async function Page({ params }: Props) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const user = await getUser(params.userid);
 
-  // 유저가 없는 경우, 메타데이터를 기본값으로 반환
   if (!user) {
     return {
       title: "Easiest CV - User Not Found",
       description: "The requested user profile does not exist.",
-      robots: "noindex, nofollow",
+      robots: ROBOTS_CONFIG.noIndex,
+    };
+  }
+
+  const meta = await getUserSiteMeta(params.userid);
+  const needsUpdate = !meta || !meta.title || !meta.description;
+
+  if (needsUpdate) {
+    const newMeta = makeUserSiteMeta(
+      params.userid,
+      user.username,
+      meta?.title,
+      meta?.description,
+    );
+    await upsertUserSiteMeta(
+      newMeta.userid,
+      newMeta.title,
+      newMeta.description,
+    );
+
+    return {
+      title: newMeta.title,
+      description: newMeta.description,
+      robots: ROBOTS_CONFIG.default,
     };
   }
 
   return {
-    title: `${user.username}'s CV - Easiest CV`,
-    description: `${user.username}'s CV`,
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
+    title: meta.title,
+    description: meta.description,
+    robots: ROBOTS_CONFIG.default,
   };
 }
 
 async function getUser(userid: string): Promise<User | null> {
   try {
     const response = await get<User>(`/users/user?userid=${userid}`);
-    if (!response) {
-      return null;
-    }
-    return response;
+    return response || null;
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 404) {
       console.warn("사용자 없음 (404)");
@@ -77,3 +91,38 @@ async function getUser(userid: string): Promise<User | null> {
     return null;
   }
 }
+
+async function getUserSiteMeta(userid: string): Promise<UserSiteMeta | null> {
+  try {
+    const response = await get<UserSiteMeta>(`/meta?userid=${userid}`);
+    return response || null;
+  } catch (error) {
+    console.error("메타데이터 가져오기 실패:", error);
+    return null;
+  }
+}
+
+async function upsertUserSiteMeta(
+  userid: string,
+  title: string,
+  description: string,
+): Promise<void> {
+  try {
+    await put<void>(`/meta`, { userid, title, description });
+  } catch (error) {
+    console.error("메타데이터 업데이트 실패:", error);
+  }
+}
+
+const ROBOTS_CONFIG = {
+  noIndex: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+  default: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+};

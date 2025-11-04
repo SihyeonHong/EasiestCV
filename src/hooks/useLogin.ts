@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { useRouter } from "@/i18n/routing";
-import { ApiErrorResponse } from "@/models/api";
-import { LoginForm } from "@/models/user.model";
+import { ApiErrorResponse } from "@/types/error";
+import { LoginForm } from "@/types/user-account";
 import { post } from "@/utils/http";
 
 interface LoginResponse {

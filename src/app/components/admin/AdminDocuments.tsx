@@ -5,46 +5,47 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { LoadingIcon } from "@/app/components/common/LoadingIcon";
-import { useHome } from "@/hooks/useHome";
+import { useDocuments } from "@/hooks/useDocuments";
 import { cn } from "@/utils/classname";
 
 interface Props {
   userid: string;
 }
 
-export default function AdminPDF({ userid }: Props) {
-  const t = useTranslations("file");
-  const { homeData, mutateUploadPdf, isPdfPending } = useHome(userid);
+// 우선 파일이 하나인 경우만 반영합니다.
+export default function AdminDocuments({ userid }: Props) {
+  const t = useTranslations("documents");
+
+  const { documents, isLoading, uploadDocument } = useDocuments(userid);
 
   return (
-    <div id="pdf-section" className="flex flex-col gap-4">
-      <h1 className="mb-2 text-2xl font-bold">{t("file")}</h1>
+    <div id="documents-section" className="flex flex-col gap-4">
+      <h1 className="mb-2 text-2xl font-bold">{t("documents")}</h1>
       <div
         className={cn(
           "space-y-2 sm:inline-flex sm:flex-row sm:gap-4 sm:space-y-0",
         )}
       >
         <Input
-          id="pdf"
+          id="documents"
           type="file"
           accept=".pdf"
           onChange={(e) => {
             if (!e.target.files || e.target.files.length === 0) return;
-            const file = e.target.files[0];
-            mutateUploadPdf({ userid, file });
+            uploadDocument(e.target.files[0] as File);
           }}
         />
-        {isPdfPending ? (
+        {isLoading ? (
           <Button variant="secondary" disabled>
-            {t("filePending")} <LoadingIcon />
+            {t("documentsPending")} <LoadingIcon />
           </Button>
-        ) : homeData?.pdf ? (
-          <Button onClick={() => window.open(homeData.pdf, "_blank")}>
-            {t("fileOpen")}
+        ) : documents && documents.length > 0 ? (
+          <Button onClick={() => window.open(documents[0], "_blank")}>
+            {t("documentsOpen")}
           </Button>
         ) : (
           <Button variant="secondary" disabled>
-            {t("noFile")}
+            {t("noDocuments")}
           </Button>
         )}
       </div>

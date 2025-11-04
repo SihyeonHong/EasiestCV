@@ -1,6 +1,9 @@
+import { RotateCcwIcon, SaveIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
+import NeedSaveDescription from "@/app/components/admin/NeedSaveDescription";
+import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
@@ -19,7 +22,15 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const { user, isUserLoading, updateUserInfo } = useUserInfo(userid);
+
+  const { user, isUserLoading, updateUserInfo, getUserInfoSaveStatus } =
+    useUserInfo(userid);
+
+  // 저장 상태 계산
+  const userInfoSaveStatus = useMemo(
+    () => getUserInfoSaveStatus(username, email),
+    [getUserInfoSaveStatus, username, email],
+  );
 
   useEffect(() => {
     if (user) {
@@ -48,9 +59,11 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
   };
 
   return (
-    <div id="userinfo-section" className="w-full">
-      <h1 className="mb-4 text-2xl font-bold">{t("title")}</h1>
-
+    <div id="userinfo-section" className="w-full space-y-3">
+      <header className="space-y-1">
+        <h1 className="text-2xl font-bold">{t("editUserInfo")}</h1>
+        <NeedSaveDescription />
+      </header>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
           <Label htmlFor="username" className="text-sm">
@@ -78,12 +91,15 @@ export default function UserInfoEditor({ userid }: UserInfoEditorProps) {
             required
           />
         </div>
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-4 flex justify-end gap-2">
+          <SaveStatusIndicator status={userInfoSaveStatus} />
           <Button variant="secondary" type="button" onClick={handleReset}>
+            <RotateCcwIcon className="size-4" />
             {tButton("reset")}
           </Button>
           <Button variant="default" type="submit">
-            {tButton("confirm")}
+            <SaveIcon className="size-4" />
+            {tButton("save")}
           </Button>
         </div>
       </form>

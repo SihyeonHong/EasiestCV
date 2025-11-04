@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { ApiErrorResponse } from "@/models/api";
+import { ApiErrorResponse } from "@/types/error";
 import { query } from "@/utils/database";
 import { deleteFile } from "@/utils/gcs";
 
