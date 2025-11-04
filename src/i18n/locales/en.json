@@ -84,6 +84,7 @@
     "professorCV": "Professor John Doe's CV →"
   },
   "admin": {
+    "howToActivateImgTab": "Click the 'Change to Default Image' button or select a file and choose an image to activate the image area.",
     "profileImgAttach": "Attach Profile Image",
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
@@ -217,5 +218,9 @@
     "unsaved": "Unsaved",
     "saving": "Saving",
     "error": "Save failed"
+  },
+  "alertBanner": {
+    "bugAnnouncement": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly. I’m working on a fix!",
+    "hideBannerToday": "Don't show this banner today"
   }
 }

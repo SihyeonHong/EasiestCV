@@ -72,24 +72,24 @@ export async function POST(req: Request) {
     console.error("이미지 업로드 실패:", error);
     return ApiError.server();
   }
-}
 
-export async function deleteOldImg(userId: string) {
-  // DB에 현재 저장된 이미지가 있는지 확인
-  const existing = await query<{ img_url: string | null }>(
-    "SELECT img_url FROM user_home WHERE userid = $1",
-    [userId],
-  );
-  if (
-    existing.length > 0 &&
-    existing[0]?.img_url &&
-    existing[0].img_url !== DEFAULT_IMG
-  ) {
-    try {
-      await deleteFile(extractFileName(existing[0].img_url));
-    } catch (error) {
-      console.error("기존 이미지 삭제 오류:", error);
-      return ApiError.server();
+  async function deleteOldImg(userId: string) {
+    // DB에 현재 저장된 이미지가 있는지 확인
+    const existing = await query<{ img_url: string | null }>(
+      "SELECT img_url FROM user_home WHERE userid = $1",
+      [userId],
+    );
+    if (
+      existing.length > 0 &&
+      existing[0]?.img_url &&
+      existing[0].img_url !== DEFAULT_IMG
+    ) {
+      try {
+        await deleteFile(extractFileName(existing[0].img_url));
+      } catch (error) {
+        console.error("기존 이미지 삭제 오류:", error);
+        return ApiError.server();
+      }
     }
   }
 }

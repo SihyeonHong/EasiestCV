@@ -84,6 +84,7 @@
     "professorCV": "John Doe 교수님의 이력서 →"
   },
   "admin": {
+    "howToActivateImgTab": "'기본 이미지로 변경'하시거나 위 파일 선택을 누르고 이미지를 고르면 이미지 영역이 활성화됩니다.",
     "profileImgAttach": "프로필 사진 첨부",
     "imgPending": "이미지 업로드 중입니다. 잠시만 기다려 주세요.",
     "tabManager": "탭 관리",
@@ -99,10 +100,10 @@
     "addTab": "탭 추가",
     "saveWarning": "저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이 사라집니다.",
     "imageToDefault": "기본 이미지로 변경",
-    "imageTabHide": "이미지 탭 숨기기",
+    "imageTabHide": "이미지 영역 숨기기",
     "currentImageDelete": "현재 설정된 이미지는 삭제됩니다.",
     "imageToDefaultConfirm": "정말 기본 이미지로 변경하시겠습니까?",
-    "imageTabHideConfirm": "이미지 탭을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
+    "imageTabHideConfirm": "이미지 영역을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
   },
   "editor": {
     "saving": "저장 중...",
@@ -217,5 +218,9 @@
     "unsaved": "변경됨",
     "saving": "저장 중",
     "error": "저장 실패"
+  },
+  "alertBanner": {
+    "bugAnnouncement": "홈 탭의 텍스트 내용이 간혹 보이지 않는 오류가 있습니다. 다른 탭에 갔다 오시면 정상적으로 보입니다. 조속히 해결하겠습니다.",
+    "hideBannerToday": "오늘 하루 보지 않기"
   }
 }
