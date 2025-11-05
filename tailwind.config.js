@@ -15,6 +15,8 @@ const tailwindConfig = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        muted: "var(--muted)",
+        "editor-color": "var(--tt-editor-bg-color)",
       },
     },
   },

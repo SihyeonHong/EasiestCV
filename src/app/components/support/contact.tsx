@@ -7,7 +7,7 @@ import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { Textarea } from "@/app/components/common/Textarea";
 import useContact from "@/hooks/useContact";
-import { ContactRequest } from "@/models/support.model";
+import { ContactRequest } from "@/types/support";
 
 export default function Contact() {
   const t = useTranslations("contact");

@@ -86,8 +86,15 @@
   --tt-scrollbar-color: var(--tt-alpha-border);
   --tt-cursor-color: #3f3f46; /* zinc-700 */
   --tt-selection-color: rgba(82, 82, 91, 0.2); /* zinc-600 with 20% opacity */
+  --tt-text-muted: #71717a; /* zinc-500 - 보조 텍스트, muted 텍스트 */
   --tt-card-bg-color: rgba(255, 255, 255, 1);
   --tt-card-border-color: var(--tt-alpha-border-subtle);
+  --tt-editor-bg-color: rgba(
+    255,
+    255,
+    255,
+    1
+  ); /* 에디터 전용 배경색 - 순백색 */
 }
 
 /* Global colors - Dark mode */
@@ -119,8 +126,15 @@
     170,
     0.2
   ); /* zinc-400 with 20% opacity */
+  --tt-text-muted: #a1a1aa; /* zinc-400 - 보조 텍스트, muted 텍스트 */
   --tt-card-bg-color: #18181b; /* zinc-900 */
   --tt-card-border-color: var(--tt-alpha-border-subtle);
+  --tt-editor-bg-color: rgba(
+    14,
+    14,
+    17,
+    1
+  ); /* 에디터 전용 배경색 - 다크 모드 */
 
   --tt-shadow-elevated-md: 0px 16px 48px 0px rgba(0, 0, 0, 0.5),
     0px 12px 24px 0px rgba(0, 0, 0, 0.24), 0px 6px 8px 0px rgba(0, 0, 0, 0.22),

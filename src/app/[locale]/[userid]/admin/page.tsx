@@ -26,7 +26,7 @@ export default function Page() {
   return (
     <div>
       <Header type="admin" />
-      <Title title={user?.username || userid} />
+      <Title title={user ? user.username : userid} />
       <AdminTabs userid={userid} />
       <Footer />
     </div>

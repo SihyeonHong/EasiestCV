@@ -7,10 +7,10 @@ import {
   TabsTrigger,
 } from "@/app/components/common/Tabs";
 import PublicContents from "@/app/components/public/PublicContents";
-import PublicFile from "@/app/components/public/PublicFile";
+import PublicDocuments from "@/app/components/public/PublicDocuments";
 import PublicHome from "@/app/components/public/PublicHome";
-import { HomeData } from "@/models/home.model";
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
+import { UserHome } from "@/types/user-data";
 import { get } from "@/utils/http";
 
 interface Props {
@@ -18,10 +18,11 @@ interface Props {
 }
 
 export default async function PublicTabs({ userid }: Props) {
-  const tFile = await getTranslations("file");
+  const t = await getTranslations("documents");
 
-  const homeData = await getHomeData(userid);
+  const home = await getHome(userid);
   const tabs = await getTabs(userid);
+  const documents = await getDocuments(userid);
 
   return (
     <Tabs defaultValue="home">
@@ -33,35 +34,31 @@ export default async function PublicTabs({ userid }: Props) {
               {tab.tname}
             </TabsTrigger>
           ))}
-        {homeData?.pdf && (
-          <TabsTrigger value="file">{tFile("file")}</TabsTrigger>
+        {documents.length && (
+          <TabsTrigger value="documents">{t("documents")}</TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="home">
-        {homeData && <PublicHome homeData={homeData} />}
+        {home && <PublicHome home={home} />}
       </TabsContent>
       {tabs &&
         tabs.map((tab) => (
           <TabsContent key={tab.tid} value={tab.tname}>
-            <PublicContents content={tab.contents} />
+            <PublicContents content={tab.contents ?? ""} />
           </TabsContent>
         ))}
-      <TabsContent value="file">
-        <PublicFile pdf={homeData?.pdf} />
+      <TabsContent value="documents">
+        {documents.length && <PublicDocuments documents={documents} />}
       </TabsContent>
     </Tabs>
   );
 }
 
-async function getHomeData(userid: string): Promise<HomeData | null> {
+async function getHome(userid: string): Promise<UserHome | null> {
   try {
-    const response = await get<HomeData>(`/home?userid=${userid}`);
-    if (!response) {
-      return null;
-    }
-    return response;
+    return (await get<UserHome>(`/home?userid=${userid}`)) ?? null;
   } catch (error) {
-    console.error("getHomeData 실패:", error);
+    console.error("getHome 실패:", error);
     return null;
   }
 }
@@ -76,5 +73,14 @@ async function getTabs(userid: string): Promise<Tab[] | null> {
   } catch (error) {
     console.error("getTabs 실패:", error);
     return null;
+  }
+}
+
+async function getDocuments(userid: string): Promise<string[]> {
+  try {
+    return (await get<string[]>(`/documents?userid=${userid}`)) ?? [];
+  } catch (error) {
+    console.error("getDocuments 실패:", error);
+    return [];
   }
 }

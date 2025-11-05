@@ -21,7 +21,7 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
 import { useTabContents } from "@/hooks/useTabContents";
 // --- Models ---
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
 // --- Utils ---
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";
@@ -40,7 +40,7 @@ export default function Editor({ userid, tid }: Props) {
 }
 
 function EditorContent({ userid, tid }: Props) {
-  const { homeData, mutateUploadIntro, revertIntro } = useHome(userid);
+  const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
     mobileView,
@@ -175,8 +175,8 @@ function EditorContent({ userid, tid }: Props) {
     if (!editor) return;
     let content;
 
-    if (tid === 0 && homeData) {
-      content = homeData.intro || "";
+    if (tid === 0 && userHome) {
+      content = userHome.intro_html || "";
     } else if (tid !== 0 && currentTab) {
       content = currentTab.contents || "";
     }
@@ -217,7 +217,7 @@ function EditorContent({ userid, tid }: Props) {
         <TiptapEditorContent
           editor={editor}
           role="presentation"
-          className="mx-auto flex w-full flex-1 flex-col bg-white p-4 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 dark:bg-[hsl(var(--background))]"
+          className="mx-auto flex w-full flex-1 flex-col bg-editor-color p-4 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500"
         />
       </div>
 

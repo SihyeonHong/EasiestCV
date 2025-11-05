@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { ApiErrorResponse } from "@/models/api";
+import { ApiErrorResponse } from "@/types/error";
 import { get, post } from "@/utils/http";
 
 export default function useAuth() {

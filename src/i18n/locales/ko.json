@@ -84,6 +84,7 @@
     "professorCV": "John Doe 교수님의 이력서 →"
   },
   "admin": {
+    "howToActivateImgTab": "'기본 이미지로 변경'하시거나 위 파일 선택을 누르고 이미지를 고르면 이미지 영역이 활성화됩니다.",
     "profileImgAttach": "프로필 사진 첨부",
     "imgPending": "이미지 업로드 중입니다. 잠시만 기다려 주세요.",
     "tabManager": "탭 관리",
@@ -97,7 +98,12 @@
     "deleteConfirm": "탭 속 내용도 함께 삭제됩니다. 정말로 삭제하시겠습니까?",
     "rename": "이름 변경",
     "addTab": "탭 추가",
-    "saveWarning": "저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이 사라집니다."
+    "saveWarning": "저장하지 않고 다른 탭으로 이동하거나 페이지를 벗어나면 변경사항이 사라집니다.",
+    "imageToDefault": "기본 이미지로 변경",
+    "imageTabHide": "이미지 영역 숨기기",
+    "currentImageDelete": "현재 설정된 이미지는 삭제됩니다.",
+    "imageToDefaultConfirm": "정말 기본 이미지로 변경하시겠습니까?",
+    "imageTabHideConfirm": "이미지 영역을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
   },
   "editor": {
     "saving": "저장 중...",
@@ -129,10 +135,6 @@
     "color": "글자 색상",
     "background": "배경 색상"
   },
-  "editUserInfo": {
-    "editUserInfoBtn": "이름/이메일 변경",
-    "title": "회원정보 수정"
-  },
   "resetPassword": {
     "resetPW": "비밀번호 초기화",
     "showResetForm": "비밀번호를 잊으셨나요?",
@@ -160,13 +162,13 @@
     "invalidCharacters": "영어 소문자, 숫자, 하이픈(-), 언더스코어(_)만 사용할 수 있습니다.",
     "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
-  "file": {
-    "file": "파일",
-    "fileAttach": "파일 첨부",
-    "fileOpen": "현재 파일 보기",
-    "filePending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
-    "noFile": "업로드된 파일이 없습니다.",
-    "mobileNotSupported": "모바일에서는 파일 미리보기가 지원되지 않습니다.",
+  "documents": {
+    "documents": "문서",
+    "documentsAttach": "문서 첨부",
+    "documentsOpen": "현재 문서 보기",
+    "documentsPending": "문서 업로드 중입니다. 잠시만 기다려 주세요.",
+    "noDocuments": "업로드된 문서가 없습니다.",
+    "mobileNotSupported": "모바일에서는 문서 미리보기가 지원되지 않습니다.",
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기"
@@ -174,10 +176,19 @@
   "settings": {
     "title": "설정",
     "shortcut": "바로가기",
-    "pdf": "PDF",
+    "documents": "문서",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
-    "password": "비밀번호 변경"
+    "password": "비밀번호 변경",
+    "metadata": "메타데이터 수정"
+  },
+  "editUserInfo": {
+    "editUserInfo": "회원정보 수정",
+    "editMetadata": "메타데이터 수정",
+    "metadataTitleLabel": "사이트 이름",
+    "metadataTitlePlaceholder": "브라우저 탭에 표시될 제목을 입력하세요.",
+    "metadataDescriptionLabel": "사이트 설명",
+    "metadataDescriptionPlaceholder": "이 사이트에 대한 간단한 설명을 입력하세요. (검색 엔진에 노출될 수 있음)"
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",
@@ -207,5 +218,9 @@
     "unsaved": "변경됨",
     "saving": "저장 중",
     "error": "저장 실패"
+  },
+  "alertBanner": {
+    "bugAnnouncement": "홈 탭의 텍스트 내용이 간혹 보이지 않는 오류가 있습니다. 다른 탭에 갔다 오시면 정상적으로 보입니다. 조속히 해결하겠습니다.",
+    "hideBannerToday": "오늘 하루 보지 않기"
   }
 }

@@ -2,10 +2,8 @@ import { Locale } from "@/i18n/routing";
 
 export interface User {
   userid: string;
-  username?: string;
-  email?: string;
-  title?: string;
-  description?: string;
+  username: string;
+  email: string;
 }
 
 export interface LoginForm {

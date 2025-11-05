@@ -84,6 +84,7 @@
     "professorCV": "Professor John Doe's CV →"
   },
   "admin": {
+    "howToActivateImgTab": "Click the 'Change to Default Image' button or select a file and choose an image to activate the image area.",
     "profileImgAttach": "Attach Profile Image",
     "imgPending": "Uploading image. Please wait...",
     "tabManager": "Manage Tabs",
@@ -97,7 +98,12 @@
     "deleteConfirm": "All contents in this tab will be deleted. Are you sure you want to delete?",
     "rename": "Rename",
     "addTab": "Add New Tab",
-    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving."
+    "saveWarning": "Changes will be lost if you switch tabs or leave the page without saving.",
+    "imageToDefault": "Change to Default Image",
+    "imageTabHide": "Hide Image Tab",
+    "currentImageDelete": "The current set image will be deleted.",
+    "imageToDefaultConfirm": "Are you sure you want to change to the default image?",
+    "imageTabHideConfirm": "Hiding the image tab will make the home tab look like other tabs."
   },
   "editor": {
     "saving": "Saving...",
@@ -129,10 +135,6 @@
     "color": "Text color",
     "background": "Background color"
   },
-  "editUserInfo": {
-    "editUserInfoBtn": "Edit Name/Email",
-    "title": "Edit User Information"
-  },
   "resetPassword": {
     "resetPW": "Reset Password",
     "showResetForm": "Forgot your password?",
@@ -160,13 +162,13 @@
     "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
     "lengthError": "ID must be between 3 and 20 characters long."
   },
-  "file": {
-    "file": "File",
-    "fileAttach": "Attach File",
-    "fileOpen": "Open Current File",
-    "filePending": "Uploading file. Please wait...",
-    "noFile": "No file has been uploaded.",
-    "mobileNotSupported": "File preview is not supported on mobile.",
+  "documents": {
+    "documents": "Documents",
+    "documentsAttach": "Attach Documents",
+    "documentsOpen": "Open Current Documents",
+    "documentsPending": "Uploading documents. Please wait...",
+    "noDocuments": "No documents have been uploaded.",
+    "mobileNotSupported": "Documents preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview"
@@ -174,10 +176,19 @@
   "settings": {
     "title": "Settings",
     "shortcut": "Shortcut",
-    "pdf": "PDF",
+    "documents": "Documents",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
-    "password": "Change Password"
+    "password": "Change Password",
+    "metadata": "Edit Metadata"
+  },
+  "editUserInfo": {
+    "editUserInfo": "Edit User Information",
+    "editMetadata": "Edit Metadata",
+    "metadataTitleLabel": "Site Title",
+    "metadataTitlePlaceholder": "Enter the title to be displayed in the browser tab.",
+    "metadataDescriptionLabel": "Site Description",
+    "metadataDescriptionPlaceholder": "Enter a brief description of this site. (May be shown in search results)"
   },
   "support": {
     "linkDescription": "Need help?",
@@ -207,5 +218,9 @@
     "unsaved": "Unsaved",
     "saving": "Saving",
     "error": "Save failed"
+  },
+  "alertBanner": {
+    "bugAnnouncement": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly. I’m working on a fix!",
+    "hideBannerToday": "Don't show this banner today"
   }
 }

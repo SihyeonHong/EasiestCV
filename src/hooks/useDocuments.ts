@@ -2,38 +2,26 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
-import {
-  FileData,
-  UploadPdfVariables,
-  UploadPdfResponse,
-} from "@/models/file.model";
 import { get, post } from "@/utils/http";
 
-export const useFile = (userid: string) => {
+export const useDocuments = (userid: string) => {
   const queryClient = useQueryClient();
   const tMessage = useTranslations("message");
   const tError = useTranslations("error");
 
-  // 파일 데이터 조회
-  const {
-    data: fileData,
-    isLoading: isFileLoading,
-    isError: isFileError,
-    error: fileError,
-  } = useQuery<FileData>({
+  const { data: documents, isLoading } = useQuery({
     queryKey: queryKeys.files({ userid }),
-    queryFn: () => get<FileData>(`/files?userid=${userid}`),
+    queryFn: () => get<string[]>(`/documents?userid=${userid}`),
     enabled: !!userid,
   });
 
-  // PDF 업로드 Mutation
-  const { mutate: uploadFile, isPending: isUploading } = useMutation({
-    mutationFn: ({ userid, file }: UploadPdfVariables) => {
+  const { mutate: uploadDocument, isPending: isUploading } = useMutation({
+    mutationFn: (document: File) => {
       const formData = new FormData();
       formData.append("userid", userid);
-      formData.append("file", file); // 서버에서 "file"이 key로 사용됨
+      formData.append("document", document);
 
-      return post<UploadPdfResponse>("/home/pdf", formData);
+      return post("/documents", formData);
     },
     onSuccess: () => {
       alert(tMessage("saveSuccess"));
@@ -46,11 +34,9 @@ export const useFile = (userid: string) => {
   });
 
   return {
-    fileData,
-    isFileLoading,
-    isFileError,
-    fileError,
-    uploadFile,
+    documents,
+    isLoading,
+    uploadDocument,
     isUploading,
   };
 };

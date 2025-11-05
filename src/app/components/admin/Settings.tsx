@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
-import AdminPDF from "@/app/components/admin/AdminPDF";
+import AdminDocuments from "@/app/components/admin/AdminDocuments";
+import MetadataEditor from "@/app/components/admin/MetadataEditor";
 import PasswordChanger from "@/app/components/admin/PasswordChanger";
 import TabManager from "@/app/components/admin/TabManager";
 import UserInfoEditor from "@/app/components/admin/UserInfoEditor";
@@ -32,9 +33,9 @@ export default function Settings({ userid }: Props) {
             <li>
               <Button
                 variant="secondary"
-                onClick={() => handleScrollTo("pdf-section")}
+                onClick={() => handleScrollTo("documents-section")}
               >
-                {t("pdf")}
+                {t("documents")}
               </Button>
             </li>
             <li>
@@ -61,18 +62,26 @@ export default function Settings({ userid }: Props) {
                 {t("password")}
               </Button>
             </li>
+            <li>
+              <Button
+                onClick={() => handleScrollTo("metadata-section")}
+                variant="secondary"
+              >
+                {t("metadata")}
+              </Button>
+            </li>
           </ul>
         </div>
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
-        <AdminPDF userid={userid} />
+        <AdminDocuments userid={userid} />
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
         <TabManager userid={userid} />
         <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
-        <div className="flex flex-col gap-12 sm:flex-row">
-          <UserInfoEditor userid={userid} />
-          <div className="w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
-          <PasswordChanger userid={userid} />
-        </div>
+        <UserInfoEditor userid={userid} />
+        <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+        <PasswordChanger userid={userid} />
+        <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+        <MetadataEditor userid={userid} />
       </CardContent>
     </Card>
   );

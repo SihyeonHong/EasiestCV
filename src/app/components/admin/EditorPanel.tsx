@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 
 import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
-import { SaveStatus } from "@/models/tab.model";
+import { SaveStatus } from "@/types/tab";
 
 interface EditorPanelProps {
   saveStatus: SaveStatus;

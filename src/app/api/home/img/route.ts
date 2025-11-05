@@ -1,89 +1,95 @@
-import { NextResponse } from "next/server";
-
+import { allowedTypes, DEFAULT_IMG } from "@/constants/constants";
+import { ApiError, createErrorNextResponse } from "@/utils/api-error";
+import { ApiSuccess, createSuccessResponse } from "@/utils/api-success";
 import { query } from "@/utils/database";
+import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile } from "@/utils/gcs";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 
-export async function POST(req: Request) {
+// 클라이언트가 img url을 직접 주는 경우
+export async function PUT(request: Request) {
   try {
-    // multipart/form-data 형식으로 넘어온 데이터를 받기
-    const formData = await req.formData();
+    const { userid, imgUrl, oldFileName } = await request.json();
 
-    // formData에서 파일과 userid 가져오기
-    const file = formData.get("file") as File | null;
-    const userId = formData.get("userid") as string | null;
-
-    if (!file || !userId) {
-      return NextResponse.json(
-        { error: "이미지 파일 혹은 userId가 누락되었습니다." },
-        { status: 400 },
-      );
+    if (oldFileName) {
+      await deleteFile(oldFileName);
     }
 
-    // 허용할 이미지 MIME 타입 목록
-    const allowedTypes = [
-      "image/jpg",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "image/bmp",
-    ];
-
-    // 업로드된 파일이 허용된 이미지 형식인지 검사
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        {
-          error:
-            "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
-        },
-        { status: 400 },
-      );
-    }
-
-    // 1) 기존에 DB에 저장된 이미지 경로가 있으면 GCS에서 삭제
-    const existing = await query<{ img: string | null }>(
-      "SELECT img FROM userinfo WHERE userid = $1",
-      [userId],
-    );
-    if (existing.length > 0 && existing[0]?.img) {
-      const oldFileName = existing[0].img.split("/").pop() ?? "";
-      try {
-        await deleteFile(oldFileName);
-      } catch (err) {
-        console.error("기존 이미지 삭제 오류:", err);
-      }
-    }
-
-    // 2) 새로운 이미지 업로드
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const uniqueFilename = `${file.name}-${Date.now()}`;
-    const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
-
-    // GCS에 업로드 (uploadFile 함수 구현 방식에 맞춰 인자 전달)
-    await uploadFile(uniqueFilename, buffer, "image");
-
-    // 3) DB에 새 이미지 URL 업데이트
-    await query("UPDATE userinfo SET img = $1 WHERE userid = $2", [
-      imageUrl,
-      userId,
+    await query("UPDATE user_home SET img_url = $1 WHERE userid = $2", [
+      imgUrl,
+      userid,
     ]);
 
-    // 4) 업로드 결과 반환
-    return NextResponse.json({ imageUrl }, { status: 200 });
-  } catch (error) {
-    console.error("이미지 업로드 실패:", error);
-    return NextResponse.json(
-      { error: "이미지 업로드 중 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return ApiSuccess.updated();
+  } catch (error: unknown) {
+    console.error(error);
+    return ApiError.server();
   }
 }
 
-export async function GET() {
-  return NextResponse.json(
-    { error: "이 API는 POST 요청만 지원합니다." },
-    { status: 405 },
-  );
+// 클라이언트가 업로드할 이미지 파일을 주는 경우(formData)
+export async function POST(req: Request) {
+  try {
+    // 1) 데이터 받기
+    const formData = await req.formData();
+    const imgFile = formData.get("imgFile") as File | null;
+    const userId = formData.get("userid") as string | null;
+
+    // 2) 데이터 검증
+    const errorResponse = validateMissingFields({ imgFile, userId });
+    if (errorResponse) return errorResponse;
+
+    // missingFields 통과했으므로 imgFile과 userId는 null이 아님. TypeScript가 이를 인식하도록 타입 단언 사용
+    const validImgFile = imgFile as File;
+    const validUserId = userId as string;
+
+    // 업로드된 파일이 허용된 이미지 형식인지 검사
+    if (!allowedTypes.includes(validImgFile.type)) {
+      return createErrorNextResponse(
+        "INVALID_IMAGE_TYPE",
+        "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
+      );
+    }
+
+    // 3) 기존 파일 있으면 삭제
+    await deleteOldImg(validUserId);
+
+    // 4) GCS에 새 이미지 업로드
+    const uniqueFilename = `${validImgFile.name}-${Date.now()}`;
+    const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
+    const buffer = Buffer.from(await validImgFile.arrayBuffer());
+    await uploadFile(uniqueFilename, buffer, "image");
+
+    // 5) DB에 새 URL 업데이트
+    await query("UPDATE user_home SET img_url = $1 WHERE userid = $2", [
+      imageUrl,
+      validUserId,
+    ]);
+
+    // 6) 성공 리턴
+    return createSuccessResponse(imageUrl);
+  } catch (error) {
+    console.error("이미지 업로드 실패:", error);
+    return ApiError.server();
+  }
+
+  async function deleteOldImg(userId: string) {
+    // DB에 현재 저장된 이미지가 있는지 확인
+    const existing = await query<{ img_url: string | null }>(
+      "SELECT img_url FROM user_home WHERE userid = $1",
+      [userId],
+    );
+    if (
+      existing.length > 0 &&
+      existing[0]?.img_url &&
+      existing[0].img_url !== DEFAULT_IMG
+    ) {
+      try {
+        await deleteFile(extractFileName(existing[0].img_url));
+      } catch (error) {
+        console.error("기존 이미지 삭제 오류:", error);
+        return ApiError.server();
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
-import { Check, Clock, Save, X } from "lucide-react";
+import { Check, CircleAlert, Clock, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { SaveStatus } from "@/models/tab.model";
+import { SaveStatus } from "@/types/tab";
 import { cn } from "@/utils/classname";
 
 interface SaveStatusIndicatorProps {
@@ -23,7 +23,7 @@ export default function SaveStatusIndicator({
         };
       case "unsaved":
         return {
-          icon: <Save className="h-4 w-4" />,
+          icon: <CircleAlert className="h-4 w-4" />,
           text: tSaveStatus("unsaved"),
           className: "text-orange-600 dark:text-orange-400",
         };
@@ -47,12 +47,12 @@ export default function SaveStatusIndicator({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 text-sm font-medium",
+        "flex items-center gap-1 whitespace-nowrap text-sm font-medium",
         config.className,
       )}
     >
       {config.icon}
-      <span>{config.text}</span>
+      <span className="whitespace-nowrap">{config.text}</span>
     </div>
   );
 }

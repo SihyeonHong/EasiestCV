@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { Tab } from "@/models/tab.model";
+import { Tab } from "@/types/tab";
 import { get } from "@/utils/http";
 
 export const useTabs = (userid: string) => {
