@@ -48,7 +48,7 @@ export default function AdminHome({ userid }: Props) {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-editor-color border-tt-border-color">
+      <Card className="border-tt-border-color bg-editor-color">
         <CardContent className="space-y-1">
           <h1 className="whitespace-nowrap text-lg font-semibold">
             {tAdmin("profileImgAttach")}

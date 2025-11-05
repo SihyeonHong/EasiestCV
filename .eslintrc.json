@@ -5,8 +5,9 @@
     "prettier",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["import", "unused-imports", "prettier"],
+  "plugins": ["import", "unused-imports", "prettier", "tailwindcss"],
   "rules": {
+    "tailwindcss/classnames-order": "off",
     "import/order": [
       "warn",
       {
