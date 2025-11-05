@@ -35,7 +35,11 @@ export default function MetadataEditor({ userid }: MetadataEditorProps) {
     if (userSiteMeta) {
       setTitle(userSiteMeta.title);
       setDescription(userSiteMeta.description);
+    } else if (user) {
+      setTitle(`${user.username}'s CV - Easiest CV`);
+      setDescription(`${user.username}'s CV`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSiteMeta]);
 
   if (isUserLoading || !user) return <LoadingIcon />;
