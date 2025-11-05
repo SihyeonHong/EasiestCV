@@ -29,12 +29,17 @@ erDiagram
         varchar password
         varchar email
     }
+
+    user_site_meta {
+        varchar userid PK, FK
+        varchar title
+        varchar description
+    }
+
     user_home {
-        varchar userid PK
-        text intro
-        varchar img
-        varchar meta_title
-        varchar meta_description
+        varchar userid PK, FK
+        text intro_html
+        varchar img_url
     }
 
     documents {
@@ -57,7 +62,6 @@ erDiagram
         array files
     }
 
-
 ```
 
 ## Tables
@@ -75,7 +79,7 @@ erDiagram
 
 사용자 프로필 정보를 저장합니다.
 
-- userid: 사용자 식별자 (Primary Key, Foreign Key → users)
+- userid: 사용자 식별자 (Primary Key, Foreign Key → users. DELETE CASCADE)
 - intro_html: home 탭의 자기소개
 - img_url: home 탭 이미지의 GCS URL
 
@@ -83,7 +87,7 @@ erDiagram
 
 사용자 페이지의 메타데이터를 저장합니다.
 
-- userid: 사용자 식별자 (Primary Key, Foreign Key → users)
+- userid: 사용자 식별자 (Primary Key, Foreign Key → users. DELETE CASCADE)
 - title: 브라우저 탭 제목
 - description: 사이트 설명
 
@@ -92,7 +96,7 @@ erDiagram
 파일 탭의 문서 파일 정보를 저장합니다.
 
 - id: 문서 고유 식별자 (Primary Key, 자동 증가)
-- userid: 사용자 식별자 (Foreign Key → users)
+- userid: 사용자 식별자 (Foreign Key → users. DELETE CASCADE)
 - url: 파일 저장 경로 또는 URL (GCS, S3 등)
 
 ### tabs
@@ -100,7 +104,7 @@ erDiagram
 사용자의 탭 정보를 저장합니다.
 
 - tid: 탭 고유 식별자 (Primary Key)
-- userid: 사용자 식별자 (Foreign Key → users)
+- userid: 사용자 식별자 (Foreign Key → users. DELETE CASCADE)
 - tname: 탭 이름
 - torder: 탭 정렬 순서
 - contents: 탭 내용
@@ -109,6 +113,6 @@ erDiagram
 
 탭 내용 안에 첨부된 파일 정보를 저장합니다.
 
-- userid: 사용자 식별자 (Composite Primary Key, Foreign Key → users)
+- userid: 사용자 식별자 (Composite Primary Key, Foreign Key → users. DELETE CASCADE)
 - tid: 탭 식별자 (Composite Primary Key, Foreign Key → tabs)
 - files: 파일이 첨부된 GCS의 url 문자열 배열

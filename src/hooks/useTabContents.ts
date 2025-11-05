@@ -96,11 +96,7 @@ export const useTabContents = (userid: string) => {
 
       const backupTab = backUpTabsRef.current.find((tab) => tab.tid === tid);
 
-      if (
-        !backupTab ||
-        backupTab.contents === undefined ||
-        backupTab.contents === null
-      ) {
+      if (!backupTab || backupTab.contents === null) {
         alert(tError("revertNoBackupForTab"));
         console.error(`탭 ID ${tid}에 대한 백업 데이터를 찾을 수 없습니다.`);
         return null;

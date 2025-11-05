@@ -6,6 +6,12 @@
 
 ##
 
-resolves #
+# Refactor
 
 # Others
+
+# To-Do
+
+# Resolved
+
+resolves #
