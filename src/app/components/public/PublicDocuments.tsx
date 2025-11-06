@@ -5,19 +5,21 @@ import { useState, useEffect } from "react";
 
 import { Button } from "@/app/components/common/Button";
 import { Card, CardContent } from "@/app/components/common/Card";
-import { LoadingIcon } from "@/app/components/common/LoadingIcon";
+import { useDocuments } from "@/hooks/useDocuments";
+
+import LoadingPage from "../LoadingPage";
 
 interface Props {
-  documents: string[];
+  userid: string;
 }
 
 // 우선 파일이 하나인 경우만 반영합니다.
-export default function PublicDocuments({ documents }: Props) {
+export default function PublicDocuments({ userid }: Props) {
+  const { documents, isLoading, isDocumentExists } = useDocuments(userid);
   const t = useTranslations("documents");
 
   const [isMobile, setIsMobile] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -31,7 +33,7 @@ export default function PublicDocuments({ documents }: Props) {
   }, []);
 
   const openPDF = () => {
-    if (documents.length > 0) {
+    if (isDocumentExists && documents) {
       window.open(documents[0], "_blank");
     }
   };
@@ -43,6 +45,7 @@ export default function PublicDocuments({ documents }: Props) {
   return (
     <Card>
       <CardContent className="flex flex-col gap-5">
+        {(isLoading || !isDocumentExists) && <LoadingPage />}
         <div className="flex flex-col items-center gap-3 md:flex-row">
           <Button onClick={openPDF}>{t("documentsOpen")}</Button>
 
@@ -55,13 +58,10 @@ export default function PublicDocuments({ documents }: Props) {
           )}
         </div>
 
-        {!isMobile && showPreview && (
+        {!isMobile && showPreview && isDocumentExists && documents && (
           <div className="w-full rounded border">
-            {isLoading && <LoadingIcon />}
-
             <iframe
               src={documents[0]}
-              onLoad={() => setIsLoading(false)}
               className="h-[100vh] w-full"
               title={t("preview")}
             />

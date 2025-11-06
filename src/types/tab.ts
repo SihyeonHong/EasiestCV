@@ -4,6 +4,14 @@ export interface Tab {
   tname: string;
   torder: number;
   contents: string | null;
+  slug: string;
+}
+
+export interface TabListItem {
+  userid: string;
+  tid: number;
+  tname: string;
+  slug: string;
 }
 
 export interface GCSRefreshRequest {

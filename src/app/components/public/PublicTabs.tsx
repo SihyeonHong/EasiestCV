@@ -1,86 +1,74 @@
-import { getTranslations } from "next-intl/server";
+"use client";
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/app/components/common/Tabs";
-import PublicContents from "@/app/components/public/PublicContents";
-import PublicDocuments from "@/app/components/public/PublicDocuments";
-import PublicHome from "@/app/components/public/PublicHome";
-import { Tab } from "@/types/tab";
-import { UserHome } from "@/types/user-data";
-import { get } from "@/utils/http";
+import { useTranslations } from "next-intl";
+
+import { Tabs, TabsList, TabsTrigger } from "@/app/components/common/Tabs";
+import { usePathname, useRouter } from "@/i18n/routing";
+import type { TabListItem } from "@/types/tab";
+import { cn } from "@/utils/classname";
 
 interface Props {
   userid: string;
+  tabList: Record<number, TabListItem>;
+  isDocumentsExists: boolean;
 }
 
-export default async function PublicTabs({ userid }: Props) {
-  const t = await getTranslations("documents");
+export default function PublicTabs({
+  userid,
+  tabList,
+  isDocumentsExists,
+}: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const currentTab = pathname.split("/").pop() ?? "home";
 
-  const home = await getHome(userid);
-  const tabs = await getTabs(userid);
-  const documents = await getDocuments(userid);
+  const t = useTranslations("documents");
 
   return (
-    <Tabs defaultValue="home">
-      <TabsList>
-        <TabsTrigger value="home">Home</TabsTrigger>
-        {tabs &&
-          tabs.map((tab) => (
-            <TabsTrigger key={tab.tid} value={tab.tname}>
-              {tab.tname}
+    <div className="mx-2 md:mx-8 lg:mx-auto lg:max-w-[1024px]">
+      <Tabs>
+        <TabsList>
+          <TabsTrigger
+            value="home"
+            data-state={currentTab === "home" ? "active" : "inactive"}
+            onClick={() => router.push(`/${userid}/home`)}
+            className="cursor-pointer"
+          >
+            Home
+          </TabsTrigger>
+          {tabList &&
+            Object.values(tabList).map((tabItem) => {
+              const active = currentTab === tabItem.slug;
+              return (
+                <TabsTrigger
+                  key={tabItem.tid}
+                  value={tabItem.tname}
+                  data-state={
+                    currentTab === tabItem.slug ? "active" : "inactive"
+                  }
+                  onClick={() => router.push(`/${userid}/${tabItem.slug}`)}
+                  className={cn(
+                    "cursor-pointer",
+                    active &&
+                      "bg-white text-zinc-950 shadow dark:bg-zinc-950 dark:text-zinc-50",
+                  )}
+                >
+                  {tabItem.tname}
+                </TabsTrigger>
+              );
+            })}
+          {isDocumentsExists && (
+            <TabsTrigger
+              value="documents"
+              data-state={currentTab === "documents" ? "active" : "inactive"}
+              onClick={() => router.push(`/${userid}/documents`)}
+              className="cursor-pointer"
+            >
+              {t("documents")}
             </TabsTrigger>
-          ))}
-        {documents.length && (
-          <TabsTrigger value="documents">{t("documents")}</TabsTrigger>
-        )}
-      </TabsList>
-      <TabsContent value="home">
-        {home && <PublicHome home={home} />}
-      </TabsContent>
-      {tabs &&
-        tabs.map((tab) => (
-          <TabsContent key={tab.tid} value={tab.tname}>
-            <PublicContents content={tab.contents ?? ""} />
-          </TabsContent>
-        ))}
-      <TabsContent value="documents">
-        {documents.length && <PublicDocuments documents={documents} />}
-      </TabsContent>
-    </Tabs>
+          )}
+        </TabsList>
+      </Tabs>
+    </div>
   );
-}
-
-async function getHome(userid: string): Promise<UserHome | null> {
-  try {
-    return (await get<UserHome>(`/home?userid=${userid}`)) ?? null;
-  } catch (error) {
-    console.error("getHome 실패:", error);
-    return null;
-  }
-}
-
-async function getTabs(userid: string): Promise<Tab[] | null> {
-  try {
-    const response = await get<Tab[]>(`/tabs?userid=${userid}`);
-    if (!response) {
-      return null;
-    }
-    return response;
-  } catch (error) {
-    console.error("getTabs 실패:", error);
-    return null;
-  }
-}
-
-async function getDocuments(userid: string): Promise<string[]> {
-  try {
-    return (await get<string[]>(`/documents?userid=${userid}`)) ?? [];
-  } catch (error) {
-    console.error("getDocuments 실패:", error);
-    return [];
-  }
 }

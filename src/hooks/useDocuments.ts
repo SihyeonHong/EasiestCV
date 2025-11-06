@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { get, post } from "@/utils/http";
@@ -9,7 +10,11 @@ export const useDocuments = (userid: string) => {
   const tMessage = useTranslations("message");
   const tError = useTranslations("error");
 
-  const { data: documents, isLoading } = useQuery({
+  const {
+    data: documents,
+    isLoading,
+    isSuccess,
+  } = useQuery({
     queryKey: queryKeys.files({ userid }),
     queryFn: () => get<string[]>(`/documents?userid=${userid}`),
     enabled: !!userid,
@@ -33,9 +38,19 @@ export const useDocuments = (userid: string) => {
     },
   });
 
+  const isDocumentExists = useMemo(
+    () =>
+      isSuccess &&
+      documents !== undefined &&
+      Array.isArray(documents) &&
+      documents.length > 0,
+    [isSuccess, documents],
+  );
+
   return {
     documents,
     isLoading,
+    isDocumentExists,
     uploadDocument,
     isUploading,
   };
