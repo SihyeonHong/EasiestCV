@@ -1,9 +1,17 @@
+"use client";
+
 import { FaSpinner } from "react-icons/fa";
 
-export const LoadingIcon = () => {
+import { cn } from "@/utils/classname";
+
+interface Props {
+  className?: string;
+}
+
+export default function LoadingIcon({ className }: Props) {
   return (
-    <div className="flex justify-center">
-      <FaSpinner className="h-6 w-6 animate-spin text-gray-400" />
-    </div>
+    <FaSpinner
+      className={cn("h-6 w-6 animate-spin text-gray-400", className)}
+    />
   );
-};
+}
