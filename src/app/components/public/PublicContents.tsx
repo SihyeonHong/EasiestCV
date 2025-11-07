@@ -1,15 +1,10 @@
 import { Card, CardContent } from "@/app/components/common/Card";
-import LoadingPage from "@/app/components/LoadingPage";
 
 interface Props {
-  content: string | null;
+  content: string;
 }
 
 export default function PublicContents({ content }: Props) {
-  if (!content) {
-    return <LoadingPage />;
-  }
-
   return (
     <Card className="w-full">
       <CardContent className="w-full">

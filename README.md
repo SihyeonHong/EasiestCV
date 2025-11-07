@@ -108,6 +108,7 @@ erDiagram
 - tname: 탭 이름
 - torder: 탭 정렬 순서
 - contents: 탭 내용
+- slug: 탭 주소. 현재 tid와 동일.
 
 ### attachments
 

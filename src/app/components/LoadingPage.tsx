@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-import { LoadingIcon } from "@/app/components/common/LoadingIcon";
+import LoadingIcon from "@/app/components/common/LoadingIcon";
 
 export default function LoadingPage() {
   const t = useTranslations("message");

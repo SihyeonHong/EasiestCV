@@ -88,11 +88,11 @@ export async function POST(req: Request) {
     // GCS에 업로드
     await uploadFile(uniqueFilename, buffer, "pdf");
 
-    // 3) DB에 새 PDF URL 업데이트
-    await query("UPDATE documents SET url = $1 WHERE userid = $2", [
-      pdfUrl,
-      userId,
-    ]);
+    // 3) DB에 새 PDF URL 업데이트 (UPSERT)
+    await query(
+      "INSERT INTO documents (userid, url) VALUES ($1, $2) ON CONFLICT (userid) DO UPDATE SET url = EXCLUDED.url",
+      [userId, pdfUrl],
+    );
 
     // 4) 업로드 결과 반환
     return NextResponse.json({ pdfUrl }, { status: 200 });

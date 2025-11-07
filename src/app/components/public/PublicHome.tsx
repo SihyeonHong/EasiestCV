@@ -3,12 +3,14 @@ import Image from "next/image";
 import { Card, CardContent } from "@/app/components/common/Card";
 import LoadingPage from "@/app/components/LoadingPage";
 import { UserHome } from "@/types/user-data";
+import { get } from "@/utils/http";
 
 interface Props {
-  home: UserHome | null;
+  userid: string;
 }
 
-export default function PublicHome({ home }: Props) {
+export default async function PublicHome({ userid }: Props) {
+  const home = await getHome(userid);
   if (!home) return <LoadingPage />;
 
   return (
@@ -33,4 +35,13 @@ export default function PublicHome({ home }: Props) {
       </CardContent>
     </Card>
   );
+}
+
+async function getHome(userid: string): Promise<UserHome | null> {
+  try {
+    return (await get<UserHome>(`/home?userid=${userid}`)) ?? null;
+  } catch (error) {
+    console.error("getHome 실패:", error);
+    return null;
+  }
 }

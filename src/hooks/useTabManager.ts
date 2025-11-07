@@ -53,12 +53,14 @@ export const useTabManager = (userid: string) => {
       return;
     }
 
+    const tid = generateUniqueTid(tabs);
     const newTab: Tab = {
       userid,
-      tid: generateUniqueTid(tabs),
+      tid,
       tname: newTabName,
       torder: tabs.length,
-      contents: null,
+      contents: "",
+      slug: tid.toString(),
     };
 
     setLocalTabs([...tabs, newTab]);
