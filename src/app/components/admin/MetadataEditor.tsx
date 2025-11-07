@@ -7,7 +7,7 @@ import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
-import { LoadingIcon } from "@/app/components/common/LoadingIcon";
+import LoadingIcon from "@/app/components/common/LoadingIcon";
 import { useMetadata } from "@/hooks/useMetadata";
 import { useUserInfo } from "@/hooks/useUserInfo";
 

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
-import { LoadingIcon } from "@/app/components/common/LoadingIcon";
+import LoadingIcon from "@/app/components/common/LoadingIcon";
 import { useDocuments } from "@/hooks/useDocuments";
 import { cn } from "@/utils/classname";
 
