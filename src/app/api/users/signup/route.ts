@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 
+import { ReturnedTid } from "@/types/tab";
 import { SignupRequest } from "@/types/user-account";
 import { query } from "@/utils/database";
 
@@ -19,20 +20,29 @@ export async function POST(request: NextRequest) {
     // 비밀번호 암호화
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // DB에 사용자 정보 저장
+    // users에 회원정보 생성
     await query(
       "INSERT INTO users (userid, username, email, password) VALUES ($1, $2, $3, $4)",
       [userid, username, email, hashedPassword],
     );
 
-    // 사용자 기본 정보 생성
-    await query("INSERT INTO userinfo (userid) VALUES ($1)", [userid]);
-
-    // 기본 탭 생성
+    // Home 생성
     await query(
-      "INSERT INTO tabs (userid, tname, torder) VALUES ($1, $2, $3)",
-      [userid, "Tab1", 0],
+      "INSERT INTO user_home (userid, intro_html, img_url) VALUES ($1, $2, $3)",
+      [userid, "", ""],
     );
+
+    // 새 탭 1개 생성: DB가 자동생성해준 tid 받아서 slug 업데이트
+    const generatedTid: ReturnedTid = await query(
+      "INSERT INTO tabs (userid, tname, torder, slug) VALUES ($1, $2, $3, $4) RETURNING tid",
+      [userid, "Tab1", 0, ""],
+    );
+    if (generatedTid && generatedTid[0]?.tid) {
+      await query("UPDATE tabs SET slug = $1 WHERE tid = $2", [
+        generatedTid[0].tid.toString(),
+        generatedTid[0].tid,
+      ]);
+    }
 
     return NextResponse.json(
       { message: "회원가입이 완료되었습니다." },

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { Tab } from "@/types/tab";
+import { ReturnedTid, Tab } from "@/types/tab";
+import { ApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function PUT(request: Request) {
@@ -42,15 +44,21 @@ export async function PUT(request: Request) {
       }),
     );
 
-    // 새로운 탭 추가
+    // 새로운 탭 추가: DB가 자동생성해준 tid 받아서 slug 업데이트
     await Promise.all(
       body
         .filter((tab: Tab) => newTids.includes(tab.tid))
         .map(async (tab: Tab) => {
-          return query(
-            "INSERT INTO tabs (userid, tname, torder) VALUES ($1,$2,$3)",
-            [tab.userid, tab.tname, tab.torder],
+          const generatedTid: ReturnedTid = await query(
+            "INSERT INTO tabs (userid, tname, torder, slug) VALUES ($1, $2, $3, $4) RETURNING tid",
+            [tab.userid, tab.tname, tab.torder, ""],
           );
+          if (generatedTid && generatedTid[0]?.tid) {
+            await query("UPDATE tabs SET slug = $1 WHERE tid = $2", [
+              generatedTid[0].tid.toString(),
+              generatedTid[0].tid,
+            ]);
+          }
         }),
     );
 
@@ -58,22 +66,16 @@ export async function PUT(request: Request) {
     await Promise.all(
       body.map(async (tab: Tab) => {
         return query(
-          "UPDATE tabs SET torder = $1, tname = $2 WHERE userid = $3 and tid = $4",
-          [tab.torder, tab.tname, tab.userid, tab.tid],
+          "UPDATE tabs SET torder = $1, tname = $2, slug = $3 WHERE userid = $4 and tid = $5",
+          [tab.torder, tab.tname, tab.slug, tab.userid, tab.tid],
         );
       }),
     );
 
-    return NextResponse.json({ message: "ok" }, { status: 200 });
+    return ApiSuccess.updated();
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ message: error.message }, { status: 500 });
-    } else {
-      return NextResponse.json(
-        { message: "An unexpected error occurred" },
-        { status: 500 },
-      );
-    }
+    console.error(error);
+    return ApiError.unknown();
   }
 }
 
