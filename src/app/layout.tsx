@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           <TanstackQueryProvider>{children}</TanstackQueryProvider>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-T3BJP0XBLC" />
     </html>
   );
 }
