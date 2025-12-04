@@ -1,5 +1,5 @@
 import PublicTabs from "@/app/components/public/PublicTabs";
-import { Tab, TabListItem } from "@/types/tab";
+import { Tab } from "@/types/tab";
 
 import { getDocuments, getTabs } from "../_lib/queries";
 
@@ -17,7 +17,7 @@ export default async function Layout({ children, params }: Props) {
   const isDocumentsExists = documents.length > 0;
 
   const tabs = await getTabs(userid);
-  const tabList: Record<number, TabListItem> =
+  const tabList: Record<string, Tab> =
     tabs?.reduce(
       (acc, tab) => {
         acc[tab.slug] = tab;

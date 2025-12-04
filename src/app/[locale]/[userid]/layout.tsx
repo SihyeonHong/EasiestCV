@@ -25,8 +25,7 @@ export default async function Layout({ children, params }: Props) {
 
   // admin page 여부 확인
   const headersList = headers();
-  const pathname =
-    headersList.get("x-pathname") || headersList.get("referer") || "";
+  const pathname = headersList.get("x-pathname") || "";
   const isAdminPage = pathname.includes(`/${userid}/admin`);
 
   return (
