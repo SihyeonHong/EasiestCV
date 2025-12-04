@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import LoadingIcon from "@/app/components/common/LoadingIcon";
 import { Tabs, TabsList, TabsTrigger } from "@/app/components/common/Tabs";
 import { usePathname, useRouter } from "@/i18n/routing";
-import type { TabListItem } from "@/types/tab";
+import type { Tab } from "@/types/tab";
 import { cn } from "@/utils/classname";
 
 interface Props {
   userid: string;
-  tabList: Record<number, TabListItem>;
+  tabList: Record<string, Tab>;
   isDocumentsExists: boolean;
 }
 
@@ -52,29 +52,31 @@ export default function PublicTabs({
             </span>
           </TabsTrigger>
           {tabList &&
-            Object.values(tabList).map((tabItem) => {
-              const active = currentTab === tabItem.slug;
-              return (
-                <TabsTrigger
-                  key={tabItem.tid}
-                  value={tabItem.tname}
-                  data-state={
-                    currentTab === tabItem.slug ? "active" : "inactive"
-                  }
-                  onClick={() => handleTabClick(tabItem.slug)}
-                  className={cn(
-                    "cursor-pointer",
-                    active &&
-                      "bg-white text-zinc-950 shadow dark:bg-zinc-950 dark:text-zinc-50",
-                  )}
-                >
-                  <span className="flex items-center gap-2">
-                    {loadingTab === tabItem.slug && <LoadingIcon />}
-                    {tabItem.tname}
-                  </span>
-                </TabsTrigger>
-              );
-            })}
+            Object.values(tabList)
+              .sort((a, b) => a.torder - b.torder)
+              .map((tabItem) => {
+                const active = currentTab === tabItem.slug;
+                return (
+                  <TabsTrigger
+                    key={tabItem.tid}
+                    value={tabItem.tname}
+                    data-state={
+                      currentTab === tabItem.slug ? "active" : "inactive"
+                    }
+                    onClick={() => handleTabClick(tabItem.slug)}
+                    className={cn(
+                      "cursor-pointer",
+                      active &&
+                        "bg-white text-zinc-950 shadow dark:bg-zinc-950 dark:text-zinc-50",
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      {loadingTab === tabItem.slug && <LoadingIcon />}
+                      {tabItem.tname}
+                    </span>
+                  </TabsTrigger>
+                );
+              })}
           {isDocumentsExists && (
             <TabsTrigger
               value="documents"

@@ -75,7 +75,16 @@ export const useHome = (userid: string) => {
         userid: userid,
         intro: newIntro,
       }),
-    // onSuccess 제거: 자동저장이라 캐시 업데이트 안 해도 됨
+    onSuccess: (_, newIntro) => {
+      // 자동저장 성공 시 캐시를 즉시 업데이트하여 최신 데이터 유지
+      queryClient.setQueryData<UserHome>(
+        queryKeys.home({ userid }),
+        (oldHome) => {
+          if (!oldHome) return oldHome;
+          return { ...oldHome, intro_html: newIntro };
+        },
+      );
+    },
     onError: (error) => {
       alert(tError("saveFail"));
       console.error("intro 업로드 에러:", error);

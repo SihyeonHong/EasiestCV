@@ -21,8 +21,9 @@ export const useTabManager = (userid: string) => {
   // 탭 전체 업데이트
   const { mutate: updateTabsMutation, isPending: isSaving } = useMutation({
     mutationFn: (newTabs: Tab[]) => put<Tab[]>(`/tabs`, newTabs),
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: queryKeys.tabs({ userid }) });
+    onSuccess: (_, variables) => {
+      // 서버 저장 성공 시 로컬 탭 데이터를 캐시에 직접 업데이트
+      queryClient.setQueryData<Tab[]>(queryKeys.tabs({ userid }), variables);
       setLocalTabs(null);
       alert(tMessage("saveSuccess"));
     },
