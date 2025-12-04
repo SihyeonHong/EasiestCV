@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
+import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/types/error";
 import { Tab } from "@/types/tab";
 import { post, put } from "@/utils/http";
@@ -11,6 +12,7 @@ import { post, put } from "@/utils/http";
 import { useTabs } from "./useTabs";
 
 export const useTabContents = (userid: string) => {
+  const queryClient = useQueryClient();
   const tEditor = useTranslations("editor");
   const tError = useTranslations("error");
 
@@ -20,7 +22,17 @@ export const useTabContents = (userid: string) => {
   const { mutate: updateContentsMutation } = useMutation({
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
-    // onSuccess 제거: 자동저장이라 캐시 업데이트 안 해도 됨
+    onSuccess: (_, variables) => {
+      // 자동저장 성공 시 캐시를 즉시 업데이트하여 최신 데이터 유지
+      queryClient.setQueryData<Tab[]>(queryKeys.tabs({ userid }), (oldTabs) => {
+        if (!oldTabs) return oldTabs;
+        return oldTabs.map((tab) =>
+          tab.tid === variables.tid
+            ? { ...tab, contents: variables.contents }
+            : tab,
+        );
+      });
+    },
     onError: (error) => {
       console.error("내용 저장 오류:", error);
     },

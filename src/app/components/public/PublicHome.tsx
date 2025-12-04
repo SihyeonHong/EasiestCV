@@ -16,7 +16,7 @@ export default async function PublicHome({ userid }: Props) {
   return (
     <Card>
       <CardContent className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-start">
-        <CardContent className="flex-1 p-0">
+        <div className="flex-1 p-2">
           <Image
             src={home.img_url ?? "/icon.png"}
             alt="home-img"
@@ -26,10 +26,10 @@ export default async function PublicHome({ userid }: Props) {
             className="h-auto w-full rounded-lg object-cover"
             priority
           />
-        </CardContent>
+        </div>
 
-        <CardContent
-          className="tiptap max-w-none flex-1 p-0"
+        <div
+          className="tiptap max-w-none flex-1 p-2"
           dangerouslySetInnerHTML={{ __html: home.intro_html ?? "" }}
         />
       </CardContent>
