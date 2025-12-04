@@ -14,7 +14,10 @@ export default function middleware(request: NextRequest) {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
   if (isLocaleInUrl) {
-    return intlMiddleware(request);
+    const response = intlMiddleware(request);
+    // pathname을 헤더에 추가하여 서버 컴포넌트에서 사용할 수 있도록 함
+    response.headers.set("x-pathname", pathname);
+    return response;
   }
 
   // 로케일이 없는 URL인 경우, 사용자의 브라우저 언어를 감지합니다.
@@ -29,12 +32,13 @@ export default function middleware(request: NextRequest) {
     routing.defaultLocale;
 
   // 감지된 언어로 리디렉션합니다.
-  const newUrl = new URL(
-    `/${detectedLocale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
-    request.url,
-  );
+  const newPathname = `/${detectedLocale}${pathname.startsWith("/") ? "" : "/"}${pathname}`;
+  const newUrl = new URL(newPathname, request.url);
 
-  return NextResponse.redirect(newUrl);
+  const response = NextResponse.redirect(newUrl);
+  // 리디렉션된 pathname을 헤더에 추가하여 서버 컴포넌트에서 사용할 수 있도록 함
+  response.headers.set("x-pathname", newPathname);
+  return response;
 }
 
 export const config = {
