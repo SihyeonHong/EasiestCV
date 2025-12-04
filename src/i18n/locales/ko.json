@@ -171,7 +171,10 @@
     "mobileNotSupported": "모바일에서는 문서 미리보기가 지원되지 않습니다.",
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
-    "preview": "미리보기"
+    "preview": "미리보기",
+    "delete": "삭제",
+    "deleteConfirm": "문서를 삭제하시겠습니까?",
+    "currentDocument": "현재 문서"
   },
   "settings": {
     "title": "설정",

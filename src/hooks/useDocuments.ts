@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 import { queryKeys } from "@/constants/queryKeys";
-import { get, post } from "@/utils/http";
+import { del, get, post } from "@/utils/http";
 
 export const useDocuments = (userid: string) => {
   const queryClient = useQueryClient();
@@ -38,6 +38,20 @@ export const useDocuments = (userid: string) => {
     },
   });
 
+  const { mutate: deleteDocument, isPending: isDeleting } = useMutation({
+    mutationFn: () => {
+      return del(`/documents?userid=${userid}`);
+    },
+    onSuccess: () => {
+      alert(tMessage("saveSuccess"));
+      queryClient.invalidateQueries({ queryKey: queryKeys.files({ userid }) });
+    },
+    onError: (err) => {
+      alert(tError("saveFail"));
+      console.error("PDF 삭제 에러:", err);
+    },
+  });
+
   const isDocumentExists = useMemo(
     () =>
       isSuccess &&
@@ -53,5 +67,7 @@ export const useDocuments = (userid: string) => {
     isDocumentExists,
     uploadDocument,
     isUploading,
+    deleteDocument,
+    isDeleting,
   };
 };
