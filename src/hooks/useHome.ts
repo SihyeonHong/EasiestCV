@@ -82,7 +82,7 @@ export const useHome = (userid: string) => {
         (oldHome) => {
           if (!oldHome) return oldHome;
           return { ...oldHome, intro_html: newIntro };
-        }
+        },
       );
     },
     onError: (error) => {
