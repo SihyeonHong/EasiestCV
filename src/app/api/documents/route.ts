@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { createSuccessResponse } from "@/utils/api-success";
+import {
+  createDeletedResponse,
+  createSuccessResponse,
+} from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { uploadFile, deleteFile } from "@/utils/gcs";
 
@@ -65,12 +68,12 @@ export async function POST(req: Request) {
     }
 
     // 1) 기존에 DB에 저장된 PDF 경로가 있으면 GCS에서 삭제
-    const existing = await query<{ pdf: string | null }>(
+    const existing = await query<{ url: string | null }>(
       "SELECT url FROM documents WHERE userid = $1",
       [userId],
     );
-    if (existing.length > 0 && existing[0]?.pdf) {
-      const oldFileName = existing[0].pdf.split("/").pop() ?? "";
+    if (existing.length > 0 && existing[0]?.url) {
+      const oldFileName = existing[0].url.split("/").pop() ?? "";
       try {
         await deleteFile(oldFileName);
       } catch (err) {
@@ -89,10 +92,18 @@ export async function POST(req: Request) {
     await uploadFile(uniqueFilename, buffer, "pdf");
 
     // 3) DB에 새 PDF URL 업데이트 (UPSERT)
-    await query(
-      "INSERT INTO documents (userid, url) VALUES ($1, $2) ON CONFLICT (userid) DO UPDATE SET url = EXCLUDED.url",
-      [userId, pdfUrl],
-    );
+    // userid에 UNIQUE 제약이 없으므로 기존 레코드가 있으면 UPDATE, 없으면 INSERT
+    if (existing.length > 0) {
+      await query("UPDATE documents SET url = $1 WHERE userid = $2", [
+        pdfUrl,
+        userId,
+      ]);
+    } else {
+      await query("INSERT INTO documents (userid, url) VALUES ($1, $2)", [
+        userId,
+        pdfUrl,
+      ]);
+    }
 
     // 4) 업로드 결과 반환
     return NextResponse.json({ pdfUrl }, { status: 200 });
@@ -100,6 +111,57 @@ export async function POST(req: Request) {
     console.error("PDF 업로드 실패:", error);
     return NextResponse.json(
       { error: "PDF 업로드 중 오류가 발생했습니다." },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userid");
+
+    if (!userId) {
+      return NextResponse.json(
+        { message: "userid is required" },
+        { status: 400 },
+      );
+    }
+
+    // 1) DB에서 기존 문서 조회
+    const existing = await query<{ url: string | null }>(
+      "SELECT url FROM documents WHERE userid = $1",
+      [userId],
+    );
+
+    if (existing.length === 0 || !existing[0]?.url) {
+      return NextResponse.json(
+        { message: "문서가 존재하지 않습니다." },
+        { status: 404 },
+      );
+    }
+
+    // 2) GCS에서 파일 삭제
+    const fileUrl = existing[0].url;
+    const fileName = fileUrl.split("/").pop() ?? "";
+
+    if (fileName) {
+      try {
+        await deleteFile(fileName);
+      } catch (err) {
+        console.error("GCS 파일 삭제 오류:", err);
+        // GCS 삭제 실패해도 DB 삭제는 진행
+      }
+    }
+
+    // 3) DB에서 레코드 삭제
+    await query("DELETE FROM documents WHERE userid = $1", [userId]);
+
+    return createDeletedResponse("문서가 삭제되었습니다.");
+  } catch (error) {
+    console.error("문서 삭제 실패:", error);
+    return NextResponse.json(
+      { error: "문서 삭제 중 오류가 발생했습니다." },
       { status: 500 },
     );
   }

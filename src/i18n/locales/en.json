@@ -171,7 +171,10 @@
     "mobileNotSupported": "Documents preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
-    "preview": "Preview"
+    "preview": "Preview",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete the document?",
+    "currentDocument": "Current Document"
   },
   "settings": {
     "title": "Settings",
