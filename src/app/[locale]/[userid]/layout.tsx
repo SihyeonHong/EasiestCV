@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { headers } from "next/headers";
 
 import LogoutHandler from "@/app/components/admin/LogoutHandler";
 import Footer from "@/app/components/common/Footer";
@@ -23,15 +22,10 @@ export default async function Layout({ children, params }: Props) {
   const { userid } = params;
   const user = await getUser(userid);
 
-  // admin page 여부 확인
-  const headersList = headers();
-  const pathname = headersList.get("x-pathname") || "";
-  const isAdminPage = pathname.includes(`/${userid}/admin`);
-
   return (
     <div className="flex flex-col items-center">
       <LogoutHandler />
-      <Header type={isAdminPage ? "admin" : "public"} />
+      <Header />
       <div className="flex w-full justify-center">
         <div className="w-full max-w-[1024px]">
           <Title title={user ? user.username : userid} />
