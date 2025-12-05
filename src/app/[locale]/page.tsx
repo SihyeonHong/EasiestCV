@@ -6,7 +6,7 @@ import InitPage from "@/app/components/InitPage";
 export default function page() {
   return (
     <div className="flex flex-col items-center">
-      <Header type="root" />
+      <Header />
       <Title />
       <InitPage />
       <Footer />

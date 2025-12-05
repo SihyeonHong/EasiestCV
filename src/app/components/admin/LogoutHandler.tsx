@@ -10,8 +10,12 @@ export default function LogoutHandler() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("logout") === "true") {
-      logout();
-      window.history.replaceState({}, "", window.location.pathname);
+      logout(undefined, {
+        onSuccess: () => {
+          // 쿼리 파라미터 제거
+          window.history.replaceState({}, "", window.location.pathname);
+        },
+      });
     }
   }, [logout]);
 
