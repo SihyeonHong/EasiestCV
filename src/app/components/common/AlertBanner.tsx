@@ -1,4 +1,7 @@
+"use client";
+
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Card, CardContent, CardFooter } from "@/app/components/common/Card";
@@ -9,6 +12,8 @@ interface AlertBannerProps {
 }
 
 export default function AlertBanner({ message }: AlertBannerProps) {
+  const t = useTranslations("alertBanner");
+
   const [visible, setVisible] = useState(
     !localStorage.getItem("hideBannerToday"),
   );
@@ -40,7 +45,7 @@ export default function AlertBanner({ message }: AlertBannerProps) {
           htmlFor="hideBannerToday"
           className="flex-1 cursor-pointer text-sm"
         >
-          오늘 하루 보지 않기
+          {t("hideBannerToday")}
         </label>
         <X
           className="size-5 cursor-pointer hover:opacity-70"

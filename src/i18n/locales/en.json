@@ -198,13 +198,14 @@
     "linkText": "Support Page",
     "title": "Support Center",
     "infoTitle": "Developer Information",
-    "contactTitle": "Contact Us"
+    "contactTitle": "Contact Us",
+    "ingTitle": "In Progress"
   },
   "info": {
     "developer": "Developer",
     "contact": "Contact",
-    "me": "Hong Si Hyeon",
-    "my": "SiHyeon Hong's",
+    "me": "Hong Sihyeon",
+    "my": "Sihyeon Hong's",
     "profile": "Profile"
   },
   "contact": {
@@ -225,5 +226,14 @@
   "alertBanner": {
     "bugAnnouncement": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly. I’m working on a fix!",
     "hideBannerToday": "Don't show this banner today"
+  },
+  "inProgress": {
+    "guideWriting": "Guide Writing",
+    "guideWritingDescription": "Currently, the guide-kr account is being used to write a detailed usage guide.",
+    "guideWritingDescription2": "The document is still incomplete, but you can check it out below.",
+    "guideWritingDescription3": "Later, the guide-en account will be used to provide an English version of the guide.",
+    "knownIssues": "Known Issues",
+    "knownIssuesDescription": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly.",
+    "knownIssuesDescription2": "The image insertion fails: This is not a failed upload. It works correctly on the public page. It may be restored by switching to another tab, continuing to write, logging out and then logging in again."
   }
 }

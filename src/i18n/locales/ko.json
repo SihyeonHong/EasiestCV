@@ -198,7 +198,8 @@
     "linkText": "고객지원 페이지",
     "title": "지원 센터",
     "infoTitle": "운영자 정보",
-    "contactTitle": "문의하기"
+    "contactTitle": "문의하기",
+    "ingTitle": "진행 중"
   },
   "info": {
     "developer": "개발자",
@@ -225,5 +226,14 @@
   "alertBanner": {
     "bugAnnouncement": "홈 탭의 텍스트 내용이 간혹 보이지 않는 오류가 있습니다. 다른 탭에 갔다 오시면 정상적으로 보입니다. 조속히 해결하겠습니다.",
     "hideBannerToday": "오늘 하루 보지 않기"
+  },
+  "inProgress": {
+    "guideWriting": "가이드 작성 중",
+    "guideWritingDescription": "현재 guide-kr 계정을 통해 상세한 사용 가이드를 작성 중입니다.",
+    "guideWritingDescription2": "아직 미완성된 문서이지만, 아래 링크에서 참고로 확인하실 수 있습니다.",
+    "guideWritingDescription3": "이후 guide-en 계정을 통해 영어 버전 가이드도 제공할 예정입니다.",
+    "knownIssues": "인지된 오류",
+    "knownIssuesDescription": "로그인 시 홈 텍스트 안 보임: 다른 탭 갔다오면 정상적으로 보입니다.",
+    "knownIssuesDescription2": "에디터에서 이미지 삽입 시 엑박: 업로드 실패는 아닙니다. 공개 페이지에서는 정상적으로 보입니다. 다른 탭 갔다오기, 계속 글 작성하기, 로그아웃 했다가 다시 들어오기 등으로 복구되기도 합니다."
   }
 }
