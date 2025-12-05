@@ -4,7 +4,7 @@ import Header from "@/app/components/common/Header";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <Header type="public" />
+      <Header />
       {children}
       <Footer />
     </div>
