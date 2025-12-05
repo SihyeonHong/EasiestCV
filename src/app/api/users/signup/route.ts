@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 
+import { DEFAULT_IMG } from "@/constants/constants";
 import { ReturnedTid } from "@/types/tab";
 import { SignupRequest } from "@/types/user-account";
 import { query } from "@/utils/database";
+import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,7 +31,14 @@ export async function POST(request: NextRequest) {
     // Home 생성
     await query(
       "INSERT INTO user_home (userid, intro_html, img_url) VALUES ($1, $2, $3)",
-      [userid, "", ""],
+      [userid, "", DEFAULT_IMG],
+    );
+
+    // user_site_meta 생성
+    const defaultMeta = makeUserSiteMeta(userid, username);
+    await query(
+      "INSERT INTO user_site_meta (userid, title, description) VALUES ($1, $2, $3)",
+      [defaultMeta.userid, defaultMeta.title, defaultMeta.description],
     );
 
     // 새 탭 1개 생성: DB가 자동생성해준 tid 받아서 slug 업데이트
