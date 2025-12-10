@@ -113,7 +113,12 @@
     "autoSaveInfo": "Changes are saved automatically.",
     "revert": "Revert",
     "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
-    "imgUploader": "Image Uploader"
+    "imgUploader": "Image Uploader",
+    "specialChar": "Special Characters",
+    "doubleQuotation": "Double Quotation Marks",
+    "singleQuotation": "Single Quotation Marks",
+    "insertDoubleQuotation": "Insert double quotation marks",
+    "insertSingleQuotation": "Insert single quotation marks"
   },
   "quillTooltips": {
     "header": "Heading style",
