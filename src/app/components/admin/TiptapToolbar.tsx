@@ -7,9 +7,7 @@ import React from "react";
 import MainToolbarContent from "@/app/components/admin/MainToolbarContent";
 import MobileToolbarContent from "@/app/components/admin/MobileToolbarContent";
 import { Toolbar } from "@/app/components/tiptap/tiptap-ui-primitive/toolbar";
-import { useCursorVisibility } from "@/hooks/tiptap/use-cursor-visibility";
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
-import { useWindowSize } from "@/hooks/tiptap/use-window-size";
 
 interface TiptapToolbarProps {
   editor: Editor | null;
@@ -31,12 +29,6 @@ export default function TiptapToolbar({
   toolbarRef,
 }: TiptapToolbarProps) {
   const isMobile = useIsMobile();
-  const { height } = useWindowSize();
-
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  });
 
   if (!editor) {
     return null;
@@ -44,16 +36,7 @@ export default function TiptapToolbar({
 
   return (
     <EditorContext.Provider value={{ editor }}>
-      <Toolbar
-        ref={toolbarRef}
-        style={{
-          ...(isMobile
-            ? {
-                bottom: `calc(100% - ${height - rect.y}px)`,
-              }
-            : {}),
-        }}
-      >
+      <Toolbar ref={toolbarRef}>
         {mobileView === "main" ? (
           <MainToolbarContent
             onHighlighterClick={onHighlighterClick}
