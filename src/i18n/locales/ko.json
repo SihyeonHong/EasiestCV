@@ -113,7 +113,12 @@
     "autoSaveInfo": "변경사항이 자동으로 저장됩니다.",
     "revert": "되돌리기",
     "revertConfirm": "수정하기 전으로 되돌리시겠습니까? 현재 입력한 내용은 모두 사라집니다.",
-    "imgUploader": "사진 올리기"
+    "imgUploader": "사진 올리기",
+    "specialChar": "특수기호",
+    "doubleQuotation": "겹낫표",
+    "singleQuotation": "홑낫표",
+    "insertDoubleQuotation": "겹낫표 삽입",
+    "insertSingleQuotation": "홑낫표 삽입"
   },
   "quillTooltips": {
     "header": "제목 스타일",

@@ -16,6 +16,7 @@ import {
 } from "@/app/components/tiptap/tiptap-ui/link-popover";
 import { ListDropdownMenu } from "@/app/components/tiptap/tiptap-ui/list-dropdown-menu";
 import { MarkButton } from "@/app/components/tiptap/tiptap-ui/mark-button";
+import { SpecialCharPopover } from "@/app/components/tiptap/tiptap-ui/special-char-popover/special-char-popover";
 import { TextAlignButton } from "@/app/components/tiptap/tiptap-ui/text-align-button";
 import { UndoRedoButton } from "@/app/components/tiptap/tiptap-ui/undo-redo-button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
@@ -75,6 +76,7 @@ export default function MainToolbarContent({
       <ToolbarSeparator />
 
       <ToolbarGroup>
+        <SpecialCharPopover />
         <MarkButton type="superscript" />
         <MarkButton type="subscript" />
       </ToolbarGroup>
