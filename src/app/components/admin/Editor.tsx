@@ -203,7 +203,7 @@ function EditorContent({ userid, tid }: Props) {
     <div className="flex flex-1 flex-col gap-4">
       <EditorPanel saveStatus={saveStatus} onRevert={handleRevert} />
 
-      <div className="w-full overflow-auto border">
+      <div className="w-full border">
         <TiptapToolbar
           editor={editor}
           mobileView={mobileView}
@@ -214,11 +214,13 @@ function EditorContent({ userid, tid }: Props) {
           toolbarRef={toolbarRef}
         />
 
-        <TiptapEditorContent
-          editor={editor}
-          role="presentation"
-          className="mx-auto flex w-full flex-1 flex-col bg-editor-color p-4 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500"
-        />
+        <div className="overflow-auto">
+          <TiptapEditorContent
+            editor={editor}
+            role="presentation"
+            className="mx-auto flex w-full flex-1 flex-col bg-editor-color p-4 transition-all duration-200 focus-within:border-2 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500"
+          />
+        </div>
       </div>
 
       <ImageUploader
