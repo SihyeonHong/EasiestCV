@@ -165,14 +165,8 @@ export function SpecialCharPopoverContent({
   );
 
   return (
-    <Card
-      style={{
-        boxShadow:
-          "0px 20px 60px 0px rgba(17, 24, 39, 0.08), 0px 16px 32px 0px rgba(17, 24, 39, 0.06), 0px 8px 12px 0px rgba(17, 24, 39, 0.04), 0px 4px 6px 0px rgba(17, 24, 39, 0.03)",
-      }}
-      className="dark:[box-shadow:0px_20px_60px_0px_rgba(0,0,0,0.6),0px_16px_32px_0px_rgba(0,0,0,0.3),0px_8px_12px_0px_rgba(0,0,0,0.28),0px_4px_6px_0px_rgba(0,0,0,0.16)]"
-    >
-      <CardBody style={isMobile ? { padding: 0 } : {}}>
+    <Card className="shadow-xl">
+      <CardBody className={isMobile ? "p-0" : ""}>
         <CardItemGroup orientation="vertical">
           <ButtonGroup orientation="horizontal">
             {BRACKET_CHARS.map((specialChar) => (
@@ -184,7 +178,7 @@ export function SpecialCharPopoverContent({
                 tooltip={t(specialChar.labelKey)}
                 data-style="ghost"
               >
-                <span style={{ fontSize: "1.2em" }}>{specialChar.char}</span>
+                <span className="text-[1.2em]">{specialChar.char}</span>
               </Button>
             ))}
           </ButtonGroup>
@@ -198,7 +192,7 @@ export function SpecialCharPopoverContent({
                 tooltip={t(specialChar.labelKey)}
                 data-style="ghost"
               >
-                <span style={{ fontSize: "1.2em" }}>{specialChar.char}</span>
+                <span className="text-[1.2em]">{specialChar.char}</span>
               </Button>
             ))}
           </ButtonGroup>
@@ -254,7 +248,7 @@ export function SpecialCharPopover({
           {...props}
         />
       </PopoverTrigger>
-      <PopoverContent aria-label={tooltipLabel}>
+      <PopoverContent aria-label={tooltipLabel} className="ml-3">
         <SpecialCharPopoverContent
           editor={editor}
           savedPosition={savedPosition}
