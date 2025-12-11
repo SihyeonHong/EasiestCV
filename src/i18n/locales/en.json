@@ -118,7 +118,21 @@
     "doubleQuotation": "Double Quotation Marks",
     "singleQuotation": "Single Quotation Marks",
     "insertDoubleQuotation": "Insert double quotation marks",
-    "insertSingleQuotation": "Insert single quotation marks"
+    "insertSingleQuotation": "Insert single quotation marks",
+    "angleBrackets": "Angle Brackets",
+    "doubleAngleBrackets": "Double Angle Brackets",
+    "middleDot": "Middle Dot",
+    "midlineEllipsis": "Midline Horizontal Ellipsis",
+    "hyphen": "Hyphen",
+    "enDash": "En Dash",
+    "emDash": "Em Dash",
+    "insertAngleBrackets": "Insert angle brackets",
+    "insertDoubleAngleBrackets": "Insert double angle brackets",
+    "insertMiddleDot": "Insert middle dot",
+    "insertMidlineEllipsis": "Insert midline horizontal ellipsis",
+    "insertHyphen": "Insert hyphen",
+    "insertEnDash": "Insert en dash",
+    "insertEmDash": "Insert em dash"
   },
   "quillTooltips": {
     "header": "Heading style",

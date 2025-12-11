@@ -81,7 +81,7 @@ export function SpecialCharPopoverContent({
   const isMobile = useIsMobile();
   const t = useTranslations("editor");
 
-  const SPECIAL_CHARS: SpecialChar[] = React.useMemo(
+  const BRACKET_CHARS: SpecialChar[] = React.useMemo(
     () => [
       {
         char: "『』",
@@ -92,6 +92,47 @@ export function SpecialCharPopoverContent({
         char: "「」",
         labelKey: "singleQuotation",
         descriptionKey: "insertSingleQuotation",
+      },
+      {
+        char: "〈〉",
+        labelKey: "angleBrackets",
+        descriptionKey: "insertAngleBrackets",
+      },
+      {
+        char: "《》",
+        labelKey: "doubleAngleBrackets",
+        descriptionKey: "insertDoubleAngleBrackets",
+      },
+    ],
+    [],
+  );
+
+  const OTHER_CHARS: SpecialChar[] = React.useMemo(
+    () => [
+      {
+        char: "·",
+        labelKey: "middleDot",
+        descriptionKey: "insertMiddleDot",
+      },
+      {
+        char: "⋯",
+        labelKey: "midlineEllipsis",
+        descriptionKey: "insertMidlineEllipsis",
+      },
+      {
+        char: "‐",
+        labelKey: "hyphen",
+        descriptionKey: "insertHyphen",
+      },
+      {
+        char: "–",
+        labelKey: "enDash",
+        descriptionKey: "insertEnDash",
+      },
+      {
+        char: "—",
+        labelKey: "emDash",
+        descriptionKey: "insertEmDash",
       },
     ],
     [],
@@ -124,11 +165,11 @@ export function SpecialCharPopoverContent({
   );
 
   return (
-    <Card style={isMobile ? { boxShadow: "none", border: 0 } : {}}>
-      <CardBody style={isMobile ? { padding: 0 } : {}}>
-        <CardItemGroup orientation="horizontal">
+    <Card className="shadow-xl">
+      <CardBody className={isMobile ? "p-0" : ""}>
+        <CardItemGroup orientation="vertical">
           <ButtonGroup orientation="horizontal">
-            {SPECIAL_CHARS.map((specialChar) => (
+            {BRACKET_CHARS.map((specialChar) => (
               <Button
                 key={specialChar.char}
                 type="button"
@@ -137,7 +178,21 @@ export function SpecialCharPopoverContent({
                 tooltip={t(specialChar.labelKey)}
                 data-style="ghost"
               >
-                <span style={{ fontSize: "1.2em" }}>{specialChar.char}</span>
+                <span className="text-[1.2em]">{specialChar.char}</span>
+              </Button>
+            ))}
+          </ButtonGroup>
+          <ButtonGroup orientation="horizontal">
+            {OTHER_CHARS.map((specialChar) => (
+              <Button
+                key={specialChar.char}
+                type="button"
+                onClick={() => handleInsertChar(specialChar.char)}
+                aria-label={t(specialChar.descriptionKey)}
+                tooltip={t(specialChar.labelKey)}
+                data-style="ghost"
+              >
+                <span className="text-[1.2em]">{specialChar.char}</span>
               </Button>
             ))}
           </ButtonGroup>
@@ -193,7 +248,7 @@ export function SpecialCharPopover({
           {...props}
         />
       </PopoverTrigger>
-      <PopoverContent aria-label={tooltipLabel}>
+      <PopoverContent aria-label={tooltipLabel} className="ml-3">
         <SpecialCharPopoverContent
           editor={editor}
           savedPosition={savedPosition}
