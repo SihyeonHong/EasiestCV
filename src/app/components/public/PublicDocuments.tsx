@@ -43,7 +43,7 @@ export default function PublicDocuments({ userid }: Props) {
   };
 
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardContent className="flex flex-col gap-5">
         {(isLoading || !isDocumentExists) && <LoadingPage />}
         <div className="flex flex-col items-center gap-3 md:flex-row">

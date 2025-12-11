@@ -37,7 +37,7 @@ export default function PublicTabs({
   };
 
   return (
-    <div className="mx-2 md:mx-8 lg:mx-auto lg:max-w-[1024px]">
+    <div className="mx-2 mb-3 shadow-sm md:mx-8 lg:mx-auto lg:max-w-[1024px]">
       <Tabs>
         <TabsList>
           <TabsTrigger

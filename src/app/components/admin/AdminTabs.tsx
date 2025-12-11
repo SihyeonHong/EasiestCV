@@ -22,7 +22,7 @@ export default function AdminTabs({ userid }: Props) {
 
   return (
     <Tabs defaultValue="home">
-      <TabsList>
+      <TabsList className="shadow-sm">
         <TabsTrigger value="home">Home</TabsTrigger>
         {tabs &&
           tabs.map((tab) => (
