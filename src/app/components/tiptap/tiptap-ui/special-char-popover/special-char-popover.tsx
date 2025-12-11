@@ -81,7 +81,7 @@ export function SpecialCharPopoverContent({
   const isMobile = useIsMobile();
   const t = useTranslations("editor");
 
-  const SPECIAL_CHARS: SpecialChar[] = React.useMemo(
+  const BRACKET_CHARS: SpecialChar[] = React.useMemo(
     () => [
       {
         char: "『』",
@@ -92,6 +92,47 @@ export function SpecialCharPopoverContent({
         char: "「」",
         labelKey: "singleQuotation",
         descriptionKey: "insertSingleQuotation",
+      },
+      {
+        char: "〈〉",
+        labelKey: "angleBrackets",
+        descriptionKey: "insertAngleBrackets",
+      },
+      {
+        char: "《》",
+        labelKey: "doubleAngleBrackets",
+        descriptionKey: "insertDoubleAngleBrackets",
+      },
+    ],
+    [],
+  );
+
+  const OTHER_CHARS: SpecialChar[] = React.useMemo(
+    () => [
+      {
+        char: "·",
+        labelKey: "middleDot",
+        descriptionKey: "insertMiddleDot",
+      },
+      {
+        char: "⋯",
+        labelKey: "midlineEllipsis",
+        descriptionKey: "insertMidlineEllipsis",
+      },
+      {
+        char: "‐",
+        labelKey: "hyphen",
+        descriptionKey: "insertHyphen",
+      },
+      {
+        char: "–",
+        labelKey: "enDash",
+        descriptionKey: "insertEnDash",
+      },
+      {
+        char: "—",
+        labelKey: "emDash",
+        descriptionKey: "insertEmDash",
       },
     ],
     [],
@@ -124,11 +165,31 @@ export function SpecialCharPopoverContent({
   );
 
   return (
-    <Card style={isMobile ? { boxShadow: "none", border: 0 } : {}}>
+    <Card
+      style={{
+        boxShadow:
+          "0px 20px 60px 0px rgba(17, 24, 39, 0.08), 0px 16px 32px 0px rgba(17, 24, 39, 0.06), 0px 8px 12px 0px rgba(17, 24, 39, 0.04), 0px 4px 6px 0px rgba(17, 24, 39, 0.03)",
+      }}
+      className="dark:[box-shadow:0px_20px_60px_0px_rgba(0,0,0,0.6),0px_16px_32px_0px_rgba(0,0,0,0.3),0px_8px_12px_0px_rgba(0,0,0,0.28),0px_4px_6px_0px_rgba(0,0,0,0.16)]"
+    >
       <CardBody style={isMobile ? { padding: 0 } : {}}>
-        <CardItemGroup orientation="horizontal">
+        <CardItemGroup orientation="vertical">
           <ButtonGroup orientation="horizontal">
-            {SPECIAL_CHARS.map((specialChar) => (
+            {BRACKET_CHARS.map((specialChar) => (
+              <Button
+                key={specialChar.char}
+                type="button"
+                onClick={() => handleInsertChar(specialChar.char)}
+                aria-label={t(specialChar.descriptionKey)}
+                tooltip={t(specialChar.labelKey)}
+                data-style="ghost"
+              >
+                <span style={{ fontSize: "1.2em" }}>{specialChar.char}</span>
+              </Button>
+            ))}
+          </ButtonGroup>
+          <ButtonGroup orientation="horizontal">
+            {OTHER_CHARS.map((specialChar) => (
               <Button
                 key={specialChar.char}
                 type="button"

@@ -118,7 +118,21 @@
     "doubleQuotation": "겹낫표",
     "singleQuotation": "홑낫표",
     "insertDoubleQuotation": "겹낫표 삽입",
-    "insertSingleQuotation": "홑낫표 삽입"
+    "insertSingleQuotation": "홑낫표 삽입",
+    "angleBrackets": "홑화살괄호",
+    "doubleAngleBrackets": "겹화살괄호",
+    "middleDot": "가운뎃점",
+    "midlineEllipsis": "가운뎃점 줄임표",
+    "hyphen": "하이픈",
+    "enDash": "en dash",
+    "emDash": "em dash",
+    "insertAngleBrackets": "홑화살괄호 삽입",
+    "insertDoubleAngleBrackets": "겹화살괄호 삽입",
+    "insertMiddleDot": "가운뎃점 삽입",
+    "insertMidlineEllipsis": "가운뎃점 줄임표 삽입",
+    "insertHyphen": "하이픈 삽입",
+    "insertEnDash": "en dash 삽입",
+    "insertEmDash": "em dash 삽입"
   },
   "quillTooltips": {
     "header": "제목 스타일",
