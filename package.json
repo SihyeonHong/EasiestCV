@@ -63,6 +63,7 @@
     "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "isomorphic-dompurify": "^2.34.0",
     "jsonwebtoken": "^9.0.1",
     "lodash.throttle": "^4.1.1",
     "lucide-react": "^0.475.0",
@@ -86,6 +87,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcrypt": "^5.0.0",
+    "@types/dompurify": "^3.0.5",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash.throttle": "^4.1.9",
     "@types/multer": "^1.4.7",

@@ -21,15 +21,16 @@
 
 @layer base {
   :root {
-    --background: 60 13% 97%;
-    --foreground: 20 14.3% 4.1%;
+    --background: #f8f8f6;
+    --foreground: #0b0908;
     --muted: var(--tt-text-muted);
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    /* --background: #08080a; */
+    --background: #09090b; /* zinc-950 */
+    --foreground: #f0eee9;
     --muted: var(--tt-text-muted);
   }
 }

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/app/components/common/Card";
 import LoadingPage from "@/app/components/LoadingPage";
 import { UserHome } from "@/types/user-data";
 import { get } from "@/utils/http";
+import { sanitizeHtml } from "@/utils/sanitize";
 
 interface Props {
   userid: string;
@@ -13,8 +14,10 @@ export default async function PublicHome({ userid }: Props) {
   const home = await getHome(userid);
   if (!home) return <LoadingPage />;
 
+  const sanitizedIntro = sanitizeHtml(home.intro_html ?? "");
+
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardContent className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-start">
         <div className="flex-1 p-2">
           <Image
@@ -30,7 +33,7 @@ export default async function PublicHome({ userid }: Props) {
 
         <div
           className="tiptap max-w-none flex-1 p-2"
-          dangerouslySetInnerHTML={{ __html: home.intro_html ?? "" }}
+          dangerouslySetInnerHTML={{ __html: sanitizedIntro }}
         />
       </CardContent>
     </Card>

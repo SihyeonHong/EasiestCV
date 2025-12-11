@@ -67,6 +67,22 @@
 /* 단락 스타일 */
 /* 기본 단락 스타일은 Tailwind Typography가 처리 */
 
+/* 빈 단락 태그 처리 - 여러 줄 엔터로 생성된 공백을 표시 */
+.tiptap p:empty {
+  min-height: 1.5em;
+  display: block;
+}
+
+/* br만 있는 단락도 처리 */
+.tiptap p:has(> br:only-child) {
+  min-height: 1.5em;
+}
+
+/* br 태그 처리 - br 태그가 줄바꿈을 생성하도록 보장 */
+.tiptap br {
+  line-height: 1.5;
+}
+
 /* 리스트 스타일 */
 .tiptap ol,
 .tiptap ul {
