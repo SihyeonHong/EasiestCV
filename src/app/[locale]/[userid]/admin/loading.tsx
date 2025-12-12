@@ -1,3 +1,5 @@
+"use client";
+
 import LoadingPage from "@/app/components/LoadingPage";
 
 export default function Loading() {
