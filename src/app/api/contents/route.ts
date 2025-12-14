@@ -8,12 +8,12 @@ export async function GET(request: Request) {
     const userId = searchParams.get("userid");
     const tid = searchParams.get("tid");
 
-    const result = await query<{ contents: string | null }>(
+    const result = await query<{ contents: string }>(
       "SELECT contents FROM tabs WHERE userid = $1 AND tid = $2",
       [userId, tid],
     );
 
-    return NextResponse.json(result.length > 0 ? result[0].contents : null);
+    return NextResponse.json(result.length > 0 ? result[0].contents : "");
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log("server error: ", error);
