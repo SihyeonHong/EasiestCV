@@ -89,3 +89,44 @@ export function sanitizeHtml(html: string): string {
     ALLOW_DATA_ATTR: false,
   });
 }
+
+/**
+ * HTML 템플릿 파일의 불필요한 공백을 제거하여
+ * tiptap 에디터에서 직접 작성한 것과 동일한 형식으로 정규화
+ *
+ * 템플릿 파일은 가독성을 위해 들여쓰기/줄바꿈이 포함되어 있지만,
+ * 이를 DB에 저장할 때는 태그 사이의 공백을 제거하여
+ * tiptap 에디터에서 복사/붙여넣기 시 발생하는 공백 문제를 방지합니다.
+ *
+ * - 블록 요소(li, ul, ol, p, h1-h6 등) 태그 사이의 공백/줄바꿈 제거
+ * - 실제 텍스트 내용의 공백은 유지
+ */
+export function normalizeHtmlWhitespace(html: string): string {
+  let normalized = html;
+
+  // 1. 태그 사이의 모든 공백/줄바꿈 제거
+  normalized = normalized.replace(/>\s+</g, "><");
+
+  // 2. 블록 요소 태그 뒤의 공백/줄바꿈 제거 (태그와 텍스트 사이)
+  // <p>, <h1-h6>, <li>, <ul>, <ol>, <div>, <blockquote> 등
+  normalized = normalized.replace(
+    /<(p|h[1-6]|li|ul|ol|div|blockquote)[^>]*>\s+/g,
+    "<$1>",
+  );
+
+  // 3. 블록 요소 태그 앞의 공백/줄바꿈 제거 (텍스트와 태그 사이)
+  normalized = normalized.replace(
+    /\s+<\/(p|h[1-6]|li|ul|ol|div|blockquote)>/g,
+    "</$1>",
+  );
+
+  // 4. 텍스트 내부의 줄바꿈을 공백으로 변환 (Prettier가 자동으로 넣은 줄바꿈 처리)
+  // 태그 사이 공백을 이미 제거했으므로, 남은 줄바꿈은 텍스트 내부의 줄바꿈
+  normalized = normalized.replace(/\n/g, " ");
+
+  // 5. 연속된 공백을 하나로 정리 (줄바꿈을 공백으로 바꾼 후 생길 수 있는 연속 공백)
+  normalized = normalized.replace(/\s+/g, " ");
+
+  // 6. 앞뒤 공백 제거
+  return normalized.trim();
+}
