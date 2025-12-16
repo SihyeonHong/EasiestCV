@@ -75,13 +75,12 @@
     "duplicateId": "This ID is already in use by another user."
   },
   "usageGuide": {
-    "try": "Want to try it out?",
-    "use": "Log in with this demo account for tutorial:",
-    "or": "Or",
+    "title": "Want to try it out?",
     "demoId": "ID: tutorial",
     "demoPW": "Password: easiestcv",
-    "checkOut": "Check out this page: ",
-    "professorCV": "Professor John Doe's CV →"
+    "link": "Dr. John Doe's Website",
+    "demoAccountDescription": "You can have your own personal website like this ↓",
+    "demoLoginDescription": "Log in to this account to try it out!"
   },
   "admin": {
     "howToActivateImgTab": "Click the 'Change to Default Image' button or select a file and choose an image to activate the image area.",

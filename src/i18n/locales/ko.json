@@ -75,13 +75,12 @@
     "duplicateId": "이미 다른 사람이 사용 중인 아이디입니다."
   },
   "usageGuide": {
-    "try": "사용해보고 싶으신가요?",
-    "use": "이 테스트 계정에 로그인해서 한번 사용해보세요:",
-    "or": "또는",
+    "title": "사용해보고 싶으신가요?",
     "demoId": "아이디: tutorial",
     "demoPW": "비밀번호: easiestcv",
-    "checkOut": "여기를 둘러보세요: ",
-    "professorCV": "John Doe 교수님의 이력서 →"
+    "link": "John Doe 교수님의 사이트 보기",
+    "demoAccountDescription": "회원가입하시면 이렇게 생긴 당신만의 개인 홈페이지를 갖게 됩니다 ↓",
+    "demoLoginDescription": "이 계정에 로그인해서 더 자세히 이용해보셔도 좋습니다."
   },
   "admin": {
     "howToActivateImgTab": "'기본 이미지로 변경'하시거나 위 파일 선택을 누르고 이미지를 고르면 이미지 영역이 활성화됩니다.",
