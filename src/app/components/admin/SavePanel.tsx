@@ -4,15 +4,12 @@ import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { SaveStatus } from "@/types/tab";
 
-interface EditorPanelProps {
+interface SavePanelProps {
   saveStatus: SaveStatus;
   onRevert: () => void;
 }
 
-export default function EditorPanel({
-  saveStatus,
-  onRevert,
-}: EditorPanelProps) {
+export default function SavePanel({ saveStatus, onRevert }: SavePanelProps) {
   const tEditor = useTranslations("editor");
 
   return (

@@ -104,6 +104,9 @@
     "imageToDefaultConfirm": "정말 기본 이미지로 변경하시겠습니까?",
     "imageTabHideConfirm": "이미지 영역을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
   },
+  "settingInTab": {
+    "title": "설정"
+  },
   "editor": {
     "saving": "저장 중...",
     "unsaved": "입력 중...",

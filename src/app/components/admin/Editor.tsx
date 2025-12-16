@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 // --- UI Components ---
 import ImageUploader from "@/app/components/admin/ImageUploader";
 import SavePanel from "@/app/components/admin/SavePanel";
-import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import {
   ToolbarProvider,
@@ -201,7 +200,6 @@ function Editor({ userid, tid }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {tid !== 0 && <SettingInTab userid={userid} tid={tid} />}
       <SavePanel saveStatus={saveStatus} onRevert={handleRevert} />
 
       <div className="w-full border">

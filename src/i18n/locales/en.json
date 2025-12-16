@@ -104,6 +104,9 @@
     "imageToDefaultConfirm": "Are you sure you want to change to the default image?",
     "imageTabHideConfirm": "Hiding the image tab will make the home tab look like other tabs."
   },
+  "settingInTab": {
+    "title": "Settings"
+  },
   "editor": {
     "saving": "Saving...",
     "unsaved": "Typing...",

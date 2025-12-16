@@ -2,7 +2,7 @@ import { SettingsIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import AdminHome from "@/app/components/admin/AdminHome";
-import Editor from "@/app/components/admin/Editor";
+import EditorContainer from "@/app/components/admin/EditorContainer";
 import Settings from "@/app/components/admin/Settings";
 import {
   Tabs,
@@ -40,7 +40,7 @@ export default function AdminTabs({ userid }: Props) {
       {tabs &&
         tabs.map((tab) => (
           <TabsContent key={tab.tid} value={tab.tname}>
-            <Editor userid={userid} tid={tab.tid} />
+            <EditorContainer userid={userid} tid={tab.tid} />
           </TabsContent>
         ))}
       <TabsContent value="settings">
