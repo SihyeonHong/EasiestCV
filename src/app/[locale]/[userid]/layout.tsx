@@ -27,7 +27,7 @@ export default async function Layout({ children, params }: Props) {
       <LogoutHandler />
       <Header />
       <div className="flex w-full justify-center">
-        <div className="w-full max-w-[1024px]">
+        <div className="w-full max-w-body">
           <Title title={user ? user.username : userid} />
           {!user ? <NoUserPage /> : children}
         </div>
