@@ -9,6 +9,7 @@ interface Props {
   userid: string;
 }
 export default function SettingInHome({ userid }: Props) {
+  const t = useTranslations("settingInTab");
   const tAdmin = useTranslations("admin");
   const { userHome, mutateUploadImg, deleteImg } = useHome(userid);
 
@@ -41,7 +42,7 @@ export default function SettingInHome({ userid }: Props) {
   return (
     <div className="bg-background p-3">
       <h1 className="mb-2 whitespace-nowrap text-lg font-semibold">
-        {tAdmin("profileImgAttach")}
+        {t("title")}
       </h1>
       {/* 여기 밑에 */}
       <div className="flex flex-col gap-2 sm:flex-row">

@@ -105,7 +105,8 @@
     "imageTabHideConfirm": "Hiding the image tab will make the home tab look like other tabs."
   },
   "settingInTab": {
-    "title": "Settings"
+    "title": "Settings",
+    "template": "Insert Template"
   },
   "editor": {
     "saving": "Saving...",

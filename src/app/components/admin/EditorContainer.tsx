@@ -23,6 +23,7 @@ import { useHome } from "@/hooks/useHome";
 import { useTabContents } from "@/hooks/useTabContents";
 // --- Types & Utils ---
 import { Tab } from "@/types/tab";
+import { normalizeHtmlWhitespace } from "@/utils/sanitize";
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";
 
@@ -64,6 +65,40 @@ function Editor({ userid, tid }: Props) {
     });
 
   const toolbarRef = React.useRef<HTMLDivElement>(null);
+
+  const [isAddingTemplate, setIsAddingTemplate] = useState(false);
+
+  const templateHtmlCacheRef = React.useRef<string | null>(null);
+  const templateHtmlPromiseRef = React.useRef<Promise<string> | null>(null);
+  const lastSelectionRef = React.useRef<{ from: number; to: number } | null>(
+    null,
+  );
+
+  const getNormalizedTemplateHtml =
+    React.useCallback(async (): Promise<string> => {
+      if (templateHtmlCacheRef.current) return templateHtmlCacheRef.current;
+      if (templateHtmlPromiseRef.current) return templateHtmlPromiseRef.current;
+
+      templateHtmlPromiseRef.current = (async () => {
+        const response = await fetch("/papers-template.html");
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch papers-template.html: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const rawTemplate = await response.text();
+        const normalized = normalizeHtmlWhitespace(rawTemplate);
+        templateHtmlCacheRef.current = normalized;
+        return normalized;
+      })();
+
+      try {
+        return await templateHtmlPromiseRef.current;
+      } finally {
+        templateHtmlPromiseRef.current = null;
+      }
+    }, []);
 
   const editor: TiptapEditorType | null = useEditor({
     immediatelyRender: false,
@@ -160,11 +195,46 @@ function Editor({ userid, tid }: Props) {
     }),
     extensions: getTiptapExtensions(),
     content: "",
+    onSelectionUpdate: ({ editor }) => {
+      const { from, to } = editor.state.selection;
+      lastSelectionRef.current = { from, to };
+    },
+    onFocus: ({ editor }) => {
+      const { from, to } = editor.state.selection;
+      lastSelectionRef.current = { from, to };
+    },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       handleContentChange(html);
     },
   });
+
+  const handleAddTemplate = React.useCallback(async () => {
+    if (!editor) return;
+    if (isAddingTemplate) return;
+
+    setIsAddingTemplate(true);
+    try {
+      const templateHtml = await getNormalizedTemplateHtml();
+      if (!templateHtml) return;
+
+      const lastSelection = lastSelectionRef.current;
+      if (lastSelection) {
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(lastSelection, templateHtml)
+          .run();
+      } else {
+        editor.chain().focus("end").insertContent(templateHtml).run();
+      }
+    } catch (error) {
+      console.error("템플릿 삽입 실패:", error);
+      alert("템플릿을 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      setIsAddingTemplate(false);
+    }
+  }, [editor, getNormalizedTemplateHtml, isAddingTemplate]);
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
@@ -201,7 +271,12 @@ function Editor({ userid, tid }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {tid !== 0 && <SettingInTab userid={userid} tid={tid} />}
+      {tid !== 0 && (
+        <SettingInTab
+          onAddTemplate={handleAddTemplate}
+          isAddingTemplate={isAddingTemplate}
+        />
+      )}
       <SavePanel saveStatus={saveStatus} onRevert={handleRevert} />
 
       <div className="w-full border">

@@ -5,11 +5,10 @@ import { useEffect, useRef } from "react";
 
 import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
+import { useTabs } from "@/hooks/useTabs";
 import { ApiErrorResponse } from "@/types/error";
 import { Tab } from "@/types/tab";
 import { post, put } from "@/utils/http";
-
-import { useTabs } from "./useTabs";
 
 export const useTabContents = (userid: string) => {
   const queryClient = useQueryClient();

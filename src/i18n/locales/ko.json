@@ -105,7 +105,8 @@
     "imageTabHideConfirm": "이미지 영역을 숨기면 홈 탭도 다른 탭과 같은 모습이 됩니다."
   },
   "settingInTab": {
-    "title": "설정"
+    "title": "설정",
+    "template": "템플릿 삽입"
   },
   "editor": {
     "saving": "저장 중...",
