@@ -106,6 +106,7 @@
   },
   "settingInTab": {
     "title": "Settings",
+    "templatePrompt": "Not sure what to write?",
     "template": "Insert Template",
     "templateInsertHint": "The following template will be inserted at the current position.",
     "templatePreviewLoadFailed": "Failed to load template preview."

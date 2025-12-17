@@ -106,6 +106,7 @@
   },
   "settingInTab": {
     "title": "설정",
+    "templatePrompt": "뭘 써야할지 막막한가요?",
     "template": "템플릿 삽입",
     "templateInsertHint": "현재 위치에 다음과 같은 템플릿을 삽입합니다",
     "templatePreviewLoadFailed": "템플릿 프리뷰를 불러오지 못했습니다."

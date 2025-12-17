@@ -47,11 +47,9 @@ export default function SettingInTab({
   }, [getTemplateHtml, isTemplatePreviewLoading, templateHtml]);
 
   return (
-    <div className="bg-background p-3">
-      <h1 className="mb-2 whitespace-nowrap text-lg font-semibold">
-        {t("title")}
-      </h1>
-      <div className="">
+    <div className="my-1 bg-background">
+      <div className="flex w-full flex-wrap items-center justify-end gap-2">
+        <p className="text-sm text-muted">{t("templatePrompt")}</p>
         <HoverCard
           openDelay={10}
           onOpenChange={(open) => {
