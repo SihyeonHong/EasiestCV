@@ -66,6 +66,7 @@ function Editor({ userid, tid }: Props) {
 
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
+  // 템플릿 삽입 관련
   const [isAddingTemplate, setIsAddingTemplate] = useState(false);
 
   const templateHtmlCacheRef = React.useRef<string | null>(null);
@@ -275,6 +276,7 @@ function Editor({ userid, tid }: Props) {
         <SettingInTab
           onAddTemplate={handleAddTemplate}
           isAddingTemplate={isAddingTemplate}
+          getTemplateHtml={getNormalizedTemplateHtml}
         />
       )}
       <SavePanel saveStatus={saveStatus} onRevert={handleRevert} />

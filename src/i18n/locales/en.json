@@ -106,7 +106,9 @@
   },
   "settingInTab": {
     "title": "Settings",
-    "template": "Insert Template"
+    "template": "Insert Template",
+    "templateInsertHint": "The following template will be inserted at the current position.",
+    "templatePreviewLoadFailed": "Failed to load template preview."
   },
   "editor": {
     "saving": "Saving...",
