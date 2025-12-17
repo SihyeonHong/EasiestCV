@@ -11,7 +11,7 @@ const Tabs = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Root
     ref={ref}
-    className={cn("mx-2 md:mx-8 lg:mx-auto lg:max-w-[1024px]", className)}
+    className={cn("mx-2 md:mx-8 lg:mx-auto lg:max-w-body", className)}
     {...props}
   />
 ));
