@@ -76,11 +76,11 @@
   },
   "usageGuide": {
     "title": "Want to try it out?",
-    "demoId": "ID: tutorial",
-    "demoPW": "Password: easiestcv",
+    "demoId": "ID: test",
+    "demoPW": "Password: test1234",
     "link": "Dr. John Doe's Website",
     "demoAccountDescription": "You can have your own personal website like this ↓",
-    "demoLoginDescription": "Log in to this account to try it out!"
+    "demoLoginDescription": "Log in to this test account to try it out!"
   },
   "admin": {
     "howToActivateImgTab": "Click the 'Change to Default Image' button or select a file and choose an image to activate the image area.",
@@ -120,6 +120,7 @@
     "revert": "Revert",
     "revertConfirm": "Do you want to revert to the previous version? All current inputs will be lost.",
     "imgUploader": "Image Uploader",
+    "plainText": "Plain text",
     "specialChar": "Special Characters",
     "doubleQuotation": "Double Quotation Marks",
     "singleQuotation": "Single Quotation Marks",

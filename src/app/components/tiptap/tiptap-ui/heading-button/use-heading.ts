@@ -12,7 +12,6 @@ import { HeadingSixIcon } from "@/app/components/tiptap/tiptap-icons/heading-six
 import { HeadingThreeIcon } from "@/app/components/tiptap/tiptap-icons/heading-three-icon";
 import { HeadingTwoIcon } from "@/app/components/tiptap/tiptap-icons/heading-two-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
 // --- Lib ---
 import {
   findNodePosition,
@@ -122,6 +121,22 @@ export function isHeadingActive(
   return level
     ? editor.isActive("heading", { level })
     : editor.isActive("heading");
+}
+
+/**
+ * Checks if paragraph is currently active
+ */
+export function isParagraphActive(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  return editor.isActive("paragraph");
+}
+
+/**
+ * Sets the current node to paragraph (normal text)
+ */
+export function setParagraph(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  return editor.chain().focus().setParagraph().run();
 }
 
 /**

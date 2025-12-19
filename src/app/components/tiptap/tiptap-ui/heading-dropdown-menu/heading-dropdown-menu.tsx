@@ -1,17 +1,19 @@
 "use client";
 
+import { Type } from "lucide-react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 // --- Icons ---
 import { ChevronDownIcon } from "@/app/components/tiptap/tiptap-icons/chevron-down-icon";
-
-// --- Hooks ---
-
 // --- Tiptap UI ---
-import { HeadingButton } from "@/app/components/tiptap/tiptap-ui/heading-button";
+import {
+  HeadingButton,
+  setParagraph,
+  isParagraphActive,
+} from "@/app/components/tiptap/tiptap-ui/heading-button";
 import type { UseHeadingDropdownMenuConfig } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
 import { useHeadingDropdownMenu } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
-
 // --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
@@ -71,6 +73,7 @@ export const HeadingDropdownMenu = React.forwardRef<
       levels,
       hideWhenUnavailable,
     });
+    const t = useTranslations("editor");
 
     const handleOpenChange = React.useCallback(
       (open: boolean) => {
@@ -121,6 +124,27 @@ export const HeadingDropdownMenu = React.forwardRef<
                     />
                   </DropdownMenuItem>
                 ))}
+                <DropdownMenuItem asChild>
+                  <Button
+                    type="button"
+                    data-style="ghost"
+                    data-active-state={
+                      editor && isParagraphActive(editor) ? "on" : "off"
+                    }
+                    role="button"
+                    tabIndex={-1}
+                    aria-label={t("plainText")}
+                    aria-pressed={editor ? isParagraphActive(editor) : false}
+                    onClick={() => {
+                      if (editor) {
+                        setParagraph(editor);
+                      }
+                    }}
+                  >
+                    <Type className="tiptap-button-icon" />
+                    <span className="tiptap-button-text">{t("plainText")}</span>
+                  </Button>
+                </DropdownMenuItem>
               </ButtonGroup>
             </CardBody>
           </Card>
