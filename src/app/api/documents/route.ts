@@ -1,22 +1,21 @@
-import { NextResponse } from "next/server";
-
+import { ApiError } from "@/utils/api-error";
 import {
   createDeletedResponse,
   createSuccessResponse,
+  createCreatedResponse,
 } from "@/utils/api-success";
 import { query } from "@/utils/database";
-import { uploadFile, deleteFile } from "@/utils/gcs";
+import extractFileName from "@/utils/extractFileName";
+import { uploadFile, deleteFile, downloadFile } from "@/utils/gcs";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userid");
+    const shouldDownload = searchParams.get("download") === "true";
 
     if (!userId) {
-      return NextResponse.json(
-        { message: "userid is required" },
-        { status: 400 },
-      );
+      return ApiError.validation("userid is required", 400);
     }
 
     const result = await query<{ url?: string }>(
@@ -24,6 +23,39 @@ export async function GET(request: Request) {
       [userId],
     ); // [{ url: "url1" }, { url: "url2" }, { url: "url3" }]
 
+    if (result.length === 0 || !result[0]?.url) {
+      return ApiError.validation("문서가 존재하지 않습니다.", 404);
+    }
+
+    // 다운로드 요청인 경우 파일을 직접 반환
+    if (shouldDownload) {
+      const fileUrl = result[0].url;
+      const gcsFileName = fileUrl.split("/").pop() ?? "";
+
+      if (!gcsFileName) {
+        return ApiError.validation("파일명을 찾을 수 없습니다.", 400);
+      }
+
+      // GCS에서 파일 다운로드
+      const fileBuffer = await downloadFile(gcsFileName);
+
+      // 원본 파일명 추출 (확장자 포함)
+      const originalFileName = extractFileName(fileUrl) || "resume";
+      const downloadFileName = `${originalFileName}.pdf`;
+
+      // Buffer를 Uint8Array로 변환하여 Response 생성
+      const uint8Array = new Uint8Array(fileBuffer);
+      return new Response(uint8Array, {
+        status: 200,
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${encodeURIComponent(downloadFileName)}"`,
+          "Cache-Control": "no-cache",
+        },
+      });
+    }
+
+    // 기본 동작: URL 배열 반환
     const urls = result
       .map((row) => row.url)
       .filter((url): url is string => url !== undefined);
@@ -32,13 +64,10 @@ export async function GET(request: Request) {
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.log("server error: ", e);
-      return NextResponse.json({ message: e.message }, { status: 500 });
+      return ApiError.server(e.message);
     } else {
       console.log("unexpected error: ", e);
-      return NextResponse.json(
-        { message: "An unexpected error occurred" },
-        { status: 500 },
-      );
+      return ApiError.unknown("An unexpected error occurred");
     }
   }
 }
@@ -53,17 +82,17 @@ export async function POST(req: Request) {
     const userId = formData.get("userid") as string | null;
 
     if (!document || !userId) {
-      return NextResponse.json(
-        { error: "PDF 파일 혹은 userId가 누락되었습니다." },
-        { status: 400 },
-      );
+      const missingFields: string[] = [];
+      if (!document) missingFields.push("document");
+      if (!userId) missingFields.push("userid");
+      return ApiError.missingFields(missingFields);
     }
 
     // PDF 파일인지 체크
     if (document.type !== "application/pdf") {
-      return NextResponse.json(
-        { error: "잘못된 파일 형식입니다. PDF만 업로드 가능합니다." },
-        { status: 400 },
+      return ApiError.validation(
+        "잘못된 파일 형식입니다. PDF만 업로드 가능합니다.",
+        400,
       );
     }
 
@@ -106,13 +135,10 @@ export async function POST(req: Request) {
     }
 
     // 4) 업로드 결과 반환
-    return NextResponse.json({ pdfUrl }, { status: 200 });
+    return createCreatedResponse({ pdfUrl });
   } catch (error) {
     console.error("PDF 업로드 실패:", error);
-    return NextResponse.json(
-      { error: "PDF 업로드 중 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return ApiError.server("PDF 업로드 중 오류가 발생했습니다.");
   }
 }
 
@@ -122,10 +148,7 @@ export async function DELETE(request: Request) {
     const userId = searchParams.get("userid");
 
     if (!userId) {
-      return NextResponse.json(
-        { message: "userid is required" },
-        { status: 400 },
-      );
+      return ApiError.validation("userid is required", 400);
     }
 
     // 1) DB에서 기존 문서 조회
@@ -135,10 +158,7 @@ export async function DELETE(request: Request) {
     );
 
     if (existing.length === 0 || !existing[0]?.url) {
-      return NextResponse.json(
-        { message: "문서가 존재하지 않습니다." },
-        { status: 404 },
-      );
+      return ApiError.validation("문서가 존재하지 않습니다.", 404);
     }
 
     // 2) GCS에서 파일 삭제
@@ -160,9 +180,6 @@ export async function DELETE(request: Request) {
     return createDeletedResponse("문서가 삭제되었습니다.");
   } catch (error) {
     console.error("문서 삭제 실패:", error);
-    return NextResponse.json(
-      { error: "문서 삭제 중 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return ApiError.server("문서 삭제 중 오류가 발생했습니다.");
   }
 }

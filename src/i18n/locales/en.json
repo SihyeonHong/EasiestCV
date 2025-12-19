@@ -189,23 +189,24 @@
     "lengthError": "ID must be between 3 and 20 characters long."
   },
   "documents": {
-    "documents": "Documents",
-    "documentsAttach": "Attach Documents",
-    "documentsOpen": "Open Current Documents",
-    "documentsPending": "Uploading documents. Please wait...",
-    "noDocuments": "No documents have been uploaded.",
-    "mobileNotSupported": "Documents preview is not supported on mobile.",
+    "documents": "CV",
+    "documentsAttach": "Attach CV File",
+    "downloadCV": "Download CV",
+    "openMyDocument": "Open Current File",
+    "documentsPending": "Uploading file. Please wait...",
+    "noDocuments": "No file has been uploaded.",
+    "mobileNotSupported": "File preview is not supported on mobile.",
     "openPreview": "Open Preview",
     "closePreview": "Close Preview",
     "preview": "Preview",
     "delete": "Delete",
-    "deleteConfirm": "Are you sure you want to delete the document?",
-    "currentDocument": "Current Document"
+    "deleteConfirm": "Are you sure you want to delete the file?",
+    "currentDocument": "Current File"
   },
   "settings": {
     "title": "Settings",
     "shortcut": "Shortcut",
-    "documents": "Documents",
+    "documents": "CV",
     "tabs": "Manage Tabs",
     "userInfo": "Edit User Info",
     "password": "Change Password",

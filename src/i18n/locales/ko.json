@@ -189,23 +189,24 @@
     "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
   "documents": {
-    "documents": "문서",
-    "documentsAttach": "문서 첨부",
-    "documentsOpen": "현재 문서 보기",
-    "documentsPending": "문서 업로드 중입니다. 잠시만 기다려 주세요.",
-    "noDocuments": "업로드된 문서가 없습니다.",
-    "mobileNotSupported": "모바일에서는 문서 미리보기가 지원되지 않습니다.",
+    "documents": "CV",
+    "documentsAttach": "CV 첨부",
+    "downloadCV": "CV 저장",
+    "openMyDocument": "현재 파일 열기",
+    "documentsPending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
+    "noDocuments": "업로드된 파일이 없습니다.",
+    "mobileNotSupported": "모바일에서는 CV 미리보기가 지원되지 않습니다.",
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기",
     "delete": "삭제",
-    "deleteConfirm": "문서를 삭제하시겠습니까?",
-    "currentDocument": "현재 문서"
+    "deleteConfirm": "파일을 삭제하시겠습니까?",
+    "currentDocument": "현재 파일"
   },
   "settings": {
     "title": "설정",
     "shortcut": "바로가기",
-    "documents": "문서",
+    "documents": "CV",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
     "password": "비밀번호 변경",
