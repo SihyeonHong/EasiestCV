@@ -8,7 +8,6 @@ import { Button } from "@/app/components/common/Button";
 import DisplayMode from "@/app/components/common/DisplayMode";
 import LocaleSwitcher from "@/app/components/common/LocaleSwitcher";
 import HomeLogo from "@/app/components/HomeLogo";
-import SupportLink from "@/app/components/SupportLink";
 import useAuth from "@/hooks/useAuth";
 import { Link } from "@/i18n/routing";
 
@@ -35,15 +34,10 @@ export default function Header() {
   }
 
   return (
-    <div className="flex w-full flex-col items-end p-2 sm:flex-row sm:flex-wrap">
-      {/* 왼쪽 */}
-      <div className="flex w-full flex-wrap sm:w-auto sm:gap-3">
-        <HomeLogo />
-        <SupportLink />
-      </div>
+    <div className="flex w-full items-start p-2 sm:flex-wrap">
+      {headerType === "root" && <HomeLogo />}
 
-      {/* 오른쪽 */}
-      <div className="ml-auto flex w-full flex-col items-end sm:w-auto sm:flex-row sm:gap-2">
+      <div className="ml-auto flex w-full flex-col items-end gap-1 sm:w-auto sm:flex-row sm:gap-2">
         <div className="flex">
           <LocaleSwitcher />
           <DisplayMode />

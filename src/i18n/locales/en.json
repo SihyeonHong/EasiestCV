@@ -222,11 +222,14 @@
   },
   "support": {
     "linkDescription": "Need help?",
-    "linkText": "Support Page",
+    "linkText": "Support Center",
     "title": "Support Center",
     "infoTitle": "Developer Information",
     "contactTitle": "Contact Us",
-    "ingTitle": "In Progress"
+    "ingTitle": "In Progress",
+    "policy": "Terms of Service and Privacy Policy",
+    "footerLink": "Support Center | Terms of Service | Privacy Policy",
+    "footerDescription": "The rights to the template and system of this site belong to Easiest CV, and the rights and responsibilities of all content published by users belong to the respective publishers."
   },
   "info": {
     "developer": "Developer",
@@ -237,7 +240,7 @@
   },
   "contact": {
     "name": "Name",
-    "email": "Email",
+    "email": "Email to reply",
     "subject": "Subject",
     "content": "Content",
     "send": "Send",

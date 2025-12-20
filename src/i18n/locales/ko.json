@@ -222,11 +222,14 @@
   },
   "support": {
     "linkDescription": "도움이 필요하신가요?",
-    "linkText": "고객지원 페이지",
-    "title": "지원 센터",
+    "linkText": "고객 지원 센터",
+    "title": "고객 지원 센터",
     "infoTitle": "운영자 정보",
     "contactTitle": "문의하기",
-    "ingTitle": "진행 중"
+    "ingTitle": "진행 중",
+    "policy": "이용약관 및 개인정보 처리방침",
+    "footerLink": "고객센터 | 이용약관 | 개인정보처리방침",
+    "footerDescription": "본 사이트의 틀과 시스템에 대한 권리는 Easiest CV에 있으며, 사용자가 게시한 모든 콘텐츠의 권리와 책임은 해당 게시자에게 있습니다."
   },
   "info": {
     "developer": "개발자",
@@ -237,7 +240,7 @@
   },
   "contact": {
     "name": "이름",
-    "email": "이메일",
+    "email": "답장 받으실 이메일",
     "subject": "제목",
     "content": "내용",
     "send": "보내기",
