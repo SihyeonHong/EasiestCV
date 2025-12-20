@@ -76,11 +76,11 @@
   },
   "usageGuide": {
     "title": "사용해보고 싶으신가요?",
-    "demoId": "아이디: tutorial",
-    "demoPW": "비밀번호: easiestcv",
+    "demoId": "아이디: test",
+    "demoPW": "비밀번호: test1234",
     "link": "John Doe 교수님의 사이트 보기",
     "demoAccountDescription": "회원가입하시면 이렇게 생긴 당신만의 개인 홈페이지를 갖게 됩니다 ↓",
-    "demoLoginDescription": "이 계정에 로그인해서 더 자세히 이용해보셔도 좋습니다."
+    "demoLoginDescription": "이 테스트 계정에 로그인해서 더 자세히 이용해보셔도 좋습니다."
   },
   "admin": {
     "howToActivateImgTab": "'기본 이미지로 변경'하시거나 위 파일 선택을 누르고 이미지를 고르면 이미지 영역이 활성화됩니다.",
@@ -120,6 +120,7 @@
     "revert": "되돌리기",
     "revertConfirm": "수정하기 전으로 되돌리시겠습니까? 현재 입력한 내용은 모두 사라집니다.",
     "imgUploader": "사진 올리기",
+    "plainText": "기본 텍스트",
     "specialChar": "특수기호",
     "doubleQuotation": "겹낫표",
     "singleQuotation": "홑낫표",
@@ -188,23 +189,24 @@
     "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
   "documents": {
-    "documents": "문서",
-    "documentsAttach": "문서 첨부",
-    "documentsOpen": "현재 문서 보기",
-    "documentsPending": "문서 업로드 중입니다. 잠시만 기다려 주세요.",
-    "noDocuments": "업로드된 문서가 없습니다.",
-    "mobileNotSupported": "모바일에서는 문서 미리보기가 지원되지 않습니다.",
+    "documents": "CV",
+    "documentsAttach": "CV 첨부",
+    "downloadCV": "CV 저장",
+    "openMyDocument": "현재 파일 열기",
+    "documentsPending": "파일 업로드 중입니다. 잠시만 기다려 주세요.",
+    "noDocuments": "업로드된 파일이 없습니다.",
+    "mobileNotSupported": "모바일에서는 CV 미리보기가 지원되지 않습니다.",
     "openPreview": "미리보기 열기",
     "closePreview": "미리보기 닫기",
     "preview": "미리보기",
     "delete": "삭제",
-    "deleteConfirm": "문서를 삭제하시겠습니까?",
-    "currentDocument": "현재 문서"
+    "deleteConfirm": "파일을 삭제하시겠습니까?",
+    "currentDocument": "현재 파일"
   },
   "settings": {
     "title": "설정",
     "shortcut": "바로가기",
-    "documents": "문서",
+    "documents": "CV",
     "tabs": "탭 관리",
     "userInfo": "회원정보 수정",
     "password": "비밀번호 변경",

@@ -72,7 +72,7 @@ export default function AdminDocuments({ userid }: Props) {
         ) : documents && documents.length > 0 ? (
           <div className="flex gap-2">
             <Button onClick={() => window.open(documents[0], "_blank")}>
-              {t("documentsOpen")}
+              {t("openMyDocument")}
             </Button>
             <Button
               variant="destructive"

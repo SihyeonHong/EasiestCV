@@ -9,7 +9,7 @@ export default function UsageGuide() {
 
       <p className="text-sm">{t("demoAccountDescription")}</p>
       <a
-        href="https://easiest-cv.com/tutorial"
+        href="https://easiest-cv.com/john-doe"
         target="_blank"
         rel="noopener noreferrer"
         className="text-nowrap text-blue-600 hover:underline"
