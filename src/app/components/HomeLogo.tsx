@@ -5,10 +5,10 @@ export default function HomeLogo() {
   return (
     <Link
       href="/"
-      className="flex items-center whitespace-nowrap text-xl dark:text-gray-200"
+      className="flex items-center whitespace-nowrap p-2 dark:text-gray-200"
     >
-      <House className="mb-1" />
-      <span className="ml-1 font-bold">Easiest CV</span>
+      <House className="mb-1 size-6" />
+      <span className="ml-1 hidden text-xl font-bold sm:block">Easiest CV</span>
     </Link>
   );
 }
