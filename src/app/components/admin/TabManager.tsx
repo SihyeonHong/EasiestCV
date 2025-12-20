@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 
-import NeedSaveDescription from "@/app/components/admin/NeedSaveDescription";
 import SaveStatusIndicator from "@/app/components/admin/SaveStatusIndicator";
 import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
@@ -143,12 +142,11 @@ export default function TabManager({ userid }: TabManagerProps) {
     <section id="tab-section" className="space-y-3">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold">{tAdmin("tabManager")}</h1>
-        <NeedSaveDescription />
       </header>
 
-      <div className="flex flex-col gap-8 sm:flex-row">
+      <div className="flex flex-col gap-6 sm:flex-row">
         {/* 테이블 섹션 */}
-        <div className="border-b border-zinc-200 dark:border-zinc-800 sm:w-2/3 sm:border-b-0">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 sm:w-3/5 sm:border-b-0">
           <Table>
             <TableHeader>
               <TableRow>
@@ -195,10 +193,25 @@ export default function TabManager({ userid }: TabManagerProps) {
         </div>
 
         {/* 컨트롤 패널 섹션 */}
-        <aside className="flex flex-col items-end justify-between gap-4 sm:w-1/3 sm:flex-col-reverse">
+        <aside className="flex flex-col items-end justify-between gap-4 sm:w-2/5">
+          {/* 팁 */}
+          <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
+            <header className="inline-flex items-center gap-1">
+              <InfoIcon className="size-4 text-muted" />
+              <h3 className="text-md font-semibold text-muted">Tips</h3>
+            </header>
+            <ul className="list-inside list-disc">
+              <li className="text-muted">{tAdmin("saveWarning")}</li>
+              <li className="text-muted">{tAdmin("tabManagerDescription")}</li>
+              <li className="text-muted sm:hidden">
+                {tAdmin("tabManagerDescriptionMobile")}
+              </li>
+            </ul>
+          </div>
+
           {/* 새 탭 추가 */}
           <form
-            className="mb-2 flex w-full flex-row gap-1"
+            className="mb-2 flex w-full flex-row gap-2 sm:flex-col"
             onSubmit={(e) => {
               e.preventDefault();
               addTab(newTabName);
@@ -211,27 +224,12 @@ export default function TabManager({ userid }: TabManagerProps) {
               required
               onChange={(e) => setNewTabName(e.target.value)}
               placeholder={tAdmin("newTabNamePlaceholder")}
-              className="flex-1"
             />
-            <Button variant="default" type="submit">
+            <Button variant="outline" type="submit">
               <PlusIcon className="size-4" />
               {tAdmin("addTab")}
             </Button>
           </form>
-
-          {/* 팁 */}
-          <div className="w-full rounded-md bg-zinc-50 p-1 text-sm dark:bg-zinc-800">
-            <header className="inline-flex items-center gap-1">
-              <InfoIcon className="size-4 text-muted" />
-              <h3 className="text-md font-semibold text-muted">Tips</h3>
-            </header>
-            <ul className="list-inside list-disc">
-              <li className="text-muted">{tAdmin("tabManagerDescription")}</li>
-              <li className="text-muted sm:hidden">
-                {tAdmin("tabManagerDescriptionMobile")}
-              </li>
-            </ul>
-          </div>
 
           {/* 저장 */}
           <div className="flex gap-2">
