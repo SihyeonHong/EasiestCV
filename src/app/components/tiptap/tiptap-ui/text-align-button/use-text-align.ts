@@ -76,7 +76,31 @@ export function canSetTextAlign(
   )
     return false;
 
-  return editor.can().setTextAlign(align);
+  // can() 메서드가 false를 반환하더라도 명령은 작동할 수 있으므로,
+  // 확장이 사용 가능하고 지원되는 노드 타입인지 확인
+  const { $from } = editor.state.selection;
+  const currentNode = $from.parent;
+  const nodeType = currentNode.type.name;
+
+  // TextAlign 확장이 지원하는 노드 타입 확인
+  const textAlignExt = editor.extensionManager.extensions.find(
+    (ext) => ext.name === "textAlign",
+  );
+  if (!textAlignExt) return false;
+
+  const supportedTypes = textAlignExt.options?.types || [
+    "heading",
+    "paragraph",
+  ];
+  const isSupportedType = supportedTypes.includes(nodeType);
+
+  // 지원되는 노드 타입이고, 현재 정렬과 다른 경우에만 true 반환
+  // (현재 정렬과 같으면 변경할 필요가 없으므로 false)
+  if (!isSupportedType) return false;
+
+  const currentAlign = currentNode.attrs.textAlign;
+  // 현재 정렬과 다르면 변경 가능
+  return currentAlign !== align;
 }
 
 export function hasSetTextAlign(
