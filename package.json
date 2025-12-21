@@ -29,6 +29,7 @@
     "@tanstack/react-query": "^5.45.0",
     "@tiptap/extension-blockquote": "^3.6.2",
     "@tiptap/extension-bold": "^3.6.2",
+    "@tiptap/extension-bubble-menu": "^3.14.0",
     "@tiptap/extension-bullet-list": "^3.6.2",
     "@tiptap/extension-code": "^3.6.2",
     "@tiptap/extension-code-block": "^3.6.2",
