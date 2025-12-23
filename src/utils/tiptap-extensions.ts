@@ -54,6 +54,7 @@ export const getTiptapExtensions = () => [
   CodeBlock,
   HorizontalRule,
   Link.configure({
+    openOnClick: false, // 에디터에서는 링크 클릭해도 안 열림
     enableClickSelection: true, // 링크를 클릭해도 텍스트 선택 가능. 기본값은 false로 클릭 시 선택이 막힘.
   }),
   TaskList,

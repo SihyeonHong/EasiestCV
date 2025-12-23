@@ -5,6 +5,7 @@ import {
   useEditor,
   Editor as TiptapEditorType,
 } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import React, { useEffect, useState } from "react";
 
 // --- UI Components ---
@@ -14,6 +15,7 @@ import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
+import { LinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
@@ -282,6 +284,11 @@ export default function Editor({ userid, tid }: Props) {
         />
 
         <div className="overflow-auto">
+          <BubbleMenu editor={editor}>
+            <div className="bg-background-secondary flex items-center gap-1 rounded-lg border p-1 shadow-lg">
+              <LinkPopover editor={editor} />
+            </div>
+          </BubbleMenu>
           <TiptapEditorContent
             editor={editor}
             role="presentation"

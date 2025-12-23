@@ -22,6 +22,7 @@
 @layer base {
   :root {
     --background: #f8f8f6;
+    --background-secondary: #ffffff;
     --foreground: #0b0908;
     --muted: var(--tt-text-muted);
     --radius: 0.5rem;
@@ -30,6 +31,7 @@
   .dark {
     /* --background: #08080a; */
     --background: #09090b; /* zinc-950 */
+    --background-secondary: #09090b;
     --foreground: #f0eee9;
     --muted: var(--tt-text-muted);
   }
