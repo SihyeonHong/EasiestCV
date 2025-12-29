@@ -1,9 +1,5 @@
 import { ApiError } from "@/utils/api-error";
-import {
-  createDeletedResponse,
-  createSuccessResponse,
-  createCreatedResponse,
-} from "@/utils/api-success";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile, downloadFile } from "@/utils/gcs";
@@ -60,7 +56,7 @@ export async function GET(request: Request) {
       .map((row) => row.url)
       .filter((url): url is string => url !== undefined);
 
-    return createSuccessResponse(urls);
+    return ApiSuccess.data(urls);
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.log("server error: ", e);
@@ -135,7 +131,7 @@ export async function POST(req: Request) {
     }
 
     // 4) 업로드 결과 반환
-    return createCreatedResponse({ pdfUrl });
+    return ApiSuccess.created({ pdfUrl });
   } catch (error) {
     console.error("PDF 업로드 실패:", error);
     return ApiError.server("PDF 업로드 중 오류가 발생했습니다.");
@@ -177,7 +173,7 @@ export async function DELETE(request: Request) {
     // 3) DB에서 레코드 삭제
     await query("DELETE FROM documents WHERE userid = $1", [userId]);
 
-    return createDeletedResponse("문서가 삭제되었습니다.");
+    return ApiSuccess.deleted("문서가 삭제되었습니다.");
   } catch (error) {
     console.error("문서 삭제 실패:", error);
     return ApiError.server("문서 삭제 중 오류가 발생했습니다.");

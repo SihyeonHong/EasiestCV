@@ -1,6 +1,6 @@
 import { allowedTypes, DEFAULT_IMG } from "@/constants/constants";
-import { ApiError, createErrorNextResponse } from "@/utils/api-error";
-import { ApiSuccess, createSuccessResponse } from "@/utils/api-success";
+import { ApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile } from "@/utils/gcs";
@@ -22,7 +22,7 @@ export async function PUT(request: Request) {
 
     return ApiSuccess.updated();
   } catch (error: unknown) {
-    console.error(error);
+    console.error("이미지 URL 업데이트 실패:", error);
     return ApiError.server();
   }
 }
@@ -45,10 +45,7 @@ export async function POST(req: Request) {
 
     // 업로드된 파일이 허용된 이미지 형식인지 검사
     if (!allowedTypes.includes(validImgFile.type)) {
-      return createErrorNextResponse(
-        "INVALID_IMAGE_TYPE",
-        "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
-      );
+      return ApiError.invalidImageType();
     }
 
     // 3) 기존 파일 있으면 삭제
@@ -67,8 +64,8 @@ export async function POST(req: Request) {
     ]);
 
     // 6) 성공 리턴
-    return createSuccessResponse(imageUrl);
-  } catch (error) {
+    return ApiSuccess.created(imageUrl);
+  } catch (error: unknown) {
     console.error("이미지 업로드 실패:", error);
     return ApiError.server();
   }
@@ -86,7 +83,7 @@ export async function POST(req: Request) {
     ) {
       try {
         await deleteFile(extractFileName(existing[0].img_url));
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("기존 이미지 삭제 오류:", error);
         return ApiError.server();
       }

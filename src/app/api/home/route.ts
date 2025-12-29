@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createSuccessResponse } from "@/utils/api-success";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
       userId,
     ]);
 
-    return createSuccessResponse(result[0]);
+    return ApiSuccess.data(result[0]);
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.log("server error: ", e);

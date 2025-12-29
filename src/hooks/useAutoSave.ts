@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 
 import { GCSRefreshRequest, SaveStatus } from "@/types/tab";
 import { del } from "@/utils/http";
-import { parseImgSrc } from "@/utils/parseImgSrc";
+import { parseGcsFiles } from "@/utils/parseGcsFiles";
 import useDebounce from "@/utils/useDebounce";
 
 interface UseAutoSaveProps {
@@ -47,7 +47,7 @@ export function useAutoSave({
       const data: GCSRefreshRequest = {
         userid,
         tid,
-        newList: parseImgSrc(content),
+        newList: parseGcsFiles(content),
       };
       del(`/files`, { data });
     } catch (error) {

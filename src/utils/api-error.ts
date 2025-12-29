@@ -134,6 +134,7 @@ export const ApiError = {
   fileSize: (message: string = "파일 크기가 제한을 초과했습니다.") =>
     createErrorNextResponse(ErrorType.FILE_SIZE_ERROR, message),
 
-  invalidImageType: (message: string = "지원하지 않는 이미지 형식입니다.") =>
-    createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message),
+  invalidImageType: (
+    message: string = "지원하지 않는 이미지 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
+  ) => createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message),
 };
