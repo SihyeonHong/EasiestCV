@@ -61,8 +61,8 @@ export async function POST(request: Request) {
 
     // GCS 링크 전달
     return NextResponse.json({ imageUrl }, { status: 200 });
-  } catch (error) {
-    console.error("이미지 업로드 실패:", error);
+  } catch {
+    console.error("이미지 업로드 실패");
     return NextResponse.json(
       { error: "이미지 업로드 중 오류가 발생했습니다." },
       { status: 500 },

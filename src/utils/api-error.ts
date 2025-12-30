@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { ApiErrorResponse } from "@/types/error";
+import { ApiErrorResponse, DBError } from "@/types/error";
 
 /**
  * API 에러 타입 상수
@@ -95,8 +95,16 @@ export function validateRequiredFields(
  * 편의 함수들 - 자주 사용하는 에러 타입별 헬퍼
  */
 export const ApiError = {
-  validation: (message: string, statusCode?: number) =>
+  validation: (message: string = "잘못된 요청입니다.", statusCode?: number) =>
     createErrorNextResponse(ErrorType.VALIDATION_ERROR, message, statusCode),
+
+  foreignKeyViolation: (
+    message: string = "참조 무결성 제약 조건을 위반했습니다.",
+  ) => createErrorNextResponse(ErrorType.VALIDATION_ERROR, message, 400),
+
+  notNullViolation: (
+    message: string = "데이터베이스 제약 조건 위반: 필수 필드가 누락되었습니다.",
+  ) => createErrorNextResponse(ErrorType.VALIDATION_ERROR, message, 400),
 
   missingFields: (fields: string[]) =>
     createErrorNextResponse(
@@ -138,3 +146,61 @@ export const ApiError = {
     message: string = "지원하지 않는 이미지 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
   ) => createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message),
 };
+
+/**
+ * catch 블록에서 발생한 에러를 자동으로 분류하여 적절한 ApiError 응답 반환
+ *
+ * @param error - catch 블록에서 받은 error (unknown 타입)
+ * @param contextMessage - 로그에 출력할 한글 메시지 (예: "이미지 업로드 실패")
+ * @returns 적절한 ApiError 응답
+ */
+export function handleApiError(
+  error: unknown,
+  contextMessage: string,
+): NextResponse<ApiErrorResponse> {
+  console.error(contextMessage);
+
+  // 1. DB 에러 (가장 구체적인 것부터 체크)
+  if (error && typeof error === "object" && "code" in error) {
+    const dbError = error as DBError;
+
+    // DB 연결 실패
+    if (dbError.code === "ECONNREFUSED" || dbError.code === "ENOTFOUND") {
+      return ApiError.database();
+    }
+
+    // PostgreSQL 제약 조건 위반
+    if (dbError.code === "23505") {
+      // Unique constraint violation
+      return ApiError.duplicate();
+    }
+
+    if (dbError.code === "23503") {
+      // Foreign key constraint violation
+      return ApiError.foreignKeyViolation();
+    }
+
+    if (dbError.code === "23502") {
+      // Not null constraint violation
+      return ApiError.notNullViolation();
+    }
+  }
+
+  // 2. JSON 파싱 오류
+  if (error instanceof SyntaxError) {
+    return ApiError.invalidJson();
+  }
+
+  // 3. 일반 Error 인스턴스
+  if (error instanceof Error) {
+    // duplicate key 에러 메시지 체크 (추가 안전장치)
+    if (error.message.includes("duplicate key")) {
+      return ApiError.duplicate();
+    }
+
+    return ApiError.server();
+  }
+
+  // 4. 알 수 없는 에러: 서버 에러로 표시
+  return ApiError.server();
+}

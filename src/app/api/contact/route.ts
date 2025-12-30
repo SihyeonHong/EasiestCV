@@ -38,8 +38,8 @@ ${content}
     };
     await transporter.sendMail(mailOptions);
     return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error(error);
+  } catch {
+    console.error("문의 메일 전송 실패");
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

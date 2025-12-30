@@ -73,8 +73,8 @@ export async function PUT(request: Request) {
     );
 
     return ApiSuccess.updated();
-  } catch (error: unknown) {
-    console.error(error);
+  } catch {
+    console.error("탭 업데이트 실패");
     return ApiError.unknown();
   }
 }

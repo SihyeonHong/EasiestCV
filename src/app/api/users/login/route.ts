@@ -99,8 +99,8 @@ export async function POST(request: NextRequest) {
 
     console.log("Total login time:", Date.now() - startAll, "ms");
     return response;
-  } catch (error) {
-    console.error("로그인 처리 중 에러:", error);
+  } catch {
+    console.error("로그인 처리 실패");
 
     return NextResponse.json(
       {

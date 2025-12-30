@@ -57,14 +57,9 @@ export async function GET(request: Request) {
       .filter((url): url is string => url !== undefined);
 
     return ApiSuccess.data(urls);
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      console.log("server error: ", e);
-      return ApiError.server(e.message);
-    } else {
-      console.log("unexpected error: ", e);
-      return ApiError.unknown("An unexpected error occurred");
-    }
+  } catch {
+    console.error("문서 조회 실패");
+    return ApiError.server();
   }
 }
 
@@ -101,8 +96,8 @@ export async function POST(req: Request) {
       const oldFileName = existing[0].url.split("/").pop() ?? "";
       try {
         await deleteFile(oldFileName);
-      } catch (err) {
-        console.error("기존 PDF 삭제 오류:", err);
+      } catch {
+        console.error("기존 PDF 삭제 오류");
       }
     }
 
@@ -132,8 +127,8 @@ export async function POST(req: Request) {
 
     // 4) 업로드 결과 반환
     return ApiSuccess.created({ pdfUrl });
-  } catch (error) {
-    console.error("PDF 업로드 실패:", error);
+  } catch {
+    console.error("PDF 업로드 실패");
     return ApiError.server("PDF 업로드 중 오류가 발생했습니다.");
   }
 }
@@ -164,8 +159,8 @@ export async function DELETE(request: Request) {
     if (fileName) {
       try {
         await deleteFile(fileName);
-      } catch (err) {
-        console.error("GCS 파일 삭제 오류:", err);
+      } catch {
+        console.error("GCS 파일 삭제 오류");
         // GCS 삭제 실패해도 DB 삭제는 진행
       }
     }
@@ -174,8 +169,8 @@ export async function DELETE(request: Request) {
     await query("DELETE FROM documents WHERE userid = $1", [userId]);
 
     return ApiSuccess.deleted("문서가 삭제되었습니다.");
-  } catch (error) {
-    console.error("문서 삭제 실패:", error);
+  } catch {
+    console.error("문서 삭제 실패");
     return ApiError.server("문서 삭제 중 오류가 발생했습니다.");
   }
 }

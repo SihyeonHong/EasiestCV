@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(result[0]);
   } catch (error: unknown) {
-    console.log("server error: ", error);
+    console.error("사용자 정보 조회 실패");
 
     if (error instanceof Error) {
       return NextResponse.json({ message: error.message }, { status: 500 });
@@ -67,7 +67,7 @@ export async function PUT(request: Request) {
       message: "회원정보가 수정되었습니다.",
     });
   } catch (error: unknown) {
-    console.log("회원정보 수정 오류:", error);
+    console.error("회원정보 수정 실패");
 
     // DB 연결 오류
     if (error && typeof error === "object" && "code" in error) {

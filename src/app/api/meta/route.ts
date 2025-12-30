@@ -14,8 +14,8 @@ export async function GET(request: Request) {
     );
 
     return ApiSuccess.data<UserSiteMeta | null>(result[0] ?? null);
-  } catch (error) {
-    console.error(error);
+  } catch {
+    console.error("메타데이터 조회 실패");
     return ApiError.server("메타데이터 조회 중 오류가 발생했습니다.");
   }
 }
@@ -45,8 +45,8 @@ export async function PUT(request: Request) {
     );
 
     return ApiSuccess.updated();
-  } catch (error) {
-    console.error("Meta update error:", error);
+  } catch {
+    console.error("메타데이터 저장 실패");
     return ApiError.server("메타데이터 저장 중 오류가 발생했습니다.");
   }
 }

@@ -12,13 +12,8 @@ export async function PATCH(request: Request) {
     ]);
 
     return ApiSuccess.updated();
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("server error: ", error);
-      return ApiError.server();
-    } else {
-      console.error("unexpected error: ", error);
-      return ApiError.unknown();
-    }
+  } catch {
+    console.error("소개글 업데이트 실패");
+    return ApiError.server();
   }
 }

@@ -1,4 +1,4 @@
-# API 에러 처리 가이드
+# API 라우트 응답 처리 가이드
 
 ## 기본 원칙
 
@@ -53,13 +53,35 @@ return ApiError.invalidImageType();
 
 ## 기본 구조
 
+### 방법 1: handleApiError 사용 (권장)
+
+에러를 자동으로 분류하여 적절한 응답을 반환하는 `handleApiError` 함수를 사용합니다:
+
 ```typescript
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
+
 export async function POST(req: Request) {
   try {
     // API 로직
     return ApiSuccess.created(data);
   } catch (error: unknown) {
-    console.error("이미지 업로드 실패:", error);
+    return handleApiError(error, "이미지 업로드 실패");
+  }
+}
+```
+
+### 방법 2: 수동 에러 처리
+
+특정 에러 타입에 대한 커스텀 처리가 필요한 경우:
+
+```typescript
+export async function POST(req: Request) {
+  try {
+    // API 로직
+    return ApiSuccess.created(data);
+  } catch {
+    console.error("이미지 업로드 실패");
     return ApiError.server();
   }
 }
@@ -67,9 +89,33 @@ export async function POST(req: Request) {
 
 **에러 처리 규칙:**
 
-- `catch` 블록의 파라미터는 무조건 `error: unknown`을 사용합니다 (`e`, `err` 등은 사용하지 않음)
+- `catch` 블록에서 `error` 파라미터가 사용되지 않는 경우 파라미터를 생략합니다
 - `console.error`에는 정확한 위치 정보를 포함합니다 (어느 API의 무슨 라우트 함수인지 한글로 명시)
-  - 예: `"이미지 업로드 실패:"`, `"이미지 URL 업데이트 실패:"`, `"PDF 업로드 실패:"`, `"문서 삭제 실패:"`
+  - 예: `"이미지 업로드 실패"`, `"이미지 URL 업데이트 실패"`, `"PDF 업로드 실패"`, `"문서 삭제 실패"`
+  - **중요**: `error` 파라미터는 로그에 포함하지 않습니다. 한글 메시지만 출력합니다
+
+## handleApiError 에러 분류 우선순위
+
+`handleApiError` 함수는 다음 순서로 에러를 분류합니다:
+
+1. **DB 에러 (code 속성 체크)**
+
+   - `ECONNREFUSED` / `ENOTFOUND` → `ApiError.database()` (503)
+   - `23505` (Unique constraint violation) → `ApiError.duplicate()` (409)
+   - `23503` (Foreign key constraint violation) → `ApiError.foreignKeyViolation()` (400)
+   - `23502` (Not null constraint violation) → `ApiError.notNullViolation()` (400)
+
+2. **SyntaxError**
+
+   - JSON 파싱 오류 → `ApiError.invalidJson()` (400)
+
+3. **Error 인스턴스**
+
+   - `error.message`에 "duplicate key" 포함 → `ApiError.duplicate()` (409)
+   - 그 외 → `ApiError.server()` (500)
+
+4. **알 수 없는 에러**
+   - 위에 해당하지 않으면 → `ApiError.server()` (500)
 
 ## 참고 파일
 

@@ -17,8 +17,8 @@ export async function GET(request: NextRequest) {
     const decoded = jwt.verify(token, secret) as { userid: string };
 
     return NextResponse.json({ userid: decoded.userid });
-  } catch (error) {
-    console.error(error);
+  } catch {
+    console.error("사용자 정보 조회 실패");
     return NextResponse.json(null, { status: 401 });
   }
 }

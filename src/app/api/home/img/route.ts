@@ -21,8 +21,8 @@ export async function PUT(request: Request) {
     ]);
 
     return ApiSuccess.updated();
-  } catch (error: unknown) {
-    console.error("이미지 URL 업데이트 실패:", error);
+  } catch {
+    console.error("이미지 URL 업데이트 실패");
     return ApiError.server();
   }
 }
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
 
     // 6) 성공 리턴
     return ApiSuccess.created(imageUrl);
-  } catch (error: unknown) {
-    console.error("이미지 업로드 실패:", error);
+  } catch {
+    console.error("이미지 업로드 실패");
     return ApiError.server();
   }
 
@@ -83,8 +83,8 @@ export async function POST(req: Request) {
     ) {
       try {
         await deleteFile(extractFileName(existing[0].img_url));
-      } catch (error: unknown) {
-        console.error("기존 이미지 삭제 오류:", error);
+      } catch {
+        console.error("기존 이미지 삭제 오류");
         return ApiError.server();
       }
     }

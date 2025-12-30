@@ -80,12 +80,12 @@ export async function PUT(request: NextRequest) {
         { message: "임시 비밀번호가 이메일로 전송되었습니다." },
         { status: 200 },
       );
-    } catch (error) {
-      console.error(error);
+    } catch {
+      console.error("이메일 전송 실패");
       throw new Error("이메일 전송에 실패했습니다.");
     }
   } catch (error) {
-    console.error("Password reset error:", error);
+    console.error("비밀번호 재설정 실패");
 
     if (error instanceof Error) {
       return NextResponse.json(

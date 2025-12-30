@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
       const rawTemplate = readFileSync(templatePath, "utf-8");
       // HTML 정규화: 태그 사이의 공백 제거하여 tiptap 에디터 형식과 일치시킴
       templateContent = normalizeHtmlWhitespace(rawTemplate);
-    } catch (error) {
-      console.error("템플릿 파일 읽기 실패:", error);
+    } catch {
+      console.error("템플릿 파일 읽기 실패");
       // 템플릿 파일을 읽지 못해도 계속 진행 (빈 문자열 사용)
     }
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("회원가입 실패");
 
     // 중복 키 에러 처리
     if (error instanceof Error && error.message.includes("duplicate key")) {

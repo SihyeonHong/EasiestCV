@@ -58,8 +58,8 @@ export async function DELETE(request: Request) {
         try {
           await deleteFile(file);
           return { file, success: true };
-        } catch (error) {
-          console.error(`Failed to delete file ${file}:`, error);
+        } catch {
+          console.error(`파일 삭제 실패: ${file}`);
           return { file, success: false };
         }
       });
@@ -98,7 +98,7 @@ export async function DELETE(request: Request) {
       );
     }
   } catch (error) {
-    console.error("DELETE API error:", error);
+    console.error("파일 삭제 API 실패");
 
     const errorMessage =
       error instanceof Error ? error.message : "서버 내부 오류가 발생했습니다.";

@@ -50,8 +50,8 @@ export async function PATCH(request: NextRequest) {
       },
       { status: 200 },
     );
-  } catch (error) {
-    console.error("비밀번호 변경 중 에러:", error);
+  } catch {
+    console.error("비밀번호 변경 실패");
 
     return NextResponse.json(
       { error: "서버 내부 오류가 발생했습니다." },

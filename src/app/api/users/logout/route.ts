@@ -18,8 +18,8 @@ export async function POST() {
     });
 
     return response;
-  } catch (error) {
-    console.error("Logout error:", error);
+  } catch {
+    console.error("로그아웃 실패");
     return NextResponse.json({ message: "Logout Error" }, { status: 500 });
   }
 }
