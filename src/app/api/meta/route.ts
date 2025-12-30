@@ -1,5 +1,5 @@
 import { UserSiteMeta } from "@/types/user-data";
-import { ApiError, validateRequiredFields } from "@/utils/api-error";
+import { validateRequiredFields, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
@@ -14,9 +14,8 @@ export async function GET(request: Request) {
     );
 
     return ApiSuccess.data<UserSiteMeta | null>(result[0] ?? null);
-  } catch {
-    console.error("메타데이터 조회 실패");
-    return ApiError.server("메타데이터 조회 중 오류가 발생했습니다.");
+  } catch (error: unknown) {
+    return handleApiError(error, "메타데이터 조회 실패");
   }
 }
 
@@ -45,8 +44,7 @@ export async function PUT(request: Request) {
     );
 
     return ApiSuccess.updated();
-  } catch {
-    console.error("메타데이터 저장 실패");
-    return ApiError.server("메타데이터 저장 중 오류가 발생했습니다.");
+  } catch (error: unknown) {
+    return handleApiError(error, "메타데이터 저장 실패");
   }
 }

@@ -1,8 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { SignupRequest } from "@/types/user-account";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function POST(request: NextRequest) {
@@ -13,13 +15,7 @@ export async function POST(request: NextRequest) {
     console.log("Parsing request body took", Date.now() - startBody, "ms");
 
     if (!userid || !password) {
-      return NextResponse.json(
-        {
-          message: "아이디와 비밀번호를 입력해주세요.",
-          errorType: "MISSING_FIELDS",
-        },
-        { status: 400 },
-      );
+      return ApiError.missingFields(["userid", "password"]);
     }
 
     const startQuery = Date.now();
@@ -31,14 +27,7 @@ export async function POST(request: NextRequest) {
 
     // 사용자가 존재하지 않는 경우
     if (result.length === 0) {
-      console.error(`로그인 실패 - 존재하지 않는 사용자: ${userid}`);
-      return NextResponse.json(
-        {
-          message: "존재하지 않는 아이디입니다.",
-          errorType: "USER_NOT_FOUND",
-        },
-        { status: 404 },
-      );
+      return ApiError.userNotFound();
     }
 
     const startCompare = Date.now();
@@ -47,14 +36,7 @@ export async function POST(request: NextRequest) {
 
     // 비밀번호가 틀린 경우
     if (!isMatch) {
-      console.error(`로그인 실패 - 비밀번호 불일치: ${userid}`);
-      return NextResponse.json(
-        {
-          message: "비밀번호가 틀렸습니다.",
-          errorType: "WRONG_PASSWORD",
-        },
-        { status: 401 },
-      );
+      return ApiError.wrongPassword();
     }
 
     // 환경변수
@@ -62,29 +44,19 @@ export async function POST(request: NextRequest) {
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-      console.error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
-      return NextResponse.json(
-        {
-          message: "서버 내부 오류가 발생했습니다.",
-          errorType: "SERVER_ERROR",
-        },
-        { status: 500 },
-      );
+      throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
     }
 
     const startJwt = Date.now();
     const token = jwt.sign(payload, secret, { expiresIn: "12h" });
     console.log("JWT signing took", Date.now() - startJwt, "ms");
 
-    const response = NextResponse.json(
-      {
-        message: "로그인 성공",
-        user: {
-          userid: result[0].userid,
-        },
+    const response = ApiSuccess.data({
+      message: "로그인 성공",
+      user: {
+        userid: result[0].userid,
       },
-      { status: 200 },
-    );
+    });
 
     response.cookies.set({
       name: "token",
@@ -99,15 +71,7 @@ export async function POST(request: NextRequest) {
 
     console.log("Total login time:", Date.now() - startAll, "ms");
     return response;
-  } catch {
-    console.error("로그인 처리 실패");
-
-    return NextResponse.json(
-      {
-        message: "서버 내부 오류가 발생했습니다.",
-        errorType: "SERVER_ERROR",
-      },
-      { status: 500 },
-    );
+  } catch (error: unknown) {
+    return handleApiError(error, "로그인 처리 실패");
   }
 }

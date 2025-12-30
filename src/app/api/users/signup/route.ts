@@ -2,11 +2,13 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 import bcrypt from "bcrypt";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { DEFAULT_IMG } from "@/constants/constants";
 import { ReturnedTid } from "@/types/tab";
 import { SignupRequest } from "@/types/user-account";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 import { normalizeHtmlWhitespace } from "@/utils/sanitize";
@@ -17,10 +19,12 @@ export async function POST(request: NextRequest) {
       (await request.json()) as SignupRequest;
 
     if (!userid || !username || !email || !password) {
-      return NextResponse.json(
-        { message: "모든 필드를 입력해주세요." },
-        { status: 400 },
-      );
+      return ApiError.missingFields([
+        "userid",
+        "username",
+        "email",
+        "password",
+      ]);
     }
 
     // 비밀번호 암호화
@@ -73,27 +77,8 @@ export async function POST(request: NextRequest) {
       ]);
     }
 
-    return NextResponse.json(
-      { message: "회원가입이 완료되었습니다." },
-      { status: 201 },
-    );
-  } catch (error) {
-    console.error("회원가입 실패");
-
-    // 중복 키 에러 처리
-    if (error instanceof Error && error.message.includes("duplicate key")) {
-      return NextResponse.json(
-        { message: "이미 사용 중인 아이디입니다." },
-        { status: 409 },
-      );
-    }
-
-    return NextResponse.json(
-      {
-        message: "회원가입 중 오류가 발생했습니다.",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
-    );
+    return ApiSuccess.created(undefined, "회원가입이 완료되었습니다.");
+  } catch (error: unknown) {
+    return handleApiError(error, "회원가입 실패");
   }
 }

@@ -1,11 +1,9 @@
-import { NextResponse } from "next/server";
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 
 export async function POST() {
   try {
-    const response = NextResponse.json(
-      { message: "logout success" },
-      { status: 200 },
-    );
+    const response = ApiSuccess.success();
 
     response.cookies.set({
       name: "token",
@@ -18,8 +16,7 @@ export async function POST() {
     });
 
     return response;
-  } catch {
-    console.error("로그아웃 실패");
-    return NextResponse.json({ message: "Logout Error" }, { status: 500 });
+  } catch (error: unknown) {
+    return handleApiError(error, "로그아웃 실패");
   }
 }

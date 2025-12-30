@@ -1,21 +1,24 @@
-import { NextResponse } from "next/server";
-
-import { ApiErrorResponse } from "@/types/error";
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { deleteFile } from "@/utils/gcs";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 
 export async function DELETE(request: Request) {
-  const { userid, tid, newList } = await request.json();
-
-  if (!userid || tid === null || tid === undefined || !newList) {
-    const response: ApiErrorResponse = {
-      message: "필수 정보가 누락되었습니다.",
-      errorType: "VALIDATION_ERROR",
-    };
-    return NextResponse.json(response, { status: 400 });
-  }
-
   try {
+    const { userid, tid, newList } = await request.json();
+
+    // 검증
+    const errorResponse = validateMissingFields({
+      userid,
+      tid,
+      newList,
+    });
+    if (errorResponse) {
+      return errorResponse;
+    }
+
+    // old list 지우기
     const oldListResult = await query<{ files: string[] }>(
       "SELECT files FROM attachments WHERE userid = $1 and tid = $2",
       [userid, tid],
@@ -28,10 +31,9 @@ export async function DELETE(request: Request) {
         [userid, tid, newList],
       );
 
-      return NextResponse.json(
-        { message: "Success to Insert New File List." },
-        { status: 201 },
-      );
+      return ApiSuccess.created({
+        message: "Success to Insert New File List.",
+      });
     } else {
       // 기존 파일 리스트 존재
       const oldList = oldListResult[0].files;
@@ -45,9 +47,9 @@ export async function DELETE(request: Request) {
           [newList, userid, tid],
         );
 
-        return NextResponse.json(
-          { message: "No files to delete. List updated." },
-          { status: 200 },
+        return ApiSuccess.updated(
+          undefined,
+          "No files to delete. List updated.",
         );
       }
 
@@ -87,27 +89,14 @@ export async function DELETE(request: Request) {
           ? `Failed to delete ${failedList.length} files.`
           : "Success to delete all orphan files.";
 
-      return NextResponse.json(
-        {
-          message,
-          deletedCount: filesToDelete.length - failedList.length,
-          failedCount: failedList.length,
-          failedFiles: failedList.length > 0 ? failedList : undefined,
-        },
-        { status: 200 },
-      );
+      return ApiSuccess.updated({
+        message,
+        deletedCount: filesToDelete.length - failedList.length,
+        failedCount: failedList.length,
+        failedFiles: failedList.length > 0 ? failedList : undefined,
+      });
     }
-  } catch (error) {
-    console.error("파일 삭제 API 실패");
-
-    const errorMessage =
-      error instanceof Error ? error.message : "서버 내부 오류가 발생했습니다.";
-
-    const response: ApiErrorResponse = {
-      message: errorMessage,
-      errorType: "SERVER_ERROR",
-    };
-
-    return NextResponse.json(response, { status: 500 });
+  } catch (error: unknown) {
+    return handleApiError(error, "파일 삭제 API 실패");
   }
 }

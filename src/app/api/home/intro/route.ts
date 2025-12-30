@@ -1,4 +1,4 @@
-import { ApiError } from "@/utils/api-error";
+import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
@@ -12,8 +12,7 @@ export async function PATCH(request: Request) {
     ]);
 
     return ApiSuccess.updated();
-  } catch {
-    console.error("소개글 업데이트 실패");
-    return ApiError.server();
+  } catch (error: unknown) {
+    return handleApiError(error, "소개글 업데이트 실패");
   }
 }

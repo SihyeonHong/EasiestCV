@@ -94,6 +94,167 @@ export async function POST(req: Request) {
   - 예: `"이미지 업로드 실패"`, `"이미지 URL 업데이트 실패"`, `"PDF 업로드 실패"`, `"문서 삭제 실패"`
   - **중요**: `error` 파라미터는 로그에 포함하지 않습니다. 한글 메시지만 출력합니다
 
+## ApiError 직접 사용 vs throw 사용 가이드
+
+### ApiError를 직접 사용하는 경우 (비즈니스 로직 검증)
+
+**비즈니스 로직 검증 실패**는 `ApiError`를 직접 반환합니다. 이는 예상 가능한 에러로, 클라이언트가 처리할 수 있는 에러입니다:
+
+```typescript
+// ✅ 필수 필드 검증
+if (!userid || !password) {
+  return ApiError.missingFields(["userid", "password"]);
+}
+
+// ✅ 사용자 인증 실패
+if (result.length === 0) {
+  return ApiError.userNotFound();
+}
+
+if (!isMatch) {
+  return ApiError.wrongPassword();
+}
+
+// ✅ 데이터 검증
+if (!emailRegex.test(email)) {
+  return ApiError.validation("올바른 이메일 형식이 아닙니다.");
+}
+
+// ✅ 파일 검증
+if (file.size > maxSize) {
+  return ApiError.fileSize("파일 크기는 20MB를 초과할 수 없습니다.");
+}
+
+if (!allowedTypes.includes(file.type)) {
+  return ApiError.invalidImageType();
+}
+
+// ✅ 데이터 존재 여부 확인
+if (result.length === 0) {
+  return ApiError.validation("문서가 존재하지 않습니다.", 404);
+}
+```
+
+**특징:**
+
+- 클라이언트의 잘못된 요청이나 비즈니스 규칙 위반
+- 예상 가능한 에러
+- HTTP 상태 코드가 명확함 (400, 401, 404, 409 등)
+
+### throw를 사용하는 경우 (예상치 못한 에러)
+
+**예상치 못한 에러**나 **시스템 레벨 에러**는 `throw`를 사용하여 `handleApiError`에 맡깁니다:
+
+```typescript
+// ✅ 환경변수 누락 (시스템 설정 오류)
+const secret = process.env.JWT_SECRET;
+if (!secret) {
+  throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
+}
+
+// ✅ 외부 라이브러리 에러
+try {
+  const decoded = jwt.verify(token, secret);
+} catch (error) {
+  // jwt.verify가 throw한 에러는 handleApiError가 처리
+  throw error;
+}
+```
+
+**특징:**
+
+- 시스템 설정 오류 (환경변수 누락 등)
+- 외부 라이브러리에서 발생한 예상치 못한 에러
+- DB 연결 실패, 네트워크 오류 등 인프라 문제
+- `handleApiError`가 자동으로 적절한 에러 타입으로 분류
+
+### 구분 기준
+
+| 상황                 | 방법                                                   | 이유                 |
+| -------------------- | ------------------------------------------------------ | -------------------- |
+| 필수 필드 누락       | `ApiError.missingFields()`                             | 클라이언트 입력 검증 |
+| 사용자 인증 실패     | `ApiError.userNotFound()` / `ApiError.wrongPassword()` | 비즈니스 로직 검증   |
+| 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증 |
+| 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증 |
+| 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증   |
+| 환경변수 누락        | `throw new Error()`                                    | 시스템 설정 오류     |
+| DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제          |
+| 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러     |
+
+### handleApiError가 처리하는 에러의 출처
+
+`handleApiError`는 `catch` 블록에서 받은 에러를 처리합니다. 에러는 다음 두 가지 방식으로 발생합니다:
+
+#### 1. 자동 throw (대부분의 경우)
+
+**비동기 작업이 실패하면 자동으로 throw됩니다.** 명시적으로 `throw`를 작성할 필요가 없습니다:
+
+```typescript
+export async function GET(request: Request) {
+  try {
+    // ✅ DB 쿼리 실패 시 자동으로 throw됨 (명시적 throw 불필요)
+    const result = await query("SELECT * FROM users WHERE userid = $1", [
+      userId,
+    ]);
+
+    // ✅ 파일 다운로드 실패 시 자동으로 throw됨
+    const fileBuffer = await downloadFile(gcsFileName);
+
+    // ✅ 이메일 전송 실패 시 자동으로 throw됨
+    await transporter.sendMail(mailOptions);
+
+    // ✅ JSON 파싱 실패 시 자동으로 throw됨 (SyntaxError)
+    const { userid, password } = await request.json();
+
+    return ApiSuccess.data(result);
+  } catch (error: unknown) {
+    // 위의 모든 에러가 자동으로 catch되어 handleApiError로 전달됨
+    return handleApiError(error, "사용자 정보 조회 실패");
+  }
+}
+```
+
+**자동으로 throw되는 경우:**
+
+- DB 쿼리 실패 (`await query(...)`)
+- 파일 업로드/다운로드 실패 (`await uploadFile(...)`, `await downloadFile(...)`)
+- 네트워크 요청 실패 (`await fetch(...)`)
+- JSON 파싱 실패 (`await request.json()`)
+- 외부 라이브러리 함수 호출 실패 (`await bcrypt.hash(...)`, `jwt.verify(...)` 등)
+
+#### 2. 명시적 throw (시스템 설정 체크 등)
+
+**동기적 검증이나 시스템 설정 체크는 명시적으로 `throw`를 사용합니다:**
+
+```typescript
+export async function POST(request: NextRequest) {
+  try {
+    // ✅ 환경변수 체크 - 명시적 throw 필요
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
+    }
+
+    // ✅ 외부 라이브러리의 catch에서 재throw
+    try {
+      const decoded = jwt.verify(token, secret);
+    } catch (error) {
+      throw error; // handleApiError가 처리하도록 재throw
+    }
+
+    return ApiSuccess.data({ userid: decoded.userid });
+  } catch (error: unknown) {
+    return handleApiError(error, "로그인 처리 실패");
+  }
+}
+```
+
+**명시적으로 throw해야 하는 경우:**
+
+- 환경변수 누락 체크
+- 외부 라이브러리의 catch 블록에서 에러를 재throw하는 경우
+- 커스텀 비즈니스 로직에서 예상치 못한 상황 발생 시
+
 ## handleApiError 에러 분류 우선순위
 
 `handleApiError` 함수는 다음 순서로 에러를 분류합니다:

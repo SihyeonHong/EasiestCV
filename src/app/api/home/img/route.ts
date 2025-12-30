@@ -1,5 +1,5 @@
 import { allowedTypes, DEFAULT_IMG } from "@/constants/constants";
-import { ApiError } from "@/utils/api-error";
+import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
@@ -21,9 +21,8 @@ export async function PUT(request: Request) {
     ]);
 
     return ApiSuccess.updated();
-  } catch {
-    console.error("이미지 URL 업데이트 실패");
-    return ApiError.server();
+  } catch (error: unknown) {
+    return handleApiError(error, "이미지 URL 업데이트 실패");
   }
 }
 
@@ -65,9 +64,8 @@ export async function POST(req: Request) {
 
     // 6) 성공 리턴
     return ApiSuccess.created(imageUrl);
-  } catch {
-    console.error("이미지 업로드 실패");
-    return ApiError.server();
+  } catch (error: unknown) {
+    return handleApiError(error, "이미지 업로드 실패");
   }
 
   async function deleteOldImg(userId: string) {
@@ -85,7 +83,7 @@ export async function POST(req: Request) {
         await deleteFile(extractFileName(existing[0].img_url));
       } catch {
         console.error("기존 이미지 삭제 오류");
-        return ApiError.server();
+        // 기존 이미지 삭제 실패해도 계속 진행
       }
     }
   }
