@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { allowedImgTypesForMessage } from "@/constants/constants";
 import { ApiErrorResponse, DBError } from "@/types/error";
 
 /**
@@ -142,9 +143,13 @@ export const ApiError = {
   fileSize: (message: string = "파일 크기가 제한을 초과했습니다.") =>
     createErrorNextResponse(ErrorType.FILE_SIZE_ERROR, message),
 
-  invalidImageType: (
-    message: string = "지원하지 않는 이미지 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
-  ) => createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message),
+  invalidImageType: (message?: string) => {
+    // 메시지가 제공되지 않으면 allowedImgTypesForMessage 배열에서 동적으로 생성
+    if (!message) {
+      message = `지원하지 않는 이미지 형식입니다. ${allowedImgTypesForMessage.join(", ")}만 업로드 가능합니다.`;
+    }
+    return createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message);
+  },
 };
 
 /**

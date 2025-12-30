@@ -1,5 +1,5 @@
 // 허용할 이미지 MIME 타입 목록
-export const allowedTypes = [
+export const allowedImgTypes = [
   "image/jpg",
   "image/jpeg",
   "image/png",
@@ -7,6 +7,16 @@ export const allowedTypes = [
   "image/webp",
   "image/bmp",
 ];
+
+// 에러 메시지용 이미지 타입 목록 (allowedImgTypes에서 자동 생성)
+export const allowedImgTypesForMessage = (() => {
+  const imageTypes = allowedImgTypes.map((type) => {
+    // "image/jpeg" -> "JPEG", "image/png" -> "PNG" 등으로 변환
+    return type.split("/")[1].toUpperCase();
+  });
+  // 중복 제거 및 정렬
+  return Array.from(new Set(imageTypes)).sort();
+})();
 
 // /기호가 json에 안 들어간대;
 export const DEFAULT_IMG = "/icon.png";

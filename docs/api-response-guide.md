@@ -125,7 +125,7 @@ if (file.size > maxSize) {
   return ApiError.fileSize("파일 크기는 20MB를 초과할 수 없습니다.");
 }
 
-if (!allowedTypes.includes(file.type)) {
+if (!allowedImgTypes.includes(file.type)) {
   return ApiError.invalidImageType();
 }
 

@@ -1,6 +1,7 @@
 import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { uploadFile } from "@/utils/gcs";
+import { validateImageType } from "@/utils/validateImageType";
 import { validateMissingFields } from "@/utils/validateMissingFields";
 
 export async function POST(request: Request) {
@@ -29,19 +30,10 @@ export async function POST(request: Request) {
       return ApiError.fileSize();
     }
 
-    // 허용할 이미지 MIME 타입 목록
-    const allowedTypes = [
-      "image/jpg",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "image/bmp",
-    ];
-
     // 업로드된 파일이 허용된 이미지 형식인지 검사
-    if (!allowedTypes.includes(validFile.type)) {
-      return ApiError.invalidImageType();
+    const imageTypeError = validateImageType(validFile);
+    if (imageTypeError) {
+      return imageTypeError;
     }
 
     // 이미지 GCS에 업로드

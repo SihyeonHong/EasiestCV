@@ -1,9 +1,10 @@
-import { allowedTypes, DEFAULT_IMG } from "@/constants/constants";
-import { ApiError, handleApiError } from "@/utils/api-error";
+import { DEFAULT_IMG } from "@/constants/constants";
+import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile } from "@/utils/gcs";
+import { validateImageType } from "@/utils/validateImageType";
 import { validateMissingFields } from "@/utils/validateMissingFields";
 
 // 클라이언트가 img url을 직접 주는 경우
@@ -43,8 +44,9 @@ export async function POST(req: Request) {
     const validUserId = userId as string;
 
     // 업로드된 파일이 허용된 이미지 형식인지 검사
-    if (!allowedTypes.includes(validImgFile.type)) {
-      return ApiError.invalidImageType();
+    const imageTypeError = validateImageType(validImgFile);
+    if (imageTypeError) {
+      return imageTypeError;
     }
 
     // 3) 기존 파일 있으면 삭제
