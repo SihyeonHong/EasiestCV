@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
       ]);
     }
 
-    return ApiSuccess.created(undefined, "회원가입이 완료되었습니다.");
+    return ApiSuccess.created();
   } catch (error: unknown) {
     return handleApiError(error, "회원가입 실패");
   }

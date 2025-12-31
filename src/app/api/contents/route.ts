@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
       [contents, userid, tid],
     );
 
-    return ApiSuccess.updated(undefined, "콘텐츠가 업데이트되었습니다.");
+    return ApiSuccess.updated();
   } catch (error: unknown) {
     return handleApiError(error, "콘텐츠 업데이트 실패");
   }

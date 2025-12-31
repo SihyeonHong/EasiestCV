@@ -40,10 +40,7 @@ export async function PATCH(request: NextRequest) {
       userid,
     ]);
 
-    return ApiSuccess.updated(
-      undefined,
-      "비밀번호가 성공적으로 변경되었습니다.",
-    );
+    return ApiSuccess.updated();
   } catch (error: unknown) {
     return handleApiError(error, "비밀번호 변경 실패");
   }

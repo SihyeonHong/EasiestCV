@@ -40,7 +40,7 @@ ${content}
   `,
     };
     await transporter.sendMail(mailOptions);
-    return ApiSuccess.success("문의 메일이 전송되었습니다.");
+    return ApiSuccess.created();
   } catch (error: unknown) {
     return handleApiError(error, "문의 메일 전송 실패");
   }

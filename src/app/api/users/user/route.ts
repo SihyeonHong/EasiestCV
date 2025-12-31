@@ -46,7 +46,7 @@ export async function PUT(request: Request) {
       [username, email, userid],
     );
 
-    return ApiSuccess.updated(undefined, "회원정보가 수정되었습니다.");
+    return ApiSuccess.updated();
   } catch (error: unknown) {
     return handleApiError(error, "회원정보 수정 실패");
   }

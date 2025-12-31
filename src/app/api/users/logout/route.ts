@@ -3,7 +3,7 @@ import { ApiSuccess } from "@/utils/api-success";
 
 export async function POST() {
   try {
-    const response = ApiSuccess.success();
+    const response = ApiSuccess.created();
 
     response.cookies.set({
       name: "token",

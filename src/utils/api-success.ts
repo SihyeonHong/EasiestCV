@@ -14,37 +14,25 @@ export const ApiSuccess = {
   },
 
   /**
-   * 생성 성공 (POST 201)
-   * 201 Created 상태 코드와 함께 데이터 반환
+   * 생성 성공 (POST)
+   * 데이터가 있으면 201 Created, 없으면 204 No Content
    */
-  created: <T>(
-    data: T,
-    message?: string,
-  ): NextResponse<T | { message: string; data: T }> => {
-    if (message) {
-      return NextResponse.json({ message, data }, { status: 201 });
+  created: <T>(data?: T) => {
+    if (data !== undefined) {
+      return NextResponse.json(data, { status: 201 });
     }
-    return NextResponse.json(data, { status: 201 });
+    return new NextResponse(null, { status: 204 });
   },
 
   /**
-   * 수정 성공 (PUT/PATCH 200)
-   * 수정된 데이터 또는 성공 메시지 반환
+   * 수정 성공 (PUT/PATCH)
+   * 데이터가 있으면 200 OK, 없으면 204 No Content
    */
-  updated: <T>(
-    data?: T,
-    message?: string,
-  ): NextResponse<T | { message: string; data?: T }> => {
-    if (message && data) {
-      return NextResponse.json({ message, data }, { status: 200 });
-    }
-    if (message) {
-      return NextResponse.json({ message }, { status: 200 });
-    }
-    if (data) {
+  updated: <T>(data?: T) => {
+    if (data !== undefined) {
       return NextResponse.json(data, { status: 200 });
     }
-    return NextResponse.json({ message: "수정되었습니다." }, { status: 200 });
+    return new NextResponse(null, { status: 204 });
   },
 
   /**
@@ -57,10 +45,4 @@ export const ApiSuccess = {
     }
     return new NextResponse(null, { status: 204 });
   },
-
-  /**
-   * 단순 성공 메시지 (200)
-   */
-  success: (message: string = "처리되었습니다.") =>
-    NextResponse.json({ message }, { status: 200 }),
 };

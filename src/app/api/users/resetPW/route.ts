@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest) {
         userid,
       ]);
 
-      return ApiSuccess.success("임시 비밀번호가 이메일로 전송되었습니다.");
+      return ApiSuccess.updated();
     } catch {
       console.error("이메일 전송 실패");
       throw new Error("이메일 전송에 실패했습니다.");
