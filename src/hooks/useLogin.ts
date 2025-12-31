@@ -6,15 +6,8 @@ import { useTranslations } from "next-intl";
 import { queryKeys } from "@/constants/queryKeys";
 import { useRouter } from "@/i18n/routing";
 import { ApiErrorResponse } from "@/types/error";
-import { LoginForm } from "@/types/user-account";
+import { LoginForm, User } from "@/types/user-account";
 import { post } from "@/utils/http";
-
-interface LoginResponse {
-  message: string;
-  user: {
-    userid: string;
-  };
-}
 
 export default function useLogin() {
   const router = useRouter();
@@ -24,12 +17,12 @@ export default function useLogin() {
 
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: async (data: LoginForm) => {
-      return await post<LoginResponse>(`/users/login`, data);
+      return await post<User>(`/users/login`, data);
     },
     onSuccess: (response) => {
-      queryClient.setQueryData(queryKeys.auth(), response.user);
+      queryClient.setQueryData(queryKeys.auth(), response);
       setTimeout(() => {
-        router.push(`/${response.user.userid}/admin`);
+        router.push(`/${response.userid}/admin`);
       }, 50);
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {

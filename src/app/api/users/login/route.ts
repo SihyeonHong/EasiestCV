@@ -51,11 +51,10 @@ export async function POST(request: NextRequest) {
     const token = jwt.sign(payload, secret, { expiresIn: "12h" });
     console.log("JWT signing took", Date.now() - startJwt, "ms");
 
-    const response = ApiSuccess.data({
-      message: "로그인 성공",
-      user: {
-        userid: result[0].userid,
-      },
+    const response = ApiSuccess.created({
+      userid: result[0].userid,
+      username: result[0].username,
+      email: result[0].email,
     });
 
     response.cookies.set({

@@ -31,9 +31,7 @@ export async function DELETE(request: Request) {
         [userid, tid, newList],
       );
 
-      return ApiSuccess.created({
-        message: "Success to Insert New File List.",
-      });
+      return ApiSuccess.created();
     } else {
       // 기존 파일 리스트 존재
       const oldList = oldListResult[0].files;

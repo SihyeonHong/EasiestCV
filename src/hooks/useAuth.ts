@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/types/error";
+import { User } from "@/types/user-account";
 import { get, post } from "@/utils/http";
 
 export default function useAuth() {
@@ -15,7 +16,7 @@ export default function useAuth() {
     queryKey: queryKeys.auth(),
     queryFn: async () => {
       try {
-        return await get<{ userid: string }>(`/users/me`);
+        return await get<User>(`/users/me`);
       } catch {
         return null;
       }
