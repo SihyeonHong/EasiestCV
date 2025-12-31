@@ -15,21 +15,99 @@ import { ApiSuccess } from "@/utils/api-success";
 return ApiSuccess.data(data);
 
 // POST: 생성
-return ApiSuccess.created(data);
+return ApiSuccess.created(data); // 데이터가 있으면 201, 없으면 204
 
 // PUT/PATCH: 수정
-return ApiSuccess.updated(data);
+return ApiSuccess.updated(data); // 데이터가 있으면 200, 없으면 204
 
 // DELETE: 삭제
-return ApiSuccess.deleted();
+return ApiSuccess.deleted(); // 데이터가 있으면 200, 없으면 204
 ```
 
 **HTTP 메서드별 함수:**
 
-- `GET`: `ApiSuccess.data(data)` - 200 OK
-- `POST`: `ApiSuccess.created(data)` - 201 Created
-- `PUT/PATCH`: `ApiSuccess.updated(data?)` - 200 OK
-- `DELETE`: `ApiSuccess.deleted()` - 200 OK
+- `GET`: `ApiSuccess.data(data)` - 200 OK, 데이터 반환
+- `POST`: `ApiSuccess.created(data?)` - 데이터가 있으면 201 Created, 없으면 204 No Content
+- `PUT/PATCH`: `ApiSuccess.updated(data?)` - 데이터가 있으면 200 OK, 없으면 204 No Content
+- `DELETE`: `ApiSuccess.deleted(data?)` - 데이터가 있으면 200 OK, 없으면 204 No Content
+
+### 응답 형식 원칙
+
+**모든 성공 응답은 데이터를 직접 반환합니다.** 일관성을 위해 `{ data: T }` 형식의 래핑을 사용하지 않습니다.
+
+```typescript
+// ✅ 올바른 사용
+return ApiSuccess.data({ userid: "user123" });  // GET: { userid: "user123" }
+return ApiSuccess.created({ pdfUrl: "..." });   // POST: { pdfUrl: "..." }
+return ApiSuccess.updated({ imageUrl: "..." }); // PUT: { imageUrl: "..." }
+return ApiSuccess.deleted();                     // DELETE: 204 (본문 없음)
+
+// ❌ 잘못된 사용
+return ApiSuccess.data({ data: { userid: "user123" } });  // 이중 래핑
+return ApiSuccess.created({ message: "성공", data: {...} }); // message 사용
+```
+
+### 204 No Content 사용
+
+**데이터가 없을 때는 204 No Content를 반환합니다:**
+
+- `POST`: 생성 후 반환할 데이터가 없을 때
+- `PUT/PATCH`: 수정 후 반환할 데이터가 없을 때
+- `DELETE`: 삭제 후 반환할 데이터가 없을 때
+
+```typescript
+return ApiSuccess.created();
+return ApiSuccess.updated();
+return ApiSuccess.deleted();
+```
+
+### 성공 메시지는 클라이언트 담당.
+
+**성공 응답에 불필요한 `message` 필드를 포함하지 않습니다.** 클라이언트에서 i18n을 사용하여 적절한 성공 메시지를 표시합니다.
+
+```typescript
+// ❌ 잘못된 사용
+return ApiSuccess.created(data, "회원가입이 완료되었습니다.");
+return ApiSuccess.updated(undefined, "수정되었습니다.");
+
+// ✅ 올바른 사용
+return ApiSuccess.created(data); // 클라이언트가 i18n으로 메시지 표시
+return ApiSuccess.updated(); // 204 반환
+```
+
+### 특수 케이스: 부분 성공 정보
+
+일부 작업(예: 일괄 삭제)에서 **부분 성공 정보**가 필요한 경우, 데이터를 반환합니다. 이는 `ApiError`가 아니라 `ApiSuccess`입니다:
+
+- 전체 요청은 성공했지만 일부 항목만 실패한 경우
+- 클라이언트가 부분 실패 정보를 받아 적절히 처리해야 하는 경우
+
+```typescript
+// /api/files DELETE 예시: 일부 파일 삭제 실패
+return ApiSuccess.updated({
+  message: "일부 파일 삭제에 실패했습니다.",
+  deletedCount: 3,
+  failedCount: 2,
+  failedFiles: ["file1.jpg", "file2.jpg"],
+});
+
+// 또는 DELETE 메서드이므로 deleted() 사용도 가능
+return ApiSuccess.deleted({
+  message: "일부 파일 삭제에 실패했습니다.",
+  deletedCount: 3,
+  failedCount: 2,
+  failedFiles: ["file1.jpg", "file2.jpg"],
+});
+```
+
+**부분 성공의 판단 기준:**
+
+- DB 업데이트 등 핵심 작업이 성공한 경우 → `ApiSuccess` (200 OK + 데이터)
+- 전체 작업이 실패한 경우 → `ApiError` (4xx/5xx)
+
+**특수 케이스에서의 message:**
+
+부분 성공 정보를 반환하는 경우, 클라이언트가 상황을 이해하기 쉽도록 `message` 필드를 포함할 수 있습니다. 이는 일반적인 성공 응답과 달리, 사용자에게 특별한 주의가 필요한 상황이기 때문입니다.
 
 ## 에러 응답
 
