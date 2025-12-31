@@ -8,7 +8,6 @@ import { Button } from "@/app/components/common/Button";
 import DisplayMode from "@/app/components/common/DisplayMode";
 import LocaleSwitcher from "@/app/components/common/LocaleSwitcher";
 import HomeLogo from "@/app/components/HomeLogo";
-import useAuth from "@/hooks/useAuth";
 import { Link } from "@/i18n/routing";
 
 type HeaderType = "admin" | "public" | "root";
@@ -17,7 +16,6 @@ export default function Header() {
   const t = useTranslations("header");
   const pathname = usePathname();
   const params = useParams();
-  const { me } = useAuth();
 
   const userid = params?.userid as string | undefined;
 
@@ -27,10 +25,7 @@ export default function Header() {
     headerType = "root";
   } else {
     const isAdminPath = pathname?.includes(`/${userid}/admin`);
-    const isAuthenticated = me?.userid === userid;
-
-    // admin 경로이고 인증된 경우에만 admin 헤더 표시
-    headerType = isAdminPath && isAuthenticated ? "admin" : "public";
+    headerType = isAdminPath ? "admin" : "public";
   }
 
   return (

@@ -82,8 +82,9 @@ async function getUserSiteMeta(userid: string): Promise<UserSiteMeta | null> {
   try {
     const response = await get<UserSiteMeta>(`/meta?userid=${userid}`);
     return response || null;
-  } catch (error) {
-    console.error("메타데이터 가져오기 실패:", error);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
+    console.error("메타데이터 가져오기 실패");
     return null;
   }
 }
@@ -95,8 +96,9 @@ async function upsertUserSiteMeta(
 ): Promise<void> {
   try {
     await put<void>(`/meta`, { userid, title, description });
-  } catch (error) {
-    console.error("메타데이터 업데이트 실패:", error);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
+    console.error("메타데이터 업데이트 실패");
   }
 }
 
