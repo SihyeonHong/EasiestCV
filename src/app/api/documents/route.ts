@@ -171,7 +171,7 @@ export async function DELETE(request: Request) {
     // 3) DB에서 레코드 삭제
     await query("DELETE FROM documents WHERE userid = $1", [userId]);
 
-    return ApiSuccess.deleted("문서가 삭제되었습니다.");
+    return ApiSuccess.deleted();
   } catch (error: unknown) {
     return handleApiError(error, "문서 삭제 실패");
   }

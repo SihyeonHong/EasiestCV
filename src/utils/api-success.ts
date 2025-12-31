@@ -48,12 +48,14 @@ export const ApiSuccess = {
   },
 
   /**
-   * 삭제 성공 (DELETE 200)
+   * 삭제 성공 (DELETE)
+   * 데이터가 있으면 200 OK, 없으면 204 No Content
    */
-  deleted: (
-    message: string = "삭제되었습니다.",
-  ): NextResponse<{ message: string }> => {
-    return NextResponse.json({ message }, { status: 200 });
+  deleted: <T>(data?: T) => {
+    if (data !== undefined) {
+      return NextResponse.json(data, { status: 200 });
+    }
+    return new NextResponse(null, { status: 204 });
   },
 
   /**

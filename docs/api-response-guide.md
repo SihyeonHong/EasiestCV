@@ -29,7 +29,7 @@ return ApiSuccess.deleted(); // 데이터가 있으면 200, 없으면 204
 - `GET`: `ApiSuccess.data(data)` - 200 OK, 데이터 반환
 - `POST`: `ApiSuccess.created(data?)` - 데이터가 있으면 201 Created, 없으면 204 No Content
 - `PUT/PATCH`: `ApiSuccess.updated(data?)` - 데이터가 있으면 200 OK, 없으면 204 No Content
-- `DELETE`: `ApiSuccess.deleted(data?)` - 데이터가 있으면 200 OK, 없으면 204 No Content
+- `ApiSuccess.deleted(data?)` - 데이터가 있으면 200 OK, 없으면 204 No Content
 
 ### 응답 형식 원칙
 
