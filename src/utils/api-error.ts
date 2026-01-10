@@ -117,6 +117,12 @@ export const ApiError = {
     }
     return createErrorNextResponse(ErrorType.INVALID_IMAGE_TYPE, message);
   },
+
+  missingEnvVar: (envVar: string) =>
+    createErrorNextResponse(
+      ErrorType.MISSING_ENV_VAR,
+      `${envVar} 환경변수를 찾을 수 없습니다.`,
+    ),
 };
 
 /**

@@ -27,6 +27,7 @@ export const ErrorType = {
   WRONG_PASSWORD: "WRONG_PASSWORD",
   FILE_SIZE_ERROR: "FILE_SIZE_ERROR",
   INVALID_IMAGE_TYPE: "INVALID_IMAGE_TYPE",
+  MISSING_ENV_VAR: "MISSING_ENV_VAR",
 } as const;
 
 export type ErrorType = (typeof ErrorType)[keyof typeof ErrorType];
@@ -47,6 +48,7 @@ export const DEFAULT_ERROR_STATUS_CODES: Record<ErrorType, number> = {
   WRONG_PASSWORD: 401,
   FILE_SIZE_ERROR: 400,
   INVALID_IMAGE_TYPE: 400,
+  MISSING_ENV_VAR: 500,
 };
 
 /**
@@ -67,6 +69,7 @@ export const ERROR_TYPE_TO_I18N_KEY: Record<ErrorType, string> = {
   DATABASE_CONNECTION_ERROR: "error.serverError",
   INTERNAL_ERROR: "error.serverError",
   UNKNOWN_ERROR: "error.unknownError",
+  MISSING_ENV_VAR: "error.serverError",
 };
 
 /**

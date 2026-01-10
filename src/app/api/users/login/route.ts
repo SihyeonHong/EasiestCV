@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-      throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
+      return ApiError.missingEnvVar("JWT_SECRET");
     }
 
     const startJwt = Date.now();

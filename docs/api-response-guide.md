@@ -127,6 +127,7 @@ return ApiError.duplicate();
 return ApiError.userNotFound();
 return ApiError.wrongPassword();
 return ApiError.invalidImageType();
+return ApiError.missingEnvVar(envVar);
 ```
 
 ## 기본 구조
@@ -224,12 +225,6 @@ if (result.length === 0) {
 **예상치 못한 에러**나 **시스템 레벨 에러**는 `throw`를 사용하여 `handleApiError`에 맡깁니다:
 
 ```typescript
-// ✅ 환경변수 누락 (시스템 설정 오류)
-const secret = process.env.JWT_SECRET;
-if (!secret) {
-  throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
-}
-
 // ✅ 외부 라이브러리 에러
 try {
   const decoded = jwt.verify(token, secret);
@@ -241,10 +236,26 @@ try {
 
 **특징:**
 
-- 시스템 설정 오류 (환경변수 누락 등)
 - 외부 라이브러리에서 발생한 예상치 못한 에러
 - DB 연결 실패, 네트워크 오류 등 인프라 문제
 - `handleApiError`가 자동으로 적절한 에러 타입으로 분류
+
+### 환경변수 누락 처리
+
+**환경변수 누락**은 `ApiError.missingEnvVar()`를 사용합니다:
+
+```typescript
+// ✅ 환경변수 누락 (서버 설정 오류)
+const secret = process.env.JWT_SECRET;
+if (!secret) {
+  return ApiError.missingEnvVar("JWT_SECRET");
+}
+```
+
+**특징:**
+
+- 환경변수 이름을 인자로 받아 자동으로 메시지 생성: `${envVar} 환경변수를 찾을 수 없습니다.`
+- 서버 설정 문제이므로 500 에러 반환
 
 ### 구분 기준
 
@@ -255,7 +266,7 @@ try {
 | 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증 |
 | 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증 |
 | 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증   |
-| 환경변수 누락        | `throw new Error()`                                    | 시스템 설정 오류     |
+| 환경변수 누락        | `ApiError.missingEnvVar(envVar)`                       | 서버 설정 오류       |
 | DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제          |
 | 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러     |
 
@@ -265,7 +276,7 @@ try {
 
 #### 1. 자동 throw (대부분의 경우)
 
-**비동기 작업이 실패하면 자동으로 throw됩니다.** 명시적으로 `throw`를 작성할 필요가 없습니다:
+비동기 작업이 실패하면 자동으로 throw됩니다. 명시적으로 `throw`를 작성할 필요가 없습니다:
 
 ```typescript
 export async function GET(request: Request) {
@@ -292,7 +303,7 @@ export async function GET(request: Request) {
 }
 ```
 
-**자동으로 throw되는 경우:**
+자동으로 throw되는 경우:
 
 - DB 쿼리 실패 (`await query(...)`)
 - 파일 업로드/다운로드 실패 (`await uploadFile(...)`, `await downloadFile(...)`)
@@ -300,19 +311,13 @@ export async function GET(request: Request) {
 - JSON 파싱 실패 (`await request.json()`)
 - 외부 라이브러리 함수 호출 실패 (`await bcrypt.hash(...)`, `jwt.verify(...)` 등)
 
-#### 2. 명시적 throw (시스템 설정 체크 등)
+#### 2. 명시적 throw
 
-**동기적 검증이나 시스템 설정 체크는 명시적으로 `throw`를 사용합니다:**
+- 외부 라이브러리의 catch 블록에서 에러를 재throw하는 경우
+- 커스텀 비즈니스 로직에서 예상치 못한 상황 발생 시
 
 ```typescript
 export async function POST(request: NextRequest) {
-  try {
-    // ✅ 환경변수 체크 - 명시적 throw 필요
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      throw new Error("JWT_SECRET이 환경변수에 설정되지 않았습니다.");
-    }
-
     // ✅ 외부 라이브러리의 catch에서 재throw
     try {
       const decoded = jwt.verify(token, secret);
@@ -326,12 +331,6 @@ export async function POST(request: NextRequest) {
   }
 }
 ```
-
-**명시적으로 throw해야 하는 경우:**
-
-- 환경변수 누락 체크
-- 외부 라이브러리의 catch 블록에서 에러를 재throw하는 경우
-- 커스텀 비즈니스 로직에서 예상치 못한 상황 발생 시
 
 ## handleApiError 에러 분류 우선순위
 
