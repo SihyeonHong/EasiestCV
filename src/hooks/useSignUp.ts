@@ -19,12 +19,9 @@ export default function useSignUp() {
       window.location.reload();
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      console.log("회원가입 실패: ", error);
-
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
         alert(tError("networkError"));
-        console.error("네트워크 에러:", error.message);
         return;
       }
 
@@ -46,8 +43,6 @@ export default function useSignUp() {
           alert(message);
           break;
       }
-
-      console.error(`회원가입 에러 (HTTP ${status}):`, message);
     },
   });
 

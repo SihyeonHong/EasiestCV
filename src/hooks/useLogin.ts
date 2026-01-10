@@ -26,19 +26,15 @@ export default function useLogin() {
       }, 50);
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      console.log("로그인 실패: ", error);
-
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
         alert(tError("networkError"));
-        console.error("네트워크 에러:", error.message);
         return;
       }
 
       // 서버에서 응답은 왔지만 에러인 경우
-      const { status, data } = error.response;
+      const { data } = error.response;
       const errorType = data.errorType;
-      const message = data.message || tError("unknownError");
 
       switch (errorType) {
         case "MISSING_FIELDS":
@@ -57,8 +53,6 @@ export default function useLogin() {
           alert(tError("loginFail"));
           break;
       }
-
-      console.error(`${errorType || "UNKNOWN"} (HTTP ${status}):`, message);
     },
   });
 

@@ -13,8 +13,7 @@ export default function useContact() {
     onSuccess: () => {
       alert(t("sendSuccess"));
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       alert(t("sendFail"));
     },
   });

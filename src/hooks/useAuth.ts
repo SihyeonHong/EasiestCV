@@ -25,18 +25,14 @@ export default function useAuth() {
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
-      await post<{ message: string }>(`/users/logout`);
+      await post(`/users/logout`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      console.log("로그아웃 실패: ", error);
-
-      // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
         alert(tError("networkError"));
-        console.error("네트워크 에러:", error.message);
         return;
       }
 
@@ -49,8 +45,6 @@ export default function useAuth() {
       } else {
         alert(message);
       }
-
-      console.error(`로그아웃 에러 (HTTP ${status}):`, message);
     },
   });
 

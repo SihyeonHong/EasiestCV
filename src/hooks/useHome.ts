@@ -42,9 +42,8 @@ export const useHome = (userid: string) => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("imgUploadFail"));
-      console.error("이미지 업로드 에러:", error);
     },
   });
 
@@ -58,9 +57,8 @@ export const useHome = (userid: string) => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("Reset Img Error:", error);
     },
   });
 
@@ -76,7 +74,6 @@ export const useHome = (userid: string) => {
         intro: newIntro,
       }),
     onSuccess: (_, newIntro) => {
-      // 자동저장 성공 시 캐시를 즉시 업데이트하여 최신 데이터 유지
       queryClient.setQueryData<UserHome>(
         queryKeys.home({ userid }),
         (oldHome) => {
@@ -85,9 +82,8 @@ export const useHome = (userid: string) => {
         },
       );
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("intro 업로드 에러:", error);
     },
   });
 
@@ -111,8 +107,8 @@ export const useHome = (userid: string) => {
       if (!confirm) return null;
 
       mutateUploadIntro(backUpIntroRef.current);
-    } catch (error) {
-      console.error("revertIntro: ", error);
+    } catch {
+      alert(tError("revertError"));
     }
   };
 

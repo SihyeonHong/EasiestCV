@@ -23,6 +23,7 @@
     "timeout": "Request timed out. Please try again.",
     "networkError": "Please check your network connection.",
     "unknownError": "An unknown error occurred. Please try again.",
+    "generalError": "An error occurred. Please try again.",
     "serverError": "Server error occurred. Please contact the administrator.",
     "missingFields": "Please fill in all fields correctly.",
     "fileSizeError": "The maximum file size allowed is 20MB.",
@@ -34,7 +35,8 @@
     "revertNoBackup": "No backup data available.",
     "revertNoBackupForTab": "No backup data found for this tab.",
     "loginFail": "Login failed. Please try again.",
-    "resetPWFail": "An error occurred while resetting the password. Please try again."
+    "resetPWFail": "An error occurred while resetting the password. Please try again.",
+    "retry": "Retry"
   },
   "label": {
     "name": "Name",
@@ -109,7 +111,8 @@
     "templatePrompt": "Not sure what to write?",
     "template": "Insert Template",
     "templateInsertHint": "The following template will be inserted at the current position.",
-    "templatePreviewLoadFailed": "Failed to load template preview."
+    "templatePreviewLoadFailed": "Failed to load template preview.",
+    "templateLoadError": "An error occurred while loading the template."
   },
   "editor": {
     "saving": "Saving...",

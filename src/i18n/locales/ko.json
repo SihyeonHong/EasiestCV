@@ -23,6 +23,7 @@
     "timeout": "요청 시간이 초과되었습니다. 다시 시도해 주세요.",
     "networkError": "네트워크 연결을 확인해 주세요.",
     "unknownError": "알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.",
+    "generalError": "오류가 발생했습니다. 다시 시도해 주세요.",
     "serverError": "서버 오류가 발생했습니다. 관리자에게 문의하세요.",
     "missingFields": "모든 칸에 내용을 정확하게 입력해 주세요.",
     "fileSizeError": "업로드 가능한 최대 파일 용량은 20MB입니다.",
@@ -34,7 +35,8 @@
     "revertNoBackup": "백업 데이터가 없습니다.",
     "revertNoBackupForTab": "해당 탭의 백업 데이터를 찾을 수 없습니다.",
     "loginFail": "로그인에 실패했습니다. 다시 시도해 주세요.",
-    "resetPWFail": "비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해 주세요."
+    "resetPWFail": "비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "retry": "재시도"
   },
   "label": {
     "name": "이름",
@@ -109,7 +111,8 @@
     "templatePrompt": "뭘 써야할지 막막한가요?",
     "template": "템플릿 삽입",
     "templateInsertHint": "현재 위치에 다음과 같은 템플릿을 삽입합니다",
-    "templatePreviewLoadFailed": "템플릿 프리뷰를 불러오지 못했습니다."
+    "templatePreviewLoadFailed": "템플릿 프리뷰를 불러오지 못했습니다.",
+    "templateLoadError": "템플릿을 불러오는 중 오류가 발생했습니다."
   },
   "editor": {
     "saving": "저장 중...",

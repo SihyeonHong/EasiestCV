@@ -1,5 +1,5 @@
 import { ReturnedTid, Tab } from "@/types/tab";
-import { handleApiError } from "@/utils/api-error";
+import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
@@ -84,6 +84,11 @@ export async function GET(request: Request) {
     const result = await query<Tab>("SELECT * FROM tabs WHERE userid = $1", [
       userId,
     ]);
+
+    if (!result || result.length === 0) {
+      return ApiError.userNotFound("탭을 찾을 수 없습니다.");
+    }
+
     return ApiSuccess.data(
       result.sort((a: Tab, b: Tab) => a.torder - b.torder),
     );

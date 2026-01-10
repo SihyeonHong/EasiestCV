@@ -1,45 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { allowedImgTypesForMessage } from "@/constants/constants";
-import { ApiErrorResponse, DBError } from "@/types/error";
-
-/**
- * API 에러 타입 상수
- */
-export const ErrorType = {
-  VALIDATION_ERROR: "VALIDATION_ERROR",
-  MISSING_FIELDS: "MISSING_FIELDS",
-  SERVER_ERROR: "SERVER_ERROR",
-  DATABASE_CONNECTION_ERROR: "DATABASE_CONNECTION_ERROR",
-  DUPLICATE_DATA: "DUPLICATE_DATA",
-  INVALID_JSON: "INVALID_JSON",
-  INTERNAL_ERROR: "INTERNAL_ERROR",
-  UNKNOWN_ERROR: "UNKNOWN_ERROR",
-  USER_NOT_FOUND: "USER_NOT_FOUND",
-  WRONG_PASSWORD: "WRONG_PASSWORD",
-  FILE_SIZE_ERROR: "FILE_SIZE_ERROR",
-  INVALID_IMAGE_TYPE: "INVALID_IMAGE_TYPE",
-} as const;
-
-export type ErrorType = (typeof ErrorType)[keyof typeof ErrorType];
-
-/**
- * 에러 타입별 기본 HTTP 상태 코드 매핑
- */
-const DEFAULT_STATUS_CODES: Record<ErrorType, number> = {
-  VALIDATION_ERROR: 400,
-  MISSING_FIELDS: 400,
-  SERVER_ERROR: 500,
-  DATABASE_CONNECTION_ERROR: 503,
-  DUPLICATE_DATA: 409,
-  INVALID_JSON: 400,
-  INTERNAL_ERROR: 500,
-  UNKNOWN_ERROR: 500,
-  USER_NOT_FOUND: 404,
-  WRONG_PASSWORD: 401,
-  FILE_SIZE_ERROR: 400,
-  INVALID_IMAGE_TYPE: 400,
-};
+import {
+  ApiErrorResponse,
+  DBError,
+  ErrorType,
+  DEFAULT_ERROR_STATUS_CODES,
+} from "@/types/error";
 
 /**
  * 에러 응답 객체 생성
@@ -62,7 +29,7 @@ export function createErrorNextResponse(
   message: string,
   statusCode?: number,
 ): NextResponse<ApiErrorResponse> {
-  const status = statusCode ?? DEFAULT_STATUS_CODES[errorType];
+  const status = statusCode ?? DEFAULT_ERROR_STATUS_CODES[errorType];
   const response = createErrorResponse(errorType, message);
   return NextResponse.json(response, { status });
 }

@@ -42,8 +42,6 @@ export const useUserInfo = (userid: string) => {
       alert(tMessage("saveSuccess"));
     },
     onError: (error: AxiosError) => {
-      console.error("회원정보 수정 오류:", error);
-
       // 네트워크 에러
       if (!error.response) {
         alert(
@@ -60,10 +58,8 @@ export const useUserInfo = (userid: string) => {
 
       // 주요 케이스만 처리
       if (status === 400 && errorData?.errorType === "VALIDATION_ERROR") {
-        console.log(errorData.message);
         alert(tError("missingFields"));
       } else {
-        console.log(status, errorData.message);
         alert(tError("saveFail"));
       }
     },
@@ -75,18 +71,10 @@ export const useUserInfo = (userid: string) => {
       alert(tChangePW("changeSuccess"));
     },
     onError: (error: AxiosError<{ error: string }>) => {
-      console.error("전체 에러", error);
-
       // 네트워크 에러
       if (!error.response || error.request?.status === 0) {
-        console.log("네트워크 에러");
         alert(tError("networkError"));
         return;
-      }
-
-      // 서버 응답 있음
-      if (error.response.data?.error) {
-        console.error("서버 에러:", error.response.data.error);
       }
 
       if (error.response?.status === 401) {

@@ -64,8 +64,7 @@ export default function PublicDocuments({ userid }: Props) {
       link.style.display = "none"; // 화면에 보이지 않도록
       document.body.appendChild(link);
       link.click();
-    } catch (error) {
-      console.error("다운로드 실패:", error);
+    } catch {
       alert("파일 다운로드에 실패했습니다.");
     } finally {
       // 6. 정리 (에러가 발생해도 반드시 실행됨)
