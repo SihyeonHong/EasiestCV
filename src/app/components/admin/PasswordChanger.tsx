@@ -14,7 +14,7 @@ interface PasswordChangerProps {
 export default function PasswordChanger({ userid }: PasswordChangerProps) {
   const tchangePW = useTranslations("changePassword");
   const tButton = useTranslations("button");
-  const tMessage = useTranslations("message");
+  const tError = useTranslations("error");
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -26,7 +26,7 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
     e.preventDefault();
 
     if (newPassword !== newPasswordConfirm) {
-      alert(tMessage("passwordMismatch"));
+      alert(tError("passwordMismatch"));
       return;
     }
 
@@ -104,7 +104,7 @@ export default function PasswordChanger({ userid }: PasswordChangerProps) {
             {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
             {newPasswordConfirm && newPassword !== newPasswordConfirm && (
               <p className="mt-1 text-xs text-red-500">
-                {tMessage("passwordMismatch")}
+                {tError("passwordMismatch")}
               </p>
             )}
           </div>

@@ -17,6 +17,7 @@ interface Props {
 export default function PublicDocuments({ userid }: Props) {
   const { documents, isLoading, isDocumentExists } = useDocuments(userid);
   const t = useTranslations("documents");
+  const tError = useTranslations("error");
 
   const [isMobile, setIsMobile] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -65,7 +66,7 @@ export default function PublicDocuments({ userid }: Props) {
       document.body.appendChild(link);
       link.click();
     } catch {
-      alert("파일 다운로드에 실패했습니다.");
+      alert(tError("downloadFail"));
     } finally {
       // 6. 정리 (에러가 발생해도 반드시 실행됨)
       if (link) {

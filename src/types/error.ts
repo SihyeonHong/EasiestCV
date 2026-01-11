@@ -56,20 +56,20 @@ export const DEFAULT_ERROR_STATUS_CODES: Record<ErrorType, number> = {
  * 사용자 대처 가능한 에러(1번)에 대한 상세 메시지 키
  */
 export const ERROR_TYPE_TO_I18N_KEY: Record<ErrorType, string> = {
-  MISSING_FIELDS: "error.missingFields",
-  VALIDATION_ERROR: "error.missingFields",
-  USER_NOT_FOUND: "message.noUser",
-  WRONG_PASSWORD: "message.passwordMismatch",
-  FILE_SIZE_ERROR: "error.fileSizeError",
-  INVALID_IMAGE_TYPE: "error.invalidImageType",
-  DUPLICATE_DATA: "signup.duplicateId",
-  INVALID_JSON: "error.unknownError",
+  MISSING_FIELDS: "missingFields",
+  VALIDATION_ERROR: "missingFields",
+  USER_NOT_FOUND: "userNotFound",
+  WRONG_PASSWORD: "passwordMismatch",
+  FILE_SIZE_ERROR: "fileSizeError",
+  INVALID_IMAGE_TYPE: "invalidImageType",
+  DUPLICATE_DATA: "duplicateId",
+  INVALID_JSON: "unknownError",
   // 사용자 대처 불가능한 에러(2번)는 핸들러에서 직접 처리
-  SERVER_ERROR: "error.serverError",
-  DATABASE_CONNECTION_ERROR: "error.serverError",
-  INTERNAL_ERROR: "error.serverError",
-  UNKNOWN_ERROR: "error.unknownError",
-  MISSING_ENV_VAR: "error.serverError",
+  SERVER_ERROR: "serverError",
+  DATABASE_CONNECTION_ERROR: "serverError",
+  INTERNAL_ERROR: "serverError",
+  UNKNOWN_ERROR: "unknownError",
+  MISSING_ENV_VAR: "serverError",
 };
 
 /**

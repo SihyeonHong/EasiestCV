@@ -7,7 +7,7 @@ import { SignupRequest } from "@/types/user-account";
 import { post } from "@/utils/http";
 
 export default function useSignUp() {
-  const tSignup = useTranslations("signup");
+  const tInitPage = useTranslations("initpage");
   const tError = useTranslations("error");
 
   const { mutate: signup, isPending: isSigningUp } = useMutation({
@@ -15,7 +15,7 @@ export default function useSignUp() {
       await post(`/users/signup`, data);
     },
     onSuccess: () => {
-      alert(tSignup("signupSuccess"));
+      alert(tInitPage("signupSuccess"));
       window.location.reload();
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
@@ -27,14 +27,14 @@ export default function useSignUp() {
 
       // 서버에서 응답은 왔지만 에러인 경우
       const { status, data } = error.response;
-      const message = data.message || tSignup("signupFail");
+      const message = data.message || tError("signupFail");
 
       switch (status) {
         case 400:
           alert(tError("missingFields"));
           break;
         case 409:
-          alert(tSignup("duplicateId"));
+          alert(tError("duplicateId"));
           break;
         case 500:
           alert(tError("serverError"));

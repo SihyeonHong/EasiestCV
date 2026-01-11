@@ -12,8 +12,7 @@ import { post } from "@/utils/http";
 export default function useLogin() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const tMessage = useTranslations("message");
-  const tError = useTranslations("error");
+  const t = useTranslations("error");
 
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: async (data: LoginForm) => {
@@ -28,7 +27,7 @@ export default function useLogin() {
     onError: (error: AxiosError<ApiErrorResponse>) => {
       // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
-        alert(tError("networkError"));
+        alert(t("networkError"));
         return;
       }
 
@@ -38,19 +37,19 @@ export default function useLogin() {
 
       switch (errorType) {
         case "MISSING_FIELDS":
-          alert(tError("missingFields"));
+          alert(t("missingFields"));
           break;
         case "USER_NOT_FOUND":
-          alert(tMessage("noUser"));
+          alert(t("userNotFound"));
           break;
         case "WRONG_PASSWORD":
-          alert(tMessage("passwordMismatch"));
+          alert(t("passwordMismatch"));
           break;
         case "SERVER_ERROR":
-          alert(tError("serverError"));
+          alert(t("serverError"));
           break;
         default:
-          alert(tError("loginFail"));
+          alert(t("loginFail"));
           break;
       }
     },

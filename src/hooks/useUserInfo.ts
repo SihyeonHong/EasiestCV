@@ -78,9 +78,9 @@ export const useUserInfo = (userid: string) => {
       }
 
       if (error.response?.status === 401) {
-        alert(tChangePW("invalidCurrent")); // "현재 비밀번호가 올바르지 않습니다."
+        alert(tError("invalidCurrent"));
       } else {
-        alert(tChangePW("changeFail")); // "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해 주세요."
+        alert(tError("changeFail"));
       }
     },
   });

@@ -14,7 +14,6 @@
     "saveSuccess": "저장되었습니다.",
     "loading": "불러오는 중...",
     "cancelConfirm": "변경 사항이 저장되지 않습니다. 정말로 취소하시겠습니까?",
-    "passwordMismatch": "비밀번호가 일치하지 않습니다.",
     "imgUploadSuccess": "사진 업로드가 완료되었습니다.",
     "resetPWEmailSent": "임시 비밀번호가 이메일로 전송되었습니다."
   },
@@ -36,6 +35,15 @@
     "revertNoBackupForTab": "해당 탭의 백업 데이터를 찾을 수 없습니다.",
     "loginFail": "로그인에 실패했습니다. 다시 시도해 주세요.",
     "resetPWFail": "비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "userNotFound": "존재하지 않는 사용자입니다",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+    "sendFail": "전송 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "templateLoadError": "템플릿을 불러오는 중 오류가 발생했습니다.",
+    "duplicateId": "이미 다른 사람이 사용 중인 아이디입니다.",
+    "invalidCurrent": "현재 비밀번호가 올바르지 않습니다.",
+    "changeFail": "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "downloadFail": "파일 다운로드에 실패했습니다.",
+    "signupFail": "회원가입 중 오류가 발생했습니다.",
     "retry": "재시도"
   },
   "label": {
@@ -69,12 +77,11 @@
     "login": "로그인",
     "signup": "회원가입",
     "signupIdDescription": "이 ID로 당신의 사이트 주소가 만들어집니다. ID는 나중에 변경할 수 없습니다.",
-    "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다."
-  },
-  "signup": {
+    "signupEmailDescription": "비밀번호 분실 시 이 이메일 주소로 임시 비밀번호가 발송됩니다.",
     "signupSuccess": "회원가입이 완료되었습니다. 로그인해 주세요.",
-    "signupFail": "회원가입 중 오류가 발생했습니다.",
-    "duplicateId": "이미 다른 사람이 사용 중인 아이디입니다."
+    "reservedWords": "admin, user 등의 단어는 사용할 수 없습니다.",
+    "invalidCharacters": "영어 소문자, 숫자, 하이픈(-), 언더스코어(_)만 사용할 수 있습니다.",
+    "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
   "usageGuide": {
     "title": "사용해보고 싶으신가요?",
@@ -111,8 +118,7 @@
     "templatePrompt": "뭘 써야할지 막막한가요?",
     "template": "템플릿 삽입",
     "templateInsertHint": "현재 위치에 다음과 같은 템플릿을 삽입합니다",
-    "templatePreviewLoadFailed": "템플릿 프리뷰를 불러오지 못했습니다.",
-    "templateLoadError": "템플릿을 불러오는 중 오류가 발생했습니다."
+    "templatePreviewLoadFailed": "템플릿 프리뷰를 불러오지 못했습니다."
   },
   "editor": {
     "saving": "저장 중...",
@@ -178,18 +184,11 @@
     "confirmNewPassword": "새 비밀번호 확인",
     "confirmNewPasswordPlaceholder": "새 비밀번호를 한 번 더 입력하세요",
     "changeSuccess": "비밀번호가 성공적으로 변경되었습니다.",
-    "changeFail": "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해 주세요.",
-    "invalidCurrent": "현재 비밀번호가 올바르지 않습니다.",
     "samePassword": "현재 비밀번호와 새 비밀번호가 같습니다."
   },
   "requireAuth": {
     "cannotAccess": "이 주소로 접근하기 위해서는 로그인이 필요합니다.",
     "goToLogIn": "로그인 페이지로 이동 →"
-  },
-  "invalidId": {
-    "reservedWords": "admin, user 등의 단어는 사용할 수 없습니다.",
-    "invalidCharacters": "영어 소문자, 숫자, 하이픈(-), 언더스코어(_)만 사용할 수 있습니다.",
-    "lengthError": "아이디는 3자 이상 20자 이하로 입력해야 합니다."
   },
   "documents": {
     "documents": "CV",
@@ -247,8 +246,7 @@
     "subject": "제목",
     "content": "내용",
     "send": "보내기",
-    "sendSuccess": "성공적으로 전송되었습니다. 기재해 주신 이메일로 답변을 드리겠습니다.",
-    "sendFail": "전송 중 오류가 발생했습니다. 다시 시도해 주세요."
+    "sendSuccess": "성공적으로 전송되었습니다. 기재해 주신 이메일로 답변을 드리겠습니다."
   },
   "saveStatus": {
     "saved": "저장 완료",

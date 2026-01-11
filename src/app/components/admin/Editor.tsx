@@ -34,6 +34,7 @@ interface Props {
 
 export default function Editor({ userid, tid }: Props) {
   const t = useTranslations("settingInTab");
+  const tError = useTranslations("error");
   const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
@@ -223,7 +224,7 @@ export default function Editor({ userid, tid }: Props) {
         editor.chain().focus("end").insertContent(templateHtml).run();
       }
     } catch {
-      alert(t("templateLoadError"));
+      alert(tError("templateLoadError"));
     } finally {
       setIsAddingTemplate(false);
     }
