@@ -1,6 +1,6 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-import LogoutHandler from "@/app/components/admin/LogoutHandler";
 import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
@@ -15,6 +15,11 @@ interface Props {
     userid: string;
   };
 }
+
+const LogoutHandler = dynamic(
+  () => import("@/app/components/admin/LogoutHandler"),
+  { ssr: false },
+);
 
 export default async function Layout({ children, params }: Props) {
   const { userid } = params;
