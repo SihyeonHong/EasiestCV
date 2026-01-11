@@ -7,49 +7,49 @@ import { NextRequest } from "next/server";
 import { DEFAULT_IMG } from "@/constants/constants";
 import { ReturnedTid } from "@/types/tab";
 import { SignupRequest } from "@/types/user-account";
-import { ApiError, handleApiError } from "@/utils/api-error";
+import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 import { normalizeHtmlWhitespace } from "@/utils/sanitize";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 
 export async function POST(request: NextRequest) {
   try {
     const { userid, username, email, password } =
       (await request.json()) as SignupRequest;
 
-    if (!userid || !username || !email || !password) {
-      return ApiError.missingFields([
-        "userid",
-        "username",
-        "email",
-        "password",
-      ]);
+    const errorResponse = validateMissingFields({
+      userid,
+      username,
+      email,
+      password,
+    });
+    if (errorResponse) {
+      return errorResponse;
     }
 
-    // 비밀번호 암호화
+    // 검증 완료
+    // 새 회원정보 생성
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // users에 회원정보 생성
     await query(
       "INSERT INTO users (userid, username, email, password) VALUES ($1, $2, $3, $4)",
       [userid, username, email, hashedPassword],
     );
 
-    // Home 생성
+    // 새 회원 기본 정보 생성: home, metadata, tab
     await query(
       "INSERT INTO user_home (userid, intro_html, img_url) VALUES ($1, $2, $3)",
       [userid, "", DEFAULT_IMG],
     );
 
-    // user_site_meta 생성
     const defaultMeta = makeUserSiteMeta(userid, username);
     await query(
       "INSERT INTO user_site_meta (userid, title, description) VALUES ($1, $2, $3)",
       [defaultMeta.userid, defaultMeta.title, defaultMeta.description],
     );
 
-    // 템플릿 파일 읽기 및 정규화
+    // 새 탭에 템플릿 넣기 위한 파일 읽기
     let templateContent = "";
     try {
       const templatePath = join(
@@ -58,14 +58,13 @@ export async function POST(request: NextRequest) {
         "papers-template.html",
       );
       const rawTemplate = readFileSync(templatePath, "utf-8");
-      // HTML 정규화: 태그 사이의 공백 제거하여 tiptap 에디터 형식과 일치시킴
       templateContent = normalizeHtmlWhitespace(rawTemplate);
     } catch {
       console.error("템플릿 파일 읽기 실패");
       // 템플릿 파일을 읽지 못해도 계속 진행 (빈 문자열 사용)
     }
 
-    // 새 탭 1개 생성: DB가 자동생성해준 tid 받아서 slug 업데이트
+    // DB가 자동생성해준 tid 받아서 slug 업데이트
     const generatedTid: ReturnedTid = await query(
       "INSERT INTO tabs (userid, tname, torder, slug, contents) VALUES ($1, $2, $3, $4, $5) RETURNING tid",
       [userid, "Papers", 0, "", templateContent],
