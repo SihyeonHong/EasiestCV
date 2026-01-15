@@ -92,12 +92,6 @@ export const ApiError = {
   invalidJson: (message: string = "잘못된 요청 형식입니다.") =>
     createErrorNextResponse(ErrorType.INVALID_JSON, message),
 
-  internal: (message?: string) =>
-    createErrorNextResponse(
-      ErrorType.INTERNAL_ERROR,
-      message || "서버 내부 오류가 발생했습니다.",
-    ),
-
   unknown: (message: string = "알 수 없는 오류가 발생했습니다.") =>
     createErrorNextResponse(ErrorType.UNKNOWN_ERROR, message),
 
@@ -138,7 +132,7 @@ export function handleApiError(
 ): NextResponse<ApiErrorResponse> {
   console.error(contextMessage);
 
-  // 1. DB 에러 (가장 구체적인 것부터 체크)
+  // 1. DB 에러
   if (error && typeof error === "object" && "code" in error) {
     const dbError = error as DBError;
 
@@ -171,7 +165,6 @@ export function handleApiError(
 
   // 3. 일반 Error 인스턴스
   if (error instanceof Error) {
-    // duplicate key 에러 메시지 체크 (추가 안전장치)
     if (error.message.includes("duplicate key")) {
       return ApiError.duplicate();
     }

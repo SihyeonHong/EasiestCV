@@ -22,7 +22,7 @@
     "timeout": "Request timed out. Please try again.",
     "networkError": "Please check your network connection.",
     "unknownError": "An unknown error occurred. Please try again.",
-    "generalError": "An error occurred. Please try again.",
+    "generalError": "Please try again. If the problem persists, please contact the administrator.",
     "serverError": "Server error occurred. Please contact the administrator.",
     "missingFields": "Please fill in all fields correctly.",
     "fileSizeError": "The maximum file size allowed is 20MB.",
