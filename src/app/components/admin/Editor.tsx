@@ -6,6 +6,7 @@ import {
   Editor as TiptapEditorType,
 } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 // --- UI Components ---
@@ -32,6 +33,8 @@ interface Props {
 }
 
 export default function Editor({ userid, tid }: Props) {
+  const t = useTranslations("settingInTab");
+  const tError = useTranslations("error");
   const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
@@ -220,13 +223,12 @@ export default function Editor({ userid, tid }: Props) {
       } else {
         editor.chain().focus("end").insertContent(templateHtml).run();
       }
-    } catch (error) {
-      console.error("템플릿 삽입 실패:", error);
-      alert("템플릿을 불러오는 중 오류가 발생했습니다.");
+    } catch {
+      alert(tError("templateLoadError"));
     } finally {
       setIsAddingTemplate(false);
     }
-  }, [editor, getNormalizedTemplateHtml, isAddingTemplate]);
+  }, [editor, getNormalizedTemplateHtml, isAddingTemplate, t]);
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);

@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -5,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { queryKeys } from "@/constants/queryKeys";
 import { ApiErrorResponse } from "@/types/error";
+import { User } from "@/types/user-account";
 import { get, post } from "@/utils/http";
 
 export default function useAuth() {
@@ -15,7 +18,7 @@ export default function useAuth() {
     queryKey: queryKeys.auth(),
     queryFn: async () => {
       try {
-        return await get<{ userid: string }>(`/users/me`);
+        return await get<User>(`/users/me`);
       } catch {
         return null;
       }
@@ -24,18 +27,14 @@ export default function useAuth() {
 
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
-      await post<{ message: string }>(`/users/logout`);
+      await post(`/users/logout`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth() });
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      console.log("로그아웃 실패: ", error);
-
-      // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
         alert(tError("networkError"));
-        console.error("네트워크 에러:", error.message);
         return;
       }
 
@@ -48,8 +47,6 @@ export default function useAuth() {
       } else {
         alert(message);
       }
-
-      console.error(`로그아웃 에러 (HTTP ${status}):`, message);
     },
   });
 

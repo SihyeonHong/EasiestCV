@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
@@ -13,16 +13,9 @@ export async function GET(request: Request) {
       [userId, tid],
     );
 
-    return NextResponse.json(result.length > 0 ? result[0].contents : "");
+    return ApiSuccess.data(result.length > 0 ? result[0].contents : "");
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log("server error: ", error);
-      return NextResponse.json({ message: error.message }, { status: 500 });
-    }
-    return NextResponse.json(
-      { message: "Unknown error occurred" },
-      { status: 500 },
-    );
+    return handleApiError(error, "콘텐츠 조회 실패");
   }
 }
 
@@ -42,15 +35,8 @@ export async function PUT(request: Request) {
       [contents, userid, tid],
     );
 
-    return NextResponse.json({ message: "ok" });
+    return ApiSuccess.updated();
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log("server error:", error);
-      return NextResponse.json({ message: error.message }, { status: 500 });
-    }
-    return NextResponse.json(
-      { message: "Unknown error occurred" },
-      { status: 500 },
-    );
+    return handleApiError(error, "콘텐츠 업데이트 실패");
   }
 }

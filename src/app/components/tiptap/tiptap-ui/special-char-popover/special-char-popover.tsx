@@ -80,6 +80,7 @@ export function SpecialCharPopoverContent({
 }: SpecialCharPopoverContentProps) {
   const isMobile = useIsMobile();
   const t = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const BRACKET_CHARS: SpecialChar[] = React.useMemo(
     () => [
@@ -158,10 +159,19 @@ export function SpecialCharPopoverContent({
 
         onInsert?.();
       } catch (error) {
-        console.error("Failed to insert special character:", error);
+        // 특수문자 삽입 실패
+        alert(tError("generalError"));
+
+        if (process.env.NODE_ENV === "development") {
+          console.error("특수 문자 삽입 실패:", error, {
+            char,
+            savedPosition,
+            editorState: editor?.state,
+          });
+        }
       }
     },
-    [editor, savedPosition, onInsert],
+    [editor, savedPosition, onInsert, tError],
   );
 
   return (

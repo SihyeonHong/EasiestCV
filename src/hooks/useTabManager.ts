@@ -27,9 +27,8 @@ export const useTabManager = (userid: string) => {
       setLocalTabs(null);
       alert(tMessage("saveSuccess"));
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("탭 저장 오류:", error);
     },
   });
 

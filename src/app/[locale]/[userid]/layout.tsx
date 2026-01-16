@@ -1,15 +1,13 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-import LogoutHandler from "@/app/components/admin/LogoutHandler";
 import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import NoUserPage from "@/app/components/NoUserPage";
-import { UserSiteMeta } from "@/types/user-data";
-import { get, put } from "@/utils/http";
 import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 
-import { getUser } from "./_lib/queries";
+import { getUser, getUserSiteMeta, upsertUserSiteMeta } from "./_lib/queries";
 
 interface Props {
   children: React.ReactNode;
@@ -17,6 +15,11 @@ interface Props {
     userid: string;
   };
 }
+
+const LogoutHandler = dynamic(
+  () => import("@/app/components/admin/LogoutHandler"),
+  { ssr: false },
+);
 
 export default async function Layout({ children, params }: Props) {
   const { userid } = params;
@@ -49,7 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const meta = await getUserSiteMeta(params.userid);
-  const needsUpdate = !meta || !meta.title || !meta.description;
+  // trim()을 추가해서 공백만 있는 경우도 체크
+  const needsUpdate = !meta || !meta.title?.trim() || !meta.description?.trim();
 
   if (needsUpdate) {
     const newMeta = makeUserSiteMeta(
@@ -71,33 +75,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const defaultMeta = makeUserSiteMeta(params.userid, user.username);
   return {
-    title: meta.title,
-    description: meta.description,
+    title: meta.title?.trim() || defaultMeta.title,
+    description: meta.description?.trim() || defaultMeta.description,
     robots: ROBOTS_CONFIG.default,
   };
-}
-
-async function getUserSiteMeta(userid: string): Promise<UserSiteMeta | null> {
-  try {
-    const response = await get<UserSiteMeta>(`/meta?userid=${userid}`);
-    return response || null;
-  } catch (error) {
-    console.error("메타데이터 가져오기 실패:", error);
-    return null;
-  }
-}
-
-async function upsertUserSiteMeta(
-  userid: string,
-  title: string,
-  description: string,
-): Promise<void> {
-  try {
-    await put<void>(`/meta`, { userid, title, description });
-  } catch (error) {
-    console.error("메타데이터 업데이트 실패:", error);
-  }
 }
 
 const ROBOTS_CONFIG = {

@@ -1,5 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
+
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 
 // 환경변수 확인
 const { email_host, email_port, email_pass } = process.env;
@@ -22,9 +25,9 @@ const transporter = nodemailer.createTransport({
 } as nodemailer.TransportOptions);
 
 export async function POST(request: NextRequest) {
-  const { name, email: user_email, subject, content } = await request.json();
-
   try {
+    const { name, email: user_email, subject, content } = await request.json();
+
     const mailOptions = {
       from: "user@easiest-cv.com",
       to: ADMIN_EMAIL,
@@ -37,9 +40,8 @@ ${content}
   `,
     };
     await transporter.sendMail(mailOptions);
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    return ApiSuccess.created();
+  } catch (error: unknown) {
+    return handleApiError(error, "문의 메일 전송 실패");
   }
 }

@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { ReturnedTid, Tab } from "@/types/tab";
-import { ApiError } from "@/utils/api-error";
+import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
@@ -74,8 +72,7 @@ export async function PUT(request: Request) {
 
     return ApiSuccess.updated();
   } catch (error: unknown) {
-    console.error(error);
-    return ApiError.unknown();
+    return handleApiError(error, "탭 업데이트 실패");
   }
 }
 
@@ -87,17 +84,15 @@ export async function GET(request: Request) {
     const result = await query<Tab>("SELECT * FROM tabs WHERE userid = $1", [
       userId,
     ]);
-    return NextResponse.json(
+
+    if (!result || result.length === 0) {
+      return ApiError.userNotFound("탭을 찾을 수 없습니다.");
+    }
+
+    return ApiSuccess.data(
       result.sort((a: Tab, b: Tab) => a.torder - b.torder),
     );
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ message: error.message }, { status: 500 });
-    } else {
-      return NextResponse.json(
-        { message: "An unexpected error occurred" },
-        { status: 500 },
-      );
-    }
+    return handleApiError(error, "탭 조회 실패");
   }
 }

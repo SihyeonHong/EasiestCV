@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
-import { createSuccessResponse } from "@/utils/api-success";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function GET(request: Request) {
@@ -12,17 +11,12 @@ export async function GET(request: Request) {
       userId,
     ]);
 
-    return createSuccessResponse(result[0]);
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      console.log("server error: ", e);
-      return NextResponse.json({ message: e.message }, { status: 500 });
-    } else {
-      console.log("unexpected error: ", e);
-      return NextResponse.json(
-        { message: "An unexpected error occurred" },
-        { status: 500 },
-      );
+    if (!result[0]) {
+      return ApiError.userNotFound("홈 데이터를 찾을 수 없습니다.");
     }
+
+    return ApiSuccess.data(result[0]);
+  } catch (error: unknown) {
+    return handleApiError(error, "홈 데이터 조회 실패");
   }
 }

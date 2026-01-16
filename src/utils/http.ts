@@ -32,16 +32,25 @@ export const get = async <T>(...args: Parameters<typeof httpClient.get>) => {
 
 export const post = async <T>(...args: Parameters<typeof httpClient.post>) => {
   const response = await httpClient.post<T>(...args);
+  if (response.status === 204) {
+    return null as T;
+  }
   return response.data;
 };
 
 export const put = async <T>(...args: Parameters<typeof httpClient.put>) => {
   const response = await httpClient.put<T>(...args);
+  if (response.status === 204) {
+    return null as T;
+  }
   return response.data;
 };
 
 export const del = async <T>(...args: Parameters<typeof httpClient.delete>) => {
   const response = await httpClient.delete<T>(...args);
+  if (response.status === 204) {
+    return null as T;
+  }
   return response.data;
 };
 
@@ -49,5 +58,8 @@ export const patch = async <T>(
   ...args: Parameters<typeof httpClient.patch>
 ) => {
   const response = await httpClient.patch<T>(...args);
+  if (response.status === 204) {
+    return null as T;
+  }
   return response.data;
 };

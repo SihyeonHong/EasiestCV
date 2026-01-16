@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
 
 import { Locale } from "@/i18n/routing";
 import { ResetPasswordRequest, User } from "@/types/user-account";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { generateRandomPW } from "@/utils/generateRandomPW";
 import { tempPWTemplate } from "@/utils/tempPWTemplate";
@@ -32,13 +34,7 @@ export async function PUT(request: NextRequest) {
       (await request.json()) as ResetPasswordRequest;
 
     if (!userid || !email) {
-      return NextResponse.json(
-        {
-          message: "아이디와 이메일을 입력해주세요.",
-          errorType: "MISSING_FIELDS",
-        },
-        { status: 400 },
-      );
+      return ApiError.missingFields(["userid", "email"]);
     }
 
     // 사용자 확인
@@ -47,10 +43,7 @@ export async function PUT(request: NextRequest) {
     ]);
 
     if (result.length === 0 || email !== result[0].email) {
-      return NextResponse.json(
-        { message: "일치하는 사용자가 없습니다.", errorType: "USER_NOT_FOUND" },
-        { status: 404 },
-      );
+      return ApiError.userNotFound();
     }
 
     // 임시 비밀번호 생성
@@ -76,37 +69,13 @@ export async function PUT(request: NextRequest) {
         userid,
       ]);
 
-      return NextResponse.json(
-        { message: "임시 비밀번호가 이메일로 전송되었습니다." },
-        { status: 200 },
-      );
-    } catch (error) {
-      console.error(error);
+      return ApiSuccess.updated();
+    } catch {
+      console.error("이메일 전송 실패");
       throw new Error("이메일 전송에 실패했습니다.");
     }
-  } catch (error) {
-    console.error("Password reset error:", error);
-
-    if (error instanceof Error) {
-      return NextResponse.json(
-        {
-          message: error.message,
-          errorType:
-            error.message === "Environment Variables"
-              ? "ENVIRONMENT_VARIABLES"
-              : "SERVER_ERROR",
-        },
-        { status: 500 },
-      );
-    } else {
-      return NextResponse.json(
-        {
-          message: "비밀번호 재설정 중 오류가 발생했습니다.",
-          errorType: "SERVER_ERROR",
-        },
-        { status: 500 },
-      );
-    }
+  } catch (error: unknown) {
+    return handleApiError(error, "비밀번호 재설정 실패");
   }
 }
 

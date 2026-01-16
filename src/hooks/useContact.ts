@@ -6,6 +6,7 @@ import { post } from "@/utils/http";
 
 export default function useContact() {
   const t = useTranslations("contact");
+  const tError = useTranslations("error");
 
   const { mutate: sendContact } = useMutation({
     mutationFn: (contactRequest: ContactRequest) =>
@@ -13,9 +14,8 @@ export default function useContact() {
     onSuccess: () => {
       alert(t("sendSuccess"));
     },
-    onError: (error) => {
-      console.error(error);
-      alert(t("sendFail"));
+    onError: () => {
+      alert(tError("sendFail"));
     },
   });
 

@@ -1,9 +1,10 @@
-import { allowedTypes, DEFAULT_IMG } from "@/constants/constants";
-import { ApiError, createErrorNextResponse } from "@/utils/api-error";
-import { ApiSuccess, createSuccessResponse } from "@/utils/api-success";
+import { DEFAULT_IMG } from "@/constants/constants";
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile } from "@/utils/gcs";
+import { validateImageType } from "@/utils/validateImageType";
 import { validateMissingFields } from "@/utils/validateMissingFields";
 
 // 클라이언트가 img url을 직접 주는 경우
@@ -22,8 +23,7 @@ export async function PUT(request: Request) {
 
     return ApiSuccess.updated();
   } catch (error: unknown) {
-    console.error(error);
-    return ApiError.server();
+    return handleApiError(error, "이미지 URL 업데이트 실패");
   }
 }
 
@@ -44,11 +44,9 @@ export async function POST(req: Request) {
     const validUserId = userId as string;
 
     // 업로드된 파일이 허용된 이미지 형식인지 검사
-    if (!allowedTypes.includes(validImgFile.type)) {
-      return createErrorNextResponse(
-        "INVALID_IMAGE_TYPE",
-        "잘못된 파일 형식입니다. JPG, PNG, GIF, WebP, BMP만 업로드 가능합니다.",
-      );
+    const imageTypeError = validateImageType(validImgFile);
+    if (imageTypeError) {
+      return imageTypeError;
     }
 
     // 3) 기존 파일 있으면 삭제
@@ -67,10 +65,9 @@ export async function POST(req: Request) {
     ]);
 
     // 6) 성공 리턴
-    return createSuccessResponse(imageUrl);
-  } catch (error) {
-    console.error("이미지 업로드 실패:", error);
-    return ApiError.server();
+    return ApiSuccess.created(imageUrl);
+  } catch (error: unknown) {
+    return handleApiError(error, "이미지 업로드 실패");
   }
 
   async function deleteOldImg(userId: string) {
@@ -86,9 +83,9 @@ export async function POST(req: Request) {
     ) {
       try {
         await deleteFile(extractFileName(existing[0].img_url));
-      } catch (error) {
-        console.error("기존 이미지 삭제 오류:", error);
-        return ApiError.server();
+      } catch {
+        console.error("기존 이미지 삭제 오류");
+        // 기존 이미지 삭제 실패해도 계속 진행
       }
     }
   }

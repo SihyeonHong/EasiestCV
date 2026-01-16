@@ -22,8 +22,7 @@ export default function SignUpCard() {
   const tInitPage = useTranslations("initpage");
   const tPlaceholder = useTranslations("placeholder");
   const tLabel = useTranslations("label");
-  const tMessage = useTranslations("message");
-  const tInvalidId = useTranslations("invalidId");
+  const tError = useTranslations("error");
 
   const { signup } = useSignUp();
 
@@ -45,7 +44,7 @@ export default function SignUpCard() {
     e.preventDefault();
 
     if (signupData.password !== signupData.confirmPassword) {
-      alert(tMessage("passwordMismatch"));
+      alert(tError("passwordMismatch"));
       return;
     }
     signup(signupData);
@@ -92,7 +91,7 @@ export default function SignUpCard() {
                     validateUserId(signupData.userid) !== "valid" && (
                       <div className="absolute bottom-[2rem] left-0 right-0 z-10 flex items-center gap-1 py-2 text-xs text-red-600">
                         <AlertCircleIcon className="h-4 w-4" />
-                        <p>{tInvalidId(validateUserId(signupData.userid))}</p>
+                        <p>{tInitPage(validateUserId(signupData.userid))}</p>
                       </div>
                     )}
                 </div>
@@ -179,7 +178,7 @@ export default function SignUpCard() {
               {/* 비밀번호가 일치하지 않을 때 에러 메시지 표시 */}
               {signupData.confirmPassword && !passwordsMatch() && (
                 <p className="mt-1 text-sm text-red-500">
-                  {tMessage("passwordMismatch")}
+                  {tError("passwordMismatch")}
                 </p>
               )}
             </div>

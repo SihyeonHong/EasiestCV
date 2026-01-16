@@ -1,9 +1,5 @@
-import { ApiError } from "@/utils/api-error";
-import {
-  createDeletedResponse,
-  createSuccessResponse,
-  createCreatedResponse,
-} from "@/utils/api-success";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile, downloadFile } from "@/utils/gcs";
@@ -15,7 +11,7 @@ export async function GET(request: Request) {
     const shouldDownload = searchParams.get("download") === "true";
 
     if (!userId) {
-      return ApiError.validation("userid is required", 400);
+      return ApiError.validation("userid가 필요합니다.", 400);
     }
 
     const result = await query<{ url?: string }>(
@@ -36,23 +32,27 @@ export async function GET(request: Request) {
         return ApiError.validation("파일명을 찾을 수 없습니다.", 400);
       }
 
-      // GCS에서 파일 다운로드
-      const fileBuffer = await downloadFile(gcsFileName);
+      try {
+        // GCS에서 파일 다운로드
+        const fileBuffer = await downloadFile(gcsFileName);
 
-      // 원본 파일명 추출 (확장자 포함)
-      const originalFileName = extractFileName(fileUrl) || "resume";
-      const downloadFileName = `${originalFileName}.pdf`;
+        // 원본 파일명 추출 (확장자 포함)
+        const originalFileName = extractFileName(fileUrl) || "resume";
+        const downloadFileName = `${originalFileName}.pdf`;
 
-      // Buffer를 Uint8Array로 변환하여 Response 생성
-      const uint8Array = new Uint8Array(fileBuffer);
-      return new Response(uint8Array, {
-        status: 200,
-        headers: {
-          "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename="${encodeURIComponent(downloadFileName)}"`,
-          "Cache-Control": "no-cache",
-        },
-      });
+        // Buffer를 Uint8Array로 변환하여 Response 생성
+        const uint8Array = new Uint8Array(fileBuffer);
+        return new Response(uint8Array, {
+          status: 200,
+          headers: {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename="${encodeURIComponent(downloadFileName)}"`,
+            "Cache-Control": "no-cache",
+          },
+        });
+      } catch (error: unknown) {
+        return handleApiError(error, "파일 다운로드 실패");
+      }
     }
 
     // 기본 동작: URL 배열 반환
@@ -60,15 +60,9 @@ export async function GET(request: Request) {
       .map((row) => row.url)
       .filter((url): url is string => url !== undefined);
 
-    return createSuccessResponse(urls);
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      console.log("server error: ", e);
-      return ApiError.server(e.message);
-    } else {
-      console.log("unexpected error: ", e);
-      return ApiError.unknown("An unexpected error occurred");
-    }
+    return ApiSuccess.data(urls);
+  } catch (error: unknown) {
+    return handleApiError(error, "문서 조회 실패");
   }
 }
 
@@ -105,8 +99,9 @@ export async function POST(req: Request) {
       const oldFileName = existing[0].url.split("/").pop() ?? "";
       try {
         await deleteFile(oldFileName);
-      } catch (err) {
-        console.error("기존 PDF 삭제 오류:", err);
+      } catch {
+        console.error("기존 PDF 삭제 오류");
+        // 삭제 실패해도 계속 진행
       }
     }
 
@@ -135,10 +130,9 @@ export async function POST(req: Request) {
     }
 
     // 4) 업로드 결과 반환
-    return createCreatedResponse({ pdfUrl });
-  } catch (error) {
-    console.error("PDF 업로드 실패:", error);
-    return ApiError.server("PDF 업로드 중 오류가 발생했습니다.");
+    return ApiSuccess.created({ pdfUrl });
+  } catch (error: unknown) {
+    return handleApiError(error, "PDF 업로드 실패");
   }
 }
 
@@ -148,7 +142,7 @@ export async function DELETE(request: Request) {
     const userId = searchParams.get("userid");
 
     if (!userId) {
-      return ApiError.validation("userid is required", 400);
+      return ApiError.validation("userid가 필요합니다.", 400);
     }
 
     // 1) DB에서 기존 문서 조회
@@ -168,8 +162,8 @@ export async function DELETE(request: Request) {
     if (fileName) {
       try {
         await deleteFile(fileName);
-      } catch (err) {
-        console.error("GCS 파일 삭제 오류:", err);
+      } catch {
+        console.error("GCS 파일 삭제 오류");
         // GCS 삭제 실패해도 DB 삭제는 진행
       }
     }
@@ -177,9 +171,8 @@ export async function DELETE(request: Request) {
     // 3) DB에서 레코드 삭제
     await query("DELETE FROM documents WHERE userid = $1", [userId]);
 
-    return createDeletedResponse("문서가 삭제되었습니다.");
-  } catch (error) {
-    console.error("문서 삭제 실패:", error);
-    return ApiError.server("문서 삭제 중 오류가 발생했습니다.");
+    return ApiSuccess.deleted();
+  } catch (error: unknown) {
+    return handleApiError(error, "문서 삭제 실패");
   }
 }

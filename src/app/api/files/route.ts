@@ -1,21 +1,24 @@
-import { NextResponse } from "next/server";
-
-import { ApiErrorResponse } from "@/types/error";
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { deleteFile } from "@/utils/gcs";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 
 export async function DELETE(request: Request) {
-  const { userid, tid, newList } = await request.json();
-
-  if (!userid || tid === null || tid === undefined || !newList) {
-    const response: ApiErrorResponse = {
-      message: "필수 정보가 누락되었습니다.",
-      errorType: "VALIDATION_ERROR",
-    };
-    return NextResponse.json(response, { status: 400 });
-  }
-
   try {
+    const { userid, tid, newList } = await request.json();
+
+    // 검증
+    const errorResponse = validateMissingFields({
+      userid,
+      tid,
+      newList,
+    });
+    if (errorResponse) {
+      return errorResponse;
+    }
+
+    // old list 지우기
     const oldListResult = await query<{ files: string[] }>(
       "SELECT files FROM attachments WHERE userid = $1 and tid = $2",
       [userid, tid],
@@ -28,10 +31,7 @@ export async function DELETE(request: Request) {
         [userid, tid, newList],
       );
 
-      return NextResponse.json(
-        { message: "Success to Insert New File List." },
-        { status: 201 },
-      );
+      return ApiSuccess.created();
     } else {
       // 기존 파일 리스트 존재
       const oldList = oldListResult[0].files;
@@ -45,33 +45,18 @@ export async function DELETE(request: Request) {
           [newList, userid, tid],
         );
 
-        return NextResponse.json(
-          { message: "No files to delete. List updated." },
-          { status: 200 },
-        );
+        return ApiSuccess.updated();
       }
 
-      const failedList: string[] = [];
-
       // 파일 삭제를 병렬로 처리하되 결과를 기다림
-      const deletePromises = filesToDelete.map(async (file) => {
-        try {
-          await deleteFile(file);
-          return { file, success: true };
-        } catch (error) {
-          console.error(`Failed to delete file ${file}:`, error);
-          return { file, success: false };
-        }
-      });
-
-      const results = await Promise.all(deletePromises);
+      const results = await Promise.allSettled(
+        filesToDelete.map((file) => deleteFile(file)),
+      );
 
       // 실패한 파일들을 failedList에 추가
-      results.forEach(({ file, success }) => {
-        if (!success) {
-          failedList.push(file);
-        }
-      });
+      const failedList = filesToDelete.filter(
+        (_, index) => results[index].status === "rejected",
+      );
 
       // 실패한 파일들은 다시 추가하여 DB에 유지
       const finalList =
@@ -82,32 +67,20 @@ export async function DELETE(request: Request) {
         [finalList, userid, tid],
       );
 
-      const message =
-        failedList.length > 0
-          ? `Failed to delete ${failedList.length} files.`
-          : "Success to delete all orphan files.";
+      // 모든 삭제가 성공한 경우 데이터 없이 반환
+      if (failedList.length === 0) {
+        return ApiSuccess.deleted();
+      }
 
-      return NextResponse.json(
-        {
-          message,
-          deletedCount: filesToDelete.length - failedList.length,
-          failedCount: failedList.length,
-          failedFiles: failedList.length > 0 ? failedList : undefined,
-        },
-        { status: 200 },
-      );
+      // 부분 실패가 있는 경우에만 데이터 반환
+      return ApiSuccess.deleted({
+        message: `Failed to delete ${failedList.length} files.`,
+        deletedCount: filesToDelete.length - failedList.length,
+        failedCount: failedList.length,
+        failedFiles: failedList,
+      });
     }
-  } catch (error) {
-    console.error("DELETE API error:", error);
-
-    const errorMessage =
-      error instanceof Error ? error.message : "서버 내부 오류가 발생했습니다.";
-
-    const response: ApiErrorResponse = {
-      message: errorMessage,
-      errorType: "SERVER_ERROR",
-    };
-
-    return NextResponse.json(response, { status: 500 });
+  } catch (error: unknown) {
+    return handleApiError(error, "파일 삭제 API 실패");
   }
 }

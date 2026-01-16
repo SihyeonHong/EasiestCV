@@ -1,4 +1,4 @@
-import { ApiError } from "@/utils/api-error";
+import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
@@ -13,12 +13,6 @@ export async function PATCH(request: Request) {
 
     return ApiSuccess.updated();
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("server error: ", error);
-      return ApiError.server();
-    } else {
-      console.error("unexpected error: ", error);
-      return ApiError.unknown();
-    }
+    return handleApiError(error, "소개글 업데이트 실패");
   }
 }

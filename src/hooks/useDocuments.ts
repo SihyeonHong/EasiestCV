@@ -32,9 +32,8 @@ export const useDocuments = (userid: string) => {
       alert(tMessage("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.files({ userid }) });
     },
-    onError: (err) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("PDF 업로드 에러:", err);
     },
   });
 
@@ -46,9 +45,8 @@ export const useDocuments = (userid: string) => {
       alert(tMessage("saveSuccess"));
       queryClient.invalidateQueries({ queryKey: queryKeys.files({ userid }) });
     },
-    onError: (err) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("PDF 삭제 에러:", err);
     },
   });
 
