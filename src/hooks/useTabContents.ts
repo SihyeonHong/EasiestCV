@@ -73,6 +73,44 @@ export const useTabContents = (userid: string) => {
     },
   });
 
+  // GCS에 PDF 업로드
+  const { mutateAsync: uploadPdfToGCS } = useMutation({
+    mutationFn: (formData: FormData) =>
+      post<{ pdfUrl: string }>(`/tabs/pdf`, formData),
+    onError: (error: AxiosError) => {
+      console.error("PDF 업로드 오류:", error);
+
+      // 네트워크 에러
+      if (!error.response) {
+        alert(
+          error.code === "ECONNABORTED"
+            ? tError("timeout")
+            : tError("networkError"),
+        );
+        return;
+      }
+
+      // 서버 에러
+      const errorData = error.response.data as ApiErrorResponse;
+      const status = error.response.status;
+
+      if (status === 400) {
+        switch (errorData?.errorType) {
+          case "FILE_SIZE_ERROR":
+            alert(tError("fileSizeError"));
+            break;
+          case "INVALID_FILE_TYPE":
+            alert("지원하지 않는 파일 형식입니다. PDF만 업로드 가능합니다.");
+            break;
+          default:
+            alert("PDF 업로드에 실패했습니다.");
+        }
+      } else {
+        alert("PDF 업로드에 실패했습니다.");
+      }
+    },
+  });
+
   const updateContents = ({
     tid,
     newContent,
@@ -128,5 +166,6 @@ export const useTabContents = (userid: string) => {
     updateContents,
     revertContents,
     uploadImgToGCS,
+    uploadPdfToGCS,
   };
 };

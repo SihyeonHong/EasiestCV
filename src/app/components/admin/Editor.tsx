@@ -16,6 +16,7 @@ import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
+import { FileAttachButton } from "@/app/components/tiptap/tiptap-ui/file-attach-button/file-attach-button";
 import { LinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
@@ -289,6 +290,7 @@ export default function Editor({ userid, tid }: Props) {
           <BubbleMenu editor={editor}>
             <div className="bg-background-secondary flex items-center gap-1 rounded-lg border p-1 shadow-lg">
               <LinkPopover editor={editor} />
+              <FileAttachButton editor={editor} userid={userid} />
             </div>
           </BubbleMenu>
           <TiptapEditorContent
