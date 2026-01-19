@@ -5,7 +5,6 @@ import {
   useEditor,
   Editor as TiptapEditorType,
 } from "@tiptap/react";
-import { BubbleMenu } from "@tiptap/react/menus";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
@@ -16,8 +15,6 @@ import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
-import { FileAttachButton } from "@/app/components/tiptap/tiptap-ui/file-attach-button/file-attach-button";
-import { LinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
@@ -287,12 +284,17 @@ export default function Editor({ userid, tid }: Props) {
         />
 
         <div className="overflow-auto">
-          <BubbleMenu editor={editor}>
-            <div className="bg-background-secondary flex items-center gap-1 rounded-lg border p-1 shadow-lg">
+          {/* <BubbleMenu
+            editor={editor}
+            options={{
+              placement: "bottom",
+            }}
+          >
+            <div className="bg-background-secondary z-20 flex items-center gap-1 rounded-lg border p-1 shadow-lg">
               <LinkPopover editor={editor} />
               <FileAttachButton editor={editor} userid={userid} />
             </div>
-          </BubbleMenu>
+          </BubbleMenu> */}
           <TiptapEditorContent
             editor={editor}
             role="presentation"

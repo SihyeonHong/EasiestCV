@@ -68,7 +68,7 @@ export interface LinkMainProps {
 
 export interface LinkPopoverProps
   extends Omit<ButtonProps, "type">,
-    UseLinkPopoverConfig {
+  UseLinkPopoverConfig {
   /**
    * Callback for when the popover opens or closes.
    */
@@ -140,7 +140,7 @@ const LinkMain: React.FC<LinkMainProps> = ({
           <InputGroup>
             <Input
               type="url"
-              placeholder="Paste a link..."
+              placeholder="https://"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               onKeyDown={handleKeyDown}

@@ -24,6 +24,7 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { Text } from "@tiptap/extension-text";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
+import { Underline } from "@tiptap/extension-underline";
 import { Selection } from "@tiptap/extensions";
 
 /**
@@ -44,6 +45,7 @@ export const getTiptapExtensions = () => [
   Bold,
   Italic,
   Strike,
+  Underline,
   Code,
   Heading,
   TextAlign.configure({ types: ["heading", "paragraph"] }),

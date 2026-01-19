@@ -63,8 +63,8 @@ export default function MainToolbarContent({
         <MarkButton type="bold" />
         <MarkButton type="italic" />
         <MarkButton type="strike" />
-        <MarkButton type="code" />
         <MarkButton type="underline" />
+        <MarkButton type="code" />
         {!isMobile ? (
           <ColorHighlightPopover />
         ) : (

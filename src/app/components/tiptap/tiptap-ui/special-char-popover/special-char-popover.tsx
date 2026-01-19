@@ -67,7 +67,9 @@ export const SpecialCharPopoverButton = React.forwardRef<
     ref={ref}
     {...props}
   >
-    {children ?? <span className="tiptap-button-icon">『』</span>}
+    {children ?? (
+      <span className="tiptap-button-icon whitespace-nowrap">『』</span>
+    )}
   </Button>
 ));
 
