@@ -3,19 +3,12 @@
 import type { Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Icons ---
 import { CornerDownLeftIcon } from "@/app/components/tiptap/tiptap-icons/corner-down-left-icon";
 import { ExternalLinkIcon } from "@/app/components/tiptap/tiptap-icons/external-link-icon";
 import { LinkIcon } from "@/app/components/tiptap/tiptap-icons/link-icon";
 import { TrashIcon } from "@/app/components/tiptap/tiptap-icons/trash-icon";
-
-// --- Tiptap UI ---
 import type { UseLinkPopoverConfig } from "@/app/components/tiptap/tiptap-ui/link-popover";
 import { useLinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
-
-// --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
   Button,
@@ -68,7 +61,7 @@ export interface LinkMainProps {
 
 export interface LinkPopoverProps
   extends Omit<ButtonProps, "type">,
-  UseLinkPopoverConfig {
+    UseLinkPopoverConfig {
   /**
    * Callback for when the popover opens or closes.
    */
