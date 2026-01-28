@@ -2,18 +2,11 @@
 
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Lib ---
-
-// --- Tiptap UI ---
 import type { UseCodeBlockConfig } from "@/app/components/tiptap/tiptap-ui/code-block-button";
 import {
   CODE_BLOCK_SHORTCUT_KEY,
   useCodeBlock,
 } from "@/app/components/tiptap/tiptap-ui/code-block-button";
-
-// --- UI Primitives ---
 import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";

@@ -2,23 +2,16 @@
 
 import * as React from "react";
 
-// --- Tiptap UI ---
 import type { UseBlockquoteConfig } from "@/app/components/tiptap/tiptap-ui/blockquote-button";
 import {
   BLOCKQUOTE_SHORTCUT_KEY,
   useBlockquote,
 } from "@/app/components/tiptap/tiptap-ui/blockquote-button";
-
-// --- Hooks ---
 import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Lib ---
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
-
-// --- UI Primitives ---
 
 export interface BlockquoteButtonProps
   extends Omit<ButtonProps, "type">,

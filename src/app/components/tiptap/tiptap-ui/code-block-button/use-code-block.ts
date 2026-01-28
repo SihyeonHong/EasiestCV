@@ -4,19 +4,14 @@ import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
 import { CodeBlockIcon } from "@/app/components/tiptap/tiptap-icons/code-block-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Lib ---
 import {
   findNodePosition,
   isNodeInSchema,
   isNodeTypeSelected,
   isValidPosition,
 } from "@/utils/tiptap-utils";
-
-// --- Icons ---
 
 export const CODE_BLOCK_SHORTCUT_KEY = "mod+alt+c";
 

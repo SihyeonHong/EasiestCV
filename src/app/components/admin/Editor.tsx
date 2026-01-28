@@ -31,7 +31,6 @@ interface Props {
 }
 
 export default function Editor({ userid, tid }: Props) {
-  const t = useTranslations("settingInTab");
   const tError = useTranslations("error");
   const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
@@ -226,7 +225,7 @@ export default function Editor({ userid, tid }: Props) {
     } finally {
       setIsAddingTemplate(false);
     }
-  }, [editor, getNormalizedTemplateHtml, isAddingTemplate, t]);
+  }, [editor, getNormalizedTemplateHtml, isAddingTemplate, tError]);
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
