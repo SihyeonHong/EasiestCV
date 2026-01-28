@@ -355,7 +355,19 @@ export async function POST(request: NextRequest) {
 4. **알 수 없는 에러**
    - 위에 해당하지 않으면 → `ApiError.server()` (500)
 
+## 클라이언트 에러 처리
+
+클라이언트(React hooks, components)에서 API 에러를 처리할 때는 **사용자가 대처 가능한 에러**와 **사용자가 대처 불가능한 에러**를 구분하여 처리합니다.
+
+**사용자가 대처 가능한 에러**: 상세한 안내 메시지를 표시합니다.
+**사용자가 대처 불가능한 에러**: `generalError`로 통일하여 표시합니다.
+
+### i18n 사용
+
+모든 에러 메시지는 i18n 번역 키를 사용합니다. `src/utils/client-error-handler.ts`의 `ERROR_TO_MESSAGE` 매핑을 참고하세요.
+
 ## 참고 파일
 
 - `src/utils/api-error.ts`: 에러 응답 유틸리티
 - `src/utils/api-success.ts`: 성공 응답 유틸리티
+- `src/utils/client-error-handler.ts`: 클라이언트 에러 처리 유틸리티

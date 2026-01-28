@@ -1,10 +1,10 @@
 import "@/app/globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import TanstackQueryProvider from "@/provider/TanstackQueryProvider";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 
@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Easiest CV",
-  description: "Easiest way to make your CV",
+  description: "The easiest way to run your academic profile.",
   verification: {
     google: "MrXMvtxqxYirVsEo1s_0kadHZja0G6_3nFjHGw79Dgc",
   },
