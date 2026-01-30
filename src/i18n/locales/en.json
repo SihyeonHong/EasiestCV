@@ -81,14 +81,13 @@
     "signupSuccess": "Sign up successful. Please log in.",
     "reservedWords": "Words like 'admin', 'user' cannot be used.",
     "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
-    "lengthError": "ID must be between 3 and 20 characters long."
-  },
-  "usageGuide": {
-    "title": "Want to try it out?",
-    "demoId": "ID: test",
-    "demoPW": "Password: test1234",
-    "link": "Dr. John Doe's Website",
-    "demoAccountDescription": "You can have your own personal website like this ↓",
+    "lengthError": "ID must be between 3 and 20 characters long.",
+    "demoIdLabel": "ID",
+    "demoIdValue": "test",
+    "demoPWLabel": "Password",
+    "demoPWValue": "test1234",
+    "copy": "Copy",
+    "copied": "Copied",
     "demoLoginDescription": "Log in to this test account to try it out!"
   },
   "admin": {
