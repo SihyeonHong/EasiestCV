@@ -14,8 +14,7 @@ import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 export interface BlockquoteButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseBlockquoteConfig {
+  extends Omit<ButtonProps, "type">, UseBlockquoteConfig {
   /**
    * Optional text to display alongside the icon.
    */

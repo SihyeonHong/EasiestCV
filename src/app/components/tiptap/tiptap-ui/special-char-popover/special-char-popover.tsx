@@ -4,7 +4,6 @@ import { type Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 
-// --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
   Button,

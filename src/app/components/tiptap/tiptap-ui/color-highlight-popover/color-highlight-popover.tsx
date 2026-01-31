@@ -3,13 +3,8 @@
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Icons ---
 import { BanIcon } from "@/app/components/tiptap/tiptap-icons/ban-icon";
 import { HighlighterIcon } from "@/app/components/tiptap/tiptap-icons/highlighter-icon";
-
-// --- UI Primitives ---
 import type {
   HighlightColor,
   UseColorHighlightConfig,
@@ -35,8 +30,6 @@ import {
   PopoverContent,
 } from "@/app/components/tiptap/tiptap-ui-primitive/popover";
 import { Separator } from "@/app/components/tiptap/tiptap-ui-primitive/separator";
-
-// --- Tiptap UI ---
 import { useMenuNavigation } from "@/hooks/tiptap/use-menu-navigation";
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
@@ -54,7 +47,8 @@ export interface ColorHighlightPopoverContentProps {
 }
 
 export interface ColorHighlightPopoverProps
-  extends Omit<ButtonProps, "type">,
+  extends
+    Omit<ButtonProps, "type">,
     Pick<
       UseColorHighlightConfig,
       "editor" | "hideWhenUnavailable" | "onApplied"

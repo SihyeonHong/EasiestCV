@@ -4,7 +4,6 @@ import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
 import { HeadingFiveIcon } from "@/app/components/tiptap/tiptap-icons/heading-five-icon";
 import { HeadingFourIcon } from "@/app/components/tiptap/tiptap-icons/heading-four-icon";
 import { HeadingOneIcon } from "@/app/components/tiptap/tiptap-icons/heading-one-icon";
@@ -12,15 +11,12 @@ import { HeadingSixIcon } from "@/app/components/tiptap/tiptap-icons/heading-six
 import { HeadingThreeIcon } from "@/app/components/tiptap/tiptap-icons/heading-three-icon";
 import { HeadingTwoIcon } from "@/app/components/tiptap/tiptap-icons/heading-two-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-// --- Lib ---
 import {
   findNodePosition,
   isNodeInSchema,
   isNodeTypeSelected,
   isValidPosition,
 } from "@/utils/tiptap-utils";
-
-// --- Icons ---
 
 export type Level = 1 | 2 | 3 | 4 | 5 | 6;
 

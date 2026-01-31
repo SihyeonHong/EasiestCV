@@ -3,11 +3,6 @@
 import type { Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Lib ---
-
-// --- Icons ---
 import { BoldIcon } from "@/app/components/tiptap/tiptap-icons/bold-icon";
 import { Code2Icon } from "@/app/components/tiptap/tiptap-icons/code2-icon";
 import { ItalicIcon } from "@/app/components/tiptap/tiptap-icons/italic-icon";

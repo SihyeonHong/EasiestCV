@@ -2,13 +2,6 @@
 
 import * as React from "react";
 
-// --- Lib ---
-import { parseShortcutKeys } from "@/utils/tiptap-utils";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Tiptap UI ---
 import type {
   TextAlign,
   UseTextAlignConfig,
@@ -17,18 +10,17 @@ import {
   TEXT_ALIGN_SHORTCUT_KEYS,
   useTextAlign,
 } from "@/app/components/tiptap/tiptap-ui/text-align-button";
-
-// --- UI Primitives ---
+import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
-import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
+import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
+import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 type IconComponent = ({ className, ...props }: IconProps) => React.ReactElement;
 
 export interface TextAlignButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseTextAlignConfig {
+  extends Omit<ButtonProps, "type">, UseTextAlignConfig {
   /**
    * Optional text to display alongside the icon.
    */

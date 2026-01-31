@@ -4,9 +4,7 @@ import { Type } from "lucide-react";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 
-// --- Icons ---
 import { ChevronDownIcon } from "@/app/components/tiptap/tiptap-icons/chevron-down-icon";
-// --- Tiptap UI ---
 import {
   HeadingButton,
   setParagraph,
@@ -14,7 +12,6 @@ import {
 } from "@/app/components/tiptap/tiptap-ui/heading-button";
 import type { UseHeadingDropdownMenuConfig } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
 import { useHeadingDropdownMenu } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
-// --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
   Button,
@@ -33,8 +30,7 @@ import {
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 
 export interface HeadingDropdownMenuProps
-  extends Omit<ButtonProps, "type">,
-    UseHeadingDropdownMenuConfig {
+  extends Omit<ButtonProps, "type">, UseHeadingDropdownMenuConfig {
   /**
    * Whether to render the dropdown menu in a portal
    * @default false

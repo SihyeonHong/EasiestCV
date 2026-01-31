@@ -4,15 +4,10 @@ import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Icons ---
 import { ListIcon } from "@/app/components/tiptap/tiptap-icons/list-icon";
 import { ListOrderedIcon } from "@/app/components/tiptap/tiptap-icons/list-ordered-icon";
 import { ListTodoIcon } from "@/app/components/tiptap/tiptap-icons/list-todo-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Lib ---
 import {
   findNodePosition,
   isNodeInSchema,

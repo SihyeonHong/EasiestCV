@@ -14,8 +14,7 @@ import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 export interface CodeBlockButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseCodeBlockConfig {
+  extends Omit<ButtonProps, "type">, UseCodeBlockConfig {
   /**
    * Optional text to display alongside the icon.
    */

@@ -2,18 +2,14 @@
 
 import * as React from "react";
 
-// --- Tiptap UI Primitive ---
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/app/components/tiptap/tiptap-ui-primitive/tooltip";
-
-// --- Lib ---
 import { cn, parseShortcutKeys } from "@/utils/tiptap-utils";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   showTooltip?: boolean;
   tooltip?: React.ReactNode;

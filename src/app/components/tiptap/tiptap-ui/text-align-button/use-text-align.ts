@@ -4,11 +4,6 @@ import type { ChainedCommands } from "@tiptap/react";
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Lib ---
-
-// --- Icons ---
 import { AlignCenterIcon } from "@/app/components/tiptap/tiptap-icons/align-center-icon";
 import { AlignJustifyIcon } from "@/app/components/tiptap/tiptap-icons/align-justify-icon";
 import { AlignLeftIcon } from "@/app/components/tiptap/tiptap-icons/align-left-icon";

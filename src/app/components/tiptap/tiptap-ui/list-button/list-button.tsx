@@ -2,11 +2,6 @@
 
 import * as React from "react";
 
-// --- Lib ---
-
-// --- Hooks ---
-
-// --- UI Primitives ---
 import type {
   ListType,
   UseListConfig,
@@ -18,14 +13,11 @@ import {
 import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
-
-// --- Tiptap UI ---
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 export interface ListButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseListConfig {
+  extends Omit<ButtonProps, "type">, UseListConfig {
   /**
    * Optional text to display alongside the icon.
    */
