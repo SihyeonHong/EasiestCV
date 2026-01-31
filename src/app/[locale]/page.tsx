@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/app/components/common/Button";
 import Footer from "@/app/components/common/Footer";
@@ -7,7 +8,9 @@ import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import PresentCard from "@/app/components/PresentCard";
 
-export default function Page({ params }: { params: { locale: string } }) {
+export default async function Page({ params }: { params: { locale: string } }) {
+  const t = await getTranslations("header");
+
   return (
     <div className="flex flex-col items-center">
       <Header />
@@ -64,7 +67,7 @@ export default function Page({ params }: { params: { locale: string } }) {
             </span>
             <Button asChild size="lg">
               <Link href={`/${params.locale}/auth`}>
-                회원가입/로그인 <ArrowRight className="ml-2 h-5 w-5" />
+                {t("loginOrSignup")} <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>

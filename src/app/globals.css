@@ -25,6 +25,7 @@
     --background-secondary: #ffffff;
     --foreground: #0b0908;
     --muted: var(--tt-text-muted);
+    --bg-code: #fafafb;
     --radius: 0.5rem;
   }
 
@@ -34,6 +35,7 @@
     --background-secondary: #09090b;
     --foreground: #f0eee9;
     --muted: var(--tt-text-muted);
+    --bg-code: #27272a; /* zinc-800 */
   }
 }
 

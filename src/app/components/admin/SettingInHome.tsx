@@ -8,6 +8,7 @@ import { useHome } from "@/hooks/useHome";
 interface Props {
   userid: string;
 }
+
 export default function SettingInHome({ userid }: Props) {
   const t = useTranslations("settingInTab");
   const tAdmin = useTranslations("admin");
@@ -27,7 +28,7 @@ export default function SettingInHome({ userid }: Props) {
       : tAdmin("imageToDefaultConfirm");
     const confirm = window.confirm(confirmMessage);
     if (!confirm) return;
-    deleteImg(DEFAULT_IMG);
+    deleteImg({ userid, imgUrl: DEFAULT_IMG });
   };
 
   const handleImageTabHide = () => {
@@ -36,7 +37,7 @@ export default function SettingInHome({ userid }: Props) {
       : tAdmin("imageTabHideConfirm");
     const confirm = window.confirm(confirmMessage);
     if (!confirm) return;
-    deleteImg(null);
+    deleteImg({ userid, imgUrl: null });
   };
 
   return (

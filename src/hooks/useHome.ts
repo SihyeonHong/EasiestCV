@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
+import { DEFAULT_IMG } from "@/constants/constants";
 import { queryKeys } from "@/constants/queryKeys";
 import { HomeImgDeleteRequest, UserHome } from "@/types/user-data";
 import { get, patch, post, put } from "@/utils/http";
+import { parseGcsFiles } from "@/utils/parseGcsFiles";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
@@ -47,10 +49,15 @@ export const useHome = (userid: string) => {
     },
   });
 
-  // 기본 이미지 or 프로필 이미지 없애기
+  // 기본 이미지로 or 프로필 이미지 없애기
   const { mutate: deleteImg } = useMutation({
-    mutationFn: (imgUrl: string | null, oldFileName?: string) => {
-      const data: HomeImgDeleteRequest = { userid, imgUrl, oldFileName };
+    mutationFn: (data: HomeImgDeleteRequest) => {
+      if (userHome?.img_url && userHome.img_url !== DEFAULT_IMG) {
+        const files = parseGcsFiles(userHome.img_url);
+        if (files.length > 0) {
+          data.oldFileName = files[0];
+        }
+      }
       return put("/home/img", data);
     },
     onSuccess: () => {

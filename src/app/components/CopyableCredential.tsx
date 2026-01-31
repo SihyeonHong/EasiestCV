@@ -26,13 +26,13 @@ export function CopyableCredential({
 
   return (
     <div className="inline-flex items-center gap-1.5">
-      <span className="text-sm text-muted">{label}</span>
-      <span className="rounded-md border bg-[#f8f9fa] px-1.5 py-0.5 font-mono text-sm">
+      <span className="text-sm text-foreground">{label}</span>
+      <span className="rounded-md border border-none bg-bg-code px-1.5 py-0.5 font-mono text-sm text-foreground">
         {value}
       </span>
       <button
         onClick={handleCopy}
-        className="rounded p-0.5 transition-colors hover:bg-gray-100"
+        className="rounded-md border border-none p-0.5 transition-colors hover:bg-gray-100"
         aria-label={copied ? copiedText : copyText}
       >
         {copied ? (
