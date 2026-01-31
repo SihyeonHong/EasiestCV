@@ -265,5 +265,22 @@
     "knownIssues": "Known Issues",
     "knownIssuesDescription": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly.",
     "knownIssuesDescription2": "The image insertion fails: This is not a failed upload. It works correctly on the public page. It may be restored by switching to another tab, continuing to write, logging out and then logging in again."
+  },
+  "startPage": {
+    "card1": {
+      "title": "Create an Account",
+      "description1": "Not sure yet?",
+      "description2": "Try our demo account to explore."
+    },
+    "card2": {
+      "title": "Write Your Content",
+      "description1": "Start from scratch, or",
+      "description2": "use a template."
+    },
+    "card3": {
+      "title": "Done!",
+      "description": "Click the image to view Dr. John Doe's sample website."
+    },
+    "ready": "Ready to begin?"
   }
 }

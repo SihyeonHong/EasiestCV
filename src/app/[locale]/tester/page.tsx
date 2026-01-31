@@ -7,7 +7,7 @@ import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import PresentCard from "@/app/components/PresentCard";
 
-export default function TesterPage({ params }: { params: { locale: string } }) {
+export default function Page({ params }: { params: { locale: string } }) {
   return (
     <div className="flex flex-col items-center">
       <Header />
@@ -18,8 +18,8 @@ export default function TesterPage({ params }: { params: { locale: string } }) {
           <div className="grid w-full max-w-7xl grid-cols-1 justify-items-center gap-6 md:grid-cols-3 md:gap-8">
             {/* Card 1 - Login Page Screenshot */}
             <PresentCard
-              imageSrc="https://picsum.photos/800/600"
-              imageAlt="로그인 페이지"
+              imageSrc="/screenshot-login-light.png"
+              imageAlt="screenshot-login-light"
               title="회원가입/로그인하세요"
               description={
                 <>

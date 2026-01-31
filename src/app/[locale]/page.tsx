@@ -8,8 +8,15 @@ import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import PresentCard from "@/app/components/PresentCard";
 
-export default async function Page({ params }: { params: { locale: string } }) {
-  const t = await getTranslations("header");
+interface PageProps {
+  params: {
+    locale: string;
+  };
+}
+
+export default async function Page({ params }: PageProps) {
+  const tHeader = await getTranslations("header");
+  const t = await getTranslations("startPage");
 
   return (
     <div className="flex flex-col items-center">
@@ -21,14 +28,14 @@ export default async function Page({ params }: { params: { locale: string } }) {
           <div className="grid w-full max-w-7xl grid-cols-1 justify-items-center gap-6 md:grid-cols-3 md:gap-8">
             {/* Card 1 - Login Page Screenshot */}
             <PresentCard
-              imageSrc="https://picsum.photos/800/600"
-              imageAlt="로그인 페이지"
-              title="회원가입/로그인하세요"
+              imageSrc="/screenshot-login-light.png"
+              imageAlt="screenshot-login-light"
+              title={t("card1.title")}
               description={
                 <>
-                  가입할지 말지 고민이라면
+                  {t("card1.description1")}
                   <br />
-                  테스트 계정에 로그인해서 직접 체험해보세요.
+                  {t("card1.description2")}
                 </>
               }
             />
@@ -37,12 +44,12 @@ export default async function Page({ params }: { params: { locale: string } }) {
             <PresentCard
               imageSrc="/screenshot-admin-paper-light.png"
               imageAlt="screenshot-admin-paper-light"
-              title="내용을 채우세요"
+              title={t("card2.title")}
               description={
                 <>
-                  자유롭게 작성하거나
+                  {t("card2.description1")}
                   <br />
-                  템플릿에 내용을 채워보세요.
+                  {t("card2.description2")}
                 </>
               }
             />
@@ -51,8 +58,8 @@ export default async function Page({ params }: { params: { locale: string } }) {
             <PresentCard
               imageSrc="/screenshot-public-home-light.png"
               imageAlt="screenshot-public-home-light"
-              title="웹사이트 완성!"
-              description="이미지를 클릭해 결과물을 확인해보세요."
+              title={t("card3.title")}
+              description={t("card3.description")}
               link={{
                 href: `/${params.locale}/john-doe/home`,
                 openInNewTab: true,
@@ -63,11 +70,12 @@ export default async function Page({ params }: { params: { locale: string } }) {
           {/* Call to Action */}
           <div className="flex items-center justify-center gap-6">
             <span className="text-base text-foreground md:text-lg">
-              준비되셨나요?
+              {t("ready")}
             </span>
             <Button asChild size="lg">
               <Link href={`/${params.locale}/auth`}>
-                {t("loginOrSignup")} <ArrowRight className="ml-2 h-5 w-5" />
+                {tHeader("loginOrSignup")}
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
