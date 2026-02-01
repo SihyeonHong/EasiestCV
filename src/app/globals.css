@@ -26,6 +26,7 @@
     --foreground: #0b0908;
     --muted: var(--tt-text-muted);
     --bg-code: #fafafb;
+    --link: #2563eb; /* blue-600 */
     --radius: 0.5rem;
   }
 
@@ -36,6 +37,7 @@
     --foreground: #f0eee9;
     --muted: var(--tt-text-muted);
     --bg-code: #27272a; /* zinc-800 */
+    --link: #60a5fa; /* blue-400 */
   }
 }
 

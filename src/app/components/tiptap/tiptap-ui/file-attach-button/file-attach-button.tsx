@@ -10,8 +10,10 @@ import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { useTabContents } from "@/hooks/useTabContents";
 
-export interface FileAttachButtonProps
-  extends Omit<ButtonProps, "type" | "onClick"> {
+export interface FileAttachButtonProps extends Omit<
+  ButtonProps,
+  "type" | "onClick"
+> {
   /**
    * The editor instance
    */

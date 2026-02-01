@@ -7,6 +7,7 @@ import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import PresentCard from "@/app/components/PresentCard";
+import SupportLink from "@/app/components/SupportLink";
 
 interface PageProps {
   params: {
@@ -35,7 +36,12 @@ export default async function Page({ params }: PageProps) {
                 <>
                   {t("card1.description1")}
                   <br />
-                  {t("card1.description2")}
+                  <Link
+                    href={`/${params.locale}/auth?id=test&password=test1234`}
+                    className="text-link underline underline-offset-2 hover:opacity-80"
+                  >
+                    {t("card1.description2")}
+                  </Link>
                 </>
               }
             />
@@ -68,16 +74,19 @@ export default async function Page({ params }: PageProps) {
           </div>
 
           {/* Call to Action */}
-          <div className="flex items-center justify-center gap-6">
-            <span className="text-base text-foreground md:text-lg">
-              {t("ready")}
-            </span>
-            <Button asChild size="lg">
-              <Link href={`/${params.locale}/auth`}>
-                {tHeader("loginOrSignup")}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex items-center justify-center gap-6">
+              <span className="text-base text-foreground md:text-lg">
+                {t("ready")}
+              </span>
+              <Button asChild size="lg">
+                <Link href={`/${params.locale}/auth`}>
+                  {tHeader("loginOrSignup")}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+            <SupportLink />
           </div>
         </section>
       </main>
