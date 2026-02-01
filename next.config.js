@@ -7,6 +7,9 @@ const nextConfig = {
   images: {
     domains: ["storage.googleapis.com", "picsum.photos"],
   },
+  experimental: {
+    serverComponentsExternalPackages: ["isomorphic-dompurify"],
+  },
 };
 
 export default withNextIntl(nextConfig);
