@@ -1,15 +1,29 @@
 import { HelpCircle } from "lucide-react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-export default function SupportLink() {
+import { Link } from "@/i18n/routing";
+import { cn } from "@/utils/classname";
+
+interface SupportLinkProps {
+  className?: string;
+}
+
+export default function SupportLink({ className }: SupportLinkProps) {
   const t = useTranslations("support");
 
   return (
-    <div className="flex items-center gap-1 whitespace-nowrap p-1 text-sm text-gray-700 dark:text-gray-400">
+    <div
+      className={cn(
+        "center gap-1 whitespace-nowrap p-1 text-sm text-muted",
+        className,
+      )}
+    >
       <HelpCircle size={14} />
-      <span className="hidden sm:block">{t("linkDescription")}</span>
-      <Link href="/support" className="underline dark:text-gray-300">
+      <span className="opacity-80">{t("linkDescription")}</span>
+      <Link
+        href="/support"
+        className="underline underline-offset-2 transition-colors hover:text-link"
+      >
         {t("linkText")}
       </Link>
     </div>

@@ -3,12 +3,7 @@
 import type { Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Icons ---
 import { HeadingIcon } from "@/app/components/tiptap/tiptap-icons/heading-icon";
-
-// --- Tiptap UI ---
 import {
   headingIcons,
   type Level,

@@ -22,7 +22,6 @@ export const useTabContents = (userid: string) => {
     mutationFn: (updateContentsRequest: UpdateContentsRequest) =>
       put(`/contents`, updateContentsRequest),
     onSuccess: (_, variables) => {
-      // 자동저장 성공 시 캐시를 즉시 업데이트하여 최신 데이터 유지
       queryClient.setQueryData<Tab[]>(queryKeys.tabs({ userid }), (oldTabs) => {
         if (!oldTabs) return oldTabs;
         return oldTabs.map((tab) =>
@@ -33,7 +32,8 @@ export const useTabContents = (userid: string) => {
       });
     },
     onError: (error) => {
-      console.error("내용 저장 오류:", error);
+      // 위에서 saveStatus 바꿔야 해서
+      throw error;
     },
   });
 
@@ -42,8 +42,6 @@ export const useTabContents = (userid: string) => {
     mutationFn: (formData: FormData) =>
       post<{ imageUrl: string }>(`/tabs/img`, formData),
     onError: (error: AxiosError) => {
-      console.error("이미지 업로드 오류:", error);
-
       // 네트워크 에러
       if (!error.response) {
         alert(
@@ -71,6 +69,44 @@ export const useTabContents = (userid: string) => {
         }
       } else {
         alert(tError("imgUploadFail"));
+      }
+    },
+  });
+
+  // GCS에 PDF 업로드
+  const { mutateAsync: uploadPdfToGCS } = useMutation({
+    mutationFn: (formData: FormData) =>
+      post<{ pdfUrl: string }>(`/tabs/pdf`, formData),
+    onError: (error: AxiosError) => {
+      console.error("PDF 업로드 오류:", error);
+
+      // 네트워크 에러
+      if (!error.response) {
+        alert(
+          error.code === "ECONNABORTED"
+            ? tError("timeout")
+            : tError("networkError"),
+        );
+        return;
+      }
+
+      // 서버 에러
+      const errorData = error.response.data as ApiErrorResponse;
+      const status = error.response.status;
+
+      if (status === 400) {
+        switch (errorData?.errorType) {
+          case "FILE_SIZE_ERROR":
+            alert(tError("fileSizeError"));
+            break;
+          case "INVALID_FILE_TYPE":
+            alert("지원하지 않는 파일 형식입니다. PDF만 업로드 가능합니다.");
+            break;
+          default:
+            alert("PDF 업로드에 실패했습니다.");
+        }
+      } else {
+        alert("PDF 업로드에 실패했습니다.");
       }
     },
   });
@@ -109,7 +145,6 @@ export const useTabContents = (userid: string) => {
 
       if (!backupTab || backupTab.contents === null) {
         alert(tError("revertNoBackupForTab"));
-        console.error(`탭 ID ${tid}에 대한 백업 데이터를 찾을 수 없습니다.`);
         return null;
       }
 
@@ -121,9 +156,8 @@ export const useTabContents = (userid: string) => {
         tid,
         contents: backupTab.contents,
       });
-    } catch (error) {
+    } catch {
       alert(tError("revertError"));
-      console.error("revertContents", error);
     }
   };
 
@@ -132,5 +166,6 @@ export const useTabContents = (userid: string) => {
     updateContents,
     revertContents,
     uploadImgToGCS,
+    uploadPdfToGCS,
   };
 };

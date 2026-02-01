@@ -14,7 +14,6 @@
     "saveSuccess": "Saved successfully.",
     "loading": "Loading...",
     "cancelConfirm": "Your changes will not be saved. Are you sure you want to cancel?",
-    "passwordMismatch": "Passwords do not match.",
     "imgUploadSuccess": "Image upload completed successfully.",
     "resetPWEmailSent": "A temporary password has been sent to your email."
   },
@@ -23,6 +22,7 @@
     "timeout": "Request timed out. Please try again.",
     "networkError": "Please check your network connection.",
     "unknownError": "An unknown error occurred. Please try again.",
+    "generalError": "Please try again. If the problem persists, please contact the administrator.",
     "serverError": "Server error occurred. Please contact the administrator.",
     "missingFields": "Please fill in all fields correctly.",
     "fileSizeError": "The maximum file size allowed is 20MB.",
@@ -34,7 +34,17 @@
     "revertNoBackup": "No backup data available.",
     "revertNoBackupForTab": "No backup data found for this tab.",
     "loginFail": "Login failed. Please try again.",
-    "resetPWFail": "An error occurred while resetting the password. Please try again."
+    "resetPWFail": "An error occurred while resetting the password. Please try again.",
+    "userNotFound": "No Such User",
+    "passwordMismatch": "Passwords do not match.",
+    "sendFail": "An error occurred while sending. Please try again.",
+    "templateLoadError": "An error occurred while loading the template.",
+    "duplicateId": "This ID is already in use by another user.",
+    "invalidCurrent": "The current password is incorrect.",
+    "changeFail": "An error occurred while changing the password. Please try again.",
+    "downloadFail": "Failed to download file.",
+    "signupFail": "An error occurred during sign up.",
+    "retry": "Retry"
   },
   "label": {
     "name": "Name",
@@ -67,19 +77,17 @@
     "login": "Log In",
     "signup": "Sign Up",
     "signupIdDescription": "This ID will be your domain. You CANNOT change it later.",
-    "signupEmailDescription": "If you forget your password, you will receive email here."
-  },
-  "signup": {
+    "signupEmailDescription": "If you forget your password, you will receive email here.",
     "signupSuccess": "Sign up successful. Please log in.",
-    "signupFail": "An error occurred during sign up.",
-    "duplicateId": "This ID is already in use by another user."
-  },
-  "usageGuide": {
-    "title": "Want to try it out?",
-    "demoId": "ID: test",
-    "demoPW": "Password: test1234",
-    "link": "Dr. John Doe's Website",
-    "demoAccountDescription": "You can have your own personal website like this ↓",
+    "reservedWords": "Words like 'admin', 'user' cannot be used.",
+    "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
+    "lengthError": "ID must be between 3 and 20 characters long.",
+    "demoIdLabel": "ID",
+    "demoIdValue": "test",
+    "demoPWLabel": "Password",
+    "demoPWValue": "test1234",
+    "copy": "Copy",
+    "copied": "Copied",
     "demoLoginDescription": "Log in to this test account to try it out!"
   },
   "admin": {
@@ -175,18 +183,11 @@
     "confirmNewPassword": "Confirm New Password",
     "confirmNewPasswordPlaceholder": "Re-enter your new password",
     "changeSuccess": "Your password has been changed successfully.",
-    "changeFail": "An error occurred while changing the password. Please try again.",
-    "invalidCurrent": "The current password is incorrect.",
     "samePassword": "The new password is the same as the current one."
   },
   "requireAuth": {
     "cannotAccess": "You cannot access this page without logging in.",
     "goToLogIn": "Go to Log in Page →"
-  },
-  "invalidId": {
-    "reservedWords": "Words like 'admin', 'user' cannot be used.",
-    "invalidCharacters": "Only lowercase letters, numbers, hyphens (-), and underscores (_) are allowed.",
-    "lengthError": "ID must be between 3 and 20 characters long."
   },
   "documents": {
     "documents": "CV",
@@ -244,8 +245,7 @@
     "subject": "Subject",
     "content": "Content",
     "send": "Send",
-    "sendSuccess": "Sent successfully. We will reply to your email.",
-    "sendFail": "An error occurred while sending. Please try again."
+    "sendSuccess": "Sent successfully. We will reply to your email."
   },
   "saveStatus": {
     "saved": "Saved",
@@ -265,5 +265,22 @@
     "knownIssues": "Known Issues",
     "knownIssuesDescription": "The text contents on the Home tab might not show up. Please switch to another tab and come back — it should appear correctly.",
     "knownIssuesDescription2": "The image insertion fails: This is not a failed upload. It works correctly on the public page. It may be restored by switching to another tab, continuing to write, logging out and then logging in again."
+  },
+  "startPage": {
+    "card1": {
+      "title": "Create an Account",
+      "description1": "Not sure yet?",
+      "description2": "Try our demo account to explore."
+    },
+    "card2": {
+      "title": "Write Your Content",
+      "description1": "Start from scratch, or",
+      "description2": "use a template."
+    },
+    "card3": {
+      "title": "Done!",
+      "description": "Click the image to view Dr. John Doe's sample website."
+    },
+    "ready": "Ready to begin?"
   }
 }

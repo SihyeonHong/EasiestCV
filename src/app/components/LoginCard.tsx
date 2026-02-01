@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
@@ -16,9 +17,13 @@ export default function LoginCard() {
   const tPlaceholder = useTranslations("placeholder");
   const tButton = useTranslations("button");
 
+  const searchParams = useSearchParams();
+  const prefillId = searchParams.get("id") || "";
+  const prefillPassword = searchParams.get("password") || "";
+
   const [loginData, setLoginData] = useState({
-    userid: "",
-    password: "",
+    userid: prefillId,
+    password: prefillPassword,
   });
 
   const { login, isLoggingIn } = useLogin();

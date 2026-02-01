@@ -3,15 +3,10 @@
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
 import { Redo2Icon } from "@/app/components/tiptap/tiptap-icons/redo2-icon";
 import { Undo2Icon } from "@/app/components/tiptap/tiptap-icons/undo2-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Lib ---
 import { isNodeTypeSelected } from "@/utils/tiptap-utils";
-
-// --- Icons ---
 
 export type UndoRedoAction = "undo" | "redo";
 

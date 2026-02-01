@@ -3,18 +3,11 @@
 import { type Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
-
-// --- Icons ---
 import { ChevronDownIcon } from "@/app/components/tiptap/tiptap-icons/chevron-down-icon";
-
-// --- Tiptap UI ---
 import {
   ListButton,
   type ListType,
 } from "@/app/components/tiptap/tiptap-ui/list-button";
-
-// --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
   Button,

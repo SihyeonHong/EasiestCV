@@ -28,9 +28,8 @@ export const useMetadata = (userid: string) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.meta({ userid }) });
       alert(tMessage("saveSuccess"));
     },
-    onError: (error: unknown) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error(error);
     },
   });
 

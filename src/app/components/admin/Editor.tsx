@@ -5,16 +5,15 @@ import {
   useEditor,
   Editor as TiptapEditorType,
 } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 // --- UI Components ---
 import ImageUploader from "@/app/components/admin/ImageUploader";
 import SavePanel from "@/app/components/admin/SavePanel";
+import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
-import {
-  ToolbarProvider,
-  useToolbar,
-} from "@/app/components/admin/ToolbarProvider";
+import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
@@ -22,6 +21,7 @@ import { useHome } from "@/hooks/useHome";
 import { useTabContents } from "@/hooks/useTabContents";
 // --- Types & Utils ---
 import { Tab } from "@/types/tab";
+import { normalizeHtmlWhitespace } from "@/utils/sanitize";
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";
 
@@ -30,15 +30,8 @@ interface Props {
   tid: number;
 }
 
-export default function EditorContainer({ userid, tid }: Props) {
-  return (
-    <ToolbarProvider>
-      <Editor userid={userid} tid={tid} />
-    </ToolbarProvider>
-  );
-}
-
-function Editor({ userid, tid }: Props) {
+export default function Editor({ userid, tid }: Props) {
+  const tError = useTranslations("error");
   const { userHome, mutateUploadIntro, revertIntro } = useHome(userid);
   const { tabs, updateContents, revertContents } = useTabContents(userid);
   const {
@@ -63,6 +56,41 @@ function Editor({ userid, tid }: Props) {
     });
 
   const toolbarRef = React.useRef<HTMLDivElement>(null);
+
+  // 템플릿 삽입 관련
+  const [isAddingTemplate, setIsAddingTemplate] = useState(false);
+
+  const templateHtmlCacheRef = React.useRef<string | null>(null);
+  const templateHtmlPromiseRef = React.useRef<Promise<string> | null>(null);
+  const lastSelectionRef = React.useRef<{ from: number; to: number } | null>(
+    null,
+  );
+
+  const getNormalizedTemplateHtml =
+    React.useCallback(async (): Promise<string> => {
+      if (templateHtmlCacheRef.current) return templateHtmlCacheRef.current;
+      if (templateHtmlPromiseRef.current) return templateHtmlPromiseRef.current;
+
+      templateHtmlPromiseRef.current = (async () => {
+        const response = await fetch("/papers-template.html");
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch papers-template.html: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const rawTemplate = await response.text();
+        const normalized = normalizeHtmlWhitespace(rawTemplate);
+        templateHtmlCacheRef.current = normalized;
+        return normalized;
+      })();
+
+      try {
+        return await templateHtmlPromiseRef.current;
+      } finally {
+        templateHtmlPromiseRef.current = null;
+      }
+    }, []);
 
   const editor: TiptapEditorType | null = useEditor({
     immediatelyRender: false,
@@ -159,11 +187,45 @@ function Editor({ userid, tid }: Props) {
     }),
     extensions: getTiptapExtensions(),
     content: "",
+    onSelectionUpdate: ({ editor }) => {
+      const { from, to } = editor.state.selection;
+      lastSelectionRef.current = { from, to };
+    },
+    onFocus: ({ editor }) => {
+      const { from, to } = editor.state.selection;
+      lastSelectionRef.current = { from, to };
+    },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       handleContentChange(html);
     },
   });
+
+  const handleAddTemplate = React.useCallback(async () => {
+    if (!editor) return;
+    if (isAddingTemplate) return;
+
+    setIsAddingTemplate(true);
+    try {
+      const templateHtml = await getNormalizedTemplateHtml();
+      if (!templateHtml) return;
+
+      const lastSelection = lastSelectionRef.current;
+      if (lastSelection) {
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(lastSelection, templateHtml)
+          .run();
+      } else {
+        editor.chain().focus("end").insertContent(templateHtml).run();
+      }
+    } catch {
+      alert(tError("templateLoadError"));
+    } finally {
+      setIsAddingTemplate(false);
+    }
+  }, [editor, getNormalizedTemplateHtml, isAddingTemplate, tError]);
 
   useEffect(() => {
     setCurrentTab(tabs.find((t) => t.tid === tid) || null);
@@ -200,6 +262,13 @@ function Editor({ userid, tid }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4">
+      {tid !== 0 && (
+        <SettingInTab
+          onAddTemplate={handleAddTemplate}
+          isAddingTemplate={isAddingTemplate}
+          getTemplateHtml={getNormalizedTemplateHtml}
+        />
+      )}
       <SavePanel saveStatus={saveStatus} onRevert={handleRevert} />
 
       <div className="w-full border">
@@ -214,6 +283,17 @@ function Editor({ userid, tid }: Props) {
         />
 
         <div className="overflow-auto">
+          {/* <BubbleMenu
+            editor={editor}
+            options={{
+              placement: "bottom",
+            }}
+          >
+            <div className="bg-background-secondary z-20 flex items-center gap-1 rounded-lg border p-1 shadow-lg">
+              <LinkPopover editor={editor} />
+              <FileAttachButton editor={editor} userid={userid} />
+            </div>
+          </BubbleMenu> */}
           <TiptapEditorContent
             editor={editor}
             role="presentation"

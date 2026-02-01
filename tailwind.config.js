@@ -14,9 +14,12 @@ const tailwindConfig = {
       },
       colors: {
         background: "var(--background)",
+        "background-secondary": "var(--background-secondary)",
         foreground: "var(--foreground)",
         muted: "var(--muted)",
         "editor-color": "var(--tt-editor-bg-color)",
+        "bg-code": "var(--bg-code)",
+        link: "var(--link)",
       },
       maxWidth: {
         body: "960px",

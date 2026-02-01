@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
+import { DEFAULT_IMG } from "@/constants/constants";
 import { queryKeys } from "@/constants/queryKeys";
 import { HomeImgDeleteRequest, UserHome } from "@/types/user-data";
 import { get, patch, post, put } from "@/utils/http";
+import { parseGcsFiles } from "@/utils/parseGcsFiles";
 
 export const useHome = (userid: string) => {
   const queryClient = useQueryClient();
@@ -42,25 +44,28 @@ export const useHome = (userid: string) => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("imgUploadFail"));
-      console.error("이미지 업로드 에러:", error);
     },
   });
 
-  // 기본 이미지 or 프로필 이미지 없애기
+  // 기본 이미지로 or 프로필 이미지 없애기
   const { mutate: deleteImg } = useMutation({
-    mutationFn: (imgUrl: string | null, oldFileName?: string) => {
-      const data: HomeImgDeleteRequest = { userid, imgUrl, oldFileName };
+    mutationFn: (data: HomeImgDeleteRequest) => {
+      if (userHome?.img_url && userHome.img_url !== DEFAULT_IMG) {
+        const files = parseGcsFiles(userHome.img_url);
+        if (files.length > 0) {
+          data.oldFileName = files[0];
+        }
+      }
       return put("/home/img", data);
     },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: queryKeys.home({ userid }) });
       refetch();
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("Reset Img Error:", error);
     },
   });
 
@@ -76,7 +81,6 @@ export const useHome = (userid: string) => {
         intro: newIntro,
       }),
     onSuccess: (_, newIntro) => {
-      // 자동저장 성공 시 캐시를 즉시 업데이트하여 최신 데이터 유지
       queryClient.setQueryData<UserHome>(
         queryKeys.home({ userid }),
         (oldHome) => {
@@ -85,9 +89,8 @@ export const useHome = (userid: string) => {
         },
       );
     },
-    onError: (error) => {
+    onError: () => {
       alert(tError("saveFail"));
-      console.error("intro 업로드 에러:", error);
     },
   });
 
@@ -111,8 +114,8 @@ export const useHome = (userid: string) => {
       if (!confirm) return null;
 
       mutateUploadIntro(backUpIntroRef.current);
-    } catch (error) {
-      console.error("revertIntro: ", error);
+    } catch {
+      alert(tError("revertError"));
     }
   };
 

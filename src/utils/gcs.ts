@@ -66,9 +66,9 @@ export const deleteFile = async (filename: string) => {
   try {
     const file = bucket.file(filename);
     await file.delete();
-    console.log(`File ${filename} deleted successfully.`);
+    console.log(`${filename} 삭제 성공`);
   } catch (error) {
-    console.error(`Failed to delete file ${filename}.`, error);
+    console.error(`삭제 실패: ${filename}.`, error);
     throw error;
   }
 };

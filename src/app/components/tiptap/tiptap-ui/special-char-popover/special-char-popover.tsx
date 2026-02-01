@@ -4,7 +4,6 @@ import { type Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 
-// --- UI Primitives ---
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import {
   Button,
@@ -67,7 +66,9 @@ export const SpecialCharPopoverButton = React.forwardRef<
     ref={ref}
     {...props}
   >
-    {children ?? <span className="tiptap-button-icon">『』</span>}
+    {children ?? (
+      <span className="tiptap-button-icon whitespace-nowrap">『』</span>
+    )}
   </Button>
 ));
 
@@ -80,6 +81,7 @@ export function SpecialCharPopoverContent({
 }: SpecialCharPopoverContentProps) {
   const isMobile = useIsMobile();
   const t = useTranslations("editor");
+  const tError = useTranslations("error");
 
   const BRACKET_CHARS: SpecialChar[] = React.useMemo(
     () => [
@@ -158,10 +160,19 @@ export function SpecialCharPopoverContent({
 
         onInsert?.();
       } catch (error) {
-        console.error("Failed to insert special character:", error);
+        // 특수문자 삽입 실패
+        alert(tError("generalError"));
+
+        if (process.env.NODE_ENV === "development") {
+          console.error("특수 문자 삽입 실패:", error, {
+            char,
+            savedPosition,
+            editorState: editor?.state,
+          });
+        }
       }
     },
-    [editor, savedPosition, onInsert],
+    [editor, savedPosition, onInsert, tError],
   );
 
   return (

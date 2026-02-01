@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { SignupRequest } from "@/types/user-account";
+import { ApiError, handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 
 export async function PATCH(request: NextRequest) {
@@ -10,10 +12,11 @@ export async function PATCH(request: NextRequest) {
 
     // 입력값 검증
     if (!userid || !currentPassword || !newPassword) {
-      return NextResponse.json(
-        { error: "필수 입력값이 누락되었습니다." },
-        { status: 400 },
-      );
+      return ApiError.missingFields([
+        "userid",
+        "currentPassword",
+        "newPassword",
+      ]);
     }
 
     // 사용자 조회
@@ -22,18 +25,12 @@ export async function PATCH(request: NextRequest) {
       [userid],
     );
     if (result.length <= 0) {
-      return NextResponse.json(
-        { error: "사용자를 찾을 수 없습니다." },
-        { status: 404 },
-      );
+      return ApiError.userNotFound();
     }
 
     const isMatch = await bcrypt.compare(currentPassword, result[0].password);
     if (!isMatch) {
-      return NextResponse.json(
-        { error: "현재 비밀번호가 올바르지 않습니다." },
-        { status: 401 },
-      );
+      return ApiError.wrongPassword();
     }
 
     // 비밀번호만 newPassword로 바꾸는 patch 쿼리
@@ -43,19 +40,8 @@ export async function PATCH(request: NextRequest) {
       userid,
     ]);
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "비밀번호가 성공적으로 변경되었습니다.",
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("비밀번호 변경 중 에러:", error);
-
-    return NextResponse.json(
-      { error: "서버 내부 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return ApiSuccess.updated();
+  } catch (error: unknown) {
+    return handleApiError(error, "비밀번호 변경 실패");
   }
 }

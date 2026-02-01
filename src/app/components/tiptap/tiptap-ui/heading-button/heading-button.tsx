@@ -2,9 +2,6 @@
 
 import * as React from "react";
 
-// --- Lib ---
-
-// --- Tiptap UI ---
 import type {
   Level,
   UseHeadingConfig,
@@ -13,8 +10,6 @@ import {
   HEADING_SHORTCUT_KEYS,
   useHeading,
 } from "@/app/components/tiptap/tiptap-ui/heading-button";
-
-// --- UI Primitives ---
 import { Badge } from "@/app/components/tiptap/tiptap-ui-primitive/badge";
 import type { ButtonProps } from "@/app/components/tiptap/tiptap-ui-primitive/button";
 import { Button } from "@/app/components/tiptap/tiptap-ui-primitive/button";
@@ -22,8 +17,7 @@ import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { parseShortcutKeys } from "@/utils/tiptap-utils";
 
 export interface HeadingButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseHeadingConfig {
+  extends Omit<ButtonProps, "type">, UseHeadingConfig {
   /**
    * Optional text to display alongside the icon.
    */

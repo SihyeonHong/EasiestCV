@@ -71,9 +71,8 @@ export default function ImageUploader({
     try {
       const result = await uploadImgToGCS(formData);
       onImageInsert(result.imageUrl);
-    } catch (error) {
+    } catch {
       // alert는 위 로직 안에 다 있음
-      console.error("Error uploading image:", error);
     } finally {
       onClose();
     }

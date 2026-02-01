@@ -3,13 +3,8 @@
 import type { Editor } from "@tiptap/react";
 import * as React from "react";
 
-// --- Hooks ---
 import { LinkIcon } from "@/app/components/tiptap/tiptap-icons/link-icon";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
-
-// --- Icons ---
-
-// --- Lib ---
 import { isMarkInSchema, sanitizeUrl } from "@/utils/tiptap-utils";
 
 /**
