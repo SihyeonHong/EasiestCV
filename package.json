@@ -66,10 +66,10 @@
     "@types/pg": "^8.10.9",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
-    "@vercel/postgres": "^0.5.1",
+    "@vercel/postgres": "^0.10.0",
     "axios": "^1.4.0",
     "babel-plugin-styled-components": "^2.1.4",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "isomorphic-dompurify": "^2.34.0",
@@ -105,7 +105,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "autoprefixer": "^10.4.20",
     "eslint": "8.57.1",
-    "eslint-config-next": "14.2.20",
+    "eslint-config-next": "^14.2.35",
     "eslint-config-prettier": "^10.1.1",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-import": "^2.31.0",
@@ -123,6 +123,7 @@
   },
   "overrides": {
     "parse5": "^7.1.3",
-    "jsdom": "24.1.0"
+    "jsdom": "24.1.0",
+    "glob": "^10.4.5"
   }
 }
