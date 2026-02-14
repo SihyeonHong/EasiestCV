@@ -89,14 +89,28 @@ refactor: primary 버튼 색상 변경. 크기 변경.
 - PR 제목은 문서 내용 포괄하거나 핵심 주제에 대해서. 타입 작성 필요 없음. 나중에 무슨 PR인지만 잘 찾을 수 있게.
 - 내용에 변경사항 상세히 작성.
 
-### `merge` or `rebase`
+### 브랜치 동기화 정책
 
-#### `merge`
+모든 브랜치 사이의 병합은 `merge`를 기본으로 한다.
 
-- `main` 브랜치로 올릴 때
-- 상위 브랜치의 '기능 의존성'을 받아올 때. e.g. `dev`의 변경사항을 받아야 하위 `feature` 브랜치가 진행 중인 작업 완성 가능.
+브랜치를 여기서 분기하면 안 됐을 때 제한적으로 `rebase`를 허용한다.
+e.g.
 
-#### `rebase`
+- `main`: A - B
+- `dev`: A - B - C
+- `newBranch`: (A - B) - D
 
-- e.g. `test` -> `dev`
-- 다른 하위 브랜치에서 `main`의 (완성된) 최신 변경 사항 받아올 때
+`dev`에서 C 커밋 뒤에 새 브랜치를 만들었어야 했는데 실수로 `main`에서(B 커밋 뒤에서) 만들었다.
+
+```
+git fetch origin
+git switch newBranch
+git rebase origin/dev
+```
+
+`newBranch`의 모든 커밋을 `dev`의 최신 커밋 뒤로 옮긴다.
+
+- `dev`: A - B - C
+- `newBranch`: (A - B - C) - D
+
+처음부터 `dev` 기반으로 작업한 것처럼 히스토리가 정리된다.
