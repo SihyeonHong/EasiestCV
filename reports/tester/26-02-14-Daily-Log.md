@@ -25,23 +25,45 @@ Priority 1에 해당하는 순수 유틸리티 함수들의 테스트 코드를 
 
 ---
 
-## 2. 진행 예정 업무 (Phase 2: API Route Handler 테스트)
+## 2. 진행 중 업무 (Phase 2: API Route Handler 테스트)
 
 다음 단계는 실제 비즈니스 로직이 포함된 API 엔드포인트를 테스트하는 것입니다. 이 단계에서는 데이터베이스와 외부 서비스에 대한 "Mocking(모의 객체)" 작업이 핵심입니다.
 
-### 주요 목표
+### 주요 목표 (진행 중)
 
 - `src/app/api/` 하위의 Route Handler에 대한 유닛 테스트 작성
 - 실제 DB나 GCS에 접근하지 않고 로직을 검증하기 위한 Mocking 환경 구성
 
-### 세부 실행 계획
+### 수행 내역
 
-1. Mocking 인프라 구축:
-   - `vi.mock()`을 사용하여 `src/utils/database.ts` (DB 연결) 모의 처리
-   - `src/utils/gcs.ts` (파일 업로드/삭제) 모의 처리
-2. API 핸들러 테스트 작성:
-   - 우선순위: `api/users` (로그인, 회원가입 등 핵심 기능)
-   - 검증 항목:
-     - 정상 요청 시 200 OK 및 응답 데이터 구조 확인
-     - 잘못된 입력 시 400 Bad Request 및 에러 메시지 확인
-     - DB 에러 시 500 Internal Server Error 처리 확인
+1. **Mocking 인프라 구축 완료**:
+   - `src/utils/database.ts` (DB 연결)에 대한 `vi.mock` 적용
+   - `bcrypt`, `jsonwebtoken`, `fs`, `path` 모듈에 대한 모의 객체 구현
+   - `beforeEach` / `afterEach`를 활용한 환경변수 (`JWT_SECRET`) 격리 및 복원 로직 구현
+
+2. **API 핸들러 테스트 작성 완료**:
+   - `api/users/signup` (회원가입):
+     - 정상 가입 (204 No Content / 201 Created) 검증
+     - 필수 필드 누락 (400) 검증
+     - 중복 ID (409) 검증
+     - DB 연결 오류 (503) 검증
+   - `api/users/login` (로그인):
+     - 정상 로그인 (200 OK + Token Cookie) 검증
+     - 사용자 없음 (404) 검증
+     - 비밀번호 불일치 (401) 검증
+     - 필수 필드 누락 (400) 검증
+
+### 검증 결과
+
+- "Test Files": 6개 성공 (6 passed)
+  - `signup.test.ts`, `login.test.ts` 추가
+- "Tests": 34개 성공 (34 passed)
+  - 기존 26개 + 신규 API 테스트 8개 (Signup 4, Login 4)
+- 모킹된 DB 및 인증 모듈이 정상적으로 동작함을 확인
+
+---
+
+## 3. 향후 계획
+
+- 나머지 API 엔드포인트 (`api/users/me`, `api/home` 등)에 대한 테스트 확장
+- 통합 테스트(Integration Test) 도입 검토
