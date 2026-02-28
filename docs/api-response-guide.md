@@ -242,33 +242,41 @@ try {
 
 ### 환경변수 누락 처리
 
-**환경변수 누락**은 `ApiError.missingEnvVar()`를 사용합니다:
+**라우트 핸들러** 내부에서는 `ApiError.missingEnvVar()`를 사용: 환경변수 이름을 인자로 받아 자동으로 메시지 생성, 500 에러 반환
 
 ```typescript
-// ✅ 환경변수 누락 (서버 설정 오류)
+// ✅ 라우트 핸들러 내부: ApiError.missingEnvVar() 사용
 const secret = process.env.JWT_SECRET;
 if (!secret) {
   return ApiError.missingEnvVar("JWT_SECRET");
 }
 ```
 
-**특징:**
+**유틸리티 모듈**에서 모듈 로드 시점에 환경변수를 검증하는 경우에는 `throw`를 사용합니다. `ApiError.missingEnvVar()`는 `NextResponse`를 반환하므로 라우트 핸들러 밖에서는 사용할 수 없습니다.
+모듈 로드 시점에 즉시 실패(fail-fast).
 
-- 환경변수 이름을 인자로 받아 자동으로 메시지 생성: `${envVar} 환경변수를 찾을 수 없습니다.`
-- 서버 설정 문제이므로 500 에러 반환
+```typescript
+// ✅ 유틸리티 모듈 (e.g. src/utils/mailer.ts): throw 사용
+const { email_host, email_port, email_user, email_pass } = process.env;
+
+if (!email_host || !email_port || !email_user || !email_pass) {
+  throw new Error("Email Environment Variables not set");
+}
+```
 
 ### 구분 기준
 
-| 상황                 | 방법                                                   | 이유                 |
-| -------------------- | ------------------------------------------------------ | -------------------- |
-| 필수 필드 누락       | `ApiError.missingFields()`                             | 클라이언트 입력 검증 |
-| 사용자 인증 실패     | `ApiError.userNotFound()` / `ApiError.wrongPassword()` | 비즈니스 로직 검증   |
-| 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증 |
-| 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증 |
-| 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증   |
-| 환경변수 누락        | `ApiError.missingEnvVar(envVar)`                       | 서버 설정 오류       |
-| DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제          |
-| 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러     |
+| 상황                 | 방법                                                   | 이유                  |
+| -------------------- | ------------------------------------------------------ | --------------------- |
+| 필수 필드 누락       | `ApiError.missingFields()`                             | 클라이언트 입력 검증  |
+| 사용자 인증 실패     | `ApiError.userNotFound()` / `ApiError.wrongPassword()` | 비즈니스 로직 검증    |
+| 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증  |
+| 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증  |
+| 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증    |
+| 환경변수 누락        | `ApiError.missingEnvVar(envVar)`                       | 서버 설정 오류        |
+| 환경변수 누락 (모듈) | `throw new Error()`                                    | NextResponse 사용불가 |
+| DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제           |
+| 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러      |
 
 ### handleApiError가 처리하는 에러의 출처
 
@@ -337,18 +345,15 @@ export async function POST(request: NextRequest) {
 `handleApiError` 함수는 다음 순서로 에러를 분류합니다:
 
 1. **DB 에러 (code 속성 체크)**
-
    - `ECONNREFUSED` / `ENOTFOUND` → `ApiError.database()` (503)
    - `23505` (Unique constraint violation) → `ApiError.duplicate()` (409)
    - `23503` (Foreign key constraint violation) → `ApiError.foreignKeyViolation()` (400)
    - `23502` (Not null constraint violation) → `ApiError.notNullViolation()` (400)
 
 2. **SyntaxError**
-
    - JSON 파싱 오류 → `ApiError.invalidJson()` (400)
 
 3. **Error 인스턴스**
-
    - `error.message`에 "duplicate key" 포함 → `ApiError.duplicate()` (409)
    - 그 외 → `ApiError.server()` (500)
 
