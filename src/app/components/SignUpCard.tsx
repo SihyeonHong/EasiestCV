@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, CheckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
@@ -14,7 +14,9 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
+import DuplicateEmailAlertDialog from "@/app/components/DuplicateEmailAlertDialog";
 import useSignUp from "@/hooks/useSignUp";
+import { useRouter } from "@/i18n/routing";
 import { cn } from "@/utils/classname";
 import { validateUserId } from "@/utils/validateUserId";
 
@@ -25,6 +27,7 @@ export default function SignUpCard() {
   const tError = useTranslations("error");
 
   const { signup } = useSignUp();
+  const router = useRouter();
 
   const passwordsMatch = () => {
     return signupData.password && signupData.confirmPassword
@@ -40,14 +43,35 @@ export default function SignUpCard() {
     confirmPassword: "",
   });
 
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [registeredUserids, setRegisteredUserids] = useState<string[]>([]);
+
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!isEmailChecked) {
+      alert(tError("emailNotChecked"));
+      return;
+    }
 
     if (signupData.password !== signupData.confirmPassword) {
       alert(tError("passwordMismatch"));
       return;
     }
     signup(signupData);
+  };
+
+  const handleCheckEmail = () => {
+    // TODO: 현재 UI 테스트를 위해 무조건 모달 열리도록 처리
+    const mockUserids = ["sihyeon", "test_user2"];
+
+    setRegisteredUserids(mockUserids);
+    setIsAlertOpen(true);
+  };
+
+  const switchToLoginTab = (selectedUserid: string) => {
+    router.push(`/auth?id=${encodeURIComponent(selectedUserid)}`);
   };
 
   return (
@@ -118,19 +142,34 @@ export default function SignUpCard() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="email">{tLabel("email")}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={tPlaceholder("emailPlaceholder")}
-                required
-                value={signupData.email}
-                onChange={(e) =>
-                  setSignupData((prev) => ({
-                    ...prev,
-                    email: e.target.value,
-                  }))
-                }
-              />
+              <div className="flex gap-2">
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={tPlaceholder("emailPlaceholder")}
+                  required
+                  value={signupData.email}
+                  onChange={(e) => {
+                    setSignupData((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }));
+                    setIsEmailChecked(false);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant={isEmailChecked ? "secondary" : "outline"}
+                  className="shrink-0 self-center"
+                  disabled={isEmailChecked || !signupData.email}
+                  onClick={handleCheckEmail}
+                >
+                  {isEmailChecked && <CheckIcon className="h-4 w-4" />}
+                  {isEmailChecked
+                    ? tInitPage("emailChecked")
+                    : tInitPage("checkDuplicate")}
+                </Button>
+              </div>
               <CardDescription>
                 {tInitPage("signupEmailDescription")}
               </CardDescription>
@@ -187,6 +226,15 @@ export default function SignUpCard() {
             </Button>
           </div>
         </form>
+
+        <DuplicateEmailAlertDialog
+          isOpen={isAlertOpen}
+          onOpenChange={setIsAlertOpen}
+          registeredUserids={registeredUserids}
+          email={signupData.email}
+          onContinueSignup={() => setIsEmailChecked(true)}
+          onLoginClick={switchToLoginTab}
+        />
       </CardContent>
     </Card>
   );

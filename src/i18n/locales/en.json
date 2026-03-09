@@ -44,6 +44,7 @@
     "changeFail": "An error occurred while changing the password. Please try again.",
     "downloadFail": "Failed to download file.",
     "signupFail": "An error occurred during sign up.",
+    "emailNotChecked": "Please check for duplicate email first.",
     "retry": "Retry"
   },
   "label": {
@@ -88,7 +89,14 @@
     "demoPWValue": "test1234",
     "copy": "Copy",
     "copied": "Copied",
-    "demoLoginDescription": "Log in to this test account to try it out!"
+    "demoLoginDescription": "Log in to this test account to try it out!",
+    "checkDuplicate": "Look Up",
+    "emailChecked": "Done",
+    "duplicateEmailTitle": "Accounts found with this email",
+    "duplicateEmailDescription": "Log in to an existing account, or create another one.",
+    "duplicateEmailLoginButton": "Log in to this account",
+    "duplicateEmailOrDivider": "or",
+    "duplicateEmailSignupButton": "Create another account"
   },
   "admin": {
     "howToActivateImgTab": "Click the 'Change to Default Image' button or select a file and choose an image to activate the image area.",
