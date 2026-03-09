@@ -57,3 +57,27 @@ Apply emphasis 'only' via double("") or single('') quotation marks.
 - ordered/unordered list
 - link
 - code block, inline code
+
+### 🛠️ Tooling & Terminal Guidelines
+
+- **Internal Tools First**: For file exploration, reading, or searching, prioritize using internal tools (e.g., `list_dir`, `find_by_name`, `view_file`, `grep_search`) over raw terminal commands like `dir`, `ls`, or `cat`.
+- **Approval Optimization**: Only use terminal commands (`run_command`) for tasks that cannot be handled by internal tools, such as building, testing, or specific CLI tool executions (e.g., `npm`, `npx`, `git`).
+- **Safety & Efficiency**: Avoid broad recursive searches (e.g., `dir /s`) in the terminal. Use the internal searching tools to skip ignored files (like `node_modules`) and minimize token usage.
+
+### 🛡️ TypeScript 타입 체크 워크플로우 (Type-Check Protocol)
+
+에이전트가 코드를 수정하거나 추가한 후 타입 체크를 수행할 때는 반드시 다음 규칙을 준수해야 합니다.
+
+1. **전체 프로젝트 기준 실행:**
+   - 반드시 프로젝트 루트 디렉토리에서 `npx tsc --noEmit` 명령어를 사용합니다.
+   - **주의:** 특정 파일 경로를 직접 인자로 전달(예: `tsc src/file.ts`)하지 마세요. 이는 `tsconfig.json`의 경로 별칭(`@/*`) 설정을 무시하게 만들어 가짜(False Positive) 모듈 참조 에러를 발생시킵니다.
+
+2. **효율적인 오류 필터링:**
+   - 특정 파일에 대한 오류만 확인하고 싶다면, 전체 체크를 실행한 후 출력 결과를 필터링합니다.
+   - (Windows PowerShell 예시): `npx tsc --noEmit | Select-String "파일명"`
+
+3. **명령어 조합 금지 (TS5042):**
+   - `--project tsconfig.json` 옵션과 개별 파일 소스 경로를 동시에 사용하지 마세요. 컴파일러 에러가 발생합니다.
+
+4. **체크 시점:**
+   - 중요한 비즈니스 로직 수정, 새로운 라이브러리 도입, 또는 `@/types` 내의 공용 인터페이스 수정 시에는 수동으로 이 체크를 먼저 수행한 후 작업을 완료하세요.
