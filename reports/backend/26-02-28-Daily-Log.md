@@ -18,7 +18,7 @@
 
 ### 2.1. 검토 배경
 
-mailer 리팩터링 과정에서 에러 처리 패턴이 프로젝트 컨벤션(`api-response-guide.md`)과 일치하지 않는 부분이 발견되었습니다.
+mailer 리팩터링 과정에서 에러 처리 패턴이 프로젝트 컨벤션(`api-guide.md`)과 일치하지 않는 부분이 발견되었습니다.
 
 ### 2.2. mailer.ts의 환경변수 가드
 
@@ -32,7 +32,7 @@ if (!email_host || !email_port || !email_user || !email_pass) {
 
 권장: "현행 유지"
 
-- `api-response-guide.md`는 환경변수 누락 시 `ApiError.missingEnvVar(envVar)`를 권장하지만, 이 함수는 `NextResponse`를 반환하므로 라우트 핸들러 안에서만 사용 가능합니다.
+- `api-guide.md`는 환경변수 누락 시 `ApiError.missingEnvVar(envVar)`를 권장하지만, 이 함수는 `NextResponse`를 반환하므로 라우트 핸들러 안에서만 사용 가능합니다.
 - `mailer.ts`는 유틸리티 모듈이며 모듈 로드 시점에 검증이 수행됩니다. `NextResponse`를 반환할 수 있는 컨텍스트가 아니므로 `throw`가 유일한 선택입니다.
 - 이메일 환경변수가 없으면 이메일 기능 전체가 작동 불가능하므로 fail-fast(즉시 실패)가 적절합니다.
 
@@ -86,3 +86,60 @@ try {
 | ------------------------------------ | --------------------- | --------- |
 | `src/utils/mailer.ts`                | 변경 없음 (현행 유지) | -         |
 | `src/app/api/users/resetPW/route.ts` | 내부 try-catch 제거   | 수정 완료 |
+
+---
+
+## 3. 환영 메일 및 중복 확인 기능 구현 계획
+
+회원가입 과정에서 사용자 경험 증대 및 혼선 방지를 위해 이메일 중복 확인 기능과 환영 메일 발송 기능을 구현할 예정입니다. 두 기능은 분리된 커밋으로 순차적으로 작업하며, 독립적인 API로 검증이 가능한 **이메일 중복 확인 기능**을 먼저 구현합니다.
+
+### 3.1. 작업 순서 및 우선순위
+
+1. **이메일 중복 확인 API 구현 (우선 작업)**
+   - 기존의 회원가입 로직과 분리된 독립된 기능이므로 먼저 작업하여 검증하기 좋습니다.
+   - 단독 API로 프론트엔드 연동 전 백엔드에서 Postman/cURL을 통한 자체 테스트가 용이합니다.
+
+2. **환영 메일 발송 기능 구현 (후속 작업)**
+   - 기존의 `signup` API 내부에 메일 발송 로직을 추가하는 방식입니다.
+   - 이미 작성된 공통 `mailer.ts`를 활용하여 회원가입 성공 처리 시 발송되도록 연동합니다.
+
+### 3.2. 이메일 중복 확인 기능 (`GET /api/users/check-email`)
+
+`userid`가 기본 키(Primary Key)인 서비스 특성상 동일 이메일의 다중 가입이 허용되지만, 중복 가입을 깜빡한 사용자의 혼동을 방지하기 위해 이미 가입된 `userid` 목록을 알려주는 API입니다.
+
+- **API Specification**
+  - **Endpoint**: `GET /api/users/check-email`
+  - **Query Parameter**: `email` (예: `?email=test@example.com`)
+  - **동작 방식**:
+    1. 데이터베이스 `users` 테이블에서 Query 파라미터로 전달된 `email`과 매칭되는 데이터 조회
+    2. 중복되는 계정이 있을 경우, 해당 계정들의 `userid` 목록을 응답 데이터로 반환
+  - **Response (Success - 중복 있음)**:
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "exists": true,
+        "userids": ["user1", "user2"]
+      }
+    }
+    ```
+  - **Response (Success - 중복 없음)**:
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "exists": false,
+        "userids": []
+      }
+    }
+    ```
+- **비고**: 이메일 검증(Verification)은 별도로 진행하지 않습니다.
+
+### 3.3. 환영 메일 기능 (`POST /api/users/signup`)
+
+회원가입이 완료된 직후 사용자에게 가입 환영 이메일을 발송합니다.
+
+- **구현 방식**
+  - 신규 이메일 템플릿(`src/utils/welcomeEmailTemplate.ts`) 생성 (기존 `tempPWTemplate.ts` 구조 활용)
+  - `src/app/api/users/signup/route.ts`의 로직 마지막 부분(`ApiSuccess.created()` 반환 직전)에 `transporter.sendMail()` 호출 로직 추가
+  - **Fire-and-forget 패턴 적용**: 이메일 발송은 부가적인 액션이므로, 발송 실패가 회원가입 성공 자체를 블로킹하거나 롤백시키지 않도록 `try-catch`로 감싼 후 `catch` 블록에서는 에러 로깅만 수행하고 가입 성공 응답을 정상 반환합니다.
