@@ -43,6 +43,8 @@
 
 # Rules (Strict)
 
+- API의 요청 파라미터 또는 응답 타입(데이터 구조)을 새롭게 정의하거나 변경할 경우, 반드시 API 명세서(`docs/api-specification.md`)에 해당 내용을 명시하여 프론트엔드 개발자 등 다른 작업자에게 공유해야 합니다.
+
 Use Formal, polite, reporting tone.
 
 아래의 Whitelist에서 허용하는 syntax를 제외하고는 모두 반드시 raw text(plain text)로만 작성해야 합니다. 다른 syntax 사용은 금지됩니다. 핵심 정보는 오직 큰따옴표("")나 작은따옴표('')만을 사용해 강조해야 합니다.
