@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertCircleIcon, CheckIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
 import { Button } from "@/app/components/common/Button";
@@ -17,7 +17,7 @@ import { Label } from "@/app/components/common/Label";
 import DuplicateEmailAlertDialog from "@/app/components/DuplicateEmailAlertDialog";
 import useCheckEmail from "@/hooks/useCheckEmail";
 import useSignUp from "@/hooks/useSignUp";
-import { useRouter } from "@/i18n/routing";
+import { Locale, useRouter } from "@/i18n/routing";
 import { cn } from "@/utils/classname";
 import { validateUserId } from "@/utils/validateUserId";
 
@@ -26,6 +26,7 @@ export default function SignUpCard() {
   const tPlaceholder = useTranslations("placeholder");
   const tLabel = useTranslations("label");
   const tError = useTranslations("error");
+  const locale = useLocale() as Locale;
 
   const { signup } = useSignUp();
   const router = useRouter();
@@ -72,7 +73,7 @@ export default function SignUpCard() {
       alert(tError("passwordMismatch"));
       return;
     }
-    signup(signupData);
+    signup({ ...signupData, locale });
   };
 
   const handleCheckEmail = () => {
