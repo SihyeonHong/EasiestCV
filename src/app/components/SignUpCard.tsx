@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, CheckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, FormEvent } from "react";
 
@@ -14,7 +14,10 @@ import {
 } from "@/app/components/common/Card";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
+import DuplicateEmailAlertDialog from "@/app/components/DuplicateEmailAlertDialog";
+import useCheckEmail from "@/hooks/useCheckEmail";
 import useSignUp from "@/hooks/useSignUp";
+import { useRouter } from "@/i18n/routing";
 import { cn } from "@/utils/classname";
 import { validateUserId } from "@/utils/validateUserId";
 
@@ -25,12 +28,7 @@ export default function SignUpCard() {
   const tError = useTranslations("error");
 
   const { signup } = useSignUp();
-
-  const passwordsMatch = () => {
-    return signupData.password && signupData.confirmPassword
-      ? signupData.password === signupData.confirmPassword
-      : null;
-  };
+  const router = useRouter();
 
   const [signupData, setSignupData] = useState({
     userid: "",
@@ -40,14 +38,50 @@ export default function SignUpCard() {
     confirmPassword: "",
   });
 
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [registeredUserids, setRegisteredUserids] = useState<string[]>([]);
+
+  const { checkEmail, isChecking } = useCheckEmail({
+    onSuccess: (data) => {
+      if (data.exists) {
+        setRegisteredUserids(data.userids);
+        setIsAlertOpen(true);
+        setIsEmailChecked(false);
+      } else {
+        setIsEmailChecked(true);
+      }
+    },
+  });
+
+  const passwordsMatch = () => {
+    return signupData.password && signupData.confirmPassword
+      ? signupData.password === signupData.confirmPassword
+      : null;
+  };
+
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!isEmailChecked) {
+      alert(tError("emailNotChecked"));
+      return;
+    }
 
     if (signupData.password !== signupData.confirmPassword) {
       alert(tError("passwordMismatch"));
       return;
     }
     signup(signupData);
+  };
+
+  const handleCheckEmail = () => {
+    if (!signupData.email) return;
+    checkEmail(signupData.email);
+  };
+
+  const switchToLoginTab = (selectedUserid: string) => {
+    router.push(`/auth?id=${encodeURIComponent(selectedUserid)}`);
   };
 
   return (
@@ -101,6 +135,40 @@ export default function SignUpCard() {
               </CardDescription>
             </div>
             <div className="space-y-1">
+              <Label htmlFor="email">{tLabel("email")}</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={tPlaceholder("emailPlaceholder")}
+                  required
+                  value={signupData.email}
+                  onChange={(e) => {
+                    setSignupData((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }));
+                    setIsEmailChecked(false);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant={isEmailChecked ? "secondary" : "outline"}
+                  className="shrink-0 self-center"
+                  disabled={isEmailChecked || !signupData.email || isChecking}
+                  onClick={handleCheckEmail}
+                >
+                  {isEmailChecked && <CheckIcon className="h-4 w-4" />}
+                  {isEmailChecked
+                    ? tInitPage("emailChecked")
+                    : tInitPage("checkDuplicate")}
+                </Button>
+              </div>
+              <CardDescription>
+                {tInitPage("signupEmailDescription")}
+              </CardDescription>
+            </div>
+            <div className="space-y-1">
               <Label htmlFor="username">{tLabel("name")}</Label>
               <Input
                 id="username"
@@ -115,25 +183,6 @@ export default function SignUpCard() {
                   }))
                 }
               />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="email">{tLabel("email")}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={tPlaceholder("emailPlaceholder")}
-                required
-                value={signupData.email}
-                onChange={(e) =>
-                  setSignupData((prev) => ({
-                    ...prev,
-                    email: e.target.value,
-                  }))
-                }
-              />
-              <CardDescription>
-                {tInitPage("signupEmailDescription")}
-              </CardDescription>
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">{tLabel("password")}</Label>
@@ -187,6 +236,15 @@ export default function SignUpCard() {
             </Button>
           </div>
         </form>
+
+        <DuplicateEmailAlertDialog
+          isOpen={isAlertOpen}
+          onOpenChange={setIsAlertOpen}
+          registeredUserids={registeredUserids}
+          email={signupData.email}
+          onContinueSignup={() => setIsEmailChecked(true)}
+          onLoginClick={switchToLoginTab}
+        />
       </CardContent>
     </Card>
   );

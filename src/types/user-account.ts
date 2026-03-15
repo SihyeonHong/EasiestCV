@@ -29,3 +29,8 @@ export interface ResetPasswordRequest {
   email: string;
   locale: Locale;
 }
+
+export interface CheckEmailResponse {
+  exists: boolean;
+  userids: string[];
+}

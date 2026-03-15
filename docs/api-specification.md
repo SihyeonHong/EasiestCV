@@ -11,7 +11,7 @@
   - 성공: 데이터를 직접 반환 (래핑 없음)
   - 에러: `{ message: string, errorType: string }`
 
-> **참고**: 응답 처리 가이드 및 구현 패턴은 [`api-response-guide.md`](./api-response-guide.md)를 참조하세요.
+> **참고**: API 라우트 작성 가이드 및 구현 패턴은 [`api-guide.md`](./api-guide.md)를 참조하세요.
 
 ---
 
@@ -74,6 +74,33 @@
 
 - `400`: 필수 필드 누락 (`userid`, `username`, `email`, `password`)
 - `409`: 중복된 데이터 (userid 또는 email)
+- `500`: 서버 오류
+
+---
+
+### GET /api/users/check-email
+
+이메일 중복 가입 여부 확인
+
+**쿼리 파라미터:**
+
+- `email` (required): 확인할 이메일 문자열
+
+**성공 응답 (200 OK):**
+
+```json
+{
+  "exists": true,
+  "userids": ["string"]
+}
+```
+
+- `exists`: 중복 여부 (true/false)
+- `userids`: 중복 가입된 사용자 ID 목록 (없으면 빈 배열)
+
+**에러 응답:**
+
+- `400`: `email` 쿼리 파라미터 누락
 - `500`: 서버 오류
 
 ---
@@ -393,7 +420,6 @@ PDF 문서 업로드
 
 ```json
 "string"
-
 
 // HTML 콘텐츠
 ```

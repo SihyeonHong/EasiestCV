@@ -3,37 +3,68 @@
 import { CircleUserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/components/common/AlertDialog";
 import { Button } from "@/app/components/common/Button";
 import { CardDescription } from "@/app/components/common/Card";
-import Footer from "@/app/components/common/Footer";
-import Header from "@/app/components/common/Header";
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
-import Title from "@/app/components/common/Title";
 import { useResetPassword } from "@/hooks/useResetPW";
 import { Locale } from "@/i18n/routing";
 import { cn } from "@/utils/classname";
 
-const MOCK_USERIDS = ["sihyeon", "test_user2"];
-const MOCK_EMAIL = "test@example.com";
+interface DuplicateEmailAlertDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  registeredUserids: string[];
+  email: string;
+  onContinueSignup: () => void;
+  onLoginClick: (selectedUserid: string) => void;
+}
 
-function FinalCard() {
-  const t = useTranslations("initpage");
+export default function DuplicateEmailAlertDialog({
+  isOpen,
+  onOpenChange,
+  registeredUserids,
+  email,
+  onContinueSignup,
+  onLoginClick,
+}: DuplicateEmailAlertDialogProps) {
+  const tInitPage = useTranslations("initpage");
   const tResetPW = useTranslations("resetPassword");
   const tPlaceholder = useTranslations("placeholder");
+
   const localeParams = useParams().locale as string;
   const locale: Locale = ["ko", "en"].includes(localeParams)
     ? (localeParams as Locale)
     : "en";
 
-  const [selectedUserid, setSelectedUserid] = useState(MOCK_USERIDS[0]);
+  const [selectedUserid, setSelectedUserid] = useState<string>(
+    registeredUserids[0] ?? "",
+  );
   const [showResetForm, setShowResetForm] = useState(false);
   const [resetData, setResetData] = useState({
-    userid: MOCK_USERIDS[0],
-    email: MOCK_EMAIL,
+    userid: registeredUserids[0] ?? "",
+    email,
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedUserid(registeredUserids[0] ?? "");
+      setResetData({
+        userid: registeredUserids[0] ?? "",
+        email,
+      });
+      setShowResetForm(false);
+    }
+  }, [isOpen, email, registeredUserids]);
 
   const { resetPassword } = useResetPassword();
 
@@ -55,20 +86,21 @@ function FinalCard() {
   };
 
   return (
-    <div className="w-full max-w-md">
-      <div className="grid gap-4 rounded-xl border border-zinc-200 bg-editor-color p-6 shadow dark:border-zinc-800">
-        {/* Header */}
-        <div className="flex flex-col space-y-2 text-center sm:text-left">
-          <h3 className="text-lg font-semibold">{t("duplicateEmailTitle")}</h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            {t("duplicateEmailDescription")}
-          </p>
-        </div>
+    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {tInitPage("duplicateEmailTitle")}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {tInitPage("duplicateEmailDescription")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
 
-        {/* 계정 선택 박스 (Border 확정안) */}
+        {/* 기존 계정 선택 + 로그인 버튼: 하나의 그룹 */}
         <div className="space-y-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/60">
           <div className="space-y-2 text-sm text-foreground">
-            {MOCK_USERIDS.map((id) => (
+            {registeredUserids.map((id) => (
               <Label
                 key={id}
                 className={cn(
@@ -80,7 +112,7 @@ function FinalCard() {
               >
                 <input
                   type="radio"
-                  name="accountSelection"
+                  name="existingAccount"
                   value={id}
                   checked={selectedUserid === id}
                   onChange={() => handleRadioChange(id)}
@@ -91,7 +123,12 @@ function FinalCard() {
               </Label>
             ))}
           </div>
-          <Button className="w-full">{t("duplicateEmailLoginButton")}</Button>
+          <Button
+            className="w-full"
+            onClick={() => onLoginClick(selectedUserid)}
+          >
+            {tInitPage("duplicateEmailLoginButton")}
+          </Button>
 
           {/* 비밀번호 초기화 토글 */}
           <button
@@ -139,43 +176,27 @@ function FinalCard() {
           )}
         </div>
 
-        {/* 구분선 */}
+        {/* 구분선: "또는" */}
         <div className="flex items-center gap-3">
           <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
           <span className="text-xs text-zinc-500 dark:text-zinc-400">
-            {t("duplicateEmailOrDivider")}
+            {tInitPage("duplicateEmailOrDivider")}
           </span>
           <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
         </div>
 
-        {/* 하단 버튼 */}
-        <Button variant="outline" className="w-full">
-          {t("duplicateEmailSignupButton")}
+        {/* 새 계정 만들기 버튼: 분리 배치 */}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            onContinueSignup();
+            onOpenChange(false);
+          }}
+        >
+          {tInitPage("duplicateEmailSignupButton")}
         </Button>
-      </div>
-    </div>
-  );
-}
-
-export default function Page() {
-  return (
-    <div className="flex flex-col items-center">
-      <Header />
-      <Title />
-      <main className="flex w-full flex-col">
-        <section className="flex w-full flex-col items-center justify-center gap-8 px-4 py-12 md:px-8">
-          <h2 className="text-xl font-bold text-foreground">
-            DuplicateEmailAlertDialog 최종안
-          </h2>
-          <p className="max-w-2xl text-center text-sm text-zinc-500 dark:text-zinc-400">
-            확정된 UI(테두리 적용, 유저 아이콘, 호버 효과) 및 문구가 적용된 모달
-            카드입니다.
-          </p>
-
-          <FinalCard />
-        </section>
-      </main>
-      <Footer />
-    </div>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
