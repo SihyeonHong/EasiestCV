@@ -62,19 +62,21 @@
   "userid": "string",
   "username": "string",
   "email": "string",
-  "password": "string"
+  "password": "string",
+  "locale": "en" | "ko"
 }
 ```
 
 **성공 응답 (204 No Content):**
 
 - 본문 없음
+- 환영 이메일이 사용자에게 전송됨
 
 **에러 응답:**
 
 - `400`: 필수 필드 누락 (`userid`, `username`, `email`, `password`)
 - `409`: 중복된 데이터 (userid 또는 email)
-- `500`: 서버 오류
+- `500`: 서버 오류 (이메일 전송 실패 포함)
 
 ---
 
