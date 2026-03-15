@@ -3,7 +3,7 @@
 import { CircleUserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 
 import {
   AlertDialog,
@@ -54,6 +54,17 @@ export default function DuplicateEmailAlertDialog({
     userid: registeredUserids[0] ?? "",
     email,
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedUserid(registeredUserids[0] ?? "");
+      setResetData({
+        userid: registeredUserids[0] ?? "",
+        email,
+      });
+      setShowResetForm(false);
+    }
+  }, [isOpen, email, registeredUserids]);
 
   const { resetPassword } = useResetPassword();
 

@@ -15,6 +15,7 @@ import {
 import { Input } from "@/app/components/common/Input";
 import { Label } from "@/app/components/common/Label";
 import DuplicateEmailAlertDialog from "@/app/components/DuplicateEmailAlertDialog";
+import useCheckEmail from "@/hooks/useCheckEmail";
 import useSignUp from "@/hooks/useSignUp";
 import { useRouter } from "@/i18n/routing";
 import { cn } from "@/utils/classname";
@@ -29,12 +30,6 @@ export default function SignUpCard() {
   const { signup } = useSignUp();
   const router = useRouter();
 
-  const passwordsMatch = () => {
-    return signupData.password && signupData.confirmPassword
-      ? signupData.password === signupData.confirmPassword
-      : null;
-  };
-
   const [signupData, setSignupData] = useState({
     userid: "",
     username: "",
@@ -46,6 +41,24 @@ export default function SignUpCard() {
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [registeredUserids, setRegisteredUserids] = useState<string[]>([]);
+
+  const { checkEmail, isChecking } = useCheckEmail({
+    onSuccess: (data) => {
+      if (data.exists) {
+        setRegisteredUserids(data.userids);
+        setIsAlertOpen(true);
+        setIsEmailChecked(false);
+      } else {
+        setIsEmailChecked(true);
+      }
+    },
+  });
+
+  const passwordsMatch = () => {
+    return signupData.password && signupData.confirmPassword
+      ? signupData.password === signupData.confirmPassword
+      : null;
+  };
 
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,11 +76,8 @@ export default function SignUpCard() {
   };
 
   const handleCheckEmail = () => {
-    // TODO: 현재 UI 테스트를 위해 무조건 모달 열리도록 처리
-    const mockUserids = ["sihyeon", "test_user2"];
-
-    setRegisteredUserids(mockUserids);
-    setIsAlertOpen(true);
+    if (!signupData.email) return;
+    checkEmail(signupData.email);
   };
 
   const switchToLoginTab = (selectedUserid: string) => {
@@ -125,22 +135,6 @@ export default function SignUpCard() {
               </CardDescription>
             </div>
             <div className="space-y-1">
-              <Label htmlFor="username">{tLabel("name")}</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder={tPlaceholder("namePlaceholder")}
-                required
-                value={signupData.username}
-                onChange={(e) =>
-                  setSignupData((prev) => ({
-                    ...prev,
-                    username: e.target.value,
-                  }))
-                }
-              />
-            </div>
-            <div className="space-y-1">
               <Label htmlFor="email">{tLabel("email")}</Label>
               <div className="flex gap-2">
                 <Input
@@ -161,7 +155,7 @@ export default function SignUpCard() {
                   type="button"
                   variant={isEmailChecked ? "secondary" : "outline"}
                   className="shrink-0 self-center"
-                  disabled={isEmailChecked || !signupData.email}
+                  disabled={isEmailChecked || !signupData.email || isChecking}
                   onClick={handleCheckEmail}
                 >
                   {isEmailChecked && <CheckIcon className="h-4 w-4" />}
@@ -173,6 +167,22 @@ export default function SignUpCard() {
               <CardDescription>
                 {tInitPage("signupEmailDescription")}
               </CardDescription>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="username">{tLabel("name")}</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder={tPlaceholder("namePlaceholder")}
+                required
+                value={signupData.username}
+                onChange={(e) =>
+                  setSignupData((prev) => ({
+                    ...prev,
+                    username: e.target.value,
+                  }))
+                }
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">{tLabel("password")}</Label>
