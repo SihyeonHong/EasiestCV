@@ -18,10 +18,17 @@
 - 변경 내용:
   - 폼 요소 내에서 사용자가 이메일 중복 확인을 먼저 진행할 수 있도록, 이메일 입력 칸 블록을 이름(Name) 입력 칸 블록 위로 위치를 스왑(swap)했습니다.
 
-## 환영 이메일 연동 (프론트엔드)
+## 환영 이메일 연동
 
 - 변경 파일: `src/types/user-account.ts`, `src/app/components/SignUpCard.tsx`, `docs/api-specification.md`
 - 변경 내용:
   - `SignupRequest` 타입에 `locale` 필드를 추가했습니다.
   - `SignUpCard`에서 `useLocale()`로 현재 언어를 가져와 `signup()` 호출 시 함께 전달하도록 수정했습니다.
   - API 명세서의 `POST /api/users/signup` 요청 본문에 `locale` 필드를 추가하고, 환영 이메일 전송 관련 내용을 반영했습니다.
+
+## 정책 페이지 다국어화 적용
+
+- 변경 파일: `src/app/[locale]/policy/page.tsx`, `src/app/[locale]/policy/PolicyKo.tsx`, `src/app/[locale]/policy/PolicyEn.tsx`
+- 변경 내용:
+  - `next-intl`의 JSON으로 긴 이용약관을 관리하는 대신, SSG 성능 최적화와 유지보수 편의를 위해 `PolicyKo`, `PolicyEn` 두 개의 컴포넌트로 분리했습니다.
+  - `page.tsx`에서 `params.locale` 값에 따라 언어별 정책 컴포넌트를 각각 렌더링하도록 리팩터링했습니다.

@@ -7,7 +7,6 @@ import Footer from "@/app/components/common/Footer";
 import Header from "@/app/components/common/Header";
 import Title from "@/app/components/common/Title";
 import PresentCard from "@/app/components/PresentCard";
-import SupportLink from "@/app/components/SupportLink";
 
 interface PageProps {
   params: {
@@ -86,7 +85,6 @@ export default async function Page({ params }: PageProps) {
                 </Link>
               </Button>
             </div>
-            <SupportLink />
           </div>
         </section>
       </main>

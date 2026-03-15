@@ -237,7 +237,8 @@
     "contactTitle": "문의하기",
     "ingTitle": "진행 중",
     "policy": "이용약관 및 개인정보 처리방침",
-    "footerLink": "고객센터 | 이용약관 | 개인정보처리방침",
+    "footerLink": "이용약관 및 개인정보처리방침",
+    "footerContact": "문의",
     "footerDescription": "본 사이트의 틀과 시스템에 대한 권리는 Easiest CV에 있으며, 사용자가 게시한 모든 콘텐츠의 권리와 책임은 해당 게시자에게 있습니다."
   },
   "info": {
