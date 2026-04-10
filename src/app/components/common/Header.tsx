@@ -40,7 +40,7 @@ export default function Header() {
 
         {headerType === "public" && (
           <Button asChild>
-            <Link href={`/`}>{t("loginOrSignup")}</Link>
+            <Link href={`/auth`}>{t("loginOrSignup")}</Link>
           </Button>
         )}
         {headerType === "admin" && <AdminHeader />}

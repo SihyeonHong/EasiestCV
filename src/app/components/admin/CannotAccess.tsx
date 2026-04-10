@@ -10,7 +10,7 @@ export default function CannotAccess() {
   return (
     <div className="flex items-center gap-1">
       {t("cannotAccess")}
-      <Link href="/">{t("goToLogIn")}</Link>
+      <Link href="/auth">{t("goToLogIn")}</Link>
     </div>
   );
 }
