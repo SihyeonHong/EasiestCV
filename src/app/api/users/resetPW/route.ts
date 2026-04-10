@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
-import nodemailer from "nodemailer";
 
 import { Locale } from "@/i18n/routing";
 import { ResetPasswordRequest, User } from "@/types/user-account";
@@ -8,25 +7,8 @@ import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
 import { generateRandomPW } from "@/utils/generateRandomPW";
+import { SENDER_EMAIL, transporter } from "@/utils/mailer";
 import { tempPWTemplate } from "@/utils/tempPWTemplate";
-
-// 환경변수 확인
-const { email_host, email_port, email_user, email_pass } = process.env;
-
-if (!email_host || !email_port || !email_user || !email_pass) {
-  throw new Error("Environment Variables");
-}
-
-// 트랜스포터 전역 설정
-const transporter = nodemailer.createTransport({
-  host: email_host,
-  port: email_port,
-  secure: true,
-  auth: {
-    user: email_user,
-    pass: email_pass,
-  },
-} as nodemailer.TransportOptions);
 
 export async function PUT(request: NextRequest) {
   try {
@@ -53,27 +35,21 @@ export async function PUT(request: NextRequest) {
     // 이메일 내용 생성
     const t = translations[locale as Locale] || translations.en;
     const mailOptions = {
-      from: email_user,
+      from: SENDER_EMAIL,
       to: email,
       subject: t.subject,
       html: tempPWTemplate({ tempPassword, locale }),
     };
 
     // 이메일 전송 및 DB 업데이트
-    try {
-      await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
 
-      // 이메일 전송 성공 시에만 DB 업데이트
-      await query("UPDATE users SET password = $1 WHERE userid = $2", [
-        hashedPassword,
-        userid,
-      ]);
+    await query("UPDATE users SET password = $1 WHERE userid = $2", [
+      hashedPassword,
+      userid,
+    ]);
 
-      return ApiSuccess.updated();
-    } catch {
-      console.error("이메일 전송 실패");
-      throw new Error("이메일 전송에 실패했습니다.");
-    }
+    return ApiSuccess.updated();
   } catch (error: unknown) {
     return handleApiError(error, "비밀번호 재설정 실패");
   }

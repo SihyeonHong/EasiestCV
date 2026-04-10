@@ -1,10 +1,11 @@
-# API 라우트 응답 처리 가이드
+# API 라우트 작성 가이드
 
-## 기본 원칙
+## 1. 요청/응답 타입
 
-모든 API 라우트는 `src/utils/api-error.ts`와 `src/utils/api-success.ts`의 유틸리티 함수를 사용하여 일관된 응답 형식을 유지합니다.
+Route Handler에서 요청 객체는 `NextRequest`를, 응답 객체는 `NextResponse`를 기본으로 사용합니다.
+[`26-03-02-Request-vs-NextRequest.md`](../reports/backend/26-03-02-Request-vs-NextRequest.md)를 참조하세요.
 
-## 성공 응답
+## 2. 성공 응답
 
 성공 시 `ApiSuccess` 객체의 편의 함수를 우선 사용합니다:
 
@@ -109,7 +110,7 @@ return ApiSuccess.deleted({
 
 부분 성공 정보를 반환하는 경우, 클라이언트가 상황을 이해하기 쉽도록 `message` 필드를 포함할 수 있습니다. 이는 일반적인 성공 응답과 달리, 사용자에게 특별한 주의가 필요한 상황이기 때문입니다.
 
-## 에러 응답
+## 3. 에러 응답
 
 에러 발생 시 `ApiError` 객체의 편의 함수를 사용합니다. 기본 메시지를 사용하는 것을 권장합니다:
 
@@ -130,7 +131,7 @@ return ApiError.invalidImageType();
 return ApiError.missingEnvVar(envVar);
 ```
 
-## 기본 구조
+## 4. 에러 처리 패턴
 
 ### 방법 1: handleApiError 사용 (권장)
 
@@ -140,7 +141,7 @@ return ApiError.missingEnvVar(envVar);
 import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
     // API 로직
     return ApiSuccess.created(data);
@@ -155,7 +156,7 @@ export async function POST(req: Request) {
 특정 에러 타입에 대한 커스텀 처리가 필요한 경우:
 
 ```typescript
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
     // API 로직
     return ApiSuccess.created(data);
@@ -173,7 +174,7 @@ export async function POST(req: Request) {
   - 예: `"이미지 업로드 실패"`, `"이미지 URL 업데이트 실패"`, `"PDF 업로드 실패"`, `"문서 삭제 실패"`
   - **중요**: `error` 파라미터는 로그에 포함하지 않습니다. 한글 메시지만 출력합니다
 
-## ApiError 직접 사용 vs throw 사용 가이드
+## 5. ApiError 직접 사용 vs throw 사용 가이드
 
 ### ApiError를 직접 사용하는 경우 (비즈니스 로직 검증)
 
@@ -242,33 +243,41 @@ try {
 
 ### 환경변수 누락 처리
 
-**환경변수 누락**은 `ApiError.missingEnvVar()`를 사용합니다:
+**라우트 핸들러** 내부에서는 `ApiError.missingEnvVar()`를 사용: 환경변수 이름을 인자로 받아 자동으로 메시지 생성, 500 에러 반환
 
 ```typescript
-// ✅ 환경변수 누락 (서버 설정 오류)
+// ✅ 라우트 핸들러 내부: ApiError.missingEnvVar() 사용
 const secret = process.env.JWT_SECRET;
 if (!secret) {
   return ApiError.missingEnvVar("JWT_SECRET");
 }
 ```
 
-**특징:**
+**유틸리티 모듈**에서 모듈 로드 시점에 환경변수를 검증하는 경우에는 `throw`를 사용합니다. `ApiError.missingEnvVar()`는 `NextResponse`를 반환하므로 라우트 핸들러 밖에서는 사용할 수 없습니다.
+모듈 로드 시점에 즉시 실패(fail-fast).
 
-- 환경변수 이름을 인자로 받아 자동으로 메시지 생성: `${envVar} 환경변수를 찾을 수 없습니다.`
-- 서버 설정 문제이므로 500 에러 반환
+```typescript
+// ✅ 유틸리티 모듈 (e.g. src/utils/mailer.ts): throw 사용
+const { email_host, email_port, email_user, email_pass } = process.env;
+
+if (!email_host || !email_port || !email_user || !email_pass) {
+  throw new Error("Email Environment Variables not set");
+}
+```
 
 ### 구분 기준
 
-| 상황                 | 방법                                                   | 이유                 |
-| -------------------- | ------------------------------------------------------ | -------------------- |
-| 필수 필드 누락       | `ApiError.missingFields()`                             | 클라이언트 입력 검증 |
-| 사용자 인증 실패     | `ApiError.userNotFound()` / `ApiError.wrongPassword()` | 비즈니스 로직 검증   |
-| 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증 |
-| 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증 |
-| 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증   |
-| 환경변수 누락        | `ApiError.missingEnvVar(envVar)`                       | 서버 설정 오류       |
-| DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제          |
-| 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러     |
+| 상황                 | 방법                                                   | 이유                  |
+| -------------------- | ------------------------------------------------------ | --------------------- |
+| 필수 필드 누락       | `ApiError.missingFields()`                             | 클라이언트 입력 검증  |
+| 사용자 인증 실패     | `ApiError.userNotFound()` / `ApiError.wrongPassword()` | 비즈니스 로직 검증    |
+| 데이터 형식 오류     | `ApiError.validation()`                                | 클라이언트 입력 검증  |
+| 파일 크기/형식 오류  | `ApiError.fileSize()` / `ApiError.invalidImageType()`  | 클라이언트 입력 검증  |
+| 데이터 존재 여부     | `ApiError.validation()` with 404                       | 비즈니스 로직 검증    |
+| 환경변수 누락        | `ApiError.missingEnvVar(envVar)`                       | 서버 설정 오류        |
+| 환경변수 누락 (모듈) | `throw new Error()`                                    | NextResponse 사용불가 |
+| DB 연결 실패         | `throw` → `handleApiError`                             | 인프라 문제           |
+| 외부 라이브러리 에러 | `throw` → `handleApiError`                             | 예상치 못한 에러      |
 
 ### handleApiError가 처리하는 에러의 출처
 
@@ -279,7 +288,7 @@ if (!secret) {
 비동기 작업이 실패하면 자동으로 throw됩니다. 명시적으로 `throw`를 작성할 필요가 없습니다:
 
 ```typescript
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // ✅ DB 쿼리 실패 시 자동으로 throw됨 (명시적 throw 불필요)
     const result = await query("SELECT * FROM users WHERE userid = $1", [
@@ -332,30 +341,27 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-## handleApiError 에러 분류 우선순위
+## 6. handleApiError 에러 분류 우선순위
 
 `handleApiError` 함수는 다음 순서로 에러를 분류합니다:
 
 1. **DB 에러 (code 속성 체크)**
-
    - `ECONNREFUSED` / `ENOTFOUND` → `ApiError.database()` (503)
    - `23505` (Unique constraint violation) → `ApiError.duplicate()` (409)
    - `23503` (Foreign key constraint violation) → `ApiError.foreignKeyViolation()` (400)
    - `23502` (Not null constraint violation) → `ApiError.notNullViolation()` (400)
 
 2. **SyntaxError**
-
    - JSON 파싱 오류 → `ApiError.invalidJson()` (400)
 
 3. **Error 인스턴스**
-
    - `error.message`에 "duplicate key" 포함 → `ApiError.duplicate()` (409)
    - 그 외 → `ApiError.server()` (500)
 
 4. **알 수 없는 에러**
    - 위에 해당하지 않으면 → `ApiError.server()` (500)
 
-## 클라이언트 에러 처리
+## 7. 클라이언트 에러 처리
 
 클라이언트(React hooks, components)에서 API 에러를 처리할 때는 **사용자가 대처 가능한 에러**와 **사용자가 대처 불가능한 에러**를 구분하여 처리합니다.
 

@@ -11,5 +11,6 @@
     "typescriptreact"
   ],
   "prettier.enable": true,
-  "files.autoSave": "off"
+  "files.autoSave": "off",
+  "workbench.editor.enablePreview": false
 }

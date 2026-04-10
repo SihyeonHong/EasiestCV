@@ -5,18 +5,21 @@ import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
 
 import { DEFAULT_IMG } from "@/constants/constants";
+import { Locale } from "@/i18n/routing";
 import { ReturnedTid } from "@/types/tab";
 import { SignupRequest } from "@/types/user-account";
 import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
+import { SENDER_EMAIL, transporter } from "@/utils/mailer";
 import makeUserSiteMeta from "@/utils/makeUserSiteMeta";
 import { normalizeHtmlWhitespace } from "@/utils/sanitize";
 import { validateMissingFields } from "@/utils/validateMissingFields";
+import { welcomeTemplate } from "@/utils/welcomeTemplate";
 
 export async function POST(request: NextRequest) {
   try {
-    const { userid, username, email, password } =
+    const { userid, username, email, password, locale } =
       (await request.json()) as SignupRequest;
 
     const errorResponse = validateMissingFields({
@@ -76,8 +79,23 @@ export async function POST(request: NextRequest) {
       ]);
     }
 
+    // 환영 이메일 발송
+    const t = emailTranslations[(locale as Locale) || "en"];
+    const mailOptions = {
+      from: SENDER_EMAIL,
+      to: email,
+      subject: t.subject,
+      html: welcomeTemplate({ userId: userid, locale: locale || "en" }),
+    };
+    await transporter.sendMail(mailOptions);
+
     return ApiSuccess.created();
   } catch (error: unknown) {
     return handleApiError(error, "회원가입 실패");
   }
 }
+
+const emailTranslations = {
+  en: { subject: "Welcome to Easiest CV!" },
+  ko: { subject: "Easiest CV에 오신 것을 환영합니다!" },
+};

@@ -19,13 +19,11 @@ export default function useSignUp() {
       window.location.reload();
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      // 네트워크 에러 (서버에 연결 불가)
       if (!error.response) {
         alert(tError("networkError"));
         return;
       }
 
-      // 서버에서 응답은 왔지만 에러인 경우
       const { status, data } = error.response;
       const message = data.message || tError("signupFail");
 

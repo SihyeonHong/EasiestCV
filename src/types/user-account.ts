@@ -16,6 +16,7 @@ export interface SignupRequest {
   username: string;
   email: string;
   password: string;
+  locale: Locale;
 }
 
 export interface ChangePWRequest {
@@ -28,4 +29,9 @@ export interface ResetPasswordRequest {
   userid: string;
   email: string;
   locale: Locale;
+}
+
+export interface CheckEmailResponse {
+  exists: boolean;
+  userids: string[];
 }
