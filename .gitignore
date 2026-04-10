@@ -38,3 +38,5 @@ next-env.d.ts
 # aws
 aws.pem
 .vercel
+# next-agents-md
+.next-docs/
