@@ -1,10 +1,23 @@
 "use client";
 
 import type { Editor } from "@tiptap/react";
-import * as React from "react";
+import { Paperclip } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  useCallback,
+  useEffect,
+  forwardRef,
+  useState,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+  type FC,
+  type KeyboardEvent,
+  type ChangeEvent,
+  type MouseEvent,
+} from "react";
 
 import { CornerDownLeftIcon } from "@/app/components/tiptap/tiptap-icons/corner-down-left-icon";
-import { ExternalLinkIcon } from "@/app/components/tiptap/tiptap-icons/external-link-icon";
 import { LinkIcon } from "@/app/components/tiptap/tiptap-icons/link-icon";
 import { TrashIcon } from "@/app/components/tiptap/tiptap-icons/trash-icon";
 import type { UseLinkPopoverConfig } from "@/app/components/tiptap/tiptap-ui/link-popover";
@@ -31,6 +44,7 @@ import {
 import { Separator } from "@/app/components/tiptap/tiptap-ui-primitive/separator";
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
+import { useTabContents } from "@/hooks/useTabContents";
 
 export interface LinkMainProps {
   /**
@@ -40,7 +54,7 @@ export interface LinkMainProps {
   /**
    * Function to update the URL state.
    */
-  setUrl: React.Dispatch<React.SetStateAction<string | null>>;
+  setUrl: Dispatch<SetStateAction<string | null>>;
   /**
    * Function to set the link in the editor.
    */
@@ -50,13 +64,13 @@ export interface LinkMainProps {
    */
   removeLink: () => void;
   /**
-   * Function to open the link.
-   */
-  openLink: () => void;
-  /**
    * Whether the link is currently active in the editor.
    */
   isActive: boolean;
+  /**
+   * User ID for file upload to GCS.
+   */
+  userid: string;
 }
 
 export interface LinkPopoverProps
@@ -70,12 +84,16 @@ export interface LinkPopoverProps
    * @default true
    */
   autoOpenOnLinkActive?: boolean;
+  /**
+   * User ID for file upload to GCS.
+   */
+  userid: string;
 }
 
 /**
  * Link button component for triggering the link popover
  */
-export const LinkButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, children, ...props }, ref) => {
     return (
       <Button
@@ -100,22 +118,78 @@ LinkButton.displayName = "LinkButton";
 /**
  * Main content component for the link popover
  */
-const LinkMain: React.FC<LinkMainProps> = ({
+const LinkMain: FC<LinkMainProps> = ({
   url,
   setUrl,
   setLink,
   removeLink,
-  openLink,
   isActive,
+  userid,
 }) => {
   const isMobile = useIsMobile();
+  const tEditor = useTranslations("editor");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const { uploadPdfToGCS, deletePdfFromGCS } = useTabContents(userid);
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       event.preventDefault();
       setLink();
     }
   };
+
+  const handleFileAttachClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleRemoveLink = useCallback(() => {
+    // GCS에 업로드된 파일이면 삭제 요청 (fire-and-forget)
+    const GCS_URL_PREFIX = "https://storage.googleapis.com/easiest-cv/";
+    if (url && url.startsWith(GCS_URL_PREFIX)) {
+      const filename = url.replace(GCS_URL_PREFIX, "");
+      deletePdfFromGCS(filename).catch(() => {});
+    }
+    removeLink();
+  }, [url, deletePdfFromGCS, removeLink]);
+
+  const handleFileChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file || !userid) return;
+
+      if (file.type !== "application/pdf") {
+        alert(tEditor("pdfOnly"));
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        return;
+      }
+
+      setIsUploading(true);
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("userid", userid);
+
+        const result = await uploadPdfToGCS(formData);
+        const pdfUrl = result?.pdfUrl;
+
+        if (pdfUrl) {
+          setUrl(pdfUrl);
+        }
+      } catch (error) {
+        console.error("파일 업로드 실패:", error);
+      } finally {
+        setIsUploading(false);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
+    },
+    [userid, setUrl, tEditor],
+  );
 
   return (
     <Card
@@ -158,19 +232,37 @@ const LinkMain: React.FC<LinkMainProps> = ({
           <Separator />
 
           <ButtonGroup orientation="horizontal">
-            <Button
-              type="button"
-              onClick={openLink}
-              title="Open in new window"
-              disabled={!url && !isActive}
-              data-style="ghost"
-            >
-              <ExternalLinkIcon className="tiptap-button-icon" />
-            </Button>
+            {userid && (
+              <>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                <Button
+                  type="button"
+                  onClick={handleFileAttachClick}
+                  disabled={isUploading}
+                  data-style="ghost"
+                  tooltip={
+                    isUploading
+                      ? tEditor("fileAttachUploading")
+                      : tEditor("fileAttach")
+                  }
+                >
+                  <Paperclip
+                    className="tiptap-button-icon"
+                    style={{ width: "14px", height: "14px" }}
+                  />
+                </Button>
+              </>
+            )}
 
             <Button
               type="button"
-              onClick={removeLink}
+              onClick={handleRemoveLink}
               title="Remove link"
               disabled={!url && !isActive}
               data-style="ghost"
@@ -187,14 +279,15 @@ const LinkMain: React.FC<LinkMainProps> = ({
 /**
  * Link content component for standalone use
  */
-export const LinkContent: React.FC<{
+export const LinkContent: FC<{
   editor?: Editor | null;
-}> = ({ editor }) => {
+  userid: string;
+}> = ({ editor, userid }) => {
   const linkPopover = useLinkPopover({
     editor,
   });
 
-  return <LinkMain {...linkPopover} />;
+  return <LinkMain {...linkPopover} userid={userid} />;
 };
 
 /**
@@ -202,10 +295,7 @@ export const LinkContent: React.FC<{
  *
  * For custom popover implementations, use the `useLinkPopover` hook instead.
  */
-export const LinkPopover = React.forwardRef<
-  HTMLButtonElement,
-  LinkPopoverProps
->(
+export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
   (
     {
       editor: providedEditor,
@@ -213,6 +303,7 @@ export const LinkPopover = React.forwardRef<
       onSetLink,
       onOpenChange,
       autoOpenOnLinkActive = true,
+      userid,
       onClick,
       children,
       ...buttonProps
@@ -220,7 +311,7 @@ export const LinkPopover = React.forwardRef<
     ref,
   ) => {
     const { editor } = useTiptapEditor(providedEditor);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const {
       isVisible,
@@ -230,7 +321,6 @@ export const LinkPopover = React.forwardRef<
       setUrl,
       setLink,
       removeLink,
-      openLink,
       label,
       Icon,
     } = useLinkPopover({
@@ -239,7 +329,7 @@ export const LinkPopover = React.forwardRef<
       onSetLink,
     });
 
-    const handleOnOpenChange = React.useCallback(
+    const handleOnOpenChange = useCallback(
       (nextIsOpen: boolean) => {
         setIsOpen(nextIsOpen);
         onOpenChange?.(nextIsOpen);
@@ -247,13 +337,13 @@ export const LinkPopover = React.forwardRef<
       [onOpenChange],
     );
 
-    const handleSetLink = React.useCallback(() => {
+    const handleSetLink = useCallback(() => {
       setLink();
       setIsOpen(false);
     }, [setLink]);
 
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = useCallback(
+      (event: MouseEvent<HTMLButtonElement>) => {
         onClick?.(event);
         if (event.defaultPrevented) return;
         setIsOpen(!isOpen);
@@ -261,7 +351,7 @@ export const LinkPopover = React.forwardRef<
       [onClick, isOpen],
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (autoOpenOnLinkActive && isActive) {
         setIsOpen(true);
       }
@@ -294,8 +384,8 @@ export const LinkPopover = React.forwardRef<
             setUrl={setUrl}
             setLink={handleSetLink}
             removeLink={removeLink}
-            openLink={openLink}
             isActive={isActive}
+            userid={userid}
           />
         </PopoverContent>
       </Popover>

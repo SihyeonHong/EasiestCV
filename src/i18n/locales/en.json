@@ -155,7 +155,10 @@
     "insertMidlineEllipsis": "Insert midline horizontal ellipsis",
     "insertHyphen": "Insert hyphen",
     "insertEnDash": "Insert en dash",
-    "insertEmDash": "Insert em dash"
+    "insertEmDash": "Insert em dash",
+    "fileAttach": "Attach PDF file",
+    "fileAttachUploading": "Uploading...",
+    "pdfOnly": "Only PDF files can be attached."
   },
   "quillTooltips": {
     "header": "Heading style",

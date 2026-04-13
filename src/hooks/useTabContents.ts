@@ -8,7 +8,7 @@ import { queryKeys } from "@/constants/queryKeys";
 import { useTabs } from "@/hooks/useTabs";
 import { ApiErrorResponse } from "@/types/error";
 import { Tab } from "@/types/tab";
-import { post, put } from "@/utils/http";
+import { post, put, del } from "@/utils/http";
 
 export const useTabContents = (userid: string) => {
   const queryClient = useQueryClient();
@@ -111,6 +111,14 @@ export const useTabContents = (userid: string) => {
     },
   });
 
+  // GCS에서 PDF 삭제
+  const { mutateAsync: deletePdfFromGCS } = useMutation({
+    mutationFn: (filename: string) => del(`/tabs/pdf`, { data: { filename } }),
+    onError: (error) => {
+      console.error("PDF 삭제 오류:", error);
+    },
+  });
+
   const updateContents = ({
     tid,
     newContent,
@@ -167,5 +175,6 @@ export const useTabContents = (userid: string) => {
     revertContents,
     uploadImgToGCS,
     uploadPdfToGCS,
+    deletePdfFromGCS,
   };
 };

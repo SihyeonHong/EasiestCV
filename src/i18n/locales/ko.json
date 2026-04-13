@@ -155,7 +155,10 @@
     "insertMidlineEllipsis": "가운뎃점 줄임표 삽입",
     "insertHyphen": "하이픈 삽입",
     "insertEnDash": "en dash 삽입",
-    "insertEmDash": "em dash 삽입"
+    "insertEmDash": "em dash 삽입",
+    "fileAttach": "PDF 파일 첨부",
+    "fileAttachUploading": "업로드 중...",
+    "pdfOnly": "PDF 파일만 첨부할 수 있습니다."
   },
   "quillTooltips": {
     "header": "제목 스타일",

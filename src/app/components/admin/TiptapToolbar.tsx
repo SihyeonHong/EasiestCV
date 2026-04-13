@@ -11,9 +11,8 @@ import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 
 interface TiptapToolbarProps {
   editor: Editor | null;
-  mobileView: "main" | "highlighter" | "link";
+  mobileView: "main" | "highlighter";
   onHighlighterClick: () => void;
-  onLinkClick: () => void;
   onImageClick: () => void;
   onBack: () => void;
   toolbarRef: React.RefObject<HTMLDivElement>;
@@ -23,7 +22,6 @@ export default function TiptapToolbar({
   editor,
   mobileView,
   onHighlighterClick,
-  onLinkClick,
   onImageClick,
   onBack,
   toolbarRef,
@@ -40,15 +38,11 @@ export default function TiptapToolbar({
         {mobileView === "main" ? (
           <MainToolbarContent
             onHighlighterClick={onHighlighterClick}
-            onLinkClick={onLinkClick}
             onImageClick={onImageClick}
             isMobile={isMobile}
           />
         ) : (
-          <MobileToolbarContent
-            type={mobileView === "highlighter" ? "highlighter" : "link"}
-            onBack={onBack}
-          />
+          <MobileToolbarContent onBack={onBack} />
         )}
       </Toolbar>
     </EditorContext.Provider>

@@ -10,10 +10,7 @@ import {
   ColorHighlightPopoverButton,
 } from "@/app/components/tiptap/tiptap-ui/color-highlight-popover";
 import { HeadingDropdownMenu } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
-import {
-  LinkPopover,
-  LinkButton,
-} from "@/app/components/tiptap/tiptap-ui/link-popover";
+
 import { ListDropdownMenu } from "@/app/components/tiptap/tiptap-ui/list-dropdown-menu";
 import { MarkButton } from "@/app/components/tiptap/tiptap-ui/mark-button";
 import { SpecialCharPopover } from "@/app/components/tiptap/tiptap-ui/special-char-popover/special-char-popover";
@@ -27,14 +24,12 @@ import {
 
 interface MainToolbarContentProps {
   onHighlighterClick: () => void;
-  onLinkClick: () => void;
   onImageClick: () => void;
   isMobile: boolean;
 }
 
 export default function MainToolbarContent({
   onHighlighterClick,
-  onLinkClick,
   onImageClick,
   isMobile,
 }: MainToolbarContentProps) {
@@ -70,7 +65,6 @@ export default function MainToolbarContent({
         ) : (
           <ColorHighlightPopoverButton onClick={onHighlighterClick} />
         )}
-        {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
       </ToolbarGroup>
 
       <ToolbarSeparator />

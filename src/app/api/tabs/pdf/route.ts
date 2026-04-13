@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { ApiErrorResponse } from "@/types/error";
-import { uploadFile } from "@/utils/gcs";
-
+import { handleApiError } from "@/utils/api-error";
+import { ApiSuccess } from "@/utils/api-success";
+import { deleteFile, uploadFile } from "@/utils/gcs";
+import { validateMissingFields } from "@/utils/validateMissingFields";
 // GCS에 pdf 파일 업로드하는 api입니다.
 
 export async function POST(request: Request) {
@@ -58,5 +60,24 @@ export async function POST(request: Request) {
       { error: "PDF 업로드 중 오류가 발생했습니다." },
       { status: 500 },
     );
+  }
+}
+
+// GCS에서 pdf 파일을 삭제하는 api입니다.
+
+export async function DELETE(request: Request) {
+  try {
+    const { filename } = await request.json();
+
+    const errorResponse = validateMissingFields({ filename });
+    if (errorResponse) {
+      return errorResponse;
+    }
+
+    await deleteFile(filename);
+
+    return ApiSuccess.deleted();
+  } catch (error: unknown) {
+    return handleApiError(error, "PDF 삭제 실패");
   }
 }

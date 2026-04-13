@@ -5,6 +5,7 @@ import {
   useEditor,
   Editor as TiptapEditorType,
 } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
@@ -15,6 +16,7 @@ import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
+import { LinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
@@ -276,24 +278,22 @@ export default function Editor({ userid, tid }: Props) {
           editor={editor}
           mobileView={mobileView}
           onHighlighterClick={() => setMobileView("highlighter")}
-          onLinkClick={() => setMobileView("link")}
           onImageClick={() => setIsImageUploaderOpen(true)}
           onBack={() => setMobileView("main")}
           toolbarRef={toolbarRef}
         />
 
         <div className="overflow-auto">
-          {/* <BubbleMenu
+          <BubbleMenu
             editor={editor}
             options={{
               placement: "bottom",
             }}
           >
-            <div className="bg-background-secondary z-20 flex items-center gap-1 rounded-lg border p-1 shadow-lg">
-              <LinkPopover editor={editor} />
-              <FileAttachButton editor={editor} userid={userid} />
+            <div className="z-20 flex items-center gap-1 rounded-lg border bg-background-secondary p-1 shadow-lg">
+              <LinkPopover editor={editor} userid={userid} />
             </div>
-          </BubbleMenu> */}
+          </BubbleMenu>
           <TiptapEditorContent
             editor={editor}
             role="presentation"
