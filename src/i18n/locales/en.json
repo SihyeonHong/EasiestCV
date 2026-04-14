@@ -69,6 +69,7 @@
     "system": "System Setting"
   },
   "header": {
+    "language": "Language",
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
     "dropdown": "Edit Profile",

@@ -69,6 +69,7 @@
     "system": "시스템 설정"
   },
   "header": {
+    "language": "언어",
     "loginOrSignup": "로그인 / 회원가입",
     "logout": "로그아웃",
     "dropdown": "회원정보 수정",
