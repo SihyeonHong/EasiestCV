@@ -161,7 +161,7 @@
     "pdfOnly": "Only PDF files can be attached.",
     "attachedFile": "Attached file: {fileName}"
   },
-  "quillTooltips": {
+  "tooltips": {
     "header": "Heading style",
     "bold": "Bold",
     "italic": "Italic",
@@ -179,7 +179,21 @@
     "alignRight": "Align right",
     "alignJustify": "Justify",
     "color": "Text color",
-    "background": "Background color"
+    "background": "Background color",
+    "exportPdf": "Export as PDF",
+    "code": "Code",
+    "superscript": "Superscript",
+    "subscript": "Subscript",
+    "codeBlock": "Code block",
+    "bulletList": "Bulleted list",
+    "orderedList": "Numbered list",
+    "taskList": "Task list",
+    "left": "Align left",
+    "center": "Align center",
+    "right": "Align right",
+    "justify": "Justify",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "resetPassword": {
     "resetPW": "Reset Password",

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { BoldIcon } from "@/app/components/tiptap/tiptap-icons/bold-icon";
@@ -197,12 +198,14 @@ export function useMark(config: UseMarkConfig) {
     return success;
   }, [editor, type, onToggled]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleMark,
     canToggle,
-    label: getFormattedMarkName(type),
+    label: t(type),
     shortcutKeys: MARK_SHORTCUT_KEYS[type],
     Icon: markIcons[type],
   };

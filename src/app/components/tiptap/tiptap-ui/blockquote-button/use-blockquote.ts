@@ -2,6 +2,7 @@
 
 import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { BlockquoteIcon } from "@/app/components/tiptap/tiptap-icons/blockquote-icon";
@@ -223,12 +224,14 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
     return success;
   }, [editor, onToggled]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleToggle,
     canToggle,
-    label: "Blockquote",
+    label: t("blockquote"),
     shortcutKeys: BLOCKQUOTE_SHORTCUT_KEY,
     Icon: BlockquoteIcon,
   };

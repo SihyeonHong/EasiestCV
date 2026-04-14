@@ -16,6 +16,7 @@ interface TiptapToolbarProps {
   onImageClick: () => void;
   onBack: () => void;
   toolbarRef: React.RefObject<HTMLDivElement>;
+  onPrint?: () => void;
 }
 
 export default function TiptapToolbar({
@@ -25,6 +26,7 @@ export default function TiptapToolbar({
   onImageClick,
   onBack,
   toolbarRef,
+  onPrint,
 }: TiptapToolbarProps) {
   const isMobile = useIsMobile();
 
@@ -40,6 +42,7 @@ export default function TiptapToolbar({
             onHighlighterClick={onHighlighterClick}
             onImageClick={onImageClick}
             isMobile={isMobile}
+            onPrint={onPrint}
           />
         ) : (
           <MobileToolbarContent onBack={onBack} />

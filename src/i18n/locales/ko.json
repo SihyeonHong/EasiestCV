@@ -161,7 +161,7 @@
     "pdfOnly": "PDF 파일만 첨부할 수 있습니다.",
     "attachedFile": "첨부된 파일: {fileName}"
   },
-  "quillTooltips": {
+  "tooltips": {
     "header": "제목 스타일",
     "bold": "굵게",
     "italic": "기울임",
@@ -179,7 +179,21 @@
     "alignRight": "오른쪽 정렬",
     "alignJustify": "양쪽 정렬",
     "color": "글자 색상",
-    "background": "배경 색상"
+    "background": "배경 색상",
+    "exportPdf": "PDF로 내보내기",
+    "code": "인라인 코드",
+    "superscript": "위첨자",
+    "subscript": "아래첨자",
+    "codeBlock": "코드 블록",
+    "bulletList": "글머리 기호",
+    "orderedList": "번호 목록",
+    "taskList": "할 일 목록",
+    "left": "왼쪽 정렬",
+    "center": "가운데 정렬",
+    "right": "오른쪽 정렬",
+    "justify": "양쪽 정렬",
+    "undo": "되돌리기",
+    "redo": "되돌리기 취소"
   },
   "resetPassword": {
     "resetPW": "비밀번호 초기화",

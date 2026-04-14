@@ -15,8 +15,6 @@ import ImageUploader from "@/app/components/admin/ImageUploader";
 import SavePanel from "@/app/components/admin/SavePanel";
 import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
-import { useToolbar } from "@/app/components/admin/ToolbarProvider";
-import LoadingPage from "@/app/components/LoadingPage";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
@@ -26,6 +24,9 @@ import { Tab } from "@/types/tab";
 import { normalizeHtmlWhitespace } from "@/utils/sanitize";
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";
+import { useToolbar } from "@/app/components/admin/ToolbarProvider";
+import LoadingPage from "@/app/components/LoadingPage";
+import { useReactToPrint } from "react-to-print";
 
 interface Props {
   userid: string;
@@ -58,6 +59,12 @@ export default function Editor({ userid, tid }: Props) {
     });
 
   const toolbarRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    contentRef: contentRef,
+    documentTitle: "CV",
+  });
 
   // 템플릿 삽입 관련
   const [isAddingTemplate, setIsAddingTemplate] = useState(false);
@@ -281,9 +288,10 @@ export default function Editor({ userid, tid }: Props) {
           onImageClick={() => setIsImageUploaderOpen(true)}
           onBack={() => setMobileView("main")}
           toolbarRef={toolbarRef}
+          onPrint={handlePrint}
         />
 
-        <div className="overflow-auto">
+        <div className="overflow-auto" ref={contentRef}>
           <BubbleMenu
             editor={editor}
             options={{
