@@ -59,11 +59,11 @@ export default function LocaleSwitcher() {
           value={currentLocale}
           onValueChange={handleLocaleChange}
         >
-          <DropdownMenuRadioItem value="ko" className="flex items-center gap-2">
-            한국어
-          </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="en" className="flex items-center gap-2">
             English
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="ko" className="flex items-center gap-2">
+            한국어
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
