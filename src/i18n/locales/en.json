@@ -158,7 +158,8 @@
     "insertEmDash": "Insert em dash",
     "fileAttach": "Attach PDF file",
     "fileAttachUploading": "Uploading...",
-    "pdfOnly": "Only PDF files can be attached."
+    "pdfOnly": "Only PDF files can be attached.",
+    "attachedFile": "Attached file: {fileName}"
   },
   "quillTooltips": {
     "header": "Heading style",

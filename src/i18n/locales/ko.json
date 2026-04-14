@@ -158,7 +158,8 @@
     "insertEmDash": "em dash 삽입",
     "fileAttach": "PDF 파일 첨부",
     "fileAttachUploading": "업로드 중...",
-    "pdfOnly": "PDF 파일만 첨부할 수 있습니다."
+    "pdfOnly": "PDF 파일만 첨부할 수 있습니다.",
+    "attachedFile": "첨부된 파일: {fileName}"
   },
   "quillTooltips": {
     "header": "제목 스타일",

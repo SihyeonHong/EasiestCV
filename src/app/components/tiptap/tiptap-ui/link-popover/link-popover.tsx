@@ -45,6 +45,7 @@ import { Separator } from "@/app/components/tiptap/tiptap-ui-primitive/separator
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { useTabContents } from "@/hooks/useTabContents";
+import extractFileName from "@/utils/extractFileName";
 
 export interface LinkMainProps {
   /**
@@ -132,6 +133,10 @@ const LinkMain: FC<LinkMainProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const { uploadPdfToGCS, deletePdfFromGCS } = useTabContents(userid);
 
+  const GCS_URL_PREFIX = "https://storage.googleapis.com/easiest-cv/";
+  const isGcsUrl = url && url.startsWith(GCS_URL_PREFIX);
+  const fileName = isGcsUrl ? extractFileName(url) : null;
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -145,13 +150,12 @@ const LinkMain: FC<LinkMainProps> = ({
 
   const handleRemoveLink = useCallback(() => {
     // GCS에 업로드된 파일이면 삭제 요청 (fire-and-forget)
-    const GCS_URL_PREFIX = "https://storage.googleapis.com/easiest-cv/";
-    if (url && url.startsWith(GCS_URL_PREFIX)) {
+    if (isGcsUrl) {
       const filename = url.replace(GCS_URL_PREFIX, "");
       deletePdfFromGCS(filename).catch(() => {});
     }
     removeLink();
-  }, [url, deletePdfFromGCS, removeLink]);
+  }, [isGcsUrl, url, deletePdfFromGCS, removeLink]);
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -202,6 +206,14 @@ const LinkMain: FC<LinkMainProps> = ({
           ...(isMobile ? { padding: 0 } : {}),
         }}
       >
+        {isGcsUrl && fileName && (
+          <div
+            className="w-full overflow-hidden truncate px-2 pb-2 text-xs text-gray-500"
+            title={fileName}
+          >
+            {tEditor("attachedFile", { fileName })}
+          </div>
+        )}
         <CardItemGroup orientation="horizontal">
           <InputGroup>
             <Input
