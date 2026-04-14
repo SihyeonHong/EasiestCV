@@ -10,13 +10,13 @@ import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 // --- UI Components ---
+import BubbleMenuContent from "@/app/components/admin/BubbleMenuContent";
 import ImageUploader from "@/app/components/admin/ImageUploader";
 import SavePanel from "@/app/components/admin/SavePanel";
 import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
 import { useToolbar } from "@/app/components/admin/ToolbarProvider";
 import LoadingPage from "@/app/components/LoadingPage";
-import { LinkPopover } from "@/app/components/tiptap/tiptap-ui/link-popover";
 // --- Hooks ---
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
@@ -290,9 +290,7 @@ export default function Editor({ userid, tid }: Props) {
               placement: "bottom",
             }}
           >
-            <div className="z-20 flex items-center gap-1 rounded-lg border bg-background-secondary p-1 shadow-lg">
-              <LinkPopover editor={editor} userid={userid} />
-            </div>
+            <BubbleMenuContent editor={editor} userid={userid} />
           </BubbleMenu>
           <TiptapEditorContent
             editor={editor}
