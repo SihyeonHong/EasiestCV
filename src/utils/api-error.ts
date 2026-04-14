@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
-import { allowedImgTypesForMessage } from "@/constants/constants";
 import {
   ApiErrorResponse,
   DBError,
   ErrorType,
   DEFAULT_ERROR_STATUS_CODES,
 } from "@/types/error";
+import { allowedImgTypesForMessage } from "@/types/file";
 
 /**
  * 에러 응답 객체 생성

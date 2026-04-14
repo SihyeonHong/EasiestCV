@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { ApiErrorResponse } from "@/types/error";
+import { allowedDocMimeTypes, allowedDocTypesForMessage } from "@/types/file";
 import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { deleteFile, uploadFile } from "@/utils/gcs";
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
 
     if (!file || !userId) {
       const response: ApiErrorResponse = {
-        message: "PDF 파일 혹은 userId가 누락되었습니다.",
+        message: "파일 혹은 userId가 누락되었습니다.",
         errorType: "VALIDATION_ERROR",
       };
       return NextResponse.json(response, { status: 400 });
@@ -34,10 +35,10 @@ export async function POST(request: Request) {
       return NextResponse.json(response, { status: 400 });
     }
 
-    // PDF 파일인지 체크
-    if (file.type !== "application/pdf") {
+    // 허용 문저 포맷인지 체크
+    if (!(allowedDocMimeTypes as readonly string[]).includes(file.type)) {
       const response: ApiErrorResponse = {
-        message: "지원하지 않는 파일 형식입니다. PDF만 업로드 가능합니다.",
+        message: `지원하지 않는 파일 형식입니다. 다음 확장자만 업로드 가능합니다: ${allowedDocTypesForMessage}`,
         errorType: "INVALID_FILE_TYPE",
       };
       return NextResponse.json(response, { status: 400 });
@@ -47,10 +48,15 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uniqueFilename = `${file.name}-${Date.now()}`;
+    const safeName = encodeURIComponent(file.name);
+    const uniqueFilename = `${safeName}-${Date.now()}`;
     const pdfUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
 
-    await uploadFile(uniqueFilename, buffer, "pdf");
+    await uploadFile(
+      uniqueFilename,
+      buffer,
+      file.type as import("@/types/file").AllowedContentType,
+    );
 
     // GCS 링크 전달
     return NextResponse.json({ pdfUrl }, { status: 200 });

@@ -1,3 +1,4 @@
+import { allowedDocMimeTypes, allowedDocTypesForMessage } from "@/types/file";
 import { ApiError, handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
@@ -37,15 +38,17 @@ export async function GET(request: Request) {
         const fileBuffer = await downloadFile(gcsFileName);
 
         // 원본 파일명 추출 (확장자 포함)
-        const originalFileName = extractFileName(fileUrl) || "resume";
-        const downloadFileName = `${originalFileName}.pdf`;
+        const originalFileName = extractFileName(fileUrl) || "document";
+        const downloadFileName = originalFileName.includes(".")
+          ? originalFileName
+          : `${originalFileName}.pdf`;
 
         // Buffer를 Uint8Array로 변환하여 Response 생성
         const uint8Array = new Uint8Array(fileBuffer);
         return new Response(uint8Array, {
           status: 200,
           headers: {
-            "Content-Type": "application/pdf",
+            "Content-Type": "application/octet-stream",
             "Content-Disposition": `attachment; filename="${encodeURIComponent(downloadFileName)}"`,
             "Cache-Control": "no-cache",
           },
@@ -82,15 +85,15 @@ export async function POST(req: Request) {
       return ApiError.missingFields(missingFields);
     }
 
-    // PDF 파일인지 체크
-    if (document.type !== "application/pdf") {
+    // 허용된 문서 타입인지 체크
+    if (!(allowedDocMimeTypes as readonly string[]).includes(document.type)) {
       return ApiError.validation(
-        "잘못된 파일 형식입니다. PDF만 업로드 가능합니다.",
+        `지원하지 않는 파일 형식입니다. 다음 확장자만 업로드 가능합니다: ${allowedDocTypesForMessage}`,
         400,
       );
     }
 
-    // 1) 기존에 DB에 저장된 PDF 경로가 있으면 GCS에서 삭제
+    // 1) 기존에 DB에 저장된 문서 경로가 있으면 GCS에서 삭제
     const existing = await query<{ url: string | null }>(
       "SELECT url FROM documents WHERE userid = $1",
       [userId],
@@ -100,39 +103,44 @@ export async function POST(req: Request) {
       try {
         await deleteFile(oldFileName);
       } catch {
-        console.error("기존 PDF 삭제 오류");
+        console.error("기존 문서 삭제 오류");
         // 삭제 실패해도 계속 진행
       }
     }
 
-    // 2) 새로운 PDF 업로드
+    // 2) 새로운 문서 업로드
     const arrayBuffer = await document.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uniqueFilename = `${document.name}-${Date.now()}`;
-    const pdfUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
+    const safeName = encodeURIComponent(document.name);
+    const uniqueFilename = `${safeName}-${Date.now()}`;
+    const fileUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
 
     // GCS에 업로드
-    await uploadFile(uniqueFilename, buffer, "pdf");
+    await uploadFile(
+      uniqueFilename,
+      buffer,
+      document.type as import("@/types/file").AllowedContentType,
+    );
 
-    // 3) DB에 새 PDF URL 업데이트 (UPSERT)
+    // 3) DB에 새 문서 URL 업데이트 (UPSERT)
     // userid에 UNIQUE 제약이 없으므로 기존 레코드가 있으면 UPDATE, 없으면 INSERT
     if (existing.length > 0) {
       await query("UPDATE documents SET url = $1 WHERE userid = $2", [
-        pdfUrl,
+        fileUrl,
         userId,
       ]);
     } else {
       await query("INSERT INTO documents (userid, url) VALUES ($1, $2)", [
         userId,
-        pdfUrl,
+        fileUrl,
       ]);
     }
 
     // 4) 업로드 결과 반환
-    return ApiSuccess.created({ pdfUrl });
+    return ApiSuccess.created({ url: fileUrl });
   } catch (error: unknown) {
-    return handleApiError(error, "PDF 업로드 실패");
+    return handleApiError(error, "문서 업로드 실패");
   }
 }
 

@@ -156,9 +156,9 @@
     "insertHyphen": "하이픈 삽입",
     "insertEnDash": "en dash 삽입",
     "insertEmDash": "em dash 삽입",
-    "fileAttach": "PDF 파일 첨부",
+    "fileAttach": "파일 첨부",
     "fileAttachUploading": "업로드 중...",
-    "pdfOnly": "PDF 파일만 첨부할 수 있습니다.",
+    "pdfOnly": "지원하지 않는 파일 형식입니다. 다음 확장자만 업로드 가능합니다: {allowedExtensions}",
     "attachedFile": "첨부된 파일: {fileName}"
   },
   "tooltips": {

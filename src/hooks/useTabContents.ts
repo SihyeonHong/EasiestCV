@@ -7,6 +7,7 @@ import { UpdateContentsRequest } from "@/app/api/contents/route";
 import { queryKeys } from "@/constants/queryKeys";
 import { useTabs } from "@/hooks/useTabs";
 import { ApiErrorResponse } from "@/types/error";
+import { allowedDocTypesForMessage } from "@/types/file";
 import { Tab } from "@/types/tab";
 import { post, put, del } from "@/utils/http";
 
@@ -78,7 +79,7 @@ export const useTabContents = (userid: string) => {
     mutationFn: (formData: FormData) =>
       post<{ pdfUrl: string }>(`/tabs/pdf`, formData),
     onError: (error: AxiosError) => {
-      console.error("PDF 업로드 오류:", error);
+      console.error("문서 업로드 오류:", error);
 
       // 네트워크 에러
       if (!error.response) {
@@ -100,13 +101,17 @@ export const useTabContents = (userid: string) => {
             alert(tError("fileSizeError"));
             break;
           case "INVALID_FILE_TYPE":
-            alert("지원하지 않는 파일 형식입니다. PDF만 업로드 가능합니다.");
+            alert(
+              tEditor("pdfOnly", {
+                allowedExtensions: allowedDocTypesForMessage,
+              }),
+            );
             break;
           default:
-            alert("PDF 업로드에 실패했습니다.");
+            alert("문서 업로드에 실패했습니다.");
         }
       } else {
-        alert("PDF 업로드에 실패했습니다.");
+        alert("문서 업로드에 실패했습니다.");
       }
     },
   });

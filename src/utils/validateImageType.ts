@@ -1,4 +1,4 @@
-import { allowedImgTypes } from "@/constants/constants";
+import { allowedImgTypes } from "@/types/file";
 import { ApiError } from "@/utils/api-error";
 
 /**
@@ -9,7 +9,7 @@ import { ApiError } from "@/utils/api-error";
 export function validateImageType(
   file: File,
 ): ReturnType<typeof ApiError.invalidImageType> | null {
-  if (!allowedImgTypes.includes(file.type)) {
+  if (!(allowedImgTypes as readonly string[]).includes(file.type)) {
     return ApiError.invalidImageType();
   }
   return null;

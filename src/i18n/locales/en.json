@@ -156,9 +156,9 @@
     "insertHyphen": "Insert hyphen",
     "insertEnDash": "Insert en dash",
     "insertEmDash": "Insert em dash",
-    "fileAttach": "Attach PDF file",
+    "fileAttach": "Attach File",
     "fileAttachUploading": "Uploading...",
-    "pdfOnly": "Only PDF files can be attached.",
+    "pdfOnly": "Unsupported file format. Only the following extensions can be attached: {allowedExtensions}",
     "attachedFile": "Attached file: {fileName}"
   },
   "tooltips": {

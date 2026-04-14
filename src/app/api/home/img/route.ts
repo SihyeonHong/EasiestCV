@@ -2,7 +2,6 @@ import { DEFAULT_IMG } from "@/constants/constants";
 import { handleApiError } from "@/utils/api-error";
 import { ApiSuccess } from "@/utils/api-success";
 import { query } from "@/utils/database";
-import extractFileName from "@/utils/extractFileName";
 import { uploadFile, deleteFile } from "@/utils/gcs";
 import { validateImageType } from "@/utils/validateImageType";
 import { validateMissingFields } from "@/utils/validateMissingFields";
@@ -53,10 +52,15 @@ export async function POST(req: Request) {
     await deleteOldImg(validUserId);
 
     // 4) GCS에 새 이미지 업로드
-    const uniqueFilename = `${validImgFile.name}-${Date.now()}`;
+    const safeName = encodeURIComponent(validImgFile.name);
+    const uniqueFilename = `${safeName}-${Date.now()}`;
     const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
     const buffer = Buffer.from(await validImgFile.arrayBuffer());
-    await uploadFile(uniqueFilename, buffer, "image");
+    await uploadFile(
+      uniqueFilename,
+      buffer,
+      validImgFile.type as import("@/types/file").AllowedContentType,
+    );
 
     // 5) DB에 새 URL 업데이트
     await query("UPDATE user_home SET img_url = $1 WHERE userid = $2", [
@@ -82,7 +86,10 @@ export async function POST(req: Request) {
       existing[0].img_url !== DEFAULT_IMG
     ) {
       try {
-        await deleteFile(extractFileName(existing[0].img_url));
+        const fileName = existing[0].img_url.split("/").pop() ?? "";
+        if (fileName) {
+          await deleteFile(fileName);
+        }
       } catch {
         console.error("기존 이미지 삭제 오류");
         // 기존 이미지 삭제 실패해도 계속 진행

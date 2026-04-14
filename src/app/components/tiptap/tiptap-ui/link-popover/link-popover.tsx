@@ -45,6 +45,11 @@ import { Separator } from "@/app/components/tiptap/tiptap-ui-primitive/separator
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 import { useTiptapEditor } from "@/hooks/tiptap/use-tiptap-editor";
 import { useTabContents } from "@/hooks/useTabContents";
+import {
+  allowedDocMimeTypes,
+  allowedDocExtensions,
+  allowedDocTypesForMessage,
+} from "@/types/file";
 import extractFileName from "@/utils/extractFileName";
 
 export interface LinkMainProps {
@@ -162,8 +167,10 @@ const LinkMain: FC<LinkMainProps> = ({
       const file = event.target.files?.[0];
       if (!file || !userid) return;
 
-      if (file.type !== "application/pdf") {
-        alert(tEditor("pdfOnly"));
+      if (!(allowedDocMimeTypes as readonly string[]).includes(file.type)) {
+        alert(
+          tEditor("pdfOnly", { allowedExtensions: allowedDocTypesForMessage }),
+        );
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -249,7 +256,10 @@ const LinkMain: FC<LinkMainProps> = ({
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="application/pdf"
+                  accept={[
+                    ...allowedDocMimeTypes,
+                    ...allowedDocExtensions,
+                  ].join(",")}
                   onChange={handleFileChange}
                   style={{ display: "none" }}
                 />
