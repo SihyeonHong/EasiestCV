@@ -7,26 +7,23 @@ import {
 } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useReactToPrint } from "react-to-print";
 
-// --- UI Components ---
 import BubbleMenuContent from "@/app/components/admin/BubbleMenuContent";
 import ImageUploader from "@/app/components/admin/ImageUploader";
 import SavePanel from "@/app/components/admin/SavePanel";
 import SettingInTab from "@/app/components/admin/SettingInTab";
 import TiptapToolbar from "@/app/components/admin/TiptapToolbar";
-// --- Hooks ---
+import { useToolbar } from "@/app/components/admin/ToolbarProvider";
+import LoadingPage from "@/app/components/LoadingPage";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useHome } from "@/hooks/useHome";
 import { useTabContents } from "@/hooks/useTabContents";
-// --- Types & Utils ---
 import { Tab } from "@/types/tab";
 import { normalizeHtmlWhitespace } from "@/utils/sanitize";
 import { createEditorProps } from "@/utils/tiptap-editor-config";
 import { getTiptapExtensions } from "@/utils/tiptap-extensions";
-import { useToolbar } from "@/app/components/admin/ToolbarProvider";
-import LoadingPage from "@/app/components/LoadingPage";
-import { useReactToPrint } from "react-to-print";
 
 interface Props {
   userid: string;
@@ -58,48 +55,45 @@ export default function Editor({ userid, tid }: Props) {
       revertContents,
     });
 
-  const toolbarRef = React.useRef<HTMLDivElement>(null);
-  const contentRef = React.useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
     contentRef: contentRef,
-    documentTitle: "CV",
+    documentTitle: "Easiest CV",
   });
 
   // 템플릿 삽입 관련
   const [isAddingTemplate, setIsAddingTemplate] = useState(false);
 
-  const templateHtmlCacheRef = React.useRef<string | null>(null);
-  const templateHtmlPromiseRef = React.useRef<Promise<string> | null>(null);
-  const lastSelectionRef = React.useRef<{ from: number; to: number } | null>(
-    null,
-  );
+  const templateHtmlCacheRef = useRef<string | null>(null);
+  const templateHtmlPromiseRef = useRef<Promise<string> | null>(null);
+  const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
 
-  const getNormalizedTemplateHtml =
-    React.useCallback(async (): Promise<string> => {
-      if (templateHtmlCacheRef.current) return templateHtmlCacheRef.current;
-      if (templateHtmlPromiseRef.current) return templateHtmlPromiseRef.current;
+  const getNormalizedTemplateHtml = useCallback(async (): Promise<string> => {
+    if (templateHtmlCacheRef.current) return templateHtmlCacheRef.current;
+    if (templateHtmlPromiseRef.current) return templateHtmlPromiseRef.current;
 
-      templateHtmlPromiseRef.current = (async () => {
-        const response = await fetch("/papers-template.html");
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch papers-template.html: ${response.status} ${response.statusText}`,
-          );
-        }
-
-        const rawTemplate = await response.text();
-        const normalized = normalizeHtmlWhitespace(rawTemplate);
-        templateHtmlCacheRef.current = normalized;
-        return normalized;
-      })();
-
-      try {
-        return await templateHtmlPromiseRef.current;
-      } finally {
-        templateHtmlPromiseRef.current = null;
+    templateHtmlPromiseRef.current = (async () => {
+      const response = await fetch("/papers-template.html");
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch papers-template.html: ${response.status} ${response.statusText}`,
+        );
       }
-    }, []);
+
+      const rawTemplate = await response.text();
+      const normalized = normalizeHtmlWhitespace(rawTemplate);
+      templateHtmlCacheRef.current = normalized;
+      return normalized;
+    })();
+
+    try {
+      return await templateHtmlPromiseRef.current;
+    } finally {
+      templateHtmlPromiseRef.current = null;
+    }
+  }, []);
 
   const editor: TiptapEditorType | null = useEditor({
     immediatelyRender: false,
@@ -210,7 +204,7 @@ export default function Editor({ userid, tid }: Props) {
     },
   });
 
-  const handleAddTemplate = React.useCallback(async () => {
+  const handleAddTemplate = useCallback(async () => {
     if (!editor) return;
     if (isAddingTemplate) return;
 
