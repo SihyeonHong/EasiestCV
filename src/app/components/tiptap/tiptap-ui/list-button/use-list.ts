@@ -2,6 +2,7 @@
 
 import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { ListIcon } from "@/app/components/tiptap/tiptap-icons/list-icon";
@@ -291,12 +292,14 @@ export function useList(config: UseListConfig) {
     return success;
   }, [editor, type, onToggled]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleToggle,
     canToggle,
-    label: listLabels[type],
+    label: t(type),
     shortcutKeys: LIST_SHORTCUT_KEYS[type],
     Icon: listIcons[type],
   };

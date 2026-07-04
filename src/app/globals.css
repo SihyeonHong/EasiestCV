@@ -46,3 +46,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  @page {
+    size: auto;
+    margin: 20mm;
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .bg-editor-color {
+    background-color: transparent !important;
+  }
+
+  .overflow-auto {
+    overflow: visible !important;
+  }
+
+  .tiptap {
+    font-size: 0.95rem; /* 인쇄용 약간 작은 폰트 적용 */
+  }
+
+  /* 인쇄 시 레이아웃 깨짐 방지 */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  img {
+    page-break-inside: avoid;
+  }
+}

@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
 
 import { Locale } from "@/i18n/routing";

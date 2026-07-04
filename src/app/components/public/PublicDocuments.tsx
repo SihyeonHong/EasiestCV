@@ -53,7 +53,10 @@ export default function PublicDocuments({ userid }: Props) {
       const blob = await response.blob();
 
       // 3. 파일명 추출
-      const fileName = extractFileName(documents[0]) || "resume.pdf";
+      const originalFileName = extractFileName(documents[0]) || "document";
+      const fileName = originalFileName.includes(".")
+        ? originalFileName
+        : `${originalFileName}.pdf`;
 
       // 4. 임시 URL 생성
       objectUrl = URL.createObjectURL(blob);

@@ -2,6 +2,7 @@
 
 import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { HeadingFiveIcon } from "@/app/components/tiptap/tiptap-icons/heading-five-icon";
@@ -312,12 +313,14 @@ export function useHeading(config: UseHeadingConfig) {
     return success;
   }, [editor, level, onToggled]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleToggle,
     canToggle: canToggleState,
-    label: `Heading ${level}`,
+    label: `${t("header")} ${level}`,
     shortcutKeys: HEADING_SHORTCUT_KEYS[level],
     Icon: headingIcons[level],
   };

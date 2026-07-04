@@ -2,6 +2,7 @@
 
 import type { ChainedCommands } from "@tiptap/react";
 import { type Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { AlignCenterIcon } from "@/app/components/tiptap/tiptap-icons/align-center-icon";
@@ -228,12 +229,14 @@ export function useTextAlign(config: UseTextAlignConfig) {
     return success;
   }, [editor, align, onAligned]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleTextAlign,
     canAlign,
-    label: textAlignLabels[align],
+    label: t(align),
     shortcutKeys: TEXT_ALIGN_SHORTCUT_KEYS[align],
     Icon: textAlignIcons[align],
   };

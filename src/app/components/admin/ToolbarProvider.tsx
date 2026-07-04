@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 import { useIsMobile } from "@/hooks/tiptap/use-mobile";
 
-type MobileView = "main" | "highlighter" | "link";
+type MobileView = "main" | "highlighter";
 
 interface ToolbarContextType {
   mobileView: MobileView;

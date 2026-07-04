@@ -1,5 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 
+import { AllowedContentType } from "@/types/file";
+
 const storage = new Storage({
   credentials: JSON.parse(process.env.GCS_CREDENTIALS ?? ""),
   projectId: "easiest-cv",
@@ -13,12 +15,12 @@ const bucket = storage.bucket("easiest-cv");
 export const uploadFile = async (
   filename: string,
   buffer: Buffer,
-  type: "image" | "pdf",
+  contentType: AllowedContentType,
 ) => {
   const file = bucket.file(filename);
   const stream = file.createWriteStream({
     metadata: {
-      contentType: type === "image" ? "image/*" : "application/pdf",
+      contentType,
     },
   });
 

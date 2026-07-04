@@ -2,6 +2,7 @@
 
 import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { type Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { CodeBlockIcon } from "@/app/components/tiptap/tiptap-icons/code-block-icon";
@@ -230,12 +231,14 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
     return success;
   }, [editor, onToggled]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     isActive,
     handleToggle,
     canToggle: canToggleState,
-    label: "Code Block",
+    label: t("codeBlock"),
     shortcutKeys: CODE_BLOCK_SHORTCUT_KEY,
     Icon: CodeBlockIcon,
   };

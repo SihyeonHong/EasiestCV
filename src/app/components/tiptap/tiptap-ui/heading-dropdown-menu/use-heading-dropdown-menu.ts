@@ -1,6 +1,7 @@
 "use client";
 
 import type { Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { HeadingIcon } from "@/app/components/tiptap/tiptap-icons/heading-icon";
@@ -115,13 +116,15 @@ export function useHeadingDropdownMenu(config?: UseHeadingDropdownMenuConfig) {
     };
   }, [editor, hideWhenUnavailable, levels]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     activeLevel,
     isActive,
     canToggle: canToggleState,
     levels,
-    label: "Heading",
+    label: t("header"),
     Icon: activeLevel ? headingIcons[activeLevel] : HeadingIcon,
   };
 }

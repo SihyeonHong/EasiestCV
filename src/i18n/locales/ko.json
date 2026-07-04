@@ -69,6 +69,7 @@
     "system": "시스템 설정"
   },
   "header": {
+    "language": "언어",
     "loginOrSignup": "로그인 / 회원가입",
     "logout": "로그아웃",
     "dropdown": "회원정보 수정",
@@ -155,9 +156,13 @@
     "insertMidlineEllipsis": "가운뎃점 줄임표 삽입",
     "insertHyphen": "하이픈 삽입",
     "insertEnDash": "en dash 삽입",
-    "insertEmDash": "em dash 삽입"
+    "insertEmDash": "em dash 삽입",
+    "fileAttach": "파일 첨부",
+    "fileAttachUploading": "업로드 중...",
+    "pdfOnly": "지원하지 않는 파일 형식입니다. 다음 확장자만 업로드 가능합니다: {allowedExtensions}",
+    "attachedFile": "첨부된 파일: {fileName}"
   },
-  "quillTooltips": {
+  "tooltips": {
     "header": "제목 스타일",
     "bold": "굵게",
     "italic": "기울임",
@@ -175,7 +180,21 @@
     "alignRight": "오른쪽 정렬",
     "alignJustify": "양쪽 정렬",
     "color": "글자 색상",
-    "background": "배경 색상"
+    "background": "배경 색상",
+    "exportPdf": "PDF로 내보내기",
+    "code": "인라인 코드",
+    "superscript": "위첨자",
+    "subscript": "아래첨자",
+    "codeBlock": "코드 블록",
+    "bulletList": "글머리 기호",
+    "orderedList": "번호 목록",
+    "taskList": "할 일 목록",
+    "left": "왼쪽 정렬",
+    "center": "가운데 정렬",
+    "right": "오른쪽 정렬",
+    "justify": "양쪽 정렬",
+    "undo": "되돌리기",
+    "redo": "되돌리기 취소"
   },
   "resetPassword": {
     "resetPW": "비밀번호 초기화",

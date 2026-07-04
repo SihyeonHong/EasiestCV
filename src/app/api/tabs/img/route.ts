@@ -40,10 +40,15 @@ export async function POST(request: Request) {
     const arrayBuffer = await validFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uniqueFilename = `${validFile.name}-${Date.now()}`;
+    const safeName = encodeURIComponent(validFile.name);
+    const uniqueFilename = `${safeName}-${Date.now()}`;
     const imageUrl = `https://storage.googleapis.com/easiest-cv/${uniqueFilename}`;
 
-    await uploadFile(uniqueFilename, buffer, "image");
+    await uploadFile(
+      uniqueFilename,
+      buffer,
+      validFile.type as import("@/types/file").AllowedContentType,
+    );
 
     // GCS 링크 전달
     return ApiSuccess.data({ imageUrl });

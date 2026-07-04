@@ -1,5 +1,7 @@
 "use client";
 
+import { Printer } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { ImagePlusIcon } from "@/app/components/tiptap/tiptap-icons/image-plus-icon";
@@ -10,10 +12,6 @@ import {
   ColorHighlightPopoverButton,
 } from "@/app/components/tiptap/tiptap-ui/color-highlight-popover";
 import { HeadingDropdownMenu } from "@/app/components/tiptap/tiptap-ui/heading-dropdown-menu";
-import {
-  LinkPopover,
-  LinkButton,
-} from "@/app/components/tiptap/tiptap-ui/link-popover";
 import { ListDropdownMenu } from "@/app/components/tiptap/tiptap-ui/list-dropdown-menu";
 import { MarkButton } from "@/app/components/tiptap/tiptap-ui/mark-button";
 import { SpecialCharPopover } from "@/app/components/tiptap/tiptap-ui/special-char-popover/special-char-popover";
@@ -27,17 +25,19 @@ import {
 
 interface MainToolbarContentProps {
   onHighlighterClick: () => void;
-  onLinkClick: () => void;
   onImageClick: () => void;
   isMobile: boolean;
+  onPrint?: () => void;
 }
 
 export default function MainToolbarContent({
   onHighlighterClick,
-  onLinkClick,
   onImageClick,
   isMobile,
+  onPrint,
 }: MainToolbarContentProps) {
+  const t = useTranslations("tooltips");
+
   return (
     <div className="flex flex-wrap items-center">
       <ToolbarGroup>
@@ -70,7 +70,6 @@ export default function MainToolbarContent({
         ) : (
           <ColorHighlightPopoverButton onClick={onHighlighterClick} />
         )}
-        {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
       </ToolbarGroup>
 
       <ToolbarSeparator />
@@ -93,9 +92,14 @@ export default function MainToolbarContent({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <Button data-style="ghost" onClick={onImageClick}>
+        <Button data-style="ghost" onClick={onImageClick} title={t("image")}>
           <ImagePlusIcon className="tiptap-button-icon" />
         </Button>
+        {onPrint && (
+          <Button data-style="ghost" onClick={onPrint} title={t("exportPdf")}>
+            <Printer className="tiptap-button-icon h-[18px] w-[18px]" />
+          </Button>
+        )}
       </ToolbarGroup>
 
       {isMobile && <ToolbarSeparator />}

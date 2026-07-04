@@ -69,6 +69,7 @@
     "system": "System Setting"
   },
   "header": {
+    "language": "Language",
     "loginOrSignup": "Log In / Sign Up",
     "logout": "Log Out",
     "dropdown": "Edit Profile",
@@ -155,9 +156,13 @@
     "insertMidlineEllipsis": "Insert midline horizontal ellipsis",
     "insertHyphen": "Insert hyphen",
     "insertEnDash": "Insert en dash",
-    "insertEmDash": "Insert em dash"
+    "insertEmDash": "Insert em dash",
+    "fileAttach": "Attach File",
+    "fileAttachUploading": "Uploading...",
+    "pdfOnly": "Unsupported file format. Only the following extensions can be attached: {allowedExtensions}",
+    "attachedFile": "Attached file: {fileName}"
   },
-  "quillTooltips": {
+  "tooltips": {
     "header": "Heading style",
     "bold": "Bold",
     "italic": "Italic",
@@ -175,7 +180,21 @@
     "alignRight": "Align right",
     "alignJustify": "Justify",
     "color": "Text color",
-    "background": "Background color"
+    "background": "Background color",
+    "exportPdf": "Export as PDF",
+    "code": "Code",
+    "superscript": "Superscript",
+    "subscript": "Subscript",
+    "codeBlock": "Code block",
+    "bulletList": "Bulleted list",
+    "orderedList": "Numbered list",
+    "taskList": "Task list",
+    "left": "Align left",
+    "center": "Align center",
+    "right": "Align right",
+    "justify": "Justify",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "resetPassword": {
     "resetPW": "Reset Password",

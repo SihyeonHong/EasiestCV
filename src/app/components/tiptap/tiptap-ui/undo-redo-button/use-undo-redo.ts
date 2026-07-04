@@ -1,6 +1,7 @@
 "use client";
 
 import { type Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { Redo2Icon } from "@/app/components/tiptap/tiptap-icons/redo2-icon";
@@ -168,11 +169,13 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
     return success;
   }, [editor, action, onExecuted]);
 
+  const t = useTranslations("tooltips");
+
   return {
     isVisible,
     handleAction,
     canExecute,
-    label: historyActionLabels[action],
+    label: t(action),
     shortcutKeys: UNDO_REDO_SHORTCUT_KEYS[action],
     Icon: historyIcons[action],
   };

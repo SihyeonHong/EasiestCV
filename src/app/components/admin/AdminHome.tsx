@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+// import { useTranslations } from "next-intl";
 
 import EditorContainer from "@/app/components/admin/EditorContainer";
 import SettingInHome from "@/app/components/admin/SettingInHome";
-import AlertBanner from "@/app/components/common/AlertBanner";
+// import AlertBanner from "@/app/components/common/AlertBanner";
 import LoadingPage from "@/app/components/LoadingPage";
 import { useHome } from "@/hooks/useHome";
 import { cn } from "@/utils/classname";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function AdminHome({ userid }: Props) {
-  const tAlertBanner = useTranslations("alertBanner");
+  // const tAlertBanner = useTranslations("alertBanner");
   const { userHome, isHomeLoading } = useHome(userid);
 
   return (
@@ -39,8 +39,12 @@ export default function AdminHome({ userid }: Props) {
             />
           </div>
         )}
-        <EditorContainer userid={userid} tid={0} />
-        <AlertBanner message={tAlertBanner("bugAnnouncement")} />
+        {isHomeLoading ? (
+          <LoadingPage />
+        ) : (
+          <EditorContainer userid={userid} tid={0} />
+        )}
+        {/* <AlertBanner message={tAlertBanner("bugAnnouncement")} /> */}
       </div>
     </div>
   );

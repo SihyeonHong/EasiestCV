@@ -7,6 +7,7 @@ import { Button } from "@/app/components/common/Button";
 import { Input } from "@/app/components/common/Input";
 import LoadingIcon from "@/app/components/common/LoadingIcon";
 import { useDocuments } from "@/hooks/useDocuments";
+import { allowedDocExtensions } from "@/types/file";
 import { cn } from "@/utils/classname";
 import extractFileName from "@/utils/extractFileName";
 
@@ -51,7 +52,7 @@ export default function AdminDocuments({ userid }: Props) {
             ref={fileInputRef}
             id="documents"
             type="file"
-            accept=".pdf"
+            accept={allowedDocExtensions.join(",")}
             onChange={(e) => {
               if (!e.target.files || e.target.files.length === 0) return;
               uploadDocument(e.target.files[0] as File);

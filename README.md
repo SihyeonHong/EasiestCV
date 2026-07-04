@@ -8,7 +8,7 @@
 디자인도 레이아웃도 귀찮고 기존의 홈페이지 제작 툴조차 배우기 어려울 때, <br/>
 컴퓨터로 이메일 보낼 줄 아는 수준이면 충분한, 오직 내용만 입력해서 CV 웹사이트를 만들 수 있는 서비스.<br/>
 
-배포 주소: https://easiest-cv.com/ <br/>
+배포 주소: https://www.easiest-cv.com/ <br/>
 
 # Database Schema
 
