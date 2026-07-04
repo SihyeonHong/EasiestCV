@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
 
 import { SignupRequest } from "@/types/user-account";
